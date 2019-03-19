@@ -4,18 +4,26 @@ import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
+/**
+ * Validator, that checks that a value is one of some given
+ * String values
+ */
 public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetErrorMessage {
 
     private final Set<String> allowedValues;
 
+    /**
+     *
+     * @param values list with some allowed String values
+     */
     public LiteralStringBindingWithAllowedValues(final String... values) {
         allowedValues = new HashSet<>();
-        Stream.of(values).forEach(allowedValues::add);
+        allowedValues.addAll(Arrays.asList(values));
     }
 
     @Override

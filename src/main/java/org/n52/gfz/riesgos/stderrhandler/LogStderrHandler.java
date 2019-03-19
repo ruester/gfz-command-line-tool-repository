@@ -4,6 +4,9 @@ import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 
+/**
+ * Handler for stderr that logs the stderr text
+ */
 public class LogStderrHandler implements IStderrHandler {
 
     private final ILogger logger;
