@@ -13,6 +13,7 @@ import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +23,7 @@ import java.util.Optional;
 public class Quakeledger extends AbstractGfzRiesgosProcess {
 
     public Quakeledger() {
-        super(createQuakeledgerConfig());
+        super(createQuakeledgerConfig(), LoggerFactory.getLogger(Quakeledger.class));
     }
 
     private static IConfiguration createQuakeledgerConfig() {
