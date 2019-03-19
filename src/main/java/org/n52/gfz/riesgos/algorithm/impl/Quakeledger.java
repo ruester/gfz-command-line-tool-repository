@@ -2,17 +2,16 @@ package org.n52.gfz.riesgos.algorithm.impl;
 
 import org.n52.gfz.riesgos.algorithm.AbstractGfzRiesgosProcess;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
-import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentDoubleImpl;
+import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentStringWithAllowedValuesImpl;
+import org.n52.gfz.riesgos.configuration.commonimpl.FileOutXmlImpl;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
-import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
-import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
@@ -43,166 +42,26 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
         @Override
         public List<IIdentifierWithBinding> getInputIdentifiers() {
             return Arrays.asList(
-                    new IdentifierWithBindingImpl("lonmin",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "lonmax",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "latmin",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "latmax",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl("mmin",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "mmax",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "zmin",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "zmax",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "p",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "etype",
-                            LiteralStringBinding.class,
-                            Optional.of(new LiteralStringBindingWithAllowedValues("observed", "deaggregated", "stochastic", "expert")),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "tlon",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty()),
-                    new IdentifierWithBindingImpl(
-                            "tlat",
-                            LiteralDoubleBinding.class,
-                            Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd()),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty())
+                    new CommandLineArgumentDoubleImpl("lonmin"),
+                    new CommandLineArgumentDoubleImpl("lonmax"),
+                    new CommandLineArgumentDoubleImpl("latmin"),
+                    new CommandLineArgumentDoubleImpl("latmax"),
+                    new CommandLineArgumentDoubleImpl("mmin"),
+                    new CommandLineArgumentDoubleImpl("mmax"),
+                    new CommandLineArgumentDoubleImpl("zmin"),
+                    new CommandLineArgumentDoubleImpl("zmax"),
+                    new CommandLineArgumentDoubleImpl("p"),
+                    new CommandLineArgumentStringWithAllowedValuesImpl("etype",
+                            "observed", "deaggregated", "stochastic", "expert"),
+                    new CommandLineArgumentDoubleImpl("tlon"),
+                    new CommandLineArgumentDoubleImpl("tlat")
             );
         }
 
         @Override
         public List<IIdentifierWithBinding> getOutputIdentifiers() {
             return Arrays.asList(
-                    new IdentifierWithBindingImpl(
-                            "selectedRows",
-                            GenericXMLDataBinding.class,
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.of("test.xml"),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.empty(),
-                            Optional.of(new ConvertBytesToGenericXMLDataBinding()))
+                    new FileOutXmlImpl("selectedRows","test.xml")
             );
         }
 

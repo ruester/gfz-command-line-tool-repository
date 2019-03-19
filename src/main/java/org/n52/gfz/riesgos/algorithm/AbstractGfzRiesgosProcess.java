@@ -1,5 +1,6 @@
 package org.n52.gfz.riesgos.algorithm;
 
+import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRun;
@@ -10,7 +11,6 @@ import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
 import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
-import org.n52.gfz.riesgos.exceptions.WriteToStdinException;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
@@ -18,16 +18,14 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParamete
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
-import org.n52.gfz.riesgos.functioninterfaces.IConvertStderrToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
-import org.n52.gfz.riesgos.functioninterfaces.IConvertStdoutToIData;
-import org.n52.gfz.riesgos.functioninterfaces.IWriteToStdin;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -301,13 +299,14 @@ public abstract class AbstractGfzRiesgosProcess extends AbstractSelfDescribingAl
         private void writeToStdin(final PrintStream stdin) throws ExceptionReport {
             try {
                 for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
-                    final Optional<IWriteToStdin> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
+                    final Optional<IConvertIDataToByteArray> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
                     if (optionalFunctionToWriteToStdin.isPresent()) {
-                        final IWriteToStdin functionToWriteToStdin = optionalFunctionToWriteToStdin.get();
-                        functionToWriteToStdin.writeToStdin(stdin, inputData.get(inputValue.getIdentifer()));
+                        final IConvertIDataToByteArray functionToWriteToStdin = optionalFunctionToWriteToStdin.get();
+                        final byte[] content = functionToWriteToStdin.convertToBytes(inputData.get(inputValue.getIdentifer()));
+                        IOUtils.write(content, stdin);
                     }
                 }
-            } catch(final WriteToStdinException exception) {
+            } catch(final IOException exception) {
                 throw new ExceptionReport("Can't write to stdin", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
             }
         }
@@ -324,9 +323,9 @@ public abstract class AbstractGfzRiesgosProcess extends AbstractSelfDescribingAl
             }
             try {
                 for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
-                    final Optional<IConvertStderrToIData> stderrHandler = outputValue.getFunctionToHandleStderr();
+                    final Optional<IConvertByteArrayToIData> stderrHandler = outputValue.getFunctionToHandleStderr();
                     if (stderrHandler.isPresent()) {
-                        final IData iData = stderrHandler.get().convertToIData(stderr);
+                        final IData iData = stderrHandler.get().convertToIData(stderr.getBytes());
                         putIntoOutput(outputValue, iData);
                     }
                 }
@@ -378,9 +377,9 @@ public abstract class AbstractGfzRiesgosProcess extends AbstractSelfDescribingAl
 
             try {
                 for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
-                    final Optional<IConvertStdoutToIData> stdoutHandler = outputValue.getFunctionToHandleStdout();
+                    final Optional<IConvertByteArrayToIData> stdoutHandler = outputValue.getFunctionToHandleStdout();
                     if (stdoutHandler.isPresent()) {
-                        final IData iData = stdoutHandler.get().convertToIData(stdout);
+                        final IData iData = stdoutHandler.get().convertToIData(stdout.getBytes());
                         putIntoOutput(outputValue, iData);
                     }
                 }

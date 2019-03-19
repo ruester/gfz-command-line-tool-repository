@@ -6,9 +6,6 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
-import org.n52.gfz.riesgos.functioninterfaces.IConvertStderrToIData;
-import org.n52.gfz.riesgos.functioninterfaces.IConvertStdoutToIData;
-import org.n52.gfz.riesgos.functioninterfaces.IWriteToStdin;
 import org.n52.wps.io.data.IData;
 
 import java.util.Optional;
@@ -21,10 +18,10 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     private final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd;
     private final Optional<String> path;
     private final Optional<IConvertIDataToByteArray> functionToGetBytesToWrite;
-    private final Optional<IWriteToStdin> functionToWriteToStdin;
-    private final Optional<IConvertStderrToIData> functionToHandleStderr;
+    private final Optional<IConvertIDataToByteArray> functionToWriteToStdin;
+    private final Optional<IConvertByteArrayToIData> functionToHandleStderr;
     private final Optional<IConvertExitValueToIData> functionToHandleExitValue;
-    private final Optional<IConvertStdoutToIData> functionToHandleStdout;
+    private final Optional<IConvertByteArrayToIData> functionToHandleStdout;
     private final Optional<IConvertByteArrayToIData> functionToReadFromBytes;
 
     public IdentifierWithBindingImpl(
@@ -34,10 +31,10 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
             final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd,
             final Optional<String> path,
             final Optional<IConvertIDataToByteArray> functionToGetBytesToWrite,
-            final Optional<IWriteToStdin> functionToWriteToStdin,
-            final Optional<IConvertStderrToIData> functionToHandleStderr,
+            final Optional<IConvertIDataToByteArray> functionToWriteToStdin,
+            final Optional<IConvertByteArrayToIData> functionToHandleStderr,
             final Optional<IConvertExitValueToIData> functionToHandleExitValue,
-            final Optional<IConvertStdoutToIData> functionToHandleStdout,
+            final Optional<IConvertByteArrayToIData> functionToHandleStdout,
             final Optional<IConvertByteArrayToIData> functionToReadFromBytes) {
         this.identifier = identifier;
         this.bindingClass = bindingClass;
@@ -83,12 +80,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     }
 
     @Override
-    public Optional<IWriteToStdin> getFunctionToWriteToStdin() {
+    public Optional<IConvertIDataToByteArray> getFunctionToWriteToStdin() {
         return functionToWriteToStdin;
     }
 
     @Override
-    public Optional<IConvertStderrToIData> getFunctionToHandleStderr() {
+    public Optional<IConvertByteArrayToIData> getFunctionToHandleStderr() {
         return functionToHandleStderr;
     }
 
@@ -98,7 +95,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     }
 
     @Override
-    public Optional<IConvertStdoutToIData> getFunctionToHandleStdout() {
+    public Optional<IConvertByteArrayToIData> getFunctionToHandleStdout() {
         return functionToHandleStdout;
     }
 
