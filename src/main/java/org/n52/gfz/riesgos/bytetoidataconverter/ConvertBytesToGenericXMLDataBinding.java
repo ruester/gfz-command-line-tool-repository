@@ -10,7 +10,12 @@ import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public class ConvertBytesToGenericXmlBinding implements IConvertByteArrayToIData {
+/**
+ * This is an implementation to convert a byte[] array of xml information into
+ * a GenericXMLDataBinding
+ */
+public class ConvertBytesToGenericXMLDataBinding implements IConvertByteArrayToIData {
+
     @Override
     public IData convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {

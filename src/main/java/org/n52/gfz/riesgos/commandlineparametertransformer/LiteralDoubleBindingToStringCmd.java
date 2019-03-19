@@ -8,18 +8,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Function to convert an IData to a String.
+ * Used to add it as a command line argument.
+ * Can also handle default flags.
+ */
 public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLineParameter {
 
-    private final Optional<String> defaultFlag;
-    public LiteralDoubleBindingToStringCmd(final Optional<String> defaultFlag) {
+    private final String defaultFlag;
+
+    /**
+     * Constructor with a default flag
+     * @param defaultFlag flag that is before the element (for example --lat before a latitude)
+     */
+    public LiteralDoubleBindingToStringCmd(final String defaultFlag) {
         this.defaultFlag = defaultFlag;
+    }
+
+    /**
+     * Constructor without a default flag
+     */
+    public LiteralDoubleBindingToStringCmd() {
+        this(null);
     }
 
     @Override
     public List<String> convertToCommandLineParameter(final IData iData) {
         final List<String> result = new ArrayList<>();
 
-        defaultFlag.ifPresent(result::add);
+        Optional.ofNullable(defaultFlag).ifPresent(result::add);
 
         if(iData instanceof LiteralDoubleBinding) {
             final LiteralDoubleBinding binding = (LiteralDoubleBinding) iData;

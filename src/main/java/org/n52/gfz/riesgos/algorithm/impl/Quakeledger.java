@@ -1,7 +1,7 @@
 package org.n52.gfz.riesgos.algorithm.impl;
 
 import org.n52.gfz.riesgos.algorithm.AbstractGfzRiesgosProcess;
-import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXmlBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
@@ -20,8 +20,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Quakeledger is one implementation of a abstract riesgos service.
+ * It is used to query a python script to provide a list of
+ * earth quake events using quakeml
+ *
+ */
 public class Quakeledger extends AbstractGfzRiesgosProcess {
 
+    /**
+     * Default constructor
+     */
     public Quakeledger() {
         super(createQuakeledgerConfig(), LoggerFactory.getLogger(Quakeledger.class));
     }
@@ -37,7 +46,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                     new IdentifierWithBindingImpl("lonmin",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -49,7 +58,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "lonmax",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -61,7 +70,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "latmin",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -73,7 +82,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "latmax",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -84,7 +93,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                     new IdentifierWithBindingImpl("mmin",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -96,7 +105,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "mmax",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -108,7 +117,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "zmin",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -120,7 +129,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "zmax",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -132,7 +141,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "p",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -144,7 +153,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "etype",
                             LiteralStringBinding.class,
                             Optional.of(new LiteralStringBindingWithAllowedValues("observed", "deaggregated", "stochastic", "expert")),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -156,7 +165,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "tlon",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -168,7 +177,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             "tlat",
                             LiteralDoubleBinding.class,
                             Optional.empty(),
-                            Optional.of(new LiteralDoubleBindingToStringCmd(Optional.empty())),
+                            Optional.of(new LiteralDoubleBindingToStringCmd()),
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
@@ -193,7 +202,7 @@ public class Quakeledger extends AbstractGfzRiesgosProcess {
                             Optional.empty(),
                             Optional.empty(),
                             Optional.empty(),
-                            Optional.of(new ConvertBytesToGenericXmlBinding()))
+                            Optional.of(new ConvertBytesToGenericXMLDataBinding()))
             );
         }
 
