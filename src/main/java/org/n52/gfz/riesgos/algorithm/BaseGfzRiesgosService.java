@@ -405,9 +405,6 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
         private void readFromOutputFiles(final IExecutionContext context) throws ExceptionReport {
 
-            // TODO
-            // something here does not work
-            // same with the running of the command (which must take a lot of time)
             try {
                 for(final IIdentifierWithBinding outputValue : outputIdentifiers) {
                     final Optional<String> optionalPath = outputValue.getPathToWriteToOrReadFromFile();

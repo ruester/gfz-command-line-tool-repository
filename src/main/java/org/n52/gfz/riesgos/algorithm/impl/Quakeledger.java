@@ -268,7 +268,7 @@ public class Quakeledger extends BaseGfzRiesgosService {
         }
     }
 
-    /*
+
     public static void main(String[] args) throws Exception {
         final Quakeledger p = new Quakeledger();
 
@@ -293,5 +293,5 @@ public class Quakeledger extends BaseGfzRiesgosService {
         final String text = selectedRows.getPayload().xmlText();
 
         System.out.println(text.substring(0, 10));
-    }*/
+    }
 }
