@@ -22,6 +22,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
+import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
@@ -153,7 +155,12 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
     @Override
     public ProcessDescription getDescription() {
-        final ProcessDescriptionsDocument description = configuration.getProcessDescription();
+
+        // that does I want to get?
+        // I want to create the description out of the configuration
+
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl();
+        final ProcessDescriptionsDocument description = generator.generateProcessDescription(configuration);
         ProcessDescription processDescription = new ProcessDescription();
         processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
         return processDescription;

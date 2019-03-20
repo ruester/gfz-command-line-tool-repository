@@ -1,5 +1,7 @@
 package org.n52.gfz.riesgos.configuration;
 
+import org.n52.gfz.riesgos.functioninterfaces.IAddTypeIntoInputDescriptionType;
+import org.n52.gfz.riesgos.functioninterfaces.IAddTypeIntoOutputDescriptionType;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
@@ -32,4 +34,10 @@ public interface IIdentifierWithBinding {
     public Optional<IConvertByteArrayToIData> getFunctionToHandleStdout();
 
     public Optional<IConvertByteArrayToIData> getFunctionToReadFromBytes();
+
+    public Optional<IAddTypeIntoInputDescriptionType> getFunctionToAddInputDescriptionType();
+
+    public Optional<IAddTypeIntoOutputDescriptionType> getFunctionToAddOutputDescriptionType();
+
+
 }

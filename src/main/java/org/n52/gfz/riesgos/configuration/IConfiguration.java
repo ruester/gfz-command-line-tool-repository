@@ -10,6 +10,12 @@ import java.util.Optional;
 
 public interface IConfiguration {
 
+    public String getIdentifier();
+
+    public default String getFullQualifiedIdentifier() {
+        return "org.n52.gfz.riesgos.algorithm.impl." + getIdentifier();
+    }
+
     public String getImageId();
 
     public String getWorkingDirectory();
@@ -27,6 +33,4 @@ public interface IConfiguration {
     public Optional<IExitValueHandler> getExitValueHandler();
 
     public Optional<IStdoutHandler> getStdoutHandler();
-
-    public ProcessDescriptionsDocument getProcessDescription();
 }

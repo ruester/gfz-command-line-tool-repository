@@ -1,6 +1,8 @@
 package org.n52.gfz.riesgos.configuration.impl;
 
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.functioninterfaces.IAddTypeIntoInputDescriptionType;
+import org.n52.gfz.riesgos.functioninterfaces.IAddTypeIntoOutputDescriptionType;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
@@ -23,6 +25,8 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     private final Optional<IConvertExitValueToIData> functionToHandleExitValue;
     private final Optional<IConvertByteArrayToIData> functionToHandleStdout;
     private final Optional<IConvertByteArrayToIData> functionToReadFromBytes;
+    private final Optional<IAddTypeIntoInputDescriptionType> functionToAddTypeIntoInputDescriptionType;
+    private final Optional<IAddTypeIntoOutputDescriptionType> functionToAddTypeIntoOutputDescriptionType;
 
     public IdentifierWithBindingImpl(
             final String identifier,
@@ -35,7 +39,9 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
             final Optional<IConvertByteArrayToIData> functionToHandleStderr,
             final Optional<IConvertExitValueToIData> functionToHandleExitValue,
             final Optional<IConvertByteArrayToIData> functionToHandleStdout,
-            final Optional<IConvertByteArrayToIData> functionToReadFromBytes) {
+            final Optional<IConvertByteArrayToIData> functionToReadFromBytes,
+            final Optional<IAddTypeIntoInputDescriptionType> functionToAddTypeIntoInputDescriptionType,
+            final Optional<IAddTypeIntoOutputDescriptionType> functionToAddTypeIntoOutputDescriptionType) {
         this.identifier = identifier;
         this.bindingClass = bindingClass;
         this.validator = validator;
@@ -47,6 +53,8 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         this.functionToHandleExitValue = functionToHandleExitValue;
         this.functionToHandleStdout = functionToHandleStdout;
         this.functionToReadFromBytes = functionToReadFromBytes;
+        this.functionToAddTypeIntoInputDescriptionType = functionToAddTypeIntoInputDescriptionType;
+        this.functionToAddTypeIntoOutputDescriptionType = functionToAddTypeIntoOutputDescriptionType;
     }
 
     @Override
@@ -102,5 +110,15 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     @Override
     public Optional<IConvertByteArrayToIData> getFunctionToReadFromBytes() {
         return functionToReadFromBytes;
+    }
+
+    @Override
+    public Optional<IAddTypeIntoInputDescriptionType> getFunctionToAddInputDescriptionType() {
+        return functionToAddTypeIntoInputDescriptionType;
+    }
+
+    @Override
+    public Optional<IAddTypeIntoOutputDescriptionType> getFunctionToAddOutputDescriptionType() {
+        return functionToAddTypeIntoOutputDescriptionType;
     }
 }

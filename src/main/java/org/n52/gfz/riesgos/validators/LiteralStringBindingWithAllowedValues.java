@@ -6,6 +6,7 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,9 +22,9 @@ public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetEr
      *
      * @param values list with some allowed String values
      */
-    public LiteralStringBindingWithAllowedValues(final String... values) {
+    public LiteralStringBindingWithAllowedValues(final List<String> values) {
         allowedValues = new HashSet<>();
-        allowedValues.addAll(Arrays.asList(values));
+        allowedValues.addAll(values);
     }
 
     @Override

@@ -1,32 +1,22 @@
 package org.n52.gfz.riesgos.algorithm.impl;
 
-import net.opengis.wps.x100.ProcessDescriptionsDocument;
-import org.apache.xmlbeans.XmlException;
-import org.apache.xmlbeans.XmlOptions;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
-import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentDoubleImpl;
-import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentStringWithAllowedValuesImpl;
-import org.n52.gfz.riesgos.configuration.commonimpl.FileOutXmlImpl;
+import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentDoubleWithDefaultValueImpl;
+import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentStringWithDefaultValueAndAllowedValuesImpl;
+import org.n52.gfz.riesgos.configuration.commonimpl.FileOutXmlWithSchemaImpl;
 import org.n52.gfz.riesgos.exitvaluehandler.LogExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.stderrhandler.LogStderrHandler;
-import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
-import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -51,29 +41,35 @@ public class Quakeledger extends BaseGfzRiesgosService {
     }
 
     private static class QuakeledgerConfig implements IConfiguration {
+
+        @Override
+        public String getIdentifier() {
+            return "QuakeledgerTest";
+        }
+
         @Override
         public List<IIdentifierWithBinding> getInputIdentifiers() {
             return Arrays.asList(
-                    new CommandLineArgumentDoubleImpl("lonmin"),
-                    new CommandLineArgumentDoubleImpl("lonmax"),
-                    new CommandLineArgumentDoubleImpl("latmin"),
-                    new CommandLineArgumentDoubleImpl("latmax"),
-                    new CommandLineArgumentDoubleImpl("mmin"),
-                    new CommandLineArgumentDoubleImpl("mmax"),
-                    new CommandLineArgumentDoubleImpl("zmin"),
-                    new CommandLineArgumentDoubleImpl("zmax"),
-                    new CommandLineArgumentDoubleImpl("p"),
-                    new CommandLineArgumentStringWithAllowedValuesImpl("etype",
-                            "observed", "deaggregation", "stochastic", "expert"),
-                    new CommandLineArgumentDoubleImpl("tlon"),
-                    new CommandLineArgumentDoubleImpl("tlat")
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("lonmin", 288),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("lonmax", 292),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("latmin", -70),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("latmax", -10),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("mmin", 6.6),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("mmax", 8.5),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("zmin", 5),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("zmax", 140),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("p", 0.1),
+                    new CommandLineArgumentStringWithDefaultValueAndAllowedValuesImpl("etype", "deaggregation",
+                            Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("tlon", -71.5730623712764),
+                    new CommandLineArgumentDoubleWithDefaultValueImpl("tlat", -33.1299174879672)
             );
         }
 
         @Override
         public List<IIdentifierWithBinding> getOutputIdentifiers() {
             return Arrays.asList(
-                    new FileOutXmlImpl("selectedRows","test.xml")
+                    new FileOutXmlWithSchemaImpl("selectedRows","test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
             );
         }
 
@@ -110,161 +106,6 @@ public class Quakeledger extends BaseGfzRiesgosService {
         @Override
         public Optional<IStdoutHandler> getStdoutHandler() {
             return Optional.empty();
-        }
-
-        @Override
-        public ProcessDescriptionsDocument getProcessDescription() {
-            final String txt = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                    "<wps:ProcessDescriptions xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsDescribeProcess_response.xsd\" xml:lang=\"en-US\" service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ows=\"http://www.opengis.net/ows/1.1\">\n" +
-                    "  <ProcessDescription statusSupported=\"true\" storeSupported=\"true\" wps:processVersion=\"1.0.0\">\n" +
-                    "    <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.Quakeledger</ows:Identifier>\n" +
-                    "    <ows:Title>QuakeledgerTest</ows:Title>\n" +
-                    "    <DataInputs>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>lonmin</ows:Identifier>\n" +
-                    "        <ows:Title>lonmin</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>288</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>lonmax</ows:Identifier>\n" +
-                    "        <ows:Title>lonmax</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>292</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>latmin</ows:Identifier>\n" +
-                    "        <ows:Title>latmin</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>-70</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>latmax</ows:Identifier>\n" +
-                    "        <ows:Title>latmax</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>-10</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>mmin</ows:Identifier>\n" +
-                    "        <ows:Title>mmin</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>6.6</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>mmax</ows:Identifier>\n" +
-                    "        <ows:Title>mmax</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>8.5</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>zmin</ows:Identifier>\n" +
-                    "        <ows:Title>zmin</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>5</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>zmax</ows:Identifier>\n" +
-                    "        <ows:Title>zmax</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>140</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>p</ows:Identifier>\n" +
-                    "        <ows:Title>p</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>0.1</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>etype</ows:Identifier>\n" +
-                    "        <ows:Title>etype</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:string\"/>\n" +
-                    "          <ows:AllowedValues>\n" +
-                    "            <ows:Value>observed</ows:Value>\n" +
-                    "            <ows:Value>deaggregation</ows:Value>\n" +
-                    "            <ows:Value>stochastic</ows:Value>\n" +
-                    "            <ows:Value>expert</ows:Value>\n" +
-                    "          </ows:AllowedValues>\n" +
-                    "          <DefaultValue>deaggregation</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>tlon</ows:Identifier>\n" +
-                    "        <ows:Title>tlon</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>-71.5730623712764</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
-                    "        <ows:Identifier>tlat</ows:Identifier>\n" +
-                    "        <ows:Title>tlat</ows:Title>\n" +
-                    "        <LiteralData>\n" +
-                    "          <ows:DataType ows:reference=\"xs:double\"/>\n" +
-                    "          <ows:AnyValue/>\n" +
-                    "          <DefaultValue>-33.1299174879672</DefaultValue>\n" +
-                    "        </LiteralData>\n" +
-                    "      </Input>\n" +
-                    "    </DataInputs>\n" +
-                    "    <ProcessOutputs>\n" +
-                    "      <Output>\n" +
-                    "        <ows:Identifier>selectedRows</ows:Identifier>\n" +
-                    "        <ows:Title>selectedRows</ows:Title>\n" +
-                    "        <ComplexOutput>\n" +
-                    "          <Default>\n" +
-                    "            <Format>\n" +
-                    "              <MimeType>text/xml</MimeType>\n" +
-                    "              <Schema>http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd</Schema>\n" +
-                    "            </Format>\n" +
-                    "          </Default>\n" +
-                    "          <Supported>\n" +
-                    "            <Format>\n" +
-                    "              <MimeType>text/xml</MimeType>\n" +
-                    "              <Schema>http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd</Schema>\n" +
-                    "            </Format>\n" +
-                    "          </Supported>\n" +
-                    "        </ComplexOutput>\n" +
-                    "      </Output>\n" +
-                    "    </ProcessOutputs>\n" +
-                    "  </ProcessDescription>\n" +
-                    "</wps:ProcessDescriptions>";
-
-            XmlOptions option = new XmlOptions();
-            option.setLoadTrimTextBuffer();
-
-            try {
-                return ProcessDescriptionsDocument.Factory.parse(txt, option);
-            } catch(final XmlException xmlException) {
-                throw new RuntimeException(xmlException);
-            }
         }
     }
 
