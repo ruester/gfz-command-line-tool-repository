@@ -35,11 +35,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Abstract base class that can be used for an more
+ * Base class that can be used for an more
  * configuration like approach for a branch of command line
  * applications that run inside of docker.
+ *
+ * The processes should be created by instacing this class.
  */
-public abstract class AbstractGfzRiesgosProcess extends AbstractSelfDescribingAlgorithm {
+public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
     private final IConfiguration configuration;
     private final Logger logger;
@@ -54,7 +56,7 @@ public abstract class AbstractGfzRiesgosProcess extends AbstractSelfDescribingAl
      * @param configuration configuration to use for the executable
      * @param logger logger to log some messages
      */
-    public AbstractGfzRiesgosProcess(final IConfiguration configuration, final Logger logger) {
+    public BaseGfzRiesgosService(final IConfiguration configuration, final Logger logger) {
         this.configuration = configuration;
         this.logger = logger;
 

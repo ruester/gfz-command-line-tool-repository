@@ -1,17 +1,14 @@
 package org.n52.gfz.riesgos.algorithm.impl;
 
-import org.n52.gfz.riesgos.algorithm.AbstractGfzRiesgosProcess;
-import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
+import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
 import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentDoubleImpl;
 import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentStringWithAllowedValuesImpl;
 import org.n52.gfz.riesgos.configuration.commonimpl.FileOutXmlImpl;
-import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
-import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
@@ -25,7 +22,7 @@ import java.util.Optional;
  * earth quake events using quakeml
  *
  */
-public class Quakeledger extends AbstractGfzRiesgosProcess {
+public class Quakeledger extends BaseGfzRiesgosService {
 
     /**
      * Default constructor
