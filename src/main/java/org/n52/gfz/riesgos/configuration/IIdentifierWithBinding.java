@@ -5,7 +5,6 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
-import org.n52.gfz.riesgos.functioninterfaces.IConvertStdoutToIData;
 import org.n52.wps.io.data.IData;
 
 import java.util.Optional;

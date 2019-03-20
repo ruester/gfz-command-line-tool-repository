@@ -1,6 +1,9 @@
 package org.n52.gfz.riesgos.algorithm;
 
+import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
+import org.apache.xmlbeans.XmlObject;
+import org.apache.xmlbeans.XmlOptions;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRun;
@@ -22,11 +25,13 @@ import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
+import org.n52.wps.server.ProcessDescription;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -144,6 +149,14 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             return mapOutputDataTypes.get(id);
         }
         return null;
+    }
+
+    @Override
+    public ProcessDescription getDescription() {
+        final ProcessDescriptionsDocument description = configuration.getProcessDescription();
+        ProcessDescription processDescription = new ProcessDescription();
+        processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
+        return processDescription;
     }
 
     /**
@@ -392,6 +405,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
         private void readFromOutputFiles(final IExecutionContext context) throws ExceptionReport {
 
+            // TODO
+            // something here does not work
+            // same with the running of the command (which must take a lot of time)
             try {
                 for(final IIdentifierWithBinding outputValue : outputIdentifiers) {
                     final Optional<String> optionalPath = outputValue.getPathToWriteToOrReadFromFile();
@@ -399,7 +415,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                     if(optionalPath.isPresent() && optionalFunctionToReadFromBytes.isPresent()) {
                         final String path = optionalPath.get();
                         final IConvertByteArrayToIData functionToReadFromBytes = optionalFunctionToReadFromBytes.get();
-                        final byte[] content = context.readFromFile(path);
+                        final byte[] content = context.readFromFile(Paths.get(configuration.getWorkingDirectory(), path).toString());
                         final IData iData = functionToReadFromBytes.convertToIData(content);
                         putIntoOutput(outputValue, iData);
                     }

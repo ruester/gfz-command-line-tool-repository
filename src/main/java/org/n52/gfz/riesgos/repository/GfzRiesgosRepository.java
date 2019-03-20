@@ -5,7 +5,6 @@ import org.n52.wps.commons.WPSConfig;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ITransactionalAlgorithmRepository;
 import org.n52.wps.server.ProcessDescription;
-import org.n52.wps.webapp.api.ClassKnowingModule;
 import org.n52.wps.webapp.api.ConfigurationCategory;
 import org.n52.wps.webapp.api.ConfigurationModule;
 import org.slf4j.Logger;
@@ -22,7 +21,7 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
 
         // implementation detail
         // -> reads the configuration out of a database
-        final ConfigurationModule cm = WPSConfig.getInstance(null).getConfigurationModuleForClass(getClass().getName(), ConfigurationCategory.REPOSITORY);
+        final ConfigurationModule cm = WPSConfig.getInstance().getConfigurationModuleForClass(getClass().getName(), ConfigurationCategory.REPOSITORY);
         if(cm instanceof GfzRiesgosRepositoryCM) {
             configurationModule = (GfzRiesgosRepositoryCM) cm;
         } else {

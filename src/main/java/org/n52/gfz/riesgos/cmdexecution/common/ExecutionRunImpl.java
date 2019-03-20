@@ -20,6 +20,8 @@ public class ExecutionRunImpl implements IExecutionRun {
         stdin = new PrintStream(process.getOutputStream());
         stderr = new ThreadedStreamStringReader(process.getErrorStream());
         stdout = new ThreadedStreamStringReader(process.getInputStream());
+        stderr.start();
+        stdout.start();
     }
 
     @Override

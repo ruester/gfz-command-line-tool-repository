@@ -1,5 +1,6 @@
 package org.n52.gfz.riesgos.configuration;
 
+import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
@@ -26,4 +27,6 @@ public interface IConfiguration {
     public Optional<IExitValueHandler> getExitValueHandler();
 
     public Optional<IStdoutHandler> getStdoutHandler();
+
+    public ProcessDescriptionsDocument getProcessDescription();
 }

@@ -26,7 +26,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     // TODO
     // must be a configuration (should be JSON)
     // at the moment just a test for creating a process on runtime
-    private static final String DEFAULT_CONFIGURATION = "Quakeledger";
+    //private static final String DEFAULT_CONFIGURATION = "Quakeledger";
+    private static final String DEFAULT_CONFIGURATION = "";
 
     private static final String MODULE_NAME = "GFZ RIESGOS Configuration Module";
     private static final String CLASS_NAME_OF_REPOSITORY_TO_CONFIG = GfzRiesgosRepository.class.getName();
