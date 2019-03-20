@@ -3,6 +3,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLi
 
         if(iData instanceof LiteralDoubleBinding) {
             final LiteralDoubleBinding binding = (LiteralDoubleBinding) iData;
-            final double value = binding.getPayload();
+            final Double value = binding.getPayload();
             result.add(String.valueOf(value));
         }
         return result;

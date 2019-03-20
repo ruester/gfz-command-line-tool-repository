@@ -268,6 +268,7 @@ public class Quakeledger extends BaseGfzRiesgosService {
         }
     }
 
+    /*
     public static void main(String[] args) throws Exception {
         final Quakeledger p = new Quakeledger();
 
@@ -280,7 +281,7 @@ public class Quakeledger extends BaseGfzRiesgosService {
         map.put("mmax", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(8.5))));
         map.put("zmin", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(5))));
         map.put("zmax", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(140))));
-        map.put("p", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(1.1))));
+        map.put("p", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(0.1))));
         map.put("etype", Collections.singletonList(new LiteralStringBinding("deaggregation")));
         map.put("tlon", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(-71.5730623712764))));
         map.put("tlat", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(-33.1299174879672))));
@@ -292,5 +293,5 @@ public class Quakeledger extends BaseGfzRiesgosService {
         final String text = selectedRows.getPayload().xmlText();
 
         System.out.println(text.substring(0, 10));
-    }
+    }*/
 }

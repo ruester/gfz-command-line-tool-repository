@@ -44,7 +44,7 @@ public class DockerContainerExecutionContextManagerImpl implements IExecutionCon
                 throw new RuntimeException("Can't create the container. Exit value != 0: " + exitValue);
             }
 
-            return result.getStdoutResult();
+            return result.getStdoutResult().trim();
 
         } catch(final IOException ioException) {
             throw new RuntimeException(ioException);
