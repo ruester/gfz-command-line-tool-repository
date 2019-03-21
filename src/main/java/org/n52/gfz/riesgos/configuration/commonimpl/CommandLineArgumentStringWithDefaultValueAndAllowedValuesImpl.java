@@ -23,7 +23,9 @@ public class CommandLineArgumentStringWithDefaultValueAndAllowedValuesImpl exten
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
-                Optional.of(new AddLiteralStringTypeWithAllowedValuesAndDefaultValueIntoInputDescriptionTypeImpl(defaultValue, allowedValues)),
+                Optional.of(allowedValues),
+                Optional.of(defaultValue),
+                Optional.empty(),
                 Optional.empty()
         );
     }

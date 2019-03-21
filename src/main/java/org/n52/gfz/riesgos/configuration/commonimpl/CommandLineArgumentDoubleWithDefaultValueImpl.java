@@ -21,7 +21,9 @@ public class CommandLineArgumentDoubleWithDefaultValueImpl extends IdentifierWit
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
-                Optional.of(new AddLiteralDoubleTypeWithDefaultValueToInputDescriptionTypeImpl(defaultValue)),
+                Optional.empty(),
+                Optional.of(String.valueOf(defaultValue)),
+                Optional.empty(),
                 Optional.empty()
         );
     }

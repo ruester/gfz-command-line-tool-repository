@@ -10,6 +10,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParamete
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
 import org.n52.wps.io.data.IData;
 
+import java.util.List;
 import java.util.Optional;
 
 public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
@@ -25,8 +26,10 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     private final Optional<IConvertExitValueToIData> functionToHandleExitValue;
     private final Optional<IConvertByteArrayToIData> functionToHandleStdout;
     private final Optional<IConvertByteArrayToIData> functionToReadFromBytes;
-    private final Optional<IAddTypeIntoInputDescriptionType> functionToAddTypeIntoInputDescriptionType;
-    private final Optional<IAddTypeIntoOutputDescriptionType> functionToAddTypeIntoOutputDescriptionType;
+    private final Optional<List<String>> allowedValues;
+    private final Optional<String> defaultValue;
+    private final Optional<List<String>> supportedCRSForBBox;
+    private final Optional<String> schema;
 
     public IdentifierWithBindingImpl(
             final String identifier,
@@ -40,8 +43,10 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
             final Optional<IConvertExitValueToIData> functionToHandleExitValue,
             final Optional<IConvertByteArrayToIData> functionToHandleStdout,
             final Optional<IConvertByteArrayToIData> functionToReadFromBytes,
-            final Optional<IAddTypeIntoInputDescriptionType> functionToAddTypeIntoInputDescriptionType,
-            final Optional<IAddTypeIntoOutputDescriptionType> functionToAddTypeIntoOutputDescriptionType) {
+            final Optional<List<String>> allowedValues,
+            final Optional<String> defaultValue,
+            final Optional<List<String>> supportedCRSForBBox,
+            final Optional<String> schema) {
         this.identifier = identifier;
         this.bindingClass = bindingClass;
         this.validator = validator;
@@ -53,8 +58,10 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         this.functionToHandleExitValue = functionToHandleExitValue;
         this.functionToHandleStdout = functionToHandleStdout;
         this.functionToReadFromBytes = functionToReadFromBytes;
-        this.functionToAddTypeIntoInputDescriptionType = functionToAddTypeIntoInputDescriptionType;
-        this.functionToAddTypeIntoOutputDescriptionType = functionToAddTypeIntoOutputDescriptionType;
+        this.allowedValues = allowedValues;
+        this.defaultValue = defaultValue;
+        this.supportedCRSForBBox = supportedCRSForBBox;
+        this.schema = schema;
     }
 
     @Override
@@ -113,12 +120,22 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     }
 
     @Override
-    public Optional<IAddTypeIntoInputDescriptionType> getFunctionToAddInputDescriptionType() {
-        return functionToAddTypeIntoInputDescriptionType;
+    public Optional<List<String>> getAllowedValues() {
+        return allowedValues;
     }
 
     @Override
-    public Optional<IAddTypeIntoOutputDescriptionType> getFunctionToAddOutputDescriptionType() {
-        return functionToAddTypeIntoOutputDescriptionType;
+    public Optional<String> getDefaultValue() {
+        return defaultValue;
+    }
+
+    @Override
+    public Optional<List<String>> getSupportedCRSForBBox() {
+        return supportedCRSForBBox;
+    }
+
+    @Override
+    public Optional<String> getSchema() {
+        return schema;
     }
 }

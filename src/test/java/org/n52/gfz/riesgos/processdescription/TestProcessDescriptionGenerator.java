@@ -14,13 +14,21 @@ import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
+import org.n52.wps.io.IGenerator;
+import org.n52.wps.io.IParser;
+import org.n52.wps.io.data.IData;
+import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
+import org.n52.wps.webapp.api.FormatEntry;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.fail;
@@ -33,7 +41,7 @@ public class TestProcessDescriptionGenerator {
     @Test
     public void testQuakeledgerConfig() {
 
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl();
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(createParserSupplier(), createGeneratorSupplier());
 
         final IConfiguration configuration = new QuakeledgerConfig();
 
@@ -276,5 +284,129 @@ public class TestProcessDescriptionGenerator {
         xmlOptions.setSaveSuggestedPrefixes(nsmap);
 
         return xmlOptions;
+    }
+
+    private Supplier<List<IParser>> createParserSupplier() {
+        final IParser parser = new IParser() {
+            @Override
+            public IData parse(InputStream inputStream, String s, String s1) {
+                return null;
+            }
+
+            @Override
+            public IData parseBase64(InputStream inputStream, String s, String s1) {
+                return null;
+            }
+
+            @Override
+            public boolean isSupportedSchema(String s) {
+                return true;
+            }
+
+            @Override
+            public boolean isSupportedFormat(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean isSupportedEncoding(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean isSupportedDataBinding(Class<?> aClass) {
+                return false;
+            }
+
+            @Override
+            public String[] getSupportedSchemas() {
+                return new String[0];
+            }
+
+            @Override
+            public String[] getSupportedFormats() {
+                return new String[]{ "text/xml"};
+            }
+
+            @Override
+            public String[] getSupportedEncodings() {
+                return new String[0];
+            }
+
+            @Override
+            public List<FormatEntry> getSupportedFullFormats() {
+                final FormatEntry entry = new FormatEntry("text/xml", null, null, true);
+                return Collections.singletonList(entry);
+            }
+
+            @Override
+            public Class<?>[] getSupportedDataBindings() {
+                return new Class[] {GenericXMLDataBinding.class};
+            }
+        };
+
+        return () -> Collections.singletonList(parser);
+    }
+
+
+    private Supplier<List<IGenerator>> createGeneratorSupplier() {
+        final IGenerator generator = new IGenerator() {
+            @Override
+            public InputStream generateStream(IData iData, String s, String s1) throws IOException {
+                return null;
+            }
+
+            @Override
+            public InputStream generateBase64Stream(IData iData, String s, String s1) throws IOException {
+                return null;
+            }
+
+            @Override
+            public boolean isSupportedSchema(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean isSupportedFormat(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean isSupportedEncoding(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean isSupportedDataBinding(Class<?> aClass) {
+                return false;
+            }
+
+            @Override
+            public String[] getSupportedSchemas() {
+                return new String[0];
+            }
+
+            @Override
+            public String[] getSupportedFormats() {
+                return new String[0];
+            }
+
+            @Override
+            public String[] getSupportedEncodings() {
+                return new String[0];
+            }
+
+            @Override
+            public List<FormatEntry> getSupportedFullFormats() {
+                final FormatEntry entry = new FormatEntry("text/xml", null, null, true);
+                return Collections.singletonList(entry);
+            }
+
+            @Override
+            public Class<?>[] getSupportedDataBindings() {
+                return new Class[]{ GenericXMLDataBinding.class };
+            }
+        };
+        return () -> Collections.singletonList(generator);
     }
 }

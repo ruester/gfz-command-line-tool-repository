@@ -1,6 +1,5 @@
 package org.n52.gfz.riesgos.configuration.commonimpl;
 
-import org.n52.gfz.riesgos.addtypeintooutputdescriptiontype.AddComplexXmlTypeWithSchemaIntoOutputDescriptionTypeImpl;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
@@ -22,7 +21,9 @@ public class FileOutXmlWithSchemaImpl extends IdentifierWithBindingImpl {
                 Optional.empty(),
                 Optional.of(new ConvertBytesToGenericXMLDataBinding()),
                 Optional.empty(),
-                Optional.of(new AddComplexXmlTypeWithSchemaIntoOutputDescriptionTypeImpl(schema))
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(schema)
         );
     }
 }

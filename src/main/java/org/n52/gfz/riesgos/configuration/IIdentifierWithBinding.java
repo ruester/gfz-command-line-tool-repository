@@ -9,6 +9,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParamete
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
 import org.n52.wps.io.data.IData;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IIdentifierWithBinding {
@@ -35,9 +36,12 @@ public interface IIdentifierWithBinding {
 
     public Optional<IConvertByteArrayToIData> getFunctionToReadFromBytes();
 
-    public Optional<IAddTypeIntoInputDescriptionType> getFunctionToAddInputDescriptionType();
+    public Optional<List<String>> getAllowedValues();
 
-    public Optional<IAddTypeIntoOutputDescriptionType> getFunctionToAddOutputDescriptionType();
+    public Optional<String> getDefaultValue();
 
+    public Optional<List<String>> getSupportedCRSForBBox();
+
+    public Optional<String> getSchema();
 
 }
