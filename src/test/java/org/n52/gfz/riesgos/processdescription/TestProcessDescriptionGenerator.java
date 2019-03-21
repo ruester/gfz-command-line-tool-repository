@@ -43,7 +43,7 @@ public class TestProcessDescriptionGenerator {
         // the link to xsi and the schema location is not necessary
         // if it is removed, the test will pass
         final String expecedProcessDescriptionString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<wps:ProcessDescriptions xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsDescribeProcess_response.xsd\" xml:lang=\"en-US\" service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ows=\"http://www.opengis.net/ows/1.1\">\n" +
+                "<wps:ProcessDescriptions xml:lang=\"en-US\" service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\">\n" +
                 "  <ProcessDescription statusSupported=\"true\" storeSupported=\"true\" wps:processVersion=\"1.0.0\">\n" +
                 "    <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.QuakeledgerTest</ows:Identifier>\n" +
                 "    <ows:Title>QuakeledgerTest</ows:Title>\n" +

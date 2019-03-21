@@ -25,6 +25,9 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
 
         final ProcessDescriptionsDocument result = ProcessDescriptionsDocument.Factory.newInstance();
         final ProcessDescriptionsDocument.ProcessDescriptions processDescriptions = result.addNewProcessDescriptions();
+        processDescriptions.setLang("en-US");
+        processDescriptions.setService("WPS");
+        processDescriptions.setVersion("1.0.0");
         final ProcessDescriptionType processDescriptionType = processDescriptions.addNewProcessDescription();
 
         final CodeType processIdentifier = processDescriptionType.addNewIdentifier();
