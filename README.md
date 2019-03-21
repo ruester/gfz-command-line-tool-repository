@@ -1,12 +1,25 @@
 # gfz-riesgos-wps-repository
 
 This is the java source code for the wps-repository for the riesgos project.
-Processes that are used in this project by the GFZ that uses command line tools
+Processes that are using command line tools and are used in this project by the GFZ 
 should be included here.
 
 ## Currently implemented processes
 
-* Quakeledger
+### Quakeledger
+
+Quakeledger is the first services provided here. This implementation is
+based on the version provided by Benjamin Proß here:
+
+https://github.com/bpross-52n/quakeledger
+
+This is a slightly modified version of the repository here:
+
+https://github.com/GFZ-Centre-for-Early-Warning/quakeledger
+
+The aim of the quakeledger process is to provide earth quake event informations
+in a given region (and with some other filtering criterias (depth, magnitude, ...)).
+
 
 ## Features
 
@@ -17,9 +30,9 @@ This includes input via
 * input files
 
 For output there are the following options:
-* dispatch by exit value
-* use of stdout
-* use of stderr
+* handling of the exit value
+* handling of stdout
+* handling of stderr
 * output files
 
 The processes itself run inside of docker containers.
@@ -139,7 +152,7 @@ It should be the most recent one.
 
 Now it is time to start/restart the WPS server.
 
-Once the server is ready you can goto to the configuration board of the server.
+Once the server is ready you can go to to the configuration board of the server.
 If the server runs inside of docker you may access it via
 
 ```
@@ -158,7 +171,58 @@ Insert the following:
 [{"title": "Quakeledger", "imageId", "<INSERT_YOUR_IMAGE_ID_HERE>"}]
 ```
 
-(Of course you have to insert the id of the image that you created one step before).
-
 After a click on save you should be able to run the Quakeledger process.
+
+## Configuration
+
+While it is the aim to provide a flexible approach to insert your own services,
+the configuration options in the moment are very sparsely.
+
+It is an ongoing work to improve the situation.
+
+
+## Supported types
+
+At the moment there are the possibilities to provide double and string
+command line arguments and to read xml files in after the exection of a
+command line program.
+
+(This are only the types needed to implement Quakeledger).
+
+Here is some work necessary too.
+
+## Known problems with docker
+
+Using docker means that there is an overhead in the whole execution process.
+A container for each run must be created before and removed after the execution.
+For all input and output files there must be communication with the underlying
+docker file system. So also temporary files that are already on the server must be
+copied to the container.
+
+The overhead may course longer runtimes - and may also course timeouts on 
+clientside.
+
+Another problem is that the image id differ when created on different machines.
+The reason for that is that in most docker build processes there is a kind
+of update for a linux package manager. Executed on different machines and in a 
+different time forces differences in the files of the system. That means that
+the checksums of the layers of the docker build process will differ.
+
+
+Also the whole process of the installation is much more complicated.
+
+However the use of docker gives some advantages:
+
+* All the process executions are seperated. There is no way that they may influence
+each other.
+* All temporary files created by the command line executable are removed 
+after the execution by removing the docker container.
+* Docker seperates the dependencies of the command line programs. Each process has
+its own Dockerfile, which specifies the dependencies for this single process.
+So it is possible to run several services that uses conflicting libraries.
+* It is possible to test the execution of a program inside of docker
+but outside of the WPS server. Because of docker, running the image will
+make sure that the execution will work - even on a different server.
+
+At the moment there is no final decision on running the services in docker or not.
 
