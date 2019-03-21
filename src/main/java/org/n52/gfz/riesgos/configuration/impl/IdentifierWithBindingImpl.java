@@ -11,6 +11,9 @@ import org.n52.wps.io.data.IData;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of the identifier interface
+ */
 public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
 
     private final String identifier;
@@ -138,6 +141,9 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     }
 
 
+    /**
+     * Builder for the Implementation
+     */
     public static class Builder {
         private final String identifier;
         private final Class<? extends IData> bindingClass;
@@ -156,76 +162,151 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         private List<String> supportedCRSForBBox;
         private String schema;
 
+        /**
+         * Constructor
+         * @param identifier identifier of the value
+         * @param bindingClass bindingclass of the value
+         */
         public Builder(final String identifier, final Class<? extends IData> bindingClass) {
             this.identifier = identifier;
             this.bindingClass = bindingClass;
         }
 
+        /**
+         * Set the validator
+         * @param validator validator to check values
+         * @return the same builder
+         */
         public Builder withValidator(final ICheckDataAndGetErrorMessage validator) {
             this.validator = validator;
             return this;
         }
 
+        /**
+         * Set the function to transform the value to a command line argument
+         * @param functionToTransformToCmd function that transforms a value to a string so it can be used as command
+         *                                 line argument
+         * @return the same builder
+         */
         public Builder withFunctionToTransformToCmd(final IConvertIDataToCommandLineParameter functionToTransformToCmd) {
             this.functionToTransformToCmd = functionToTransformToCmd;
             return this;
         }
 
+        /**
+         * Set the path for a file
+         * @param path path to read from or write to a file (relative to the working directory)
+         * @return the same builder
+         */
         public Builder withPath(final String path) {
             this.path = path;
             return this;
         }
 
+        /**
+         * Set the function to transform the value to bytes for writing it to a file
+         * @param functionToGetBytesToWrite function to convert the content to byte array for writing it to a file
+         * @return the same builder
+         */
         public Builder withFunctionToGetBytesToWrite(final IConvertIDataToByteArray functionToGetBytesToWrite) {
             this.functionToGetBytesToWrite = functionToGetBytesToWrite;
             return this;
         }
 
+        /**
+         * Set the function to transform the value to bytes for writing it to stdin
+         * @param functionToWriteToStdin function to convert the content to byte array for writing to stdin
+         * @return the same builder
+         */
         public Builder withFunctionToWriteToStdin(final IConvertIDataToByteArray functionToWriteToStdin) {
             this.functionToWriteToStdin = functionToWriteToStdin;
             return this;
         }
 
+        /**
+         * Set the function to set the value based on byte array data from stderr
+         * @param functionToHandleStderr function to read the value from stderr
+         * @return the same builder
+         */
         public Builder withFunctionToHandleStderr(final IConvertByteArrayToIData functionToHandleStderr) {
             this.functionToHandleStderr = functionToHandleStderr;
             return this;
         }
 
+        /**
+         * Set the function to set the value based on the integer exit value
+         * @param functionToHandleExitValue function to read the value from exit value
+         * @return the same builder
+         */
         public Builder withFunctionToHandleExitValue(final IConvertExitValueToIData functionToHandleExitValue) {
             this.functionToHandleExitValue = functionToHandleExitValue;
             return this;
         }
 
+        /**
+         * Set the function to set the value based on byte array data from stdout
+         * @param functionToHandleStdout function to read the value from stdout
+         * @return the same builder
+         */
         public Builder withFunctionToHandleStdout(final IConvertByteArrayToIData functionToHandleStdout) {
             this.functionToHandleStdout = functionToHandleStdout;
             return this;
         }
 
+        /**
+         * Set the function to read the value from byte array from a file
+         * @param functionToReadFromBytes function to read the value from a file
+         * @return the same builder
+         */
         public Builder withFunctionToReadFromBytes(final IConvertByteArrayToIData functionToReadFromBytes) {
             this.functionToReadFromBytes = functionToReadFromBytes;
             return this;
         }
 
+        /**
+         * Set the allowed values
+         * @param allowedValues list with some values that the data can have
+         * @return the same builder
+         */
         public Builder withAllowedValues(final List<String> allowedValues) {
             this.allowedValues = allowedValues;
             return this;
         }
 
+        /**
+         * Set the default value
+         * @param defaultValue default value of the data
+         * @return the same builder
+         */
         public Builder withDefaultValue(final String defaultValue) {
             this.defaultValue = defaultValue;
             return this;
         }
 
+        /**
+         * Set the supported crs for bounding boxes
+         * @param supportedCRSForBBox list with supported crs
+         * @return the same builder
+         */
         public Builder withSupportedCRSForBBox(final List<String> supportedCRSForBBox) {
             this.supportedCRSForBBox = supportedCRSForBBox;
             return this;
         }
 
+        /**
+         * Set the schema
+         * @param schema schema for xml data
+         * @return the same builder
+         */
         public Builder withSchema(final String schema) {
             this.schema = schema;
             return this;
         }
 
+        /**
+         *
+         * @return IdentifierWithBindingImpl
+         */
         public IdentifierWithBindingImpl build() {
             return new IdentifierWithBindingImpl(identifier, bindingClass, validator,
                     functionToTransformToCmd, path, functionToGetBytesToWrite,

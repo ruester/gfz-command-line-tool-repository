@@ -271,6 +271,7 @@ public class TestProcessDescriptionGenerator {
     }
 
 
+    // xml options for comparing the xml results
     private static final XmlOptions XML_OPTIONS = createXmlOptions();
 
     private static XmlOptions createXmlOptions() {
