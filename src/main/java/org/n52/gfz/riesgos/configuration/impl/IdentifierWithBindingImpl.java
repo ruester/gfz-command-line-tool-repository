@@ -15,36 +15,36 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
 
     private final String identifier;
     private final Class<? extends IData> bindingClass;
-    private final Optional<ICheckDataAndGetErrorMessage> validator;
-    private final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd;
-    private final Optional<String> path;
-    private final Optional<IConvertIDataToByteArray> functionToGetBytesToWrite;
-    private final Optional<IConvertIDataToByteArray> functionToWriteToStdin;
-    private final Optional<IConvertByteArrayToIData> functionToHandleStderr;
-    private final Optional<IConvertExitValueToIData> functionToHandleExitValue;
-    private final Optional<IConvertByteArrayToIData> functionToHandleStdout;
-    private final Optional<IConvertByteArrayToIData> functionToReadFromBytes;
-    private final Optional<List<String>> allowedValues;
-    private final Optional<String> defaultValue;
-    private final Optional<List<String>> supportedCRSForBBox;
-    private final Optional<String> schema;
+    private final ICheckDataAndGetErrorMessage validator;
+    private final IConvertIDataToCommandLineParameter functionToTransformToCmd;
+    private final String path;
+    private final IConvertIDataToByteArray functionToGetBytesToWrite;
+    private final IConvertIDataToByteArray functionToWriteToStdin;
+    private final IConvertByteArrayToIData functionToHandleStderr;
+    private final IConvertExitValueToIData functionToHandleExitValue;
+    private final IConvertByteArrayToIData functionToHandleStdout;
+    private final IConvertByteArrayToIData functionToReadFromBytes;
+    private final List<String> allowedValues;
+    private final String defaultValue;
+    private final List<String> supportedCRSForBBox;
+    private final String schema;
 
-    public IdentifierWithBindingImpl(
+    private IdentifierWithBindingImpl(
             final String identifier,
             final Class<? extends IData> bindingClass,
-            final Optional<ICheckDataAndGetErrorMessage> validator,
-            final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd,
-            final Optional<String> path,
-            final Optional<IConvertIDataToByteArray> functionToGetBytesToWrite,
-            final Optional<IConvertIDataToByteArray> functionToWriteToStdin,
-            final Optional<IConvertByteArrayToIData> functionToHandleStderr,
-            final Optional<IConvertExitValueToIData> functionToHandleExitValue,
-            final Optional<IConvertByteArrayToIData> functionToHandleStdout,
-            final Optional<IConvertByteArrayToIData> functionToReadFromBytes,
-            final Optional<List<String>> allowedValues,
-            final Optional<String> defaultValue,
-            final Optional<List<String>> supportedCRSForBBox,
-            final Optional<String> schema) {
+            final ICheckDataAndGetErrorMessage validator,
+            final IConvertIDataToCommandLineParameter functionToTransformToCmd,
+            final String path,
+            final IConvertIDataToByteArray functionToGetBytesToWrite,
+            final IConvertIDataToByteArray functionToWriteToStdin,
+            final IConvertByteArrayToIData functionToHandleStderr,
+            final IConvertExitValueToIData functionToHandleExitValue,
+            final IConvertByteArrayToIData functionToHandleStdout,
+            final IConvertByteArrayToIData functionToReadFromBytes,
+            final List<String> allowedValues,
+            final String defaultValue,
+            final List<String> supportedCRSForBBox,
+            final String schema) {
         this.identifier = identifier;
         this.bindingClass = bindingClass;
         this.validator = validator;
@@ -74,66 +74,164 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
 
     @Override
     public Optional<ICheckDataAndGetErrorMessage> getValidator() {
-        return validator;
+        return Optional.ofNullable(validator);
     }
 
     @Override
     public Optional<IConvertIDataToCommandLineParameter> getFunctionToTransformToCmd() {
-        return functionToTransformToCmd;
+        return Optional.ofNullable(functionToTransformToCmd);
     }
 
     @Override
     public Optional<String> getPathToWriteToOrReadFromFile() {
-        return path;
+        return Optional.ofNullable(path);
     }
 
     @Override
     public Optional<IConvertIDataToByteArray> getFunctionToGetBytesToWrite() {
-        return functionToGetBytesToWrite;
+        return Optional.ofNullable(functionToGetBytesToWrite);
     }
 
     @Override
     public Optional<IConvertIDataToByteArray> getFunctionToWriteToStdin() {
-        return functionToWriteToStdin;
+        return Optional.ofNullable(functionToWriteToStdin);
     }
 
     @Override
     public Optional<IConvertByteArrayToIData> getFunctionToHandleStderr() {
-        return functionToHandleStderr;
+        return Optional.ofNullable(functionToHandleStderr);
     }
 
     @Override
     public Optional<IConvertExitValueToIData> getFunctionToHandleExitValue() {
-        return functionToHandleExitValue;
+        return Optional.ofNullable(functionToHandleExitValue);
     }
 
     @Override
     public Optional<IConvertByteArrayToIData> getFunctionToHandleStdout() {
-        return functionToHandleStdout;
+        return Optional.ofNullable(functionToHandleStdout);
     }
 
     @Override
     public Optional<IConvertByteArrayToIData> getFunctionToReadFromBytes() {
-        return functionToReadFromBytes;
+        return Optional.ofNullable(functionToReadFromBytes);
     }
 
     @Override
     public Optional<List<String>> getAllowedValues() {
-        return allowedValues;
+        return Optional.ofNullable(allowedValues);
     }
 
     @Override
     public Optional<String> getDefaultValue() {
-        return defaultValue;
+        return Optional.ofNullable(defaultValue);
     }
 
     @Override
     public Optional<List<String>> getSupportedCRSForBBox() {
-        return supportedCRSForBBox;
+        return Optional.ofNullable(supportedCRSForBBox);
     }
 
     @Override
     public Optional<String> getSchema() {
-        return schema;
+        return Optional.ofNullable(schema);
+    }
+
+
+    public static class Builder {
+        private final String identifier;
+        private final Class<? extends IData> bindingClass;
+
+        private ICheckDataAndGetErrorMessage validator;
+        private IConvertIDataToCommandLineParameter functionToTransformToCmd;
+        private String path;
+        private IConvertIDataToByteArray functionToGetBytesToWrite;
+        private IConvertIDataToByteArray functionToWriteToStdin;
+        private IConvertByteArrayToIData functionToHandleStderr;
+        private IConvertExitValueToIData functionToHandleExitValue;
+        private IConvertByteArrayToIData functionToHandleStdout;
+        private IConvertByteArrayToIData functionToReadFromBytes;
+        private List<String> allowedValues;
+        private String defaultValue;
+        private List<String> supportedCRSForBBox;
+        private String schema;
+
+        public Builder(final String identifier, final Class<? extends IData> bindingClass) {
+            this.identifier = identifier;
+            this.bindingClass = bindingClass;
+        }
+
+        public Builder withValidator(final ICheckDataAndGetErrorMessage validator) {
+            this.validator = validator;
+            return this;
+        }
+
+        public Builder withFunctionToTransformToCmd(final IConvertIDataToCommandLineParameter functionToTransformToCmd) {
+            this.functionToTransformToCmd = functionToTransformToCmd;
+            return this;
+        }
+
+        public Builder withPath(final String path) {
+            this.path = path;
+            return this;
+        }
+
+        public Builder withFunctionToGetBytesToWrite(final IConvertIDataToByteArray functionToGetBytesToWrite) {
+            this.functionToGetBytesToWrite = functionToGetBytesToWrite;
+            return this;
+        }
+
+        public Builder withFunctionToWriteToStdin(final IConvertIDataToByteArray functionToWriteToStdin) {
+            this.functionToWriteToStdin = functionToWriteToStdin;
+            return this;
+        }
+
+        public Builder withFunctionToHandleStderr(final IConvertByteArrayToIData functionToHandleStderr) {
+            this.functionToHandleStderr = functionToHandleStderr;
+            return this;
+        }
+
+        public Builder withFunctionToHandleExitValue(final IConvertExitValueToIData functionToHandleExitValue) {
+            this.functionToHandleExitValue = functionToHandleExitValue;
+            return this;
+        }
+
+        public Builder withFunctionToHandleStdout(final IConvertByteArrayToIData functionToHandleStdout) {
+            this.functionToHandleStdout = functionToHandleStdout;
+            return this;
+        }
+
+        public Builder withFunctionToReadFromBytes(final IConvertByteArrayToIData functionToReadFromBytes) {
+            this.functionToReadFromBytes = functionToReadFromBytes;
+            return this;
+        }
+
+        public Builder withAllowedValues(final List<String> allowedValues) {
+            this.allowedValues = allowedValues;
+            return this;
+        }
+
+        public Builder withDefaultValue(final String defaultValue) {
+            this.defaultValue = defaultValue;
+            return this;
+        }
+
+        public Builder withSupportedCRSForBBox(final List<String> supportedCRSForBBox) {
+            this.supportedCRSForBBox = supportedCRSForBBox;
+            return this;
+        }
+
+        public Builder withSchema(final String schema) {
+            this.schema = schema;
+            return this;
+        }
+
+        public IdentifierWithBindingImpl build() {
+            return new IdentifierWithBindingImpl(identifier, bindingClass, validator,
+                    functionToTransformToCmd, path, functionToGetBytesToWrite,
+                    functionToWriteToStdin, functionToHandleStderr, functionToHandleExitValue,
+                    functionToHandleStdout, functionToReadFromBytes, allowedValues,
+                    defaultValue, supportedCRSForBBox, schema);
+        }
     }
 }

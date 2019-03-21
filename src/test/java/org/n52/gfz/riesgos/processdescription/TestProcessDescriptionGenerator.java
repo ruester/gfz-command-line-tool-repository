@@ -7,9 +7,7 @@ import org.apache.xmlbeans.XmlOptions;
 import org.junit.Test;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentDoubleWithDefaultValueImpl;
-import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentStringWithDefaultValueAndAllowedValuesImpl;
-import org.n52.gfz.riesgos.configuration.commonimpl.FileOutXmlWithSchemaImpl;
+import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
@@ -20,7 +18,6 @@ import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.webapp.api.FormatEntry;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
@@ -212,26 +209,28 @@ public class TestProcessDescriptionGenerator {
         @Override
         public List<IIdentifierWithBinding> getInputIdentifiers() {
             return Arrays.asList(
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("lonmin", 288),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("lonmax", 292),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("latmin", -70),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("latmax", -10),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("mmin", 6.6),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("mmax", 8.5),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("zmin", 5),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("zmax", 140),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("p", 0.1),
-                    new CommandLineArgumentStringWithDefaultValueAndAllowedValuesImpl("etype", "deaggregation",
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmin", 288),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmax", 292),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmin", -70),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmax", -10),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmin", 6.6),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmax", 8.5),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmin", 5),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmax", 140),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("p", 0.1),
+                    IdentifierWithBindingFactory.createCommandLineArgumentStringWithDefaultValueAndAllowedValues(
+                            "etype", "deaggregation",
                             Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("tlon", -71.5730623712764),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("tlat", -33.1299174879672)
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlon", -71.5730623712764),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlat", -33.1299174879672)
             );
         }
 
         @Override
         public List<IIdentifierWithBinding> getOutputIdentifiers() {
-            return Arrays.asList(
-                    new FileOutXmlWithSchemaImpl("selectedRows","test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
+            return Collections.singletonList(
+                    IdentifierWithBindingFactory.createFileOutXmlWithSchema(
+                            "selectedRows","test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
             );
         }
 
@@ -272,7 +271,7 @@ public class TestProcessDescriptionGenerator {
     }
 
 
-    public static final XmlOptions XML_OPTIONS = createXmlOptions();
+    private static final XmlOptions XML_OPTIONS = createXmlOptions();
 
     private static XmlOptions createXmlOptions() {
         final XmlOptions xmlOptions = new XmlOptions();
@@ -352,12 +351,12 @@ public class TestProcessDescriptionGenerator {
     private Supplier<List<IGenerator>> createGeneratorSupplier() {
         final IGenerator generator = new IGenerator() {
             @Override
-            public InputStream generateStream(IData iData, String s, String s1) throws IOException {
+            public InputStream generateStream(IData iData, String s, String s1) {
                 return null;
             }
 
             @Override
-            public InputStream generateBase64Stream(IData iData, String s, String s1) throws IOException {
+            public InputStream generateBase64Stream(IData iData, String s, String s1) {
                 return null;
             }
 

@@ -3,9 +3,7 @@ package org.n52.gfz.riesgos.algorithm.impl;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentDoubleWithDefaultValueImpl;
-import org.n52.gfz.riesgos.configuration.commonimpl.CommandLineArgumentStringWithDefaultValueAndAllowedValuesImpl;
-import org.n52.gfz.riesgos.configuration.commonimpl.FileOutXmlWithSchemaImpl;
+import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
 import org.n52.gfz.riesgos.exitvaluehandler.LogExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
@@ -59,26 +57,28 @@ public class Quakeledger extends BaseGfzRiesgosService {
         @Override
         public List<IIdentifierWithBinding> getInputIdentifiers() {
             return Arrays.asList(
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("lonmin", 288),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("lonmax", 292),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("latmin", -70),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("latmax", -10),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("mmin", 6.6),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("mmax", 8.5),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("zmin", 5),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("zmax", 140),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("p", 0.1),
-                    new CommandLineArgumentStringWithDefaultValueAndAllowedValuesImpl("etype", "deaggregation",
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmin", 288),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmax", 292),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmin", -70),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmax", -10),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmin", 6.6),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmax", 8.5),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmin", 5),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmax", 140),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("p", 0.1),
+                    IdentifierWithBindingFactory.createCommandLineArgumentStringWithDefaultValueAndAllowedValues(
+                            "etype", "deaggregation",
                             Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("tlon", -71.5730623712764),
-                    new CommandLineArgumentDoubleWithDefaultValueImpl("tlat", -33.1299174879672)
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlon", -71.5730623712764),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlat", -33.1299174879672)
             );
         }
 
         @Override
         public List<IIdentifierWithBinding> getOutputIdentifiers() {
             return Collections.singletonList(
-                    new FileOutXmlWithSchemaImpl("selectedRows","test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
+                    IdentifierWithBindingFactory.createFileOutXmlWithSchema(
+                            "selectedRows","test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
             );
         }
 
