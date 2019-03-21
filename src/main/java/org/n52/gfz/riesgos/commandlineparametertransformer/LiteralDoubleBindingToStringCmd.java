@@ -3,7 +3,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLi
      * Constructor with a default flag
      * @param defaultFlag flag that is before the element (for example --lat before a latitude)
      */
-    public LiteralDoubleBindingToStringCmd(final String defaultFlag) {
+    private LiteralDoubleBindingToStringCmd(final String defaultFlag) {
         this.defaultFlag = defaultFlag;
     }
 

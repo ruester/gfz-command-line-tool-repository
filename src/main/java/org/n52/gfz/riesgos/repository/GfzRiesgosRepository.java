@@ -7,16 +7,20 @@ import org.n52.wps.server.ITransactionalAlgorithmRepository;
 import org.n52.wps.server.ProcessDescription;
 import org.n52.wps.webapp.api.ConfigurationCategory;
 import org.n52.wps.webapp.api.ConfigurationModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
+/**
+ * Repository for the algorithms for the gfz in riesgos using the generation of services
+ * by providing configurations to call command line tools in docker.
+ */
 public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GfzRiesgosRepository.class);
     private final GfzRiesgosRepositoryCM configurationModule;
 
+    /**
+     * Default constructor
+     */
     public GfzRiesgosRepository() {
 
         // implementation detail

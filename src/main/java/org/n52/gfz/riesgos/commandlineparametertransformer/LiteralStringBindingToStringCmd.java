@@ -21,7 +21,7 @@ public class LiteralStringBindingToStringCmd implements IConvertIDataToCommandLi
      * Constructor with a default flag
      * @param defaultFlag flag that is before the element (for example --etype before an expert type)
      */
-    public LiteralStringBindingToStringCmd(final String defaultFlag) {
+    private LiteralStringBindingToStringCmd(final String defaultFlag) {
         this.defaultFlag = defaultFlag;
     }
 

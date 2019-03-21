@@ -1,6 +1,5 @@
 package org.n52.gfz.riesgos.exitvaluehandler;
 
-import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 
@@ -20,7 +19,7 @@ public class LogExitValueHandler implements IExitValueHandler {
     }
 
     @Override
-    public void handleExitValue(int exitValue) throws NonZeroExitValueException {
+    public void handleExitValue(int exitValue) {
         logger.log("Exit value: " + exitValue);
     }
 }

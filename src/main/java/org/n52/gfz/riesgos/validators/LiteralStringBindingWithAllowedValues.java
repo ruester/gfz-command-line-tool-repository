@@ -4,7 +4,6 @@ import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
