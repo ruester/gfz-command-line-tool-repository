@@ -1,6 +1,5 @@
 package org.n52.gfz.riesgos.configuration.commonimpl;
 
-import org.n52.gfz.riesgos.addtypeintoinputdescriptiontype.AddLiteralDoubleTypeWithDefaultValueToInputDescriptionTypeImpl;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;

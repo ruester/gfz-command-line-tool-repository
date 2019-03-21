@@ -1,6 +1,5 @@
 package org.n52.gfz.riesgos.configuration.commonimpl;
 
-import org.n52.gfz.riesgos.addtypeintoinputdescriptiontype.AddLiteralStringTypeWithAllowedValuesAndDefaultValueIntoInputDescriptionTypeImpl;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;

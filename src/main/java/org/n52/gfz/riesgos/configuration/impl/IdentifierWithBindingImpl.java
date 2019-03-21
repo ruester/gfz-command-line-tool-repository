@@ -1,8 +1,6 @@
 package org.n52.gfz.riesgos.configuration.impl;
 
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.functioninterfaces.IAddTypeIntoInputDescriptionType;
-import org.n52.gfz.riesgos.functioninterfaces.IAddTypeIntoOutputDescriptionType;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;

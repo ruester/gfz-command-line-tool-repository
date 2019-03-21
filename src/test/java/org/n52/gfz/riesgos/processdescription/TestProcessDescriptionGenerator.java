@@ -41,15 +41,15 @@ public class TestProcessDescriptionGenerator {
     @Test
     public void testQuakeledgerConfig() {
 
+        // because of the test case
+        // there is no direct access to the ParserFactory and GeneratorFactory classes
+        // it only uses a Supplier to get the the parsers and generators
         final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(createParserSupplier(), createGeneratorSupplier());
 
         final IConfiguration configuration = new QuakeledgerConfig();
 
         final ProcessDescriptionsDocument processDescription = generator.generateProcessDescription(configuration);
 
-        // TODO
-        // the link to xsi and the schema location is not necessary
-        // if it is removed, the test will pass
         final String expecedProcessDescriptionString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<wps:ProcessDescriptions xml:lang=\"en-US\" service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\">\n" +
                 "  <ProcessDescription statusSupported=\"true\" storeSupported=\"true\" wps:processVersion=\"1.0.0\">\n" +
