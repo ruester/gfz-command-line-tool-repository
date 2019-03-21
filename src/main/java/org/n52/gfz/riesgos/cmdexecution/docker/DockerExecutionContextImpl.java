@@ -16,14 +16,24 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Implementation of an execution context that runs inside of an docker container
+ */
 public class DockerExecutionContextImpl implements IExecutionContext {
 
     private final String containerId;
 
-    public DockerExecutionContextImpl(final String containerId) {
+    /**
+     *
+     * @param containerId Id of the docker container
+     */
+    DockerExecutionContextImpl(final String containerId) {
         this.containerId = containerId;
     }
 
+    /*
+     * removes the docker container after use
+     */
     @Override
     public void close() {
         final ProcessBuilder processBuilder = new ProcessBuilder();
@@ -43,10 +53,8 @@ public class DockerExecutionContextImpl implements IExecutionContext {
                 throw new RuntimeException("The command to remove the docker container failed with exit value " + exitValue);
             }
 
-        } catch(final InterruptedException interruptedException) {
-            throw new RuntimeException(interruptedException);
-        } catch(final IOException ioException) {
-            throw new RuntimeException(ioException);
+        } catch(final InterruptedException | IOException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
@@ -66,6 +74,9 @@ public class DockerExecutionContextImpl implements IExecutionContext {
         return Arrays.asList("docker", "container", "start", "--interactive", "--attach", containerId);
     }
 
+    /*
+     * uses a tar stream to read files from the container
+     */
     @Override
     public byte[] readFromFile(String path) throws IOException {
         final ProcessBuilder processBuilder = new ProcessBuilder();
@@ -86,6 +97,7 @@ public class DockerExecutionContextImpl implements IExecutionContext {
             stdout.close();
             tarInputStream.close();
 
+            stderr.throwExceptionIfNecessary();
             final String errorText = stderr.getResult();
 
             if(! errorText.isEmpty()) {
@@ -106,6 +118,9 @@ public class DockerExecutionContextImpl implements IExecutionContext {
         return Arrays.asList("docker", "container", "cp", src, "-");
     }
 
+    /*
+     * uses a tar stream to write data as a file to the container
+     */
     @Override
     public void writeToFile(byte[] content, String workingDir, String fileName) throws IOException {
         final ProcessBuilder processBuilder = new ProcessBuilder();
@@ -131,7 +146,9 @@ public class DockerExecutionContextImpl implements IExecutionContext {
             final int exitValue = process.waitFor();
             process.destroy();
 
+            stderr.throwExceptionIfNecessary();
             final String errorText = stderr.getResult();
+
 
             if(! errorText.isEmpty()) {
                 throw new IOException(errorText);

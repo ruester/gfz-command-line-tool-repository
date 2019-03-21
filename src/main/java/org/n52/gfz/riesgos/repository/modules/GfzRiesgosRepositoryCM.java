@@ -1,5 +1,9 @@
 package org.n52.gfz.riesgos.repository.modules;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.algorithm.impl.Quakeledger;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
 import org.n52.wps.server.IAlgorithm;
@@ -23,11 +27,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
     private static final String CONFIG_KEY = "json_configuration";
 
-    // TODO
-    // must be a configuration (should be JSON)
-    // at the moment just a test for creating a process on runtime
-    //private static final String DEFAULT_CONFIGURATION = "Quakeledger";
-    private static final String DEFAULT_CONFIGURATION = "";
+
+    private static final String DEFAULT_CONFIGURATION = "[{\"title\": \"Quakeledger\", \"imageId\": \"sha256:71b93ade61bf41da8d68419bec12ec1e274eae28b36bc64cc156e1be33294821\"}]";
 
     private static final String MODULE_NAME = "GFZ RIESGOS Configuration Module";
     private static final String CLASS_NAME_OF_REPOSITORY_TO_CONFIG = GfzRiesgosRepository.class.getName();
@@ -92,10 +93,25 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         final List<AlgorithmData> result = new ArrayList<>();
 
         // TODO
-        final String[] classesToInstance = jsonConfiguration.getValue().split(",");
-        for(final String classToInstance : classesToInstance) {
-            final AlgorithmData data = new AlgorithmData(classToInstance);
-            result.add(data);
+
+        try {
+            final JSONParser parser = new JSONParser();
+            final JSONArray arrayOfProcesses = (JSONArray) parser.parse(jsonConfiguration.getValue());
+
+            for(final Object pureProcess : arrayOfProcesses) {
+                final JSONObject process = (JSONObject) pureProcess;
+                final String title = (String) process.get("title");
+                final String imageId = (String) process.get("imageId");
+                if("Quakeledger".equals(title)) {
+                    final IAlgorithm algorithm = new Quakeledger(imageId);
+                    final AlgorithmData data = new AlgorithmData(title, algorithm);
+                    result.add(data);
+                }
+            }
+        } catch(final ParseException parseException) {
+            // TODO
+            // improve error handling
+            throw new RuntimeException(parseException);
         }
 
         return result;
@@ -124,23 +140,16 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
     private static class AlgorithmData {
         private final String algorithmName;
-        private final boolean isActive;
         private final IAlgorithm algorithm;
 
-        public AlgorithmData(final String strConfiguration) {
+        public AlgorithmData(final String algorithmName, final IAlgorithm algorithm) {
             // strConfiguration is at the moment only the Name of the class
-            algorithmName = strConfiguration;
-            if(algorithmName.equals("Quakeledger")) {
-                algorithm = new Quakeledger();
-                isActive = true;
-            } else {
-                algorithm = null;
-                isActive = false;
-            }
+            this.algorithmName = algorithmName;
+            this.algorithm = algorithm;
         }
 
         public AlgorithmEntry toAlgorithmEntry() {
-            return new AlgorithmEntry(algorithmName, isActive);
+            return new AlgorithmEntry(algorithmName, true);
         }
 
         public String getAlgorithmName() {

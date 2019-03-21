@@ -24,23 +24,32 @@ import java.util.Optional;
  * It is used to query a python script to provide a list of
  * earth quake events using quakeml
  *
+ * This class is temporary. It should be replaced with the configuration only.
+ *
  */
 public class Quakeledger extends BaseGfzRiesgosService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Quakeledger.class);
 
     /**
-     * Default constructor
+     * Constructor with the imageId - because it will change when build on another system
+     * @param imageId the id of the docker image to run the code inside a container
      */
-    public Quakeledger() {
-        super(createQuakeledgerConfig(), LOGGER);
+    public Quakeledger(final String imageId) {
+        super(createQuakeledgerConfig(imageId), LOGGER);
     }
 
-    private static IConfiguration createQuakeledgerConfig() {
-        return new QuakeledgerConfig();
+    private static IConfiguration createQuakeledgerConfig(final String imageId) {
+        return new QuakeledgerConfig(imageId);
     }
 
     private static class QuakeledgerConfig implements IConfiguration {
+
+        private final String imageId;
+
+        private QuakeledgerConfig(final String imageId) {
+            this.imageId = imageId;
+        }
 
         @Override
         public String getIdentifier() {
@@ -68,14 +77,14 @@ public class Quakeledger extends BaseGfzRiesgosService {
 
         @Override
         public List<IIdentifierWithBinding> getOutputIdentifiers() {
-            return Arrays.asList(
+            return Collections.singletonList(
                     new FileOutXmlWithSchemaImpl("selectedRows","test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
             );
         }
 
         @Override
         public String getImageId() {
-            return "sha256:71b93ade61bf41da8d68419bec12ec1e274eae28b36bc64cc156e1be33294821";
+            return imageId;
         }
 
         @Override
@@ -111,8 +120,11 @@ public class Quakeledger extends BaseGfzRiesgosService {
 
 
     /*
+     * a method for debugging on a system to check if and where unexpected behaviour happens
+     */
+    /*
     public static void main(String[] args) throws Exception {
-        final Quakeledger p = new Quakeledger();
+        final Quakeledger p = new Quakeledger("sha256:71b93ade61bf41da8d68419bec12ec1e274eae28b36bc64cc156e1be33294821");
 
         final Map<String, List<IData>> map = new HashMap<>();
         map.put("lonmin", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(288))));

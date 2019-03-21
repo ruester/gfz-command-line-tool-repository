@@ -20,10 +20,8 @@ public class ConvertBytesToGenericXMLDataBinding implements IConvertByteArrayToI
     public IData convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
             return new GenericXMLDataBinding(XmlObject.Factory.parse(byteArrayInputStream));
-        } catch(final XmlException xmlException) {
-            throw new ConvertToIDataException(xmlException);
-        } catch(final IOException ioException) {
-            throw new ConvertToIDataException(ioException);
+        } catch(final XmlException | IOException exception) {
+            throw new ConvertToIDataException(exception);
         }
     }
 }

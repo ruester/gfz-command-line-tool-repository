@@ -2,8 +2,6 @@ package org.n52.gfz.riesgos.algorithm;
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
-import org.apache.xmlbeans.XmlObject;
-import org.apache.xmlbeans.XmlOptions;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRun;
@@ -31,7 +29,6 @@ import org.n52.wps.server.ProcessDescription;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -153,11 +150,12 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         return null;
     }
 
+    /**
+     * Generates the Processdescription by using the configuration
+     * @return ProcessDescription of the process (xml)
+     */
     @Override
     public ProcessDescription getDescription() {
-
-        // that does I want to get?
-        // I want to create the description out of the configuration
 
         final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl();
         final ProcessDescriptionsDocument description = generator.generateProcessDescription(configuration);
@@ -196,6 +194,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             return outputData;
         }
 
+        /*
+         * extracts the input fields
+         */
         private Map<String, IData> getInputFields(final Map<String, List<IData>> originalInputData) throws ExceptionReport {
 
             logger.debug("Start getInputFields");
@@ -231,6 +232,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             return result;
         }
 
+        /*
+         * runs the executable inside a container
+         */
         private void runExecutable() throws ExceptionReport {
 
             final String imageId = configuration.getImageId();
@@ -246,6 +250,10 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             logger.debug("Docker container removed");
         }
 
+        /*
+         * creates a list of the executable and the arguments
+         * uses a list and not a single string argument to make things more safe
+         */
         private List<String> createCommandToExecute() {
             final List<String> result = new ArrayList<>();
             result.addAll(configuration.getCommandToExecute());
@@ -263,6 +271,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             return result;
         }
 
+        /*
+         * runs the process and handles input and output
+         */
         private void runExecutableInContext(final IExecutionContext context) throws ExceptionReport {
             copyInput(context);
             logger.debug("Files copied into container");
@@ -298,6 +309,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             }
         }
 
+        /*
+         * copies all the input files into the container
+         */
         private void copyInput(final IExecutionContext context) throws ExceptionReport {
 
             try {
@@ -318,6 +332,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             }
         }
 
+        /*
+         * writes input to the stdin stream
+         */
         private void writeToStdin(final PrintStream stdin) throws ExceptionReport {
             try {
                 for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
@@ -333,6 +350,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             }
         }
 
+        /*
+         * handles the stderr stream output (indicating error, logging, use it as output)
+         */
         private void handleStderr(final String stderr) throws ExceptionReport {
 
             final Optional<IStderrHandler> mainStderrHandler = configuration.getStderrHandler();
@@ -357,6 +377,10 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
         }
 
+        /*
+         * insert the data into the output map
+         * if there is an validator, then it is used here
+         */
         private void putIntoOutput(final IIdentifierWithBinding outputValue, final IData iData) throws ExceptionReport {
             final Optional<ICheckDataAndGetErrorMessage> optionalValidator = outputValue.getValidator();
             if(optionalValidator.isPresent()) {
@@ -371,6 +395,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             outputData.put(outputValue.getIdentifer(), iData);
         }
 
+        /*
+         * handles the exit value (indicating error, logging, use as output)
+         */
         private void handleExitValue(final int exitValue) throws ExceptionReport {
             final Optional<IExitValueHandler> mainExitValueHandler = configuration.getExitValueHandler();
             if (mainExitValueHandler.isPresent()) {
@@ -393,6 +420,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             }
         }
 
+        /*
+         * handles stdout stream output (logging, use as ouput)
+         */
         private void handleStdout(final String stdout) throws ExceptionReport {
             final Optional<IStdoutHandler> mainStdoutHandler = configuration.getStdoutHandler();
             mainStdoutHandler.ifPresent(handler -> handler.handleStdout(stdout));
@@ -410,6 +440,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             }
         }
 
+        /*
+         * reads output files from the container
+         */
         private void readFromOutputFiles(final IExecutionContext context) throws ExceptionReport {
 
             try {
@@ -431,7 +464,4 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             }
         }
     }
-
-
-
 }

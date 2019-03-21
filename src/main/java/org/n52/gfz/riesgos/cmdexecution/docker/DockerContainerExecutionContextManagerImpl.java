@@ -11,10 +11,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Context manager implementation that uses docker
+ */
 public class DockerContainerExecutionContextManagerImpl implements IExecutionContextManager {
 
     private final String imageId;
 
+    /**
+     *
+     * @param imageId id of the docker image to use
+     */
     public DockerContainerExecutionContextManagerImpl(final String imageId) {
         this.imageId = imageId;
     }
@@ -25,6 +32,9 @@ public class DockerContainerExecutionContextManagerImpl implements IExecutionCon
         return new DockerExecutionContextImpl(containerId);
     }
 
+    /*
+     * creates an container and gives back the id of it
+     */
     private String runCreateContainerProcess(final String workingDirectory, final List<String> cmd) {
         final ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command(createCommand(workingDirectory, cmd));
@@ -46,13 +56,14 @@ public class DockerContainerExecutionContextManagerImpl implements IExecutionCon
 
             return result.getStdoutResult().trim();
 
-        } catch(final IOException ioException) {
+        } catch(final IOException | InterruptedException ioException) {
             throw new RuntimeException(ioException);
-        } catch(final InterruptedException interruptedException) {
-            throw new RuntimeException(interruptedException);
         }
     }
 
+    /*
+     * command to create a container
+     */
     private List<String> createCommand(final String workingDirectory, final List<String> cmd) {
         final List<String> result = new ArrayList<>();
 
@@ -69,15 +80,33 @@ public class DockerContainerExecutionContextManagerImpl implements IExecutionCon
         result.add("--restart");
         result.add("no");
 
-        for(final String cap : Arrays.asList("chown", "dac_override", "fowner", "fsetid", "kill", "setgid", "setuid", "setpcap",
-                "net_bind_service", "net_raw", "sys_chroot", "mknod", "audit_write", "setfcap")) {
-            result.add("--cap-drop");
-            result.add(cap);
-        }
+        result.addAll(createFlagsForDroppingAllTheCapabilities());
+
 
         result.add(imageId);
 
         result.addAll(cmd);
+
+        return result;
+    }
+
+    /*
+     * drop all capabilities
+     * it should use as less capabilities as possible
+     */
+    private List<String> createFlagsForDroppingAllTheCapabilities() {
+        final List<String> result = new ArrayList<>();
+
+        for(final String cap : Arrays.asList(
+                "chown",       "dac_override", "fowner",
+                "fsetid",      "kill",         "setgid",
+                "setuid",      "setpcap",      "net_bind_service",
+                "net_raw",     "sys_chroot",   "mknod",
+                "audit_write", "setfcap"
+        )) {
+            result.add("--cap-drop");
+            result.add(cap);
+        }
 
         return result;
     }
