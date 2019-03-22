@@ -20,6 +20,16 @@ https://github.com/GFZ-Centre-for-Early-Warning/quakeledger
 The aim of the quakeledger process is to provide earth quake event informations
 in a given region (and with some other filtering criterias (depth, magnitude, ...)).
 
+### Shakyground
+
+Like Quakeledger Shakyground is based on a python script you can find here:
+
+https://github.com/GFZ-Centre-for-Early-Warning/shakyground
+
+It takes an QuakeML input file and computes the shake map (this is xml too).
+
+The dockerfile you can find in this repository does not work because of an
+error on installing the python gmt library.
 
 ## Features
 
@@ -187,7 +197,7 @@ At the moment there are the possibilities to provide double and string
 command line arguments and to read xml files in after the exection of a
 command line program.
 
-(This are only the types needed to implement Quakeledger).
+(This are only the types needed to implement Quakeledger and Shakyground).
 
 Here is some work necessary too.
 
