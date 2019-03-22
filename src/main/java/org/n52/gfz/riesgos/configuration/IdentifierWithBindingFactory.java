@@ -18,11 +18,13 @@ package org.n52.gfz.riesgos.configuration;
 
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
+import org.n52.gfz.riesgos.commandlineparametertransformer.FileToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
@@ -32,6 +34,7 @@ import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Factory for several predefined kinds of input and output data
@@ -121,8 +124,22 @@ public class IdentifierWithBindingFactory {
                 .build();
     }
 
+    public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchema(
+            final String identifier, final String schema) {
+
+        final String filename = "inputfile" + UUID.randomUUID() + ".xml";
+
+        return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withPath(filename)
+                .withFunctionToGetBytesToWrite(new ConvertGenericXMLDataBindingToBytes())
+                .withSchema(schema)
+                .build();
+
+    }
+
     /**
-     * Creates a xml file (output) on a given path with an addional schema
+     * Creates a xml file (output) on a given path with an additional schema
      * @param identifier identifier of the data
      * @param path path of the file to read after process termination
      * @param schema schema of the xml
@@ -135,6 +152,21 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withPath(path)
                 .withFunctionToReadFromBytes(new ConvertBytesToGenericXMLDataBinding())
+                .withSchema(schema)
+                .build();
+    }
+
+    /**
+     * Creates a xml output (via stdout) with an additional schema
+     * @param identifier identifier of the data
+     * @param schema schema of the xml
+     * @return output argument containing xml that will be read from stdout
+     */
+    public static IIdentifierWithBinding createStdoutXmlWithSchema(
+            final String identifier,
+            final String schema) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+                .withFunctionToHandleStdout(new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
                 .build();
     }

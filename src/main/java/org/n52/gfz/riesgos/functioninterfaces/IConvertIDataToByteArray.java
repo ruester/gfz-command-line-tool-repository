@@ -16,6 +16,7 @@ package org.n52.gfz.riesgos.functioninterfaces;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.wps.io.data.IData;
 
 /**
@@ -28,6 +29,7 @@ public interface IConvertIDataToByteArray {
      * converts the IData to a byte array
      * @param idata element to convert
      * @return byte array
+     * @throws ConvertToBytesException exception that indicates that the element could not converted to byte array
      */
-    byte[] convertToBytes(final IData idata);
+    byte[] convertToBytes(final IData idata) throws ConvertToBytesException;
 }

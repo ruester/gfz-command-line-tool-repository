@@ -25,6 +25,7 @@ import org.n52.gfz.riesgos.cmdexecution.IExecutionRunResult;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
@@ -350,6 +351,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 }
             } catch(final IOException ioException) {
                 throw new ExceptionReport("Files could not be copied to the working directory", ExceptionReport.REMOTE_COMPUTATION_ERROR, ioException);
+            } catch(final ConvertToBytesException convertToBytesException) {
+                throw new ExceptionReport("Data could not be converted to an input file", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertToBytesException);
             }
         }
 
@@ -368,6 +371,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 }
             } catch(final IOException exception) {
                 throw new ExceptionReport("Can't write to stdin", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
+            } catch(final ConvertToBytesException convertToBytesException) {
+                throw new ExceptionReport("Data could not be converted to an text for stdin", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertToBytesException);
             }
         }
 
