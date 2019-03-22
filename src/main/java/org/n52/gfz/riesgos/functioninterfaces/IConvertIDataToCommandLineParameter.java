@@ -16,6 +16,7 @@ package org.n52.gfz.riesgos.functioninterfaces;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.wps.io.data.IData;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public interface IConvertIDataToCommandLineParameter {
      * converts the IData to a string
      * @param iData element to convert
      * @return String
+     * @throws ConvertToStringCmdException exception if the input can't be handled by the function
      */
-    List<String> convertToCommandLineParameter(final IData iData);
+    List<String> convertToCommandLineParameter(final IData iData) throws ConvertToStringCmdException;
 }

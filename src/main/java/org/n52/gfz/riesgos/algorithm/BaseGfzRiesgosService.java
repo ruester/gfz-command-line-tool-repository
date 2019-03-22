@@ -26,6 +26,7 @@ import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextMa
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
+import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
 import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
@@ -270,18 +271,22 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
          * creates a list of the executable and the arguments
          * uses a list and not a single string argument to make things more safe
          */
-        private List<String> createCommandToExecute() {
+        private List<String> createCommandToExecute() throws ExceptionReport {
             final List<String> result = new ArrayList<>();
             result.addAll(configuration.getCommandToExecute());
 
             result.addAll(configuration.getDefaultCommandLineFlags());
 
-            for(final IIdentifierWithBinding inputValue : inputIdentifiers) {
-                final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd = inputValue.getFunctionToTransformToCmd();
-                if(functionToTransformToCmd.isPresent()) {
-                    final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifer()));
-                    result.addAll(args);
+            try {
+                for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
+                    final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd = inputValue.getFunctionToTransformToCmd();
+                    if (functionToTransformToCmd.isPresent()) {
+                        final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifer()));
+                        result.addAll(args);
+                    }
                 }
+            } catch(final ConvertToStringCmdException exception) {
+                throw new ExceptionReport("It is not valid to use the command line arguments", ExceptionReport.INVALID_PARAMETER_VALUE, exception);
             }
 
             return result;

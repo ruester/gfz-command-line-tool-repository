@@ -17,6 +17,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  */
 
 
+import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
@@ -26,13 +27,20 @@ import java.util.List;
 
 public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLineParameter {
     @Override
-    public List<String> convertToCommandLineParameter(IData iData) {
+    public List<String> convertToCommandLineParameter(IData iData) throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
 
         if(iData instanceof BoundingBoxData) {
             final BoundingBoxData bbox = (BoundingBoxData) iData;
             final double[] lowerCorner = bbox.getLowerCorner();
             final double[] upperCorner = bbox.getUpperCorner();
+
+            if(lowerCorner.length < 2) {
+                throw new ConvertToStringCmdException("Not enought coordinates in the bounding box lower corner");
+            }
+            if(upperCorner.length < 2) {
+                throw new ConvertToStringCmdException("Not enought coordinates in the bounding box upper corner");
+            }
 
             final double latmin = lowerCorner[0];
             final double lonmin = lowerCorner[1];
@@ -43,7 +51,8 @@ public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLinePar
             result.add(String.valueOf(lonmax));
             result.add(String.valueOf(latmin));
             result.add(String.valueOf(latmax));
-
+        } else {
+            throw new ConvertToStringCmdException("Wrong Binding class");
         }
 
         return result;
