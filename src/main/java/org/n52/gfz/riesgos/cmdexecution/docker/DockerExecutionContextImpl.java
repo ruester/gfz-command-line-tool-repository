@@ -112,7 +112,6 @@ public class DockerExecutionContextImpl implements IExecutionContext {
             final int exitValue = process.waitFor();
             process.destroy();
             stdout.close();
-            tarInputStream.close();
 
             stderr.throwExceptionIfNecessary();
             final String errorText = stderr.getResult();
@@ -157,7 +156,6 @@ public class DockerExecutionContextImpl implements IExecutionContext {
             tarOutputStream.closeArchiveEntry();
             tarOutputStream.finish();
 
-            tarOutputStream.close();
             stdin.close();
 
             final int exitValue = process.waitFor();

@@ -25,6 +25,8 @@ package org.n52.gfz.riesgos.exceptions;
  */
 public class ConvertToStringCmdException extends Exception {
 
+    private static final long serialVersionUID = 186195598817896211L;
+
     /**
      *
      * @param message Message of the error

@@ -21,6 +21,8 @@ package org.n52.gfz.riesgos.exceptions;
  */
 public class ConvertToIDataException extends Exception {
 
+    private static final long serialVersionUID = 5977356672962670247L;
+
     /**
      *
      * @param reason Throwable with the reason of the exception

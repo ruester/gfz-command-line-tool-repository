@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.configuration;
 
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
+import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
@@ -25,6 +26,7 @@ import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
+import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
@@ -82,6 +84,21 @@ public class IdentifierWithBindingFactory {
                 .withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd())
                 .withDefaultValue(defaultValue)
                 .withAllowedValues(allowedValues)
+                .build();
+    }
+
+    /**
+     * Creates a command line argument (input) which contains a boolean with a default value
+     * @param identifier identifier of the data
+     * @param commandLineFlag flag that is added if the value is true
+     * @param defaultValue default value
+     * @return Command line argument that contains a boolean with a default value
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentBooleanWithDefaultValue(
+            final String identifier, final String commandLineFlag, final boolean defaultValue) {
+        return new IdentifierWithBindingImpl.Builder(identifier, LiteralBooleanBinding.class)
+                .withFunctionToTransformToCmd(new LiteralBooleanBindingToStringCmd(commandLineFlag))
+                .withDefaultValue(String.valueOf(defaultValue))
                 .build();
     }
 

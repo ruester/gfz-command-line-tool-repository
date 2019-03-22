@@ -21,6 +21,8 @@ package org.n52.gfz.riesgos.exceptions;
  */
 public class NonZeroExitValueException extends Exception {
 
+    private static final long serialVersionUID = 8979766814479322812L;
+
     /**
      *
      * @param exitValue value of the exit value
