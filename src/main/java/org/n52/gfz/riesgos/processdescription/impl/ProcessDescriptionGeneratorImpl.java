@@ -145,15 +145,16 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                 } else if(interfaces.stream().anyMatch(IBBOXData.class::equals)) {
                     final SupportedCRSsType bboxData = inputDescriptionType.addNewBoundingBoxData();
                     final Optional<List<String>> optionalSupportedCrsList = input.getSupportedCRSForBBox();
-                    boolean isFirst = true;
                     if(optionalSupportedCrsList.isPresent()) {
-                        for(final String supportedCrs : optionalSupportedCrsList.get()) {
-                            if (isFirst) {
+                        final List<String> supportedCrsList = optionalSupportedCrsList.get();
+                        for(int i = 0; i < supportedCrsList.size(); i++) {
+                            final String supportedCrs = supportedCrsList.get(i);
+                            if (i == 0) {
                                 final SupportedCRSsType.Default defaultCRS = bboxData.addNewDefault();
                                 defaultCRS.setCRS(supportedCrs);
+                            } else if(i == 1) {
                                 final CRSsType supportedCRS = bboxData.addNewSupported();
                                 supportedCRS.addCRS(supportedCrs);
-                                isFirst = false;
                             } else {
                                 bboxData.getSupported().addCRS(supportedCrs);
                             }

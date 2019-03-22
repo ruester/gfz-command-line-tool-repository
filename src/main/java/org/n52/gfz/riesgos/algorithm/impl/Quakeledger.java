@@ -73,10 +73,8 @@ public class Quakeledger extends BaseGfzRiesgosService {
         @Override
         public List<IIdentifierWithBinding> getInputIdentifiers() {
             return Arrays.asList(
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmin", 288),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmax", 292),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmin", -70),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmax", -10),
+
+                    IdentifierWithBindingFactory.createCommandLineArgumentBBox("input-boundingbox", Arrays.asList("EPSG:4326", "EPSG:4328")),
                     IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmin", 6.6),
                     IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmax", 8.5),
                     IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmin", 5),
@@ -138,15 +136,14 @@ public class Quakeledger extends BaseGfzRiesgosService {
     /*
      * a method for debugging on a system to check if and where unexpected behaviour happens
      */
+
     /*
     public static void main(String[] args) throws Exception {
         final Quakeledger p = new Quakeledger("sha256:71b93ade61bf41da8d68419bec12ec1e274eae28b36bc64cc156e1be33294821");
 
         final Map<String, List<IData>> map = new HashMap<>();
-        map.put("lonmin", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(288))));
-        map.put("lonmax", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(292))));
-        map.put("latmin", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(-70))));
-        map.put("latmax", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(-10))));
+        map.put("input-boundingbox", Collections.singletonList(new BoundingBoxData(new double[]{-70.0, 288.0 }, new double[]{-10.0, 292.0}, "EPSG:4326")));
+
         map.put("mmin", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(6.6))));
         map.put("mmax", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(8.5))));
         map.put("zmin", Collections.singletonList(new LiteralDoubleBinding(Double.valueOf(5))));
@@ -162,6 +159,6 @@ public class Quakeledger extends BaseGfzRiesgosService {
         final GenericXMLDataBinding selectedRows = (GenericXMLDataBinding) result.get("selectedRows");
         final String text = selectedRows.getPayload().xmlText();
 
-        System.out.println(text.substring(0, 10));
+        System.out.println(text.length());
     }*/
 }

@@ -17,10 +17,12 @@ package org.n52.gfz.riesgos.configuration;
  */
 
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
+import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
+import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
@@ -82,6 +84,25 @@ public class IdentifierWithBindingFactory {
                 .withPath(path)
                 .withFunctionToReadFromBytes(new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
+                .build();
+    }
+
+    /**
+     * Creates a command line argument bounding box.
+     * (This will add four single command line arguments in that order:
+     *  lonmin, lonmax, latmin, latmax)
+     *
+     * @param identifier identifier of the data
+     * @param supportedCRSForBBox list with the supported CRS for the bounding box
+     * @return bounding box command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentBBox(
+        final String identifier,
+        final List<String> supportedCRSForBBox) {
+
+        return new IdentifierWithBindingImpl.Builder(identifier, BoundingBoxData.class)
+                .withFunctionToTransformToCmd(new BoundingBoxDataToStringCmd())
+                .withSupportedCRSForBBox(supportedCRSForBBox)
                 .build();
     }
 }
