@@ -26,7 +26,7 @@ public class ExceptionIfStderrIsNotEmptyHandler implements IStderrHandler {
 
     @Override
     public void handleSterr(String stderr) throws NonEmptyStderrException {
-        if(! stderr.isEmpty()) {
+        if(! stderr.trim().isEmpty()) {
             throw new NonEmptyStderrException(stderr);
         }
 
