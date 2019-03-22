@@ -30,18 +30,21 @@ import static junit.framework.TestCase.fail;
  */
 public class TestLogStderrHandler {
 
+    /**
+     * If the text is empty, this still should be logged
+     */
     @Test
     public void testLogEmpty() {
 
         final String stderrText = "";
 
-        final StringBuilder strBuilder = new StringBuilder();
-        final IStderrHandler handler = new LogStderrHandler(strBuilder::append);
+        final StringBuilder logger = new StringBuilder();
+        final IStderrHandler handler = new LogStderrHandler(logger::append);
 
         try {
             handler.handleSterr(stderrText);
 
-            final String text = strBuilder.toString();
+            final String text = logger.toString();
 
             assertEquals("The logged text is just the indication that it is logged, but no text", "Text on stderr:\n", text);
 
@@ -50,17 +53,20 @@ public class TestLogStderrHandler {
         }
     }
 
+    /**
+     * Any error message should be logged anyway
+     */
     @Test
     public void testLogWithText() {
         final String stderrText = "There is an error in line 7 of example_script.sh";
 
-        final StringBuilder stringBuilder = new StringBuilder();
-        final IStderrHandler handler = new LogStderrHandler(stringBuilder::append);
+        final StringBuilder logger = new StringBuilder();
+        final IStderrHandler handler = new LogStderrHandler(logger::append);
 
         try {
             handler.handleSterr(stderrText);
 
-            final String text = stringBuilder.toString();
+            final String text = logger.toString();
 
             assertEquals("The logged text is also inside of the message", "Text on stderr:\nThere is an error in line 7 of example_script.sh", text);
         } catch(final NonEmptyStderrException exception) {

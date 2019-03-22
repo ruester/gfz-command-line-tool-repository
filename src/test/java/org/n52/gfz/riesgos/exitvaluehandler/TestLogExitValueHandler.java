@@ -39,13 +39,13 @@ public class TestLogExitValueHandler {
 
         final int exitValue = 0;
 
-        final StringBuilder strBuilder = new StringBuilder();
-        final IExitValueHandler handler = new LogExitValueHandler(strBuilder::append);
+        final StringBuilder logger = new StringBuilder();
+        final IExitValueHandler handler = new LogExitValueHandler(logger::append);
 
         try {
             handler.handleExitValue(exitValue);
 
-            final String text = strBuilder.toString();
+            final String text = logger.toString();
             assertEquals("The exit value is logged", "Exit value: 0", text);
 
         } catch(final NonZeroExitValueException exception) {
@@ -62,13 +62,13 @@ public class TestLogExitValueHandler {
 
         final int exitValue = 2;
 
-        final StringBuilder strBuilder = new StringBuilder();
-        final IExitValueHandler handler = new LogExitValueHandler(strBuilder::append);
+        final StringBuilder logger = new StringBuilder();
+        final IExitValueHandler handler = new LogExitValueHandler(logger::append);
 
         try {
             handler.handleExitValue(exitValue);
 
-            final String text = strBuilder.toString();
+            final String text = logger.toString();
             assertEquals("The exit value is logged", "Exit value: 2", text);
 
         } catch(final NonZeroExitValueException exception) {
