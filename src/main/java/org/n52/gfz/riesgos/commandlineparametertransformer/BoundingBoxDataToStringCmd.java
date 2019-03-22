@@ -36,10 +36,10 @@ public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLinePar
             final double[] upperCorner = bbox.getUpperCorner();
 
             if(lowerCorner.length < 2) {
-                throw new ConvertToStringCmdException("Not enought coordinates in the bounding box lower corner");
+                throw new ConvertToStringCmdException("Not enough coordinates in the bounding box lower corner");
             }
             if(upperCorner.length < 2) {
-                throw new ConvertToStringCmdException("Not enought coordinates in the bounding box upper corner");
+                throw new ConvertToStringCmdException("Not enough coordinates in the bounding box upper corner");
             }
 
             final double latmin = lowerCorner[0];
@@ -52,7 +52,7 @@ public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLinePar
             result.add(String.valueOf(latmin));
             result.add(String.valueOf(latmax));
         } else {
-            throw new ConvertToStringCmdException("Wrong Binding class");
+            throw new ConvertToStringCmdException("Wrong binding class");
         }
 
         return result;

@@ -16,6 +16,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
@@ -37,7 +38,7 @@ public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLi
      * Constructor with a default flag
      * @param defaultFlag flag that is before the element (for example --lat before a latitude)
      */
-    private LiteralDoubleBindingToStringCmd(final String defaultFlag) {
+    public LiteralDoubleBindingToStringCmd(final String defaultFlag) {
         this.defaultFlag = defaultFlag;
     }
 
@@ -49,7 +50,7 @@ public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLi
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(final IData iData) {
+    public List<String> convertToCommandLineParameter(final IData iData) throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
@@ -58,6 +59,8 @@ public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLi
             final LiteralDoubleBinding binding = (LiteralDoubleBinding) iData;
             final Double value = binding.getPayload();
             result.add(String.valueOf(value));
+        } else {
+            throw new ConvertToStringCmdException("Wrong binding class");
         }
         return result;
     }
