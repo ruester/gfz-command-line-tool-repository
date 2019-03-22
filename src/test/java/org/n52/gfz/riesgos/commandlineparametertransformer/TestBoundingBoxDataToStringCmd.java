@@ -67,13 +67,31 @@ public class TestBoundingBoxDataToStringCmd {
         }
     }
 
+    /**
+     * Test without a bounding box binding
+     */
     @Test
-    public void testNonValid() {
+    public void testNonValidNoBoundingBox() {
         final IData iData = new LiteralStringBinding("no usable value");
         final IConvertIDataToCommandLineParameter converter = new BoundingBoxDataToStringCmd();
 
         try {
             converter.convertToCommandLineParameter(iData);
+            fail("There must be an exception");
+        } catch(final ConvertToStringCmdException exception) {
+            assertNotNull("There is an exception", exception);
+        }
+    }
+
+    /**
+     * Test with a bounding box binding with too less coordinates
+     */
+    @Test
+    public void testNonValidWithTooLessCoordinates() {
+        final IData boundingBox = new BoundingBoxData(new double[]{10.0}, new double[]{10.1}, "EPSG:4326");
+        final IConvertIDataToCommandLineParameter converter = new BoundingBoxDataToStringCmd();
+        try {
+            converter.convertToCommandLineParameter(boundingBox);
             fail("There must be an exception");
         } catch(final ConvertToStringCmdException exception) {
             assertNotNull("There is an exception", exception);
