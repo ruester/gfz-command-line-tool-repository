@@ -21,6 +21,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.algorithm.impl.Quakeledger;
+import org.n52.gfz.riesgos.algorithm.impl.Shakyground;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ProcessDescription;
@@ -140,6 +141,10 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 final String imageId = (String) process.get("imageId");
                 if("Quakeledger".equals(title)) {
                     final IAlgorithm algorithm = new Quakeledger(imageId);
+                    final AlgorithmData data = new AlgorithmData(title, algorithm);
+                    result.add(data);
+                } else if("Shakyground".equals(title)) {
+                    final IAlgorithm algorithm = new Shakyground(imageId);
                     final AlgorithmData data = new AlgorithmData(title, algorithm);
                     result.add(data);
                 }
