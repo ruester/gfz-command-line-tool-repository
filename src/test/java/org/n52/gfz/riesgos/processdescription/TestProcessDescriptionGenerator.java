@@ -55,6 +55,7 @@ public class TestProcessDescriptionGenerator {
     public void testQuakeledgerConfig() {
 
         // because of the test case
+        // because of the test case
         // there is no direct access to the ParserFactory and GeneratorFactory classes
         // it only uses a Supplier to get the the parsers and generators
         final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(createParserSupplier(), createGeneratorSupplier());
@@ -357,7 +358,7 @@ public class TestProcessDescriptionGenerator {
 
             @Override
             public Class<?>[] getSupportedDataBindings() {
-                return new Class[] {GenericXMLDataBinding.class};
+                return new Class<?>[] {GenericXMLDataBinding.class};
             }
         };
 
@@ -420,7 +421,7 @@ public class TestProcessDescriptionGenerator {
 
             @Override
             public Class<?>[] getSupportedDataBindings() {
-                return new Class[]{ GenericXMLDataBinding.class };
+                return new Class<?>[]{ GenericXMLDataBinding.class };
             }
         };
         return () -> Collections.singletonList(generator);

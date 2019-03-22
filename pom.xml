@@ -17,6 +17,7 @@
     <properties>
         <wps.version>4.0.0-beta.6</wps.version>
         <java-version>1.8</java-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <repositories>
