@@ -27,9 +27,9 @@ public interface IConvertIDataToByteArray {
 
     /**
      * converts the IData to a byte array
-     * @param idata element to convert
+     * @param iData element to convert
      * @return byte array
      * @throws ConvertToBytesException exception that indicates that the element could not converted to byte array
      */
-    byte[] convertToBytes(final IData idata) throws ConvertToBytesException;
+    byte[] convertToBytes(final IData iData) throws ConvertToBytesException;
 }

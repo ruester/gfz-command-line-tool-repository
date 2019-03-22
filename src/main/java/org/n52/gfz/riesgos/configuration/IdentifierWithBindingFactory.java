@@ -25,6 +25,7 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToSt
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
@@ -124,10 +125,16 @@ public class IdentifierWithBindingFactory {
                 .build();
     }
 
+    /**
+     * Creates a command line argument (xml file) with a file path that will be written down as a temporary file
+     * @param identifier identifier of the data
+     * @param schema schema of the xml
+     * @return xml file command line argument
+     */
     public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchema(
             final String identifier, final String schema) {
 
-        final String filename = "inputfile" + UUID.randomUUID() + ".xml";
+        final String filename = createUUIDFilename("inputfile", ".xml");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename))
@@ -136,6 +143,26 @@ public class IdentifierWithBindingFactory {
                 .withSchema(schema)
                 .build();
 
+    }
+
+    /**
+     * Same as createCommandLineArgumentXmlFileWithSchema, but it removes the xml header before
+     * writing it to a file
+     * @param identifier identifier of the data
+     * @param schema schema of the xml
+     * @return xml file command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
+            final String identifier, final String schema) {
+
+        final String filename = createUUIDFilename("inputfile", ".xml");
+
+        return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withPath(filename)
+                .withFunctionToGetBytesToWrite(new ConvertGenericXMLDataBindingToBytesWithoutHeader())
+                .withSchema(schema)
+                .build();
     }
 
     /**
@@ -169,5 +196,12 @@ public class IdentifierWithBindingFactory {
                 .withFunctionToHandleStdout(new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
                 .build();
+    }
+
+    /*
+     * creates a unique filename
+     */
+    private static String createUUIDFilename(final String prefix, final String ending) {
+        return prefix + UUID.randomUUID() + ending;
     }
 }
