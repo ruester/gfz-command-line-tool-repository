@@ -36,6 +36,9 @@ import static junit.framework.TestCase.fail;
  */
 public class TestLiteralDoubleBindingToStringCmd {
 
+    /**
+     * Test with valid input
+     */
     @Test
     public void testValid() {
         final IData iData = new LiteralDoubleBinding(1.0);
@@ -54,6 +57,9 @@ public class TestLiteralDoubleBindingToStringCmd {
         }
     }
 
+    /**
+     * test with non valid input
+     */
     @Test
     public void testNonValid() {
         final IData iData = new LiteralStringBinding("Dummy");
@@ -68,6 +74,9 @@ public class TestLiteralDoubleBindingToStringCmd {
         }
     }
 
+    /**
+     * Test with a default flag
+     */
     @Test
     public void testWithDefaultFlag() {
         final IData iData = new LiteralDoubleBinding(1.0);

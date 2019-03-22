@@ -31,8 +31,14 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
 
+/**
+ * Test class for LiteralStringBindingToStringCmd
+ */
 public class TestLiteralStringBindingToStringCmd {
 
+    /**
+     * Test with valid input
+     */
     @Test
     public void testValid() {
         final IData iData = new LiteralStringBinding("expert");
@@ -51,6 +57,9 @@ public class TestLiteralStringBindingToStringCmd {
         }
     }
 
+    /**
+     * Test with non valid input
+     */
     @Test
     public void testNonValid() {
         final IData iData = new LiteralBooleanBinding(true);
@@ -65,6 +74,9 @@ public class TestLiteralStringBindingToStringCmd {
         }
     }
 
+    /**
+     * Test with a default flag
+     */
     @Test
     public void testWithDefaultFlag() {
         final IData iData = new LiteralStringBinding("expert");
