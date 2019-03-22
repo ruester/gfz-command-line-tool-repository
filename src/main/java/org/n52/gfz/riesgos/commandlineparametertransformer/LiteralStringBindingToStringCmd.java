@@ -16,6 +16,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
@@ -37,7 +38,7 @@ public class LiteralStringBindingToStringCmd implements IConvertIDataToCommandLi
      * Constructor with a default flag
      * @param defaultFlag flag that is before the element (for example --etype before an expert type)
      */
-    private LiteralStringBindingToStringCmd(final String defaultFlag) {
+    public LiteralStringBindingToStringCmd(final String defaultFlag) {
         this.defaultFlag = defaultFlag;
     }
 
@@ -49,7 +50,7 @@ public class LiteralStringBindingToStringCmd implements IConvertIDataToCommandLi
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(final IData iData) {
+    public List<String> convertToCommandLineParameter(final IData iData) throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
@@ -58,6 +59,8 @@ public class LiteralStringBindingToStringCmd implements IConvertIDataToCommandLi
             final LiteralStringBinding binding = (LiteralStringBinding) iData;
             final String value = binding.getPayload();
             result.add(value);
+        } else {
+            throw new ConvertToStringCmdException("Wrong binding class");
         }
         return result;
     }
