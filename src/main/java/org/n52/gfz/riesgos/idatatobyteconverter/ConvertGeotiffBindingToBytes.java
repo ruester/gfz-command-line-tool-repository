@@ -18,25 +18,33 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
  *
  */
 
-
-import org.apache.xmlbeans.XmlObject;
+import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
+import org.n52.wps.io.data.binding.complex.GeotiffBinding;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
- * Implementation to convert a GenericXMLDataBinding to a byte array
+ * Implementation to convert a GeotiffBinding to a byte array
  */
-public class ConvertGenericXMLDataBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray {
 
     @Override
-    public byte[] convertToBytes(IData iData) throws ConvertToBytesException {
-        if(iData instanceof GenericXMLDataBinding) {
-            final GenericXMLDataBinding binding = (GenericXMLDataBinding) iData;
-            final XmlObject xmlObject = binding.getPayload();
-            final String strContent = xmlObject.xmlText();
-            return strContent.getBytes();
+    public byte[] convertToBytes(final IData iData) throws ConvertToBytesException {
+
+        if(iData instanceof GeotiffBinding) {
+            final GeotiffBinding binding = (GeotiffBinding) iData;
+            final File file = binding.getPayload();
+
+            try(final FileReader fileReader = new FileReader(file)) {
+                return IOUtils.toByteArray(fileReader);
+            } catch(final IOException exception) {
+                throw new ConvertToBytesException(exception);
+            }
         } else {
             throw new ConvertToBytesException("Wrong binding class");
         }

@@ -26,10 +26,17 @@ public class ConvertToBytesException extends Exception {
     private static final long serialVersionUID = -5383408643796511049L;
 
     /**
-     *
      * @param message message of the error
      */
     public ConvertToBytesException(final String message) {
         super(message);
+    }
+
+    /**
+     *
+     * @param reason reason of the error
+     */
+    public ConvertToBytesException(final Throwable reason) {
+        super(reason);
     }
 }

@@ -17,6 +17,7 @@ package org.n52.gfz.riesgos.configuration;
  */
 
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.FileToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
@@ -26,9 +27,11 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingT
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
+import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
@@ -166,6 +169,38 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
+     * Creates a command line argument (geotiff file) with a file path that will be written down as a
+     * temporary file
+     * @param identifier identifier of the data
+     * @return geotiff file command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentGeotiff(
+            final String identifier) {
+        final String filename = createUUIDFilename("inputfile", ".tiff");
+
+        return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withPath(filename)
+                .withFunctionToGetBytesToWrite(new ConvertGeotiffBindingToBytes())
+                .build();
+    }
+
+    /**
+     * Creates a input file argument (geotiff file)
+     * @param identifier identifier of the data
+     * @param path path of the file to write before starting the process
+     * @return geotiff input file
+     */
+    public static IIdentifierWithBinding createFileInGeotiff(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
+                .withPath(path)
+                .withFunctionToGetBytesToWrite(new ConvertGeotiffBindingToBytes())
+                .build();
+    }
+
+    /**
      * Creates a xml file (output) on a given path with an additional schema
      * @param identifier identifier of the data
      * @param path path of the file to read after process termination
@@ -180,6 +215,21 @@ public class IdentifierWithBindingFactory {
                 .withPath(path)
                 .withFunctionToReadFromBytes(new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
+                .build();
+    }
+
+    /**
+     * creates a geotiff file (output) on a given path
+     * @param identifier identifier of the data
+     * @param path path of the fiel to read after process termination
+     * @return output argument containing the geotiff data that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutGeotiff(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
+                .withPath(path)
+                .withFunctionToReadFromBytes(new ConvertBytesToGeotiffBinding())
                 .build();
     }
 
