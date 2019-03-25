@@ -16,6 +16,7 @@ package org.n52.gfz.riesgos.configuration;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesAsGeojsonToGTVectorDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
@@ -25,11 +26,13 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingT
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingAsGeojsonToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
@@ -186,6 +189,23 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
+     * Creates a command line argument (geojson) with a file path that will be written down as a
+     * temporary file
+     * @param identifier identifier of the data
+     * @return geojson fiel command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentGeojson(
+            final String identifier) {
+        final String filename = createUUIDFilename("inputfile", ".json");
+
+        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withPath(filename)
+                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingAsGeojsonToBytes())
+                .build();
+    }
+
+    /**
      * Creates a input file argument (geotiff file)
      * @param identifier identifier of the data
      * @param path path of the file to write before starting the process
@@ -197,6 +217,21 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
                 .withPath(path)
                 .withFunctionToGetBytesToWrite(new ConvertGeotiffBindingToBytes())
+                .build();
+    }
+
+    /**
+     * Creates a input file argument (geojson file)
+     * @param identifier identifier of the data
+     * @param path path of the file to write before staring the process
+     * @return geojson input file
+     */
+    public static IIdentifierWithBinding createFileInGeojson(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+                .withPath(path)
+                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingAsGeojsonToBytes())
                 .build();
     }
 
@@ -221,7 +256,7 @@ public class IdentifierWithBindingFactory {
     /**
      * creates a geotiff file (output) on a given path
      * @param identifier identifier of the data
-     * @param path path of the fiel to read after process termination
+     * @param path path of the file to read after process termination
      * @return output argument containing the geotiff data that will be read from a given file
      */
     public static IIdentifierWithBinding createFileOutGeotiff(
@@ -230,6 +265,21 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
                 .withPath(path)
                 .withFunctionToReadFromBytes(new ConvertBytesToGeotiffBinding())
+                .build();
+    }
+
+    /**
+     * Creates a geojson file (output) on a given path
+     * @param identifier identifier of the data
+     * @param path path of the file to read after process termination
+     * @return output argument containing the geojson data that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutGeojson(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+                .withPath(path)
+                .withFunctionToReadFromBytes(new ConvertBytesAsGeojsonToGTVectorDataBinding())
                 .build();
     }
 
