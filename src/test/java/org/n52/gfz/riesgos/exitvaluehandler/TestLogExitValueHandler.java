@@ -40,10 +40,10 @@ public class TestLogExitValueHandler {
         final int exitValue = 0;
 
         final StringBuilder logger = new StringBuilder();
-        final IExitValueHandler handler = new LogExitValueHandler(logger::append);
+        final IExitValueHandler handler = new LogExitValueHandler();
 
         try {
-            handler.handleExitValue(exitValue);
+            handler.handleExitValue(exitValue, logger::append);
 
             final String text = logger.toString();
             assertEquals("The exit value is logged", "Exit value: 0", text);
@@ -63,10 +63,10 @@ public class TestLogExitValueHandler {
         final int exitValue = 2;
 
         final StringBuilder logger = new StringBuilder();
-        final IExitValueHandler handler = new LogExitValueHandler(logger::append);
+        final IExitValueHandler handler = new LogExitValueHandler();
 
         try {
-            handler.handleExitValue(exitValue);
+            handler.handleExitValue(exitValue, logger::append);
 
             final String text = logger.toString();
             assertEquals("The exit value is logged", "Exit value: 2", text);

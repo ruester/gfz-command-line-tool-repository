@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.exitvaluehandler;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,11 +18,10 @@
  *
  */
 
-package org.n52.gfz.riesgos.exitvaluehandler;
-
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
+import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.fail;
@@ -40,9 +41,10 @@ public class TestExceptionIfExitValueIsNotEmptyHandler {
         final int exitValue = 0;
 
         final IExitValueHandler handler = new ExceptionIfExitValueIsNotEmptyHandler();
+        final ILogger logger = (text) -> {};
 
         try {
-            handler.handleExitValue(exitValue);
+            handler.handleExitValue(exitValue, logger);
         } catch(final NonZeroExitValueException exception) {
             fail("There should be no exception");
         }
@@ -57,9 +59,10 @@ public class TestExceptionIfExitValueIsNotEmptyHandler {
         final int exitValue = 1;
 
         final IExitValueHandler handler = new ExceptionIfExitValueIsNotEmptyHandler();
+        final ILogger logger = (text) -> {};
 
         try {
-            handler.handleExitValue(exitValue);
+            handler.handleExitValue(exitValue, logger);
             fail("There must be an exception");
         } catch(final NonZeroExitValueException exception) {
             assertNotNull("There is an exception", exception);

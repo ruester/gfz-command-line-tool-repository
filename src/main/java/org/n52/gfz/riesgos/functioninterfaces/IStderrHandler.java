@@ -27,7 +27,8 @@ public interface IStderrHandler {
     /**
      * handles stderr text
      * @param stderr text to handle
+     * @param logger logger of the algorithm
      * @throws NonEmptyStderrException there may be an exception on non empty stderr
      */
-    void handleSterr(final String stderr) throws NonEmptyStderrException;
+    void handleSterr(final String stderr, final ILogger logger) throws NonEmptyStderrException;
 }

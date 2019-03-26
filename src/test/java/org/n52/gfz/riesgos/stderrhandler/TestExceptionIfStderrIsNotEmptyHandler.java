@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.stderrhandler;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
+import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -39,9 +40,10 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
         final String stderrText = "";
 
         final IStderrHandler handler = new ExceptionIfStderrIsNotEmptyHandler();
+        final ILogger logger = (text) -> {};
 
         try {
-            handler.handleSterr(stderrText);
+            handler.handleSterr(stderrText, logger);
         } catch(final NonEmptyStderrException exception) {
             fail("There must be no exception");
         }
@@ -56,9 +58,10 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
         final String stderrText = "Segmentation fault";
 
         final IStderrHandler handler = new ExceptionIfStderrIsNotEmptyHandler();
+        final ILogger logger = (text) -> {};
 
         try {
-            handler.handleSterr(stderrText);
+            handler.handleSterr(stderrText, logger);
             fail("There must be an exception");
         } catch(final NonEmptyStderrException excepction) {
             assertNotNull("There is an exception", excepction);
@@ -74,9 +77,10 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
         final String stderrText = "    \n\t\t\t\n";
 
         final IStderrHandler handler = new ExceptionIfStderrIsNotEmptyHandler();
+        final ILogger logger = (text) -> {};
 
         try {
-            handler.handleSterr(stderrText);
+            handler.handleSterr(stderrText, logger);
         } catch(final NonEmptyStderrException exception) {
             fail("There must be no exception");
         }

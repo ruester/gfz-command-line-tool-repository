@@ -384,7 +384,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             final Optional<IStderrHandler> mainStderrHandler = configuration.getStderrHandler();
             if(mainStderrHandler.isPresent()) {
                 try {
-                    mainStderrHandler.get().handleSterr(stderr);
+                    mainStderrHandler.get().handleSterr(stderr, logger::debug);
                 } catch (final NonEmptyStderrException exception) {
                     throw new ExceptionReport("There is an error on stderr", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
                 }
@@ -428,7 +428,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             final Optional<IExitValueHandler> mainExitValueHandler = configuration.getExitValueHandler();
             if (mainExitValueHandler.isPresent()) {
                 try {
-                    mainExitValueHandler.get().handleExitValue(exitValue);
+                    mainExitValueHandler.get().handleExitValue(exitValue, logger::debug);
                 } catch( final NonZeroExitValueException exception){
                     throw new ExceptionReport("There is a non empty exit value", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
                 }

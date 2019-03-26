@@ -24,18 +24,8 @@ import org.n52.gfz.riesgos.functioninterfaces.ILogger;
  */
 public class LogExitValueHandler implements IExitValueHandler {
 
-    private final ILogger logger;
-
-    /**
-     *
-     * @param logger object used to log
-     */
-    public LogExitValueHandler(final ILogger logger) {
-        this.logger = logger;
-    }
-
     @Override
-    public void handleExitValue(int exitValue) {
+    public void handleExitValue(int exitValue, final ILogger logger) {
         logger.log("Exit value: " + exitValue);
     }
 }

@@ -39,10 +39,10 @@ public class TestLogStderrHandler {
         final String stderrText = "";
 
         final StringBuilder logger = new StringBuilder();
-        final IStderrHandler handler = new LogStderrHandler(logger::append);
+        final IStderrHandler handler = new LogStderrHandler();
 
         try {
-            handler.handleSterr(stderrText);
+            handler.handleSterr(stderrText, logger::append);
 
             final String text = logger.toString();
 
@@ -61,10 +61,10 @@ public class TestLogStderrHandler {
         final String stderrText = "There is an error in line 7 of example_script.sh";
 
         final StringBuilder logger = new StringBuilder();
-        final IStderrHandler handler = new LogStderrHandler(logger::append);
+        final IStderrHandler handler = new LogStderrHandler();
 
         try {
-            handler.handleSterr(stderrText);
+            handler.handleSterr(stderrText, logger::append);
 
             final String text = logger.toString();
 

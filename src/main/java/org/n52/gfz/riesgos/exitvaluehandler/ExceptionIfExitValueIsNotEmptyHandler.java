@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.exitvaluehandler;
 
 import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
+import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 
 /**
  * Handler for the exit value that throws an exception on a non zero
@@ -26,7 +27,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 public class ExceptionIfExitValueIsNotEmptyHandler implements IExitValueHandler {
 
     @Override
-    public void handleExitValue(int exitValue) throws NonZeroExitValueException {
+    public void handleExitValue(int exitValue, final ILogger logger) throws NonZeroExitValueException {
         if(exitValue != 0) {
             throw new NonZeroExitValueException(exitValue);
         }

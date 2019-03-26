@@ -20,8 +20,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.n52.gfz.riesgos.algorithm.impl.Quakeledger;
-import org.n52.gfz.riesgos.algorithm.impl.Shakyground;
+import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
+import org.n52.gfz.riesgos.algorithm.predefinedconfig.QuakeledgerConfiguration;
+import org.n52.gfz.riesgos.algorithm.predefinedconfig.ShakygroundConfiguration;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ProcessDescription;
@@ -31,6 +32,8 @@ import org.n52.wps.webapp.api.ConfigurationCategory;
 import org.n52.wps.webapp.api.FormatEntry;
 import org.n52.wps.webapp.api.types.ConfigurationEntry;
 import org.n52.wps.webapp.api.types.StringConfigurationEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,11 +143,13 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 final String title = (String) process.get("title");
                 final String imageId = (String) process.get("imageId");
                 if("Quakeledger".equals(title)) {
-                    final IAlgorithm algorithm = new Quakeledger(imageId);
+                    final Logger logger = LoggerFactory.getLogger(QuakeledgerConfiguration.class);
+                    final IAlgorithm algorithm = new BaseGfzRiesgosService(new QuakeledgerConfiguration(imageId), logger);
                     final AlgorithmData data = new AlgorithmData(title, algorithm);
                     result.add(data);
                 } else if("Shakyground".equals(title)) {
-                    final IAlgorithm algorithm = new Shakyground(imageId);
+                    final Logger logger = LoggerFactory.getLogger(ShakygroundConfiguration.class);
+                    final IAlgorithm algorithm = new BaseGfzRiesgosService(new ShakygroundConfiguration(imageId), logger);
                     final AlgorithmData data = new AlgorithmData(title, algorithm);
                     result.add(data);
                 }

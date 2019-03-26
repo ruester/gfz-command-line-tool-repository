@@ -24,14 +24,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
  */
 public class LogStderrHandler implements IStderrHandler {
 
-    private final ILogger logger;
-
-    public LogStderrHandler(final ILogger logger) {
-        this.logger = logger;
-    }
-
     @Override
-    public void handleSterr(String stderr) {
+    public void handleSterr(String stderr, final ILogger logger) {
         logger.log("Text on stderr:\n" + stderr);
     }
 }
