@@ -64,8 +64,8 @@ public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayTo
                 IOUtils.write(content, writer);
             }
 
-            final GenericFileDataBinding binding = new GenericFileDataBinding(new GenericFileData(tempFile, mimeType));
-            return binding;
+            return new GenericFileDataBinding(new GenericFileData(tempFile, mimeType));
+
         } catch(final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
