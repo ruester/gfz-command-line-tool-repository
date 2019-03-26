@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.bytetoidataconverter;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,7 +18,6 @@
  *
  */
 
-package org.n52.gfz.riesgos.bytetoidataconverter;
 
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geojson.feature.FeatureJSON;
@@ -27,18 +28,56 @@ import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
-public class ConvertBytesAsGeojsonToGTVectorDataBinding implements IConvertByteArrayToIData {
+/**
+ * Function to create a GTVectorDataBinding from a byte array
+ */
+public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIData {
+
+    private final Format format;
+
+    /**
+     * Constructor with the format to read the data in
+     * @param format format to read from bytes
+     */
+    public ConvertBytesToGTVectorDataBinding(final Format format) {
+        this.format = format;
+    }
 
     @Override
     public IData convertToIData(byte[] content) throws ConvertToIDataException {
 
-        final FeatureJSON featureJSON = new FeatureJSON();
         try(final ByteArrayInputStream in = new ByteArrayInputStream(content)) {
-            final FeatureCollection<?, ?> featureCollection = featureJSON.readFeatureCollection(in);
+            final FeatureCollection<?, ?> featureCollection = format.readFeatures(in);
             return new GTVectorDataBinding(featureCollection);
         } catch(final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
+    }
+
+    @FunctionalInterface
+    private interface IFeatureReader {
+        FeatureCollection<?, ?> readFeatures(final InputStream inputStream) throws IOException;
+    }
+
+
+    /**
+     * Format options to read features from bytes
+     */
+    public enum Format implements IFeatureReader {
+        JSON((in) -> new FeatureJSON().readFeatureCollection(in));
+
+        private IFeatureReader featureReader;
+
+        Format(final IFeatureReader featureReader) {
+            this.featureReader = featureReader;
+        }
+
+        @Override
+        public FeatureCollection<?, ?> readFeatures(final InputStream inputStream) throws IOException {
+            return featureReader.readFeatures(inputStream);
+        }
+
     }
 }

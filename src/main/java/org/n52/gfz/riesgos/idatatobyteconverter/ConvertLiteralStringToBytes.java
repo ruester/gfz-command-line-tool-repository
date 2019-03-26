@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.idatatobyteconverter;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,31 +18,22 @@
  *
  */
 
-package org.n52.gfz.riesgos.idatatobyteconverter;
-
-import org.geotools.feature.FeatureCollection;
-import org.geotools.geojson.feature.FeatureJSON;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-public class ConvertGTVectorDataBindingAsGeojsonToBytes implements IConvertIDataToByteArray {
+/**
+ * Function to convert a literal string to a byte array
+ */
+public class ConvertLiteralStringToBytes implements IConvertIDataToByteArray {
 
     @Override
     public byte[] convertToBytes(IData iData) throws ConvertToBytesException {
-        if(iData instanceof GTVectorDataBinding) {
-            final GTVectorDataBinding binding = (GTVectorDataBinding) iData;
-            final FeatureCollection<?, ?> featureCollection = binding.getPayload();
-            try(final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-                (new FeatureJSON()).writeFeatureCollection(featureCollection, out);
-                return out.toByteArray();
-            } catch(final IOException ioException) {
-                throw new ConvertToBytesException(ioException);
-            }
+        if(iData instanceof LiteralStringBinding) {
+            final LiteralStringBinding binding = (LiteralStringBinding) iData;
+            final String strContent = binding.getPayload();
+            return strContent.getBytes();
         } else {
             throw new ConvertToBytesException("Wrong binding class");
         }

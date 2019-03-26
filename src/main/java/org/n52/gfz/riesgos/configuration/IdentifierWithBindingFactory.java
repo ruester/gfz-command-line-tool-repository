@@ -16,9 +16,11 @@ package org.n52.gfz.riesgos.configuration;
  * limitations under the Licence.
  */
 
-import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesAsGeojsonToGTVectorDataBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGTVectorDataBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericFileDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.FileToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
@@ -26,13 +28,17 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingT
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
-import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingAsGeojsonToBytes;
+import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
+import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
@@ -353,7 +359,7 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (geojson) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
-     * @return geojson fiel command line argument
+     * @return geojson file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentGeojson(
             final String identifier) {
@@ -362,7 +368,52 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename))
                 .withPath(filename)
-                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingAsGeojsonToBytes())
+                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingToBytes(
+                        ConvertGTVectorDataBindingToBytes.Format.JSON
+                ))
+                .build();
+    }
+
+    /**
+     * Creates a command line argument (generic file) with a file path that will be written down as a
+     * temporary file
+     * @param identifier identifier of the data
+     * @return file command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentFile(
+            final String identifier) {
+        final String filename = createUUIDFilename("inputfile", ".dat");
+
+        return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToGetBytesToWrite(new ConvertGenericFileDataBindingToBytes())
+                .build();
+    }
+
+    /**
+     * Creates a stdin input with a string
+     * @param identifier identifier of the data
+     * @return stdin input
+     */
+    public static IIdentifierWithBinding createStdinString(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
+                .withFunctionToWriteToStdin(new ConvertLiteralStringToBytes())
+                .build();
+    }
+
+    /**
+     * Creates a stdin input with a string with a default value
+     * @param identifier identifier of the data
+     * @param defaultValue default value of the data
+     * @return stdin input with a default value
+     */
+    public static IIdentifierWithBinding createStdinStringWithDefaultValue(
+            final String identifier,
+            final String defaultValue) {
+        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
+                .withFunctionToWriteToStdin(new ConvertLiteralStringToBytes())
+                .withDefaultValue(defaultValue)
                 .build();
     }
 
@@ -392,7 +443,24 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withPath(path)
-                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingAsGeojsonToBytes())
+                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingToBytes(
+                        ConvertGTVectorDataBindingToBytes.Format.JSON
+                ))
+                .build();
+    }
+
+    /**
+     * Creates a input file argument (generic)
+     * @param identifier identifier of the data
+     * @param path path of the file to write before staring the process
+     * @return generic input file
+     */
+    public static IIdentifierWithBinding createFileInGeneric(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
+                .withPath(path)
+                .withFunctionToGetBytesToWrite(new ConvertGenericFileDataBindingToBytes())
                 .build();
     }
 
@@ -440,7 +508,24 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withPath(path)
-                .withFunctionToReadFromBytes(new ConvertBytesAsGeojsonToGTVectorDataBinding())
+                .withFunctionToReadFromBytes(new ConvertBytesToGTVectorDataBinding(
+                        ConvertBytesToGTVectorDataBinding.Format.JSON
+                ))
+                .build();
+    }
+
+    /**
+     * Creates a generic file (output) on a given path
+     * @param identifier identifier of the data
+     * @param path path of the file to read after process termination
+     * @return output argument containing the data that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutGeneric(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
+                .withPath(path)
+                .withFunctionToReadFromBytes(new ConvertBytesToGenericFileDataBinding())
                 .build();
     }
 
@@ -456,6 +541,42 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withFunctionToHandleStdout(new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
+                .build();
+    }
+
+    /**
+     * Creates a string output (via stdout)
+     * @param identifier identifier of the data
+     * @return output argument containing the string that will be read from stdout
+     */
+    public static IIdentifierWithBinding createStdoutString(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
+                .withFunctionToHandleStdout(new ConvertBytesToLiteralStringBinding())
+                .build();
+    }
+
+    /**
+     * Creates a string output (via stderr)
+     * @param identifier identifier of the data
+     * @return output argument containing the string that will be read from stderr
+     */
+    public static IIdentifierWithBinding createStderrString(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
+                .withFunctionToHandleStderr(new ConvertBytesToLiteralStringBinding())
+                .build();
+    }
+
+    /**
+     * Creates a int output (via exit value)
+     * @param identifier identifier of the data
+     * @return output argument containing the integer that will be read from exit value
+     */
+    public static IIdentifierWithBinding createExitValueInt(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class)
+                .withFunctionToHandleExitValue(new ConvertExitValueToLiteralIntBinding())
                 .build();
     }
 
