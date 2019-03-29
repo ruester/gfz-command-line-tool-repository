@@ -1,13 +1,15 @@
 FROM ubuntu:18.04
 
 # for not having interaction on installation process
-ENV TZ=Europe/Berlin
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get install python3 python3-pip git gmt gmt-dcw gmt-gshhg python3-tk -y
+RUN apt-get update && apt-get install python3.7 python3-pip git gmt gmt-dcw gmt-gshhg python3-tk wget unzip -y
 
 # in the moment there is a problem here on installing GMT
-RUN pip3 install pandas scipy lxml h5py shapely zmq mock https://github.com/GenericMappingTools/gmt-python/archive/master.zip matplotlib decorator scipy psutil
+RUN pip3 install pandas scipy lxml h5py shapely zmq mock matplotlib decorator scipy psutil
+RUN mkdir -p /tmp/install_gmt/
+RUN cd /tmp/install_gmt/ && git clone https://github.com/GenericMappingTools/pygmt.git
+RUN pip3 install pygmt
 
 RUN mkdir /usr/share/git
 
