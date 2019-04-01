@@ -35,7 +35,11 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBy
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
+import org.n52.gfz.riesgos.readidatafromfiles.ReadShapeFileFromPath;
+import org.n52.gfz.riesgos.readidatafromfiles.ReadSingleByteStreamFromPath;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
+import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
+import org.n52.gfz.riesgos.writeidatatofiles.WriteSingleByteStreamToPath;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
@@ -312,7 +316,7 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename))
                 .withPath(filename)
-                .withFunctionToGetBytesToWrite(new ConvertGenericXMLDataBindingToBytes())
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(schema)
                 .build();
 
@@ -333,7 +337,7 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename))
                 .withPath(filename)
-                .withFunctionToGetBytesToWrite(new ConvertGenericXMLDataBindingToBytesWithoutHeader())
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader()))
                 .withSchema(schema)
                 .build();
     }
@@ -351,7 +355,7 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename))
                 .withPath(filename)
-                .withFunctionToGetBytesToWrite(new ConvertGeotiffBindingToBytes())
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes()))
                 .build();
     }
 
@@ -368,11 +372,30 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename))
                 .withPath(filename)
-                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingToBytes(
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(
                         ConvertGTVectorDataBindingToBytes.Format.JSON
-                ))
+                )))
                 .build();
     }
+
+    /**
+     * Creates a command line argument (shapefile) with a file path that wlle be written down as a temporary file
+     * (or multiple files, because one shapefile contains multiple files)
+     * @param identifier identifier of the data
+     * @return shapefile command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentShapeFile(
+            final String identifier) {
+
+        final String filename = createUUIDFilename("inputfile", ".shp");
+
+        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withPath(filename)
+                .withFunctionToWriteToFiles(new WriteShapeFileToPath())
+                .build();
+    }
+
 
     /**
      * Creates a command line argument (generic file) with a file path that will be written down as a
@@ -386,7 +409,7 @@ public class IdentifierWithBindingFactory {
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename))
-                .withFunctionToGetBytesToWrite(new ConvertGenericFileDataBindingToBytes())
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath((new ConvertGenericFileDataBindingToBytes())))
                 .build();
     }
 
@@ -428,7 +451,7 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
                 .withPath(path)
-                .withFunctionToGetBytesToWrite(new ConvertGeotiffBindingToBytes())
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes()))
                 .build();
     }
 
@@ -443,9 +466,24 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withPath(path)
-                .withFunctionToGetBytesToWrite(new ConvertGTVectorDataBindingToBytes(
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(
                         ConvertGTVectorDataBindingToBytes.Format.JSON
-                ))
+                )))
+                .build();
+    }
+
+    /**
+     * Creates a input file argument (shapefile - with all the other files to care about)
+     * @param identifier identifier of the data
+     * @param path path of the file to write before starting the process (just the .shp file)
+     * @return shapefile input file
+     */
+    public static IIdentifierWithBinding createFileInShapeFile(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+                .withPath(path)
+                .withFunctionToWriteToFiles(new WriteShapeFileToPath())
                 .build();
     }
 
@@ -460,7 +498,7 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
                 .withPath(path)
-                .withFunctionToGetBytesToWrite(new ConvertGenericFileDataBindingToBytes())
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes()))
                 .build();
     }
 
@@ -477,7 +515,7 @@ public class IdentifierWithBindingFactory {
             final String schema) {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withPath(path)
-                .withFunctionToReadFromBytes(new ConvertBytesToGenericXMLDataBinding())
+                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGenericXMLDataBinding()))
                 .withSchema(schema)
                 .build();
     }
@@ -493,7 +531,7 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
                 .withPath(path)
-                .withFunctionToReadFromBytes(new ConvertBytesToGeotiffBinding())
+                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding()))
                 .build();
     }
 
@@ -508,9 +546,9 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withPath(path)
-                .withFunctionToReadFromBytes(new ConvertBytesToGTVectorDataBinding(
+                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGTVectorDataBinding(
                         ConvertBytesToGTVectorDataBinding.Format.JSON
-                ))
+                )))
                 .build();
     }
 
@@ -525,7 +563,22 @@ public class IdentifierWithBindingFactory {
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
                 .withPath(path)
-                .withFunctionToReadFromBytes(new ConvertBytesToGenericFileDataBinding())
+                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGenericFileDataBinding()))
+                .build();
+    }
+
+    /**
+     * Creates a shape file (output) on a given path
+     * @param identifier identifier of the data
+     * @param path path of the .shp file to read after process termination
+     * @return output argument containing the data that will be read from the given files
+     */
+    public static IIdentifierWithBinding createFileOutShapeFile(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+                .withPath(path)
+                .withFunctionToReadFromFiles(new ReadShapeFileFromPath())
                 .build();
     }
 

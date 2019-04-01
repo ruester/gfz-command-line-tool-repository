@@ -25,7 +25,7 @@ import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -39,8 +39,8 @@ public class ConvertGenericFileDataBindingToBytes implements IConvertIDataToByte
             final GenericFileDataBinding binding = (GenericFileDataBinding) iData;
             final File file = binding.getPayload().getBaseFile(false);
 
-            try(final FileReader fileReader = new FileReader(file)) {
-                return IOUtils.toByteArray(fileReader);
+            try(final FileInputStream inputStream = new FileInputStream(file)) {
+                return IOUtils.toByteArray(inputStream);
             } catch(final IOException exception) {
                 throw new ConvertToBytesException(exception);
             }

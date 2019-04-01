@@ -21,6 +21,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
+import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
+import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.wps.io.data.IData;
 
 import java.util.List;
@@ -69,10 +71,9 @@ public interface IIdentifierWithBinding {
 
     /**
      *
-     * @return function to convert the content of the value into a byte array
-     * so that it can be written to files
+     * @return function to write the iData to files
      */
-    Optional<IConvertIDataToByteArray> getFunctionToGetBytesToWrite();
+    Optional<IWriteIDataToFiles> getFunctionToWriteIDataToFiles();
 
     /**
      *
@@ -101,9 +102,9 @@ public interface IIdentifierWithBinding {
 
     /**
      *
-     * @return function to convert a byte array to the value; used to read from output files
+     * @return function to read the iData from files
      */
-    Optional<IConvertByteArrayToIData> getFunctionToReadFromBytes();
+    Optional<IReadIDataFromFiles> getFunctionToReadIDataFromFiles();
 
     /**
      * Only used if the type is a literal type (for example LiteralStringBinding)

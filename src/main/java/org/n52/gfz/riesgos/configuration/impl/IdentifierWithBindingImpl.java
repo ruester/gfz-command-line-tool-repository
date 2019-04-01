@@ -22,6 +22,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
+import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
+import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.wps.io.data.IData;
 
 import java.util.List;
@@ -37,12 +39,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     private final ICheckDataAndGetErrorMessage validator;
     private final IConvertIDataToCommandLineParameter functionToTransformToCmd;
     private final String path;
-    private final IConvertIDataToByteArray functionToGetBytesToWrite;
+    private final IWriteIDataToFiles functionToWriteToFiles;
     private final IConvertIDataToByteArray functionToWriteToStdin;
     private final IConvertByteArrayToIData functionToHandleStderr;
     private final IConvertExitValueToIData functionToHandleExitValue;
     private final IConvertByteArrayToIData functionToHandleStdout;
-    private final IConvertByteArrayToIData functionToReadFromBytes;
+    private final IReadIDataFromFiles functionToReadFromFiles;
     private final List<String> allowedValues;
     private final String defaultValue;
     private final List<String> supportedCRSForBBox;
@@ -54,12 +56,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
             final ICheckDataAndGetErrorMessage validator,
             final IConvertIDataToCommandLineParameter functionToTransformToCmd,
             final String path,
-            final IConvertIDataToByteArray functionToGetBytesToWrite,
+            final IWriteIDataToFiles functionToWriteToFiles,
             final IConvertIDataToByteArray functionToWriteToStdin,
             final IConvertByteArrayToIData functionToHandleStderr,
             final IConvertExitValueToIData functionToHandleExitValue,
             final IConvertByteArrayToIData functionToHandleStdout,
-            final IConvertByteArrayToIData functionToReadFromBytes,
+            final IReadIDataFromFiles functionToReadFromFiles,
             final List<String> allowedValues,
             final String defaultValue,
             final List<String> supportedCRSForBBox,
@@ -69,12 +71,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         this.validator = validator;
         this.functionToTransformToCmd = functionToTransformToCmd;
         this.path = path;
-        this.functionToGetBytesToWrite = functionToGetBytesToWrite;
+        this.functionToWriteToFiles = functionToWriteToFiles;
         this.functionToWriteToStdin = functionToWriteToStdin;
         this.functionToHandleStderr = functionToHandleStderr;
         this.functionToHandleExitValue = functionToHandleExitValue;
         this.functionToHandleStdout = functionToHandleStdout;
-        this.functionToReadFromBytes = functionToReadFromBytes;
+        this.functionToReadFromFiles = functionToReadFromFiles;
         this.allowedValues = allowedValues;
         this.defaultValue = defaultValue;
         this.supportedCRSForBBox = supportedCRSForBBox;
@@ -107,8 +109,8 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     }
 
     @Override
-    public Optional<IConvertIDataToByteArray> getFunctionToGetBytesToWrite() {
-        return Optional.ofNullable(functionToGetBytesToWrite);
+    public Optional<IWriteIDataToFiles> getFunctionToWriteIDataToFiles() {
+        return Optional.ofNullable(functionToWriteToFiles);
     }
 
     @Override
@@ -132,8 +134,8 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     }
 
     @Override
-    public Optional<IConvertByteArrayToIData> getFunctionToReadFromBytes() {
-        return Optional.ofNullable(functionToReadFromBytes);
+    public Optional<IReadIDataFromFiles> getFunctionToReadIDataFromFiles() {
+        return Optional.ofNullable(functionToReadFromFiles);
     }
 
     @Override
@@ -167,12 +169,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         private ICheckDataAndGetErrorMessage validator;
         private IConvertIDataToCommandLineParameter functionToTransformToCmd;
         private String path;
-        private IConvertIDataToByteArray functionToGetBytesToWrite;
+        private IWriteIDataToFiles functionToWriteToFiles;
         private IConvertIDataToByteArray functionToWriteToStdin;
         private IConvertByteArrayToIData functionToHandleStderr;
         private IConvertExitValueToIData functionToHandleExitValue;
         private IConvertByteArrayToIData functionToHandleStdout;
-        private IConvertByteArrayToIData functionToReadFromBytes;
+        private IReadIDataFromFiles functionToReadFromFiles;
         private List<String> allowedValues;
         private String defaultValue;
         private List<String> supportedCRSForBBox;
@@ -220,12 +222,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         }
 
         /**
-         * Set the function to transform the value to bytes for writing it to a file
-         * @param functionToGetBytesToWrite function to convert the content to byte array for writing it to a file
+         * Set the function to write the IData to files
+         * @param functionToWriteToFiles function to write the IData to files
          * @return the same builder
          */
-        public Builder withFunctionToGetBytesToWrite(final IConvertIDataToByteArray functionToGetBytesToWrite) {
-            this.functionToGetBytesToWrite = functionToGetBytesToWrite;
+        public Builder withFunctionToWriteToFiles(final IWriteIDataToFiles functionToWriteToFiles) {
+            this.functionToWriteToFiles = functionToWriteToFiles;
             return this;
         }
 
@@ -270,12 +272,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         }
 
         /**
-         * Set the function to read the value from byte array from a file
-         * @param functionToReadFromBytes function to read the value from a file
+         * Set the function to read the value from files
+         * @param functionToReadFromFiles function to read the value from files
          * @return the same builder
          */
-        public Builder withFunctionToReadFromBytes(final IConvertByteArrayToIData functionToReadFromBytes) {
-            this.functionToReadFromBytes = functionToReadFromBytes;
+        public Builder withFunctionToReadFromFiles(final IReadIDataFromFiles functionToReadFromFiles) {
+            this.functionToReadFromFiles = functionToReadFromFiles;
             return this;
         }
 
@@ -325,9 +327,9 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
          */
         public IdentifierWithBindingImpl build() {
             return new IdentifierWithBindingImpl(identifier, bindingClass, validator,
-                    functionToTransformToCmd, path, functionToGetBytesToWrite,
+                    functionToTransformToCmd, path, functionToWriteToFiles,
                     functionToWriteToStdin, functionToHandleStderr, functionToHandleExitValue,
-                    functionToHandleStdout, functionToReadFromBytes, allowedValues,
+                    functionToHandleStdout, functionToReadFromFiles, allowedValues,
                     defaultValue, supportedCRSForBBox, schema);
         }
     }

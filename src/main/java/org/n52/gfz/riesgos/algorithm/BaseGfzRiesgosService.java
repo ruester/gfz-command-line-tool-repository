@@ -36,8 +36,10 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
+import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
+import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
 import org.n52.wps.io.data.IData;
@@ -48,7 +50,6 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -259,6 +260,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             final String workingDirectory = configuration.getWorkingDirectory();
             final List<String> cmd = createCommandToExecute();
 
+            logger.debug("List with cmds: " + cmd);
+
             final IExecutionContextManager contextManager = new DockerContainerExecutionContextManagerImpl(imageId);
 
             try(final IExecutionContext context = contextManager.createExecutionContext(workingDirectory, cmd)) {
@@ -339,14 +342,13 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             try {
                 for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
                     final Optional<String> optionalPath = inputValue.getPathToWriteToOrReadFromFile();
-                    final Optional<IConvertIDataToByteArray> optionalFunctionToGetBytesToWrite = inputValue.getFunctionToGetBytesToWrite();
+                    final Optional<IWriteIDataToFiles> optionalWriteIDataToFiles = inputValue.getFunctionToWriteIDataToFiles();
 
-                    if (optionalPath.isPresent() && optionalFunctionToGetBytesToWrite.isPresent()) {
+                    if (optionalPath.isPresent() && optionalWriteIDataToFiles.isPresent()) {
                         final String path = optionalPath.get();
-                        final IConvertIDataToByteArray functionToGetBytesToWrite = optionalFunctionToGetBytesToWrite.get();
-                        final byte[] content = functionToGetBytesToWrite.convertToBytes(inputData.get(inputValue.getIdentifer()));
-                        context.writeToFile(content, configuration.getWorkingDirectory(), path);
-
+                        final IWriteIDataToFiles writeIDataToFiles = optionalWriteIDataToFiles.get();
+                        writeIDataToFiles.writeToFiles(inputData.get(inputValue.getIdentifer()), context,
+                                configuration.getWorkingDirectory(), path);
                     }
                 }
             } catch(final IOException ioException) {
@@ -474,12 +476,11 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             try {
                 for(final IIdentifierWithBinding outputValue : outputIdentifiers) {
                     final Optional<String> optionalPath = outputValue.getPathToWriteToOrReadFromFile();
-                    final Optional<IConvertByteArrayToIData> optionalFunctionToReadFromBytes = outputValue.getFunctionToReadFromBytes();
-                    if(optionalPath.isPresent() && optionalFunctionToReadFromBytes.isPresent()) {
+                    final Optional<IReadIDataFromFiles> optionalFunctionToReadFromFiles = outputValue.getFunctionToReadIDataFromFiles();
+                    if(optionalPath.isPresent() && optionalFunctionToReadFromFiles.isPresent()) {
                         final String path = optionalPath.get();
-                        final IConvertByteArrayToIData functionToReadFromBytes = optionalFunctionToReadFromBytes.get();
-                        final byte[] content = context.readFromFile(Paths.get(configuration.getWorkingDirectory(), path).toString());
-                        final IData iData = functionToReadFromBytes.convertToIData(content);
+                        final IReadIDataFromFiles functionToReadFromFiles = optionalFunctionToReadFromFiles.get();
+                        final IData iData = functionToReadFromFiles.readFromFiles(context, configuration.getWorkingDirectory(), path);
                         putIntoOutput(outputValue, iData);
                     }
                 }
