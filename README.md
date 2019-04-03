@@ -106,7 +106,7 @@ In the repository here the version 1.9 is used.
 Please check if the commons-compress-1.9.jar file is found in the WEB-INF/lib folder
 of the server.
 
-If you dont find the jar in that folder you may find it in the 
+If you don't find the jar in that folder you may find it in the 
 ```
 ~/.m2/repository/org/apache/commons/commons-compress/1.9/
 ```
@@ -114,7 +114,7 @@ folder. This is the folder used by maven for storing downloaded jar files in an
 Ubuntu 18.10 distribution.
 The name of the folder may differ on your system.
 
-5. Edit the WEB-INF/classes/dispatcher-servlet.xml file
+5. Edit the WEB-INF/classes/dispatcher-servlet.xml file in the 52n-wps-webap-[...] folder
 
 Same as the in the https://github.com/riesgos/52north-wps-osmtovector-process repository
 the WEB-INF/classes/dispatcher-servlet.xml file must be edited.
