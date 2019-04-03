@@ -110,10 +110,10 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                 inputDescriptionType.setMaxOccurs(BigInteger.ONE);
 
                 final CodeType inputIdentifier = inputDescriptionType.addNewIdentifier();
-                inputIdentifier.setStringValue(input.getIdentifer());
+                inputIdentifier.setStringValue(input.getIdentifier());
 
                 final LanguageStringType inputTitle = inputDescriptionType.addNewTitle();
-                inputTitle.setStringValue(input.getIdentifer());
+                inputTitle.setStringValue(input.getIdentifier());
 
                 final Class<? extends IData> inputDataTypeClass = input.getBindingClass();
                 final List<Class<?>> interfaces = findInterfaces(inputDataTypeClass);
@@ -174,10 +174,10 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
             final OutputDescriptionType outputDescriptionType = processOutputs.addNewOutput();
 
             final CodeType outputIdentifier = outputDescriptionType.addNewIdentifier();
-            outputIdentifier.setStringValue(output.getIdentifer());
+            outputIdentifier.setStringValue(output.getIdentifier());
 
             final LanguageStringType outputTitle = outputDescriptionType.addNewTitle();
-            outputTitle.setStringValue(output.getIdentifer());
+            outputTitle.setStringValue(output.getIdentifier());
 
             final Class<?> outputDataTypeClass = output.getBindingClass();
             final List<Class<?>> interfaces = findInterfaces(outputDataTypeClass);

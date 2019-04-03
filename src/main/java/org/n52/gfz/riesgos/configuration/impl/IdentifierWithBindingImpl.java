@@ -84,7 +84,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     }
 
     @Override
-    public String getIdentifer() {
+    public String getIdentifier() {
         return identifier;
     }
 

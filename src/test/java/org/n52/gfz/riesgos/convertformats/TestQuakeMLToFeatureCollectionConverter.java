@@ -108,7 +108,7 @@ public class TestQuakeMLToFeatureCollectionConverter {
         try {
             final XmlObject xmlContent = XmlObject.Factory.parse(xmlRawContent);
 
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new QuakeMLToFeatureCollectionConverter().convert(xmlContent);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new QuakeMLToFeatureCollectionConverter().convert    (xmlContent);
             final FeatureIterator<SimpleFeature> iterator = result.features();
 
             assertTrue("There is one element", iterator.hasNext());

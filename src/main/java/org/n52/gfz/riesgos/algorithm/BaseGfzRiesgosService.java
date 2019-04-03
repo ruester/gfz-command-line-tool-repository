@@ -96,7 +96,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         return configuration
                 .getInputIdentifiers()
                 .stream()
-                .collect(Collectors.toMap(IIdentifierWithBinding::getIdentifer, IIdentifierWithBinding::getBindingClass));
+                .collect(Collectors.toMap(IIdentifierWithBinding::getIdentifier, IIdentifierWithBinding::getBindingClass));
     }
 
     /*
@@ -106,7 +106,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         return configuration
                 .getOutputIdentifiers()
                 .stream()
-                .collect(Collectors.toMap(IIdentifierWithBinding::getIdentifer, IIdentifierWithBinding::getBindingClass));
+                .collect(Collectors.toMap(IIdentifierWithBinding::getIdentifier, IIdentifierWithBinding::getBindingClass));
     }
 
     /**
@@ -115,7 +115,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      */
     @Override
     public List<String> getInputIdentifiers() {
-        return inputIdentifiers.stream().map(IIdentifierWithBinding::getIdentifer).collect(Collectors.toList());
+        return inputIdentifiers.stream().map(IIdentifierWithBinding::getIdentifier).collect(Collectors.toList());
     }
 
     /**
@@ -124,7 +124,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      */
     @Override
     public List<String> getOutputIdentifiers() {
-        return outputIdentifiers.stream().map(IIdentifierWithBinding::getIdentifer).collect(Collectors.toList());
+        return outputIdentifiers.stream().map(IIdentifierWithBinding::getIdentifier).collect(Collectors.toList());
     }
 
     /**
@@ -222,11 +222,11 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             final Map<String, IData> result = new HashMap<>();
 
             for(final IIdentifierWithBinding inputValue : inputIdentifiers) {
-                final String identifier = inputValue.getIdentifer();
+                final String identifier = inputValue.getIdentifier();
                 if(! originalInputData.containsKey(identifier)) {
                     throw new ExceptionReport("There is no data for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
                 }
-                final List<IData> list = originalInputData.get(inputValue.getIdentifer());
+                final List<IData> list = originalInputData.get(inputValue.getIdentifier());
                 if(list.isEmpty()) {
                     throw new ExceptionReport("There is just an empty list for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
                 }
@@ -285,7 +285,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
                     final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd = inputValue.getFunctionToTransformToCmd();
                     if (functionToTransformToCmd.isPresent()) {
-                        final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifer()));
+                        final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifier()));
                         result.addAll(args);
                     }
                 }
@@ -347,7 +347,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                     if (optionalPath.isPresent() && optionalWriteIDataToFiles.isPresent()) {
                         final String path = optionalPath.get();
                         final IWriteIDataToFiles writeIDataToFiles = optionalWriteIDataToFiles.get();
-                        writeIDataToFiles.writeToFiles(inputData.get(inputValue.getIdentifer()), context,
+                        writeIDataToFiles.writeToFiles(inputData.get(inputValue.getIdentifier()), context,
                                 configuration.getWorkingDirectory(), path);
                     }
                 }
@@ -367,7 +367,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                     final Optional<IConvertIDataToByteArray> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
                     if (optionalFunctionToWriteToStdin.isPresent()) {
                         final IConvertIDataToByteArray functionToWriteToStdin = optionalFunctionToWriteToStdin.get();
-                        final byte[] content = functionToWriteToStdin.convertToBytes(inputData.get(inputValue.getIdentifer()));
+                        final byte[] content = functionToWriteToStdin.convertToBytes(inputData.get(inputValue.getIdentifier()));
                         IOUtils.write(content, stdin);
                     }
                 }
@@ -417,10 +417,10 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 final Optional<String> optionalErrorMessage = validator.check(iData);
                 if(optionalErrorMessage.isPresent()) {
                     final String errorMessage = optionalErrorMessage.get();
-                    throw new ExceptionReport("The output for '" + outputValue.getIdentifer() + "' is not valid:\n" + errorMessage, ExceptionReport.REMOTE_COMPUTATION_ERROR);
+                    throw new ExceptionReport("The output for '" + outputValue.getIdentifier() + "' is not valid:\n" + errorMessage, ExceptionReport.REMOTE_COMPUTATION_ERROR);
                 }
             }
-            outputData.put(outputValue.getIdentifer(), iData);
+            outputData.put(outputValue.getIdentifier(), iData);
         }
 
         /*

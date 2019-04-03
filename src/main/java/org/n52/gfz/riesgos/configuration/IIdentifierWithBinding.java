@@ -42,7 +42,7 @@ public interface IIdentifierWithBinding {
      *
      * @return identifier for the value
      */
-    String getIdentifer();
+    String getIdentifier();
 
     /**
      *
