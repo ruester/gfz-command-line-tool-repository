@@ -18,6 +18,8 @@ package org.n52.gfz.riesgos.convertformats;
  *
  */
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -164,6 +166,16 @@ public class TestQuakeMLToFeatureCollectionConverter {
             assertEquals("The amplitude.publicID is as expected", null, simpleFeature.getAttribute("amplitude.publicID"));
             assertEquals("The amplitude.type is as expected", null, simpleFeature.getAttribute("amplitude.type"));
             assertEquals("The amplitude.genericAmplitude.value is as expected", null, simpleFeature.getAttribute("amplitude.genericAmplitude.value"));
+
+            final Geometry geom = ((Geometry) simpleFeature.getDefaultGeometry());
+            final Coordinate coordinate = geom.getCoordinate();
+            final double x = coordinate.x;
+            final double y = coordinate.y;
+
+            // longitude
+            assertTrue("The x coordinate is near to expected", Math.abs(x - (-71.49875)) < 0.01);
+            // latitude
+            assertTrue("The y coordinate is near to expected", Math.abs(y - (-30.9227)) < 0.01);
 
 
         } catch (final XmlException e) {
