@@ -22,7 +22,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.junit.Test;
@@ -33,6 +32,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public class TestQuakeMLToFeatureCollectionConverter {
@@ -115,7 +116,7 @@ public class TestQuakeMLToFeatureCollectionConverter {
 
             assertTrue("There is one element", iterator.hasNext());
             final SimpleFeature simpleFeature = iterator.next();
-            assertTrue("This feature is not null", simpleFeature != null);
+            assertNotNull("This feature is not null", simpleFeature);
 
             assertFalse("There is no other feature", iterator.hasNext());
 
@@ -129,20 +130,20 @@ public class TestQuakeMLToFeatureCollectionConverter {
             assertEquals("The origin.depth.value is as excepted", "34.75117", simpleFeature.getAttribute("origin.depth.value"));
             assertEquals("The origin.depth.uncertainty is as expected", "nan", simpleFeature.getAttribute("origin.depth.uncertainty"));
             // it is not specified in the data input
-            assertEquals("The origin.depthType is as expected", null, simpleFeature.getAttribute("origin.depthType"));
-            assertEquals("The origin.timeFixed is as expected", null, simpleFeature.getAttribute("origin.timeFixed"));
-            assertEquals("The origin.epicenterFixed is as expected", null, simpleFeature.getAttribute("origin.epicenterFixed"));
-            assertEquals("The origin.referenceSystemID is as expected", null, simpleFeature.getAttribute("origin.referenceSystemID"));
-            assertEquals("The origin.type is as expected", null, simpleFeature.getAttribute("origin.type"));
+            assertNull("The origin.depthType is as expected", simpleFeature.getAttribute("origin.depthType"));
+            assertNull("The origin.timeFixed is as expected", simpleFeature.getAttribute("origin.timeFixed"));
+            assertNull("The origin.epicenterFixed is as expected", simpleFeature.getAttribute("origin.epicenterFixed"));
+            assertNull("The origin.referenceSystemID is as expected", simpleFeature.getAttribute("origin.referenceSystemID"));
+            assertNull("The origin.type is as expected", simpleFeature.getAttribute("origin.type"));
             assertEquals("The origin.creationInfo.value is as expected", "GFZ", simpleFeature.getAttribute("origin.creationInfo.value"));
-            assertEquals("The origin.quality.azimuthalGap is as expected", null, simpleFeature.getAttribute("origin.quality.azimuthalGap"));
-            assertEquals("The origin.quality.minimumDistance is as expected", null, simpleFeature.getAttribute("origin.quality.minimumDistance"));
-            assertEquals("The origin.quality.maximumDistance is as expected", null, simpleFeature.getAttribute("origin.quality.maximumDistance"));
-            assertEquals("The origin.quality.usedPhaseCount is as expected", null, simpleFeature.getAttribute("origin.quality.usedPhaseCount"));
-            assertEquals("The origin.quality.usedStationCount is as expected", null, simpleFeature.getAttribute("origin.quality.usedStationCount"));
-            assertEquals("The origin.quality.standardError is as expected", null, simpleFeature.getAttribute("origin.quality.standardError"));
-            assertEquals("The origin.evaluationMode is as expected", null, simpleFeature.getAttribute("origin.evaluationMode"));
-            assertEquals("The origin.evaluationStatus is as expected", null, simpleFeature.getAttribute("origin.evaluationStatus"));
+            assertNull("The origin.quality.azimuthalGap is as expected", simpleFeature.getAttribute("origin.quality.azimuthalGap"));
+            assertNull("The origin.quality.minimumDistance is as expected", simpleFeature.getAttribute("origin.quality.minimumDistance"));
+            assertNull("The origin.quality.maximumDistance is as expected", simpleFeature.getAttribute("origin.quality.maximumDistance"));
+            assertNull("The origin.quality.usedPhaseCount is as expected", simpleFeature.getAttribute("origin.quality.usedPhaseCount"));
+            assertNull("The origin.quality.usedStationCount is as expected", simpleFeature.getAttribute("origin.quality.usedStationCount"));
+            assertNull("The origin.quality.standardError is as expected", simpleFeature.getAttribute("origin.quality.standardError"));
+            assertNull("The origin.evaluationMode is as expected", simpleFeature.getAttribute("origin.evaluationMode"));
+            assertNull("The origin.evaluationStatus is as expected", simpleFeature.getAttribute("origin.evaluationStatus"));
             assertEquals("The originUncertainty.horizontalUncertainty is as expected", "nan", simpleFeature.getAttribute("originUncertainty.horizontalUncertainty"));
             assertEquals("The originUncertainty.minHorizontalUncertainty is as expected", "nan", simpleFeature.getAttribute("originUncertainty.minHorizontalUncertainty"));
             assertEquals("The originUncertainty.maxHorizontalUncertainty is as expected", "nan", simpleFeature.getAttribute("originUncertainty.maxHorizontalUncertainty"));
@@ -151,9 +152,9 @@ public class TestQuakeMLToFeatureCollectionConverter {
             assertEquals("The magnitude.mag.value is as expected", "8.35", simpleFeature.getAttribute("magnitude.mag.value"));
             assertEquals("The magnitude.mag.uncertainty is as expected", "nan", simpleFeature.getAttribute("magnitude.mag.uncertainty"));
             assertEquals("The magnitude.type is as expected", "MW", simpleFeature.getAttribute("magnitude.type"));
-            assertEquals("The magnitude.evaluationStatus is as expected", null, simpleFeature.getAttribute("magnitude.evaluationStatus"));
-            assertEquals("The magnitude.originID is as expected", null, simpleFeature.getAttribute("magnitude.originID"));
-            assertEquals("The magnitude.stationCount is as expected", null, simpleFeature.getAttribute("magnitude.stationCount"));
+            assertNull("The magnitude.evaluationStatus is as expected", simpleFeature.getAttribute("magnitude.evaluationStatus"));
+            assertNull("The magnitude.originID is as expected", simpleFeature.getAttribute("magnitude.originID"));
+            assertNull("The magnitude.stationCount is as expected", simpleFeature.getAttribute("magnitude.stationCount"));
             assertEquals("The magnitude.creationInfo.value is as expected", "GFZ", simpleFeature.getAttribute("magnitude.creationInfo.value"));
             assertEquals("The focalMechanism.publicID, is as expected", "84945", simpleFeature.getAttribute("focalMechanism.publicID"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.strike.value is as expected", "7.310981", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.strike.value"));
@@ -163,9 +164,9 @@ public class TestQuakeMLToFeatureCollectionConverter {
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.rake.value is as expected", "90.0", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.rake.value"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty is as expected", "nan", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty"));
             assertEquals("The focalMechanism.nodalPlanes.preferredPlane is as expected", "nodalPlane1", simpleFeature.getAttribute("focalMechanism.nodalPlanes.preferredPlane"));
-            assertEquals("The amplitude.publicID is as expected", null, simpleFeature.getAttribute("amplitude.publicID"));
-            assertEquals("The amplitude.type is as expected", null, simpleFeature.getAttribute("amplitude.type"));
-            assertEquals("The amplitude.genericAmplitude.value is as expected", null, simpleFeature.getAttribute("amplitude.genericAmplitude.value"));
+            assertNull("The amplitude.publicID is as expected", simpleFeature.getAttribute("amplitude.publicID"));
+            assertNull("The amplitude.type is as expected", simpleFeature.getAttribute("amplitude.type"));
+            assertNull("The amplitude.genericAmplitude.value is as expected", simpleFeature.getAttribute("amplitude.genericAmplitude.value"));
 
             final Geometry geom = ((Geometry) simpleFeature.getDefaultGeometry());
             final Coordinate coordinate = geom.getCoordinate();
