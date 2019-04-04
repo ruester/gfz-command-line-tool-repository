@@ -156,7 +156,7 @@ public class TestQuakeMLToFeatureCollectionConverter {
             assertNull("The magnitude.originID is as expected", simpleFeature.getAttribute("magnitude.originID"));
             assertNull("The magnitude.stationCount is as expected", simpleFeature.getAttribute("magnitude.stationCount"));
             assertEquals("The magnitude.creationInfo.value is as expected", "GFZ", simpleFeature.getAttribute("magnitude.creationInfo.value"));
-            assertEquals("The focalMechanism.publicID, is as expected", "84945", simpleFeature.getAttribute("focalMechanism.publicID"));
+            assertEquals("The focalMechanism.publicID is as expected", "84945", simpleFeature.getAttribute("focalMechanism.publicID"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.strike.value is as expected", "7.310981", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.strike.value"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty is as expected", "nan", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.dip.value is as expected", "16.352970000000003", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.dip.value"));

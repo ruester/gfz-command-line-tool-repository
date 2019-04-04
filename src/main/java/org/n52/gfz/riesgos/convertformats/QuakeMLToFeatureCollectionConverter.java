@@ -28,16 +28,18 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
+import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
+import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLEvent;
+import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
+import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLSimpleFeatureCollectionImpl;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertFormat;
 import org.n52.wps.io.GTHelper;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-import javax.xml.namespace.QName;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -50,209 +52,234 @@ public class QuakeMLToFeatureCollectionConverter implements IConvertFormat<XmlOb
     @Override
     public FeatureCollection<SimpleFeatureType, SimpleFeature> convert(final XmlObject xmlObject) throws ConvertFormatException {
 
+        final IQuakeML quakeML = QuakeML.fromXml(xmlObject);
         final DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
 
-        final XmlObject eventParameters = findEventParameters(xmlObject);
 
-        if (eventParameters == null) {
-            throw new ConvertFormatException("eventParameters are null");
-        }
-        final XmlObject[] events = eventParameters.selectChildren(new QName("event"));
+        final List<IQuakeMLEvent> events = quakeML.getEvents();
 
         final SimpleFeatureType sft = createFeatureType();
 
         // iterate events:
-        for(final XmlObject event : events) {
+        for(final IQuakeMLEvent event : events) {
 
             final SimpleFeature feature = getFeatureFromEvent(event, sft);
 
             setFeatureProperties(feature, event);
-
-            if (feature != null) {
-                featureCollection.add(feature);
-            }
+            featureCollection.add(feature);
         }
 
         return featureCollection;
     }
 
-    private XmlObject findEventParameters(final XmlObject root) throws ConvertFormatException {
-        final XmlObject[] result = root.selectChildren(new QName("eventParameters"));
-        if(result.length != 0) {
-            return result[0];
+    private void setFeaturePropertiesOrigin(final SimpleFeature feature, final IQuakeMLEvent event) {
+        final Optional<String> originPublicID = event.getOriginPublicID();
+        if(originPublicID.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_PUBLIC_ID.getFieldForFeatureCollection(), originPublicID.get());
         }
-        final XmlObject[] quakeml = root.selectChildren(new QName("q", "quakeml"));
-        if(quakeml.length == 1) {
-            final XmlObject quakemlRoot = quakeml[0];
-            return quakemlRoot.selectChildren(new QName("eventParameters"))[0];
+        final Optional<String> timeValue = event.getOriginTimeValue();
+        if(timeValue.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_TIME_VALUE.getFieldForFeatureCollection(), timeValue.get());
         }
-        throw new ConvertFormatException("eventParameters could not be found");
-    }
-
-    private void setIfElementIsPresent(final SimpleFeature feature, final XmlObject childElem, final String elementToCheck, final String prefixToSet) {
-        final String origPubTime = getChildNodeValueById(childElem, elementToCheck);
-        if (origPubTime != null) {
-            feature.setAttribute(prefixToSet + "." + elementToCheck, origPubTime);
+        final Optional<String> timeUncertainty = event.getOriginTimeUncertainty();
+        if(timeUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_TIME_UNCERTAINTY.getFieldForFeatureCollection(), timeUncertainty.get());
         }
-    }
-
-    private void addOrigin(final SimpleFeature feature, final String element, final XmlObject childElem) {
-        final String origPubID = childElem.selectAttribute(new QName("publicID")).newCursor().getTextValue();
-        feature.setAttribute("origin.publicID", origPubID);
-        for(final String elementToCheck : Arrays.asList(
-                "time.value",
-                "time.uncertainty",
-                "depth.value",
-                "depth.uncertainty",
-                "depthType",
-                "timeFixed",
-                "epicenterFixed",
-                "referenceSystemID",
-                "type",
-                "creationInfo.value",
-                "quality.azimuthalGap",
-                "quality.minimumDistance",
-                "quality.maximumDistance",
-                "quality.usedPhaseCount",
-                "quality.usedStationCount",
-                "quality.standardError",
-                "evaluationMode",
-                "evaluationStatus"
-
-        )) {
-            setIfElementIsPresent(feature, childElem, elementToCheck, "origin");
+        final Optional<String> depthValue = event.getOriginDepthValue();
+        if(depthValue.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_DEPTH_VALUE.getFieldForFeatureCollection(), depthValue.get());
         }
-    }
-
-    private void addOriginUncertainty(final SimpleFeature feature, final String element, final XmlObject childElem) {
-        for(final String elementToCheck: Arrays.asList(
-                "horizontalUncertainty",
-                "minHorizontalUncertainty",
-                "maxHorizontalUncertainty",
-                "azimuthMaxHorizontalUncertainty"
-        )) {
-            setIfElementIsPresent(feature, childElem, elementToCheck, "originUncertainty");
+        final Optional<String> depthUncertainty = event.getOriginDepthUncertainty();
+        if(depthUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_DEPTH_UNCERTAINTY.getFieldForFeatureCollection(), depthUncertainty.get());
         }
-    }
-
-    private void addAttributeByName(final SimpleFeature feature, final String element, final XmlObject childElem) {
-        feature.setAttribute(element, childElem.newCursor().getTextValue());
-    }
-
-    private void addDescription(final SimpleFeature feature, final String element, final XmlObject childElem) {
-        setIfElementIsPresent(feature, childElem, "text", "description");
-    }
-
-    private void addMagnitude(final SimpleFeature feature, final String element, final XmlObject childElem) {
-        final String magPubID = childElem.selectAttribute(new QName("publicID")).newCursor().getTextValue();
-        feature.setAttribute("magnitude.publicID", magPubID);
-        for(final String elementToCheck : Arrays.asList(
-                "mag.value",
-                "mag.uncertainty",
-                "type",
-                "evaluationStatus",
-                "originID",
-                "stationCount",
-                "creationInfo.value"
-        )) {
-            setIfElementIsPresent(feature, childElem, elementToCheck, "magnitude");
+        final Optional<String> depthType = event.getOriginDepthType();
+        if(depthType.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_DEPTH_TYPE.getFieldForFeatureCollection(), depthType.get());
+        }
+        final Optional<String> timeFixed = event.getOriginTimeFixed();
+        if(timeFixed.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_TIME_FIXED.getFieldForFeatureCollection(), timeFixed.get());
+        }
+        final Optional<String> epicenterFixed = event.getOriginEpicenterFixed();
+        if(epicenterFixed.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_EPICENTER_FIXED.getFieldForFeatureCollection(), epicenterFixed.get());
+        }
+        final Optional<String> referenceSystemID = event.getOriginReferenceSystemID();
+        if(referenceSystemID.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_REFERENCE_SYSTEM_ID.getFieldForFeatureCollection(), referenceSystemID.get());
+        }
+        final Optional<String> type = event.getOriginType();
+        if(type.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_TYPE.getFieldForFeatureCollection(), type.get());
+        }
+        final Optional<String> creationInfo = event.getOriginCreationInfoValue();
+        if(creationInfo.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_CREATION_INFO_VALUE.getFieldForFeatureCollection(), creationInfo.get());
+        }
+        final Optional<String> qualityAzimuthalGap = event.getOriginQualityAzimuthalGap();
+        if(qualityAzimuthalGap.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_QUALITY_AZIMUTHAL_GAP.getFieldForFeatureCollection(), qualityAzimuthalGap.get());
+        }
+        final Optional<String> qualityMinimumDistance = event.getOriginQualityMinimumDistance();
+        if(qualityMinimumDistance.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_QUALITY_MINIMUM_DISTANCE.getFieldForFeatureCollection(), qualityMinimumDistance.get());
+        }
+        final Optional<String> qualityMaximumDistance = event.getOriginQualityMaximumDistance();
+        if(qualityMaximumDistance.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_QUALITY_MAXIMUM_DISTANCE.getFieldForFeatureCollection(), qualityMaximumDistance.get());
+        }
+        final Optional<String> qualityUsedPhaseCount = event.getOriginQualityUsedPhaseCount();
+        if(qualityUsedPhaseCount.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_QUALITY_USED_PHASE_COUNT.getFieldForFeatureCollection(), qualityUsedPhaseCount.get());
+        }
+        final Optional<String> qualityUsedStationCount = event.getOriginQualityUsedStationCount();
+        if(qualityUsedStationCount.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_QUALITY_USED_STATION_COUNT.getFieldForFeatureCollection(), qualityUsedStationCount.get());
+        }
+        final Optional<String> qualityStandardError = event.getOriginQualityStandardError();
+        if(qualityStandardError.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_QUALITY_STANDARD_ERROR.getFieldForFeatureCollection(), qualityStandardError.get());
+        }
+        final Optional<String> evaluationMode = event.getOriginEvaluationMode();
+        if(evaluationMode.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_EVALUATION_MODE.getFieldForFeatureCollection(), evaluationMode.get());
+        }
+        final Optional<String> evaluationStatus = event.getOriginEvaluationStatus();
+        if(evaluationStatus.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_EVALUATION_STATUS.getFieldForFeatureCollection(), evaluationStatus.get());
         }
     }
 
-    private void addFocalMechanism(final SimpleFeature feature, final String element, final XmlObject childElem) {
-        String focMechID = childElem.selectAttribute(new QName("publicID")).newCursor().getTextValue();
-        feature.setAttribute("focalMechanism.publicID", focMechID);
-        for(final String elementToCheck : Arrays.asList(
-                "nodalPlanes.nodalPlane1.strike.value",
-                "nodalPlanes.nodalPlane1.strike.uncertainty",
-                "nodalPlanes.nodalPlane1.dip.value",
-                "nodalPlanes.nodalPlane1.dip.uncertainty",
-                "nodalPlanes.nodalPlane1.rake.value",
-                "nodalPlanes.nodalPlane1.rake.uncertainty",
-                "nodalPlanes.preferredPlane"
-        )) {
-            setIfElementIsPresent(feature, childElem, elementToCheck, "focalMechanism");
+    private void setFeaturePropertiesOriginUncertainty(final SimpleFeature feature, final IQuakeMLEvent event) {
+        final Optional<String> horizontalUncertainty = event.getOriginUncertaintyHorizontalUncertainty();
+        if(horizontalUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_UNCERTAINTY_HORIZONTAL_UNCERTAINTY.getFieldForFeatureCollection(), horizontalUncertainty.get());
+        }
+        final Optional<String> minHorizontalUncertainty = event.getOriginUncertaintyMinHorizontalUncertainty();
+        if(minHorizontalUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_UNCERTAINTY_MIN_HORIZONTAL_UNCERTAINTY.getFieldForFeatureCollection(), minHorizontalUncertainty.get());
+        }
+        final Optional<String> maxHorizontalUncertainty = event.getOriginUncertaintyMaxHorizontalUncertainty();
+        if(maxHorizontalUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_UNCERTAINTY_MAX_HORIZONTAL_UNCERTAINTY.getFieldForFeatureCollection(), maxHorizontalUncertainty.get());
+        }
+        final Optional<String> azimuthMaxHorizontalUncertainty = event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty();
+        if(azimuthMaxHorizontalUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.ORIGIN_UNCERTAINTY_AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY.getFieldForFeatureCollection(), azimuthMaxHorizontalUncertainty.get());
         }
     }
 
-    private void addAmplitude(final SimpleFeature feature, final String element, final XmlObject childElem) {
-        final String ampPubID = childElem.selectAttribute(new QName("publicID")).newCursor().getTextValue();
-        feature.setAttribute("amplitude.publicID", ampPubID);
-        for(final String elementToCheck : Arrays.asList(
-                "type",
-                "genericAmplitude.value"
-        )) {
-            setIfElementIsPresent(feature, childElem, elementToCheck, "amplitude");
-
+    private void setFeaturePropertiesMagnitude(final SimpleFeature feature, final IQuakeMLEvent event) {
+        final Optional<String> magnitudePublicID = event.getMagnitudePublicID();
+        if(magnitudePublicID.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_PUBLIC_ID.getFieldForFeatureCollection(), magnitudePublicID.get());
+        }
+        final Optional<String> magValue = event.getMagnitudeMagValue();
+        if(magValue.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_MAG_VALUE.getFieldForFeatureCollection(), magValue.get());
+        }
+        final Optional<String> magUncertainty = event.getMagnitudeMagUncertainty();
+        if(magUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_MAG_UNCERTAINTY.getFieldForFeatureCollection(), magUncertainty.get());
+        }
+        final Optional<String> type = event.getMagnitudeType();
+        if(type.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_TYPE.getFieldForFeatureCollection(), type.get());
+        }
+        final Optional<String> evaluationStatus = event.getMagnitudeEvaluationStatus();
+        if(evaluationStatus.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_EVALUATION_STATUS.getFieldForFeatureCollection(), evaluationStatus.get());
+        }
+        final Optional<String> originID = event.getMagnitudeOriginID();
+        if(originID.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_ORIGIN_ID.getFieldForFeatureCollection(), originID.get());
+        }
+        final Optional<String> stationCount = event.getMagnitudeStationCount();
+        if(stationCount.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_STATION_COUNT.getFieldForFeatureCollection(), stationCount.get());
+        }
+        final Optional<String> creationInfo = event.getMagnitudeCreationInfoValue();
+        if(creationInfo.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.MAGNITUDE_CREATION_INFO_VALUE.getFieldForFeatureCollection(), creationInfo.get());
         }
     }
 
-    @FunctionalInterface
-    interface IAddDataToFeature {
-        void addFeature(final SimpleFeature feature, final String elementToExtract, final XmlObject childElem);
-    }
-
-    private void setFeatureProperties(final SimpleFeature feature, final XmlObject event) {
-
-        final Map<String, IAddDataToFeature> elementsToExtract = new HashMap<>();
-        elementsToExtract.put("preferredOriginID", this::addAttributeByName);
-        elementsToExtract.put("preferredMagnitudeID", this::addAttributeByName);
-        elementsToExtract.put("type", this::addAttributeByName);
-        elementsToExtract.put("description", this::addDescription);
-        elementsToExtract.put("origin", this::addOrigin);
-        elementsToExtract.put("originUncertainty", this::addOriginUncertainty);
-        elementsToExtract.put("magnitude", this::addMagnitude);
-        elementsToExtract.put("focalMechanism", this::addFocalMechanism);
-        elementsToExtract.put("amplitude", this::addAmplitude);
-
-
-        for(final String elementToExtract : elementsToExtract.keySet()) {
-            final XmlObject[] selected = event.selectChildren(new QName(elementToExtract));
-            if(selected.length > 0) {
-                final XmlObject childElem = selected[0];
-                final IAddDataToFeature add = elementsToExtract.get(elementToExtract);
-                add.addFeature(feature, elementToExtract, childElem);
-            }
+    private void setFeaturePropertiesFocalMechanism(final SimpleFeature feature, final IQuakeMLEvent event) {
+        final Optional<String> focalMechanismPublicID = event.getFocalMechanismPublicID();
+        if(focalMechanismPublicID.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_PUBLIC_ID.getFieldForFeatureCollection(), focalMechanismPublicID.get());
+        }
+        final Optional<String> strikeValue = event.getFocalMechanismNodalPlanesNodalPlane1StrikeValue();
+        if(strikeValue.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_NODAL_PLANES_NODAL_PLANE_1_STRIKE_VALUE.getFieldForFeatureCollection(), strikeValue.get());
+        }
+        final Optional<String> strikeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty();
+        if(strikeUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_NODAL_PLANES_NODAL_PLANE_1_STRIKE_UNCERTAINTY.getFieldForFeatureCollection(), strikeUncertainty.get());
+        }
+        final Optional<String> dipValue = event.getFocalMechanismNodalPlanesNodalPlane1DipValue();
+        if(dipValue.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_NODAL_PLANES_NODAL_PLANE_1_DIP_VALUE.getFieldForFeatureCollection(), dipValue.get());
+        }
+        final Optional<String> dipUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty();
+        if(dipUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_NODAL_PLANES_NODAL_PLANE_1_DIP_UNCERTAINTY.getFieldForFeatureCollection(), dipUncertainty.get());
+        }
+        final Optional<String> rakeValue = event.getFocalMechanismNodalPlanesNodalPlane1RakeValue();
+        if(rakeValue.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_NODAL_PLANES_NODAL_PLANE_1_RAKE_VALUE.getFieldForFeatureCollection(), rakeValue.get());
+        }
+        final Optional<String> rakeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1RakeUncertainty();
+        if(rakeUncertainty.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_NODAL_PLANES_NODAL_PLANE_1_RAKE_UNCERTAINTY.getFieldForFeatureCollection(), rakeUncertainty.get());
+        }
+        final Optional<String> preferredPlane = event.getFocalMechanismNodalPlanesPreferredNodalPlane();
+        if(preferredPlane.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.FOCAL_MECHANISM_NODAL_PLANES_PREFERRED_PLANE.getFieldForFeatureCollection(), preferredPlane.get());
         }
     }
 
-    private String getChildNodeValueById(XmlObject child, String id) {
-        String[] nestedChilds = id.split("\\.");
-        if (nestedChilds.length == 1) {
-            XmlObject[] nList = child.selectChildren(new QName(nestedChilds[0]));
-            if (nList.length > 0) {
-                XmlObject nChild = nList[0];
-                return nChild.newCursor().getTextValue();
-            }
-        } else {
-            final XmlObject[] nList = child.selectChildren(new QName(nestedChilds[0]));
-            String restID = id.substring(id.indexOf(".")+1);
-            if (nList.length > 0) {
-                XmlObject nChild = nList[0];
-                return getChildNodeValueById(nChild, restID);
-            }
+    private void setFeaturePropertiesAmplitude(final SimpleFeature feature, final IQuakeMLEvent event) {
+        final Optional<String> amplitudePublicID = event.getAmplitudePublicID();
+        if(amplitudePublicID.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.AMPLITUDE_PUBLIC_ID.getFieldForFeatureCollection(), amplitudePublicID.get());
         }
-        return null;
+        final Optional<String> type = event.getAmplitudeType();
+        if(type.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.AMPLITUDE_TYPE.getFieldForFeatureCollection(), type.get());
+        }
+        final Optional<String> value = event.getAmplitudeGenericAmplitudeValue();
+        if(value.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.AMPLITUDE_GENERIC_AMPLITUDE_VALUE.getFieldForFeatureCollection(), value.get());
+        }
     }
 
-    private Coordinate getCoordinate(XmlObject eventElem) {
-        // get origin:
-        final XmlObject origin = eventElem.selectChildren(new QName("origin"))[0];
-        // get latitude:
-        final XmlObject latitude = origin.selectChildren(new QName("latitude"))[0];
-        final String lat = latitude.selectChildren(new QName("value"))[0].newCursor().getTextValue();
-        // get longitude:
-        final XmlObject longitude = origin.selectChildren(new QName("longitude"))[0];
-        final String lng = longitude.selectChildren(new QName("value"))[0].newCursor().getTextValue();
+    private void setFeatureProperties(final SimpleFeature feature, final IQuakeMLEvent event) {
 
+        feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.PREFERRED_ORIGIN_ID.getFieldForFeatureCollection(), event.getPreferredOriginID().get());
+        feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.PREFERRED_MAGNITUDE_ID.getFieldForFeatureCollection(), event.getPreferredMagnitudeID().get());
+        feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.TYPE.getFieldForFeatureCollection(), event.getType().get());
+        final Optional<String> description = event.getDescription();
+        if(description.isPresent()) {
+            feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.DESCRIPTION_TEXT.getFieldForFeatureCollection(), description.get());
+        }
+        setFeaturePropertiesOrigin(feature, event);
+        setFeaturePropertiesOriginUncertainty(feature, event);
+        setFeaturePropertiesMagnitude(feature, event);
+        setFeaturePropertiesFocalMechanism(feature, event);
+        setFeaturePropertiesAmplitude(feature, event);
+    }
+
+    private Coordinate getCoordinate(IQuakeMLEvent event) {
         return new Coordinate(
-                Double.parseDouble(lng),
-                Double.parseDouble(lat)
+                event.getOriginLongitudeValue(),
+                event.getOriginLatitudeValue()
         );
     }
 
-    private SimpleFeature getFeatureFromEvent(XmlObject event, SimpleFeatureType sft) {
-        final String id = event.selectAttribute(new QName("publicID")).newCursor().getTextValue();
+    private SimpleFeature getFeatureFromEvent(IQuakeMLEvent event, SimpleFeatureType sft) {
+        final String id = event.getPublicID();
         final Point point = new GeometryFactory().createPoint(getCoordinate(event));
         return GTHelper.createFeature(id, point, sft);
     }
@@ -267,55 +294,8 @@ public class QuakeMLToFeatureCollectionConverter implements IConvertFormat<XmlOb
 
         builder.add("the_geom", Point.class);
 
-        for(final String featureAttribute : Arrays.asList(
-                "preferredOriginID",
-                "preferredMagnitudeID",
-                "type",
-                "description.text",
-                "origin.publicID",
-                "origin.time.value",
-                "origin.time.uncertainty",
-                "origin.depth.value",
-                "origin.depth.uncertainty",
-                "origin.depthType",
-                "origin.timeFixed",
-                "origin.epicenterFixed",
-                "origin.referenceSystemID",
-                "origin.type",
-                "origin.creationInfo.value",
-                "origin.quality.azimuthalGap",
-                "origin.quality.minimumDistance",
-                "origin.quality.maximumDistance",
-                "origin.quality.usedPhaseCount",
-                "origin.quality.usedStationCount",
-                "origin.quality.standardError",
-                "origin.evaluationMode",
-                "origin.evaluationStatus",
-                "originUncertainty.horizontalUncertainty",
-                "originUncertainty.minHorizontalUncertainty",
-                "originUncertainty.maxHorizontalUncertainty",
-                "originUncertainty.azimuthMaxHorizontalUncertainty",
-                "magnitude.publicID",
-                "magnitude.mag.value",
-                "magnitude.mag.uncertainty",
-                "magnitude.type",
-                "magnitude.evaluationStatus",
-                "magnitude.originID",
-                "magnitude.stationCount",
-                "magnitude.creationInfo.value",
-                "focalMechanism.publicID",
-                "focalMechanism.nodalPlanes.nodalPlane1.strike.value",
-                "focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty",
-                "focalMechanism.nodalPlanes.nodalPlane1.dip.value",
-                "focalMechanism.nodalPlanes.nodalPlane1.dip.uncertainty",
-                "focalMechanism.nodalPlanes.nodalPlane1.rake.value",
-                "focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty",
-                "focalMechanism.nodalPlanes.preferredPlane",
-                "amplitude.publicID",
-                "amplitude.type",
-                "amplitude.genericAmplitude.value"
-        )) {
-            builder.add(featureAttribute, String.class);
+        for(final QuakeMLSimpleFeatureCollectionImpl.Fields field : QuakeMLSimpleFeatureCollectionImpl.Fields.values()) {
+            builder.add(field.getFieldForFeatureCollection(), field.getClassForField());
         }
 
         return builder.buildFeatureType();
