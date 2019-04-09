@@ -41,10 +41,28 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+/**
+ * This is a implementation to query the quakeML data from an internal
+ * SimpleFeatureCollection.
+ *
+ * While there may be more ways to represent quakeML in an feature collection,
+ * this is sutable to transform xml quakeml to an feature collection and
+ * to query this data then via the IQuakeML interface.
+ *
+ * Most things are build to provide the best representation in GeoJSON
+ * (so there are mostly no type conversions, and the naming stategy matches the
+ * json structure - by splitting the elements with dots (origin.latitude.uncertainty for example).
+ *
+ * Like QuakeMLXmlImpl this class focus only on the eventParameters and event elements.
+ */
 public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeML {
 
     private final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection;
 
+    /**
+     *
+     * @param featureCollection feature collection with the quakeml data
+     */
     public QuakeMLSimpleFeatureCollectionImpl(final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
         this.featureCollection = featureCollection;
     }
@@ -330,6 +348,12 @@ public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeML {
         }
     }
 
+    /**
+     * Function to transform any quakeml implementation to a feature collection that later could be used
+     * as input for the QuakeMLSimpleFeatureCollectionImpl class
+     * @param quakeML any quakeMl implementation
+     * @return FeatureCollection featurecollection with all the quakeml data
+     */
     public static FeatureCollection<SimpleFeatureType, SimpleFeature> convertToSimpleFeatureCollection(final IQuakeML quakeML) {
         final DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
 
@@ -338,12 +362,12 @@ public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeML {
 
         final SimpleFeatureType sft = createFeatureType();
 
-        // iterate events:
         for(final IQuakeMLEvent event : events) {
 
             final SimpleFeature feature = getFeatureFromEvent(event, sft);
 
             setFeatureProperties(feature, event);
+
             featureCollection.add(feature);
         }
 
@@ -504,11 +528,16 @@ public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeML {
 
     private static void setFeatureProperties(final SimpleFeature feature, final IQuakeMLEvent event) {
 
-        feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.PREFERRED_ORIGIN_ID.getFieldForFeatureCollection(), event.getPreferredOriginID().get());
-        feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.PREFERRED_MAGNITUDE_ID.getFieldForFeatureCollection(), event.getPreferredMagnitudeID().get());
-        feature.setAttribute(QuakeMLSimpleFeatureCollectionImpl.Fields.TYPE.getFieldForFeatureCollection(), event.getType().get());
+        final Optional<String> preferredOriginID = event.getPreferredOriginID();
+        preferredOriginID.ifPresent(new SetAttributeIfPresent(feature, Fields.PREFERRED_ORIGIN_ID));
+        final Optional<String> preferredMagnitudeID = event.getPreferredMagnitudeID();
+        preferredMagnitudeID.ifPresent(new SetAttributeIfPresent(feature, Fields.PREFERRED_MAGNITUDE_ID));
+        final Optional<String> type = event.getType();
+        type.ifPresent(new SetAttributeIfPresent(feature, Fields.TYPE));
+
         final Optional<String> description = event.getDescription();
         description.ifPresent(new SetAttributeIfPresent(feature, Fields.DESCRIPTION_TEXT));
+
         setFeaturePropertiesOrigin(feature, event);
         setFeaturePropertiesOriginUncertainty(feature, event);
         setFeaturePropertiesMagnitude(feature, event);
