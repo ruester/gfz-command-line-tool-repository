@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.formats.quakeml.impl;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,7 +18,6 @@
  *
  */
 
-package org.n52.gfz.riesgos.formats.quakeml.impl;
 
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
@@ -27,9 +28,17 @@ import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLEvent;
 import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * This implementation queries an underlying xml data set to
+ * provide the information for the IQuakeML interface
+ *
+ * Also there is a function to convert any IQuakeML
+ * to an xml structure.
+ */
 public class QuakeMLXmlImpl implements IQuakeML {
 
     /*
@@ -102,6 +111,17 @@ public class QuakeMLXmlImpl implements IQuakeML {
     </focalMechanism>
   </event>
  </eventParameters>
+     *
+     * *******************************************************
+     * This implementation queries mostly this format, however there is the
+     * possibility to have much more information (multiple nodal planes for example).
+     * These information can't be queried with the current approach.
+     * This implementations focus only on the way quakeml is provided by
+     * the program in the following github repository:
+     * https://github.com/GFZ-Centre-for-Early-Warning/quakeledger
+     *
+     * when you look at the QuakeML-BED-1.2.xsd file for the xml-schema-definition,
+     * you can see that this implementation only focus on the EventParameters and the Event types.
      */
 
     private static final QName EVENT = new QName("event");
@@ -187,10 +207,13 @@ public class QuakeMLXmlImpl implements IQuakeML {
                 .collect(Collectors.toList());
     }
 
+    /*
+     * class with the data for a single event
+     */
     private static class QuakeMLEventXmlImpl implements IQuakeMLEvent {
         private final XmlObject event;
 
-        public QuakeMLEventXmlImpl(final XmlObject event) {
+        QuakeMLEventXmlImpl(final XmlObject event) {
             this.event = event;
         }
 
@@ -198,8 +221,6 @@ public class QuakeMLXmlImpl implements IQuakeML {
         public String getPublicID() {
             return event.selectAttribute(PUBLIC_ID).newCursor().getTextValue();
         }
-
-
 
         private Optional<String> getByFirstChildrenWithNLevel(final QName... children) {
             XmlObject searchElement = event;
@@ -259,8 +280,12 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
         @Override
         public double getOriginLatitudeValue() {
-            // must be there to create a point
-            return parseDouble(getByFirstChildrenWithNLevel(ORIGIN, LATITUDE, VALUE).get());
+            final Optional<String> str = getByFirstChildrenWithNLevel(ORIGIN, LATITUDE, VALUE);
+            if(str.isPresent()) {
+                final String doubleStr = str.get();
+                return parseDouble(doubleStr);
+            }
+            return Double.NaN;
         }
 
 
@@ -279,8 +304,12 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
         @Override
         public double getOriginLongitudeValue() {
-            // must be there
-            return parseDouble(getByFirstChildrenWithNLevel(ORIGIN, LONGITUDE, VALUE).get());
+            final Optional<String> str = getByFirstChildrenWithNLevel(ORIGIN, LONGITUDE, VALUE);
+            if(str.isPresent()) {
+                final String doubleStr = str.get();
+                return parseDouble(doubleStr);
+            }
+            return Double.NaN;
         }
 
         @Override
@@ -484,13 +513,18 @@ public class QuakeMLXmlImpl implements IQuakeML {
         }
     }
 
+    /**
+     * Converts any IQuakeML to an XmlObject
+     * @param quakeML
+     * @return XmlObject
+     */
     public static XmlObject convertToXml(final IQuakeML quakeML) {
 
         final XmlObject result = XmlObject.Factory.newInstance();
         final XmlCursor cursor = result.newCursor();
         cursor.toFirstContentToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.EVENT_PARAMETERS);
+        cursor.beginElement(EVENT_PARAMETERS);
         cursor.insertAttributeWithValue("namespace", "http://quakeml.org/xmlns/quakeml/1.2");
 
         for(final IQuakeMLEvent event : quakeML.getEvents()) {
@@ -503,35 +537,59 @@ public class QuakeMLXmlImpl implements IQuakeML {
         return result;
     }
 
+    private static class InsertElementWithText implements Consumer<String> {
+        private final XmlCursor cursor;
+        private final QName qName;
+
+        InsertElementWithText(final XmlCursor cursor, final QName qName) {
+            this.cursor = cursor;
+            this.qName = qName;
+        }
+
+        @Override
+        public void accept(final String value) {
+            cursor.insertElementWithText(qName, value);
+        }
+    }
+
+    private static class InsertAttributeWithText implements Consumer<String> {
+        private final XmlCursor cursor;
+        private final QName qName;
+
+        InsertAttributeWithText(final XmlCursor cursor, final QName qName) {
+            this.cursor = cursor;
+            this.qName = qName;
+        }
+
+        @Override
+        public void accept(final String value) {
+            cursor.insertAttributeWithValue(qName, value);
+        }
+    }
+
 
     private static XmlObject convertFeatureToXml(final IQuakeMLEvent event) {
         final XmlObject result = XmlObject.Factory.newInstance();
         final XmlCursor cursor = result.newCursor();
 
         cursor.toFirstContentToken();
-        cursor.beginElement(QuakeMLXmlImpl.EVENT);
+        cursor.beginElement(EVENT);
         final String publicID = event.getPublicID();
-        cursor.insertAttributeWithValue(QuakeMLXmlImpl.PUBLIC_ID, publicID);
+        cursor.insertAttributeWithValue(PUBLIC_ID, publicID);
 
         final Optional<String> preferredOriginID = event.getPreferredOriginID();
-        if(preferredOriginID.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.PREFERRED_ORIGIN_ID, preferredOriginID.get());
-        }
+        preferredOriginID.ifPresent(new InsertElementWithText(cursor, PREFERRED_ORIGIN_ID));
 
         final Optional<String> preferredMagnitudeID = event.getPreferredMagnitudeID();
-        if(preferredMagnitudeID.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.PREFERRED_MAGNITUDE_ID, preferredMagnitudeID.get());
-        }
+        preferredMagnitudeID.ifPresent(new InsertElementWithText(cursor, PREFERRED_MAGNITUDE_ID));
 
         final Optional<String> type = event.getType();
-        if(type.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.TYPE, type.get());
-        }
+        type.ifPresent(new InsertElementWithText(cursor, TYPE));
 
         final Optional<String> descriptionText = event.getDescription();
         if(descriptionText.isPresent()) {
-            cursor.beginElement(QuakeMLXmlImpl.DESCRIPTION);
-            cursor.insertElementWithText(QuakeMLXmlImpl.TEXT, descriptionText.get());
+            cursor.beginElement(DESCRIPTION);
+            cursor.insertElementWithText(TEXT, descriptionText.get());
             cursor.toNextToken();
         }
 
@@ -557,81 +615,65 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
         cursor.toFirstContentToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.ORIGIN);
+        cursor.beginElement(ORIGIN);
 
         final Optional<String> originPublicID = event.getOriginPublicID();
-        if(originPublicID.isPresent()) {
-            cursor.insertAttributeWithValue(QuakeMLXmlImpl.PUBLIC_ID, originPublicID.get());
-        }
+        originPublicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
 
-        cursor.beginElement(QuakeMLXmlImpl.TIME);
+        cursor.beginElement(TIME);
+
         final Optional<String> timeValue = event.getOriginTimeValue();
-        if(timeValue.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, timeValue.get());
-        }
+        timeValue.ifPresent(new InsertElementWithText(cursor, VALUE));
 
         final Optional<String> timeUncertainty = event.getOriginTimeUncertainty();
-        if(timeUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, timeUncertainty.get());
-        }
+        timeUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
+
         cursor.toNextToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.LATITUDE);
-        cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, String.valueOf(event.getOriginLatitudeValue()));
+        cursor.beginElement(LATITUDE);
+
+        cursor.insertElementWithText(VALUE, String.valueOf(event.getOriginLatitudeValue()));
         final Optional<String> latitudeUncertainty = event.getOriginLatitudeUncertainty();
-        if(latitudeUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, latitudeUncertainty.get());
-        }
+        latitudeUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
+
         cursor.toNextToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.LONGITUDE);
-        cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, String.valueOf(event.getOriginLongitudeValue()));
+        cursor.beginElement(LONGITUDE);
+
+        cursor.insertElementWithText(VALUE, String.valueOf(event.getOriginLongitudeValue()));
         final Optional<String> longitudeUncertainty = event.getOriginLongitudeUncertainty();
-        if(longitudeUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, longitudeUncertainty.get());
-        }
+        longitudeUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
+
         cursor.toNextToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.DEPTH);
+        cursor.beginElement(DEPTH);
+
         final Optional<String> depthValue = event.getOriginDepthValue();
-        if(depthValue.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, depthValue.get());
-        }
+        depthValue.ifPresent(new InsertElementWithText(cursor, VALUE));
         final Optional<String> depthUncertainty = event.getOriginDepthUncertainty();
-        if(depthUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, depthUncertainty.get());
-        }
+        depthUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
+
         cursor.toNextToken();
 
         final Optional<String> depthType = event.getOriginDepthType();
-        if(depthType.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.DEPTH_TYPE, depthType.get());
-        }
+        depthType.ifPresent(new InsertElementWithText(cursor, DEPTH_TYPE));
 
         final Optional<String> timeFixed = event.getOriginTimeFixed();
-        if(timeFixed.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.TIME_FIXED, timeFixed.get());
-        }
+        timeFixed.ifPresent(new InsertElementWithText(cursor, TIME_FIXED));
 
         final Optional<String> epicenterFixed = event.getOriginEpicenterFixed();
-        if(epicenterFixed.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.EPICENTER_FIXED, epicenterFixed.get());
-        }
+        epicenterFixed.ifPresent(new InsertElementWithText(cursor, EPICENTER_FIXED));
 
         final Optional<String> referenceSystemID = event.getOriginReferenceSystemID();
-        if(referenceSystemID.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.REFERENCE_SYSTEM_ID, referenceSystemID.get());
-        }
+        referenceSystemID.ifPresent(new InsertElementWithText(cursor, REFERENCE_SYSTEM_ID));
 
         final Optional<String> type = event.getOriginType();
-        if(type.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.TYPE, type.get());
-        }
+        type.ifPresent(new InsertElementWithText(cursor, TYPE));
 
         final Optional<String> creationInfo = event.getOriginCreationInfoValue();
         if(creationInfo.isPresent()) {
-            cursor.beginElement(QuakeMLXmlImpl.CREATION_INFO);
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, creationInfo.get());
+            cursor.beginElement(CREATION_INFO);
+            cursor.insertElementWithText(VALUE, creationInfo.get());
             cursor.toNextToken();
         }
 
@@ -646,41 +688,22 @@ public class QuakeMLXmlImpl implements IQuakeML {
         if(Stream.of(qualityAzimuthalGap, qualityMinimumDistance, qualityMaximumDistance,
                 qualityUsedPhaseCount, qualityUsedStationCount, qualityStandardError).anyMatch(Optional::isPresent)) {
 
-            cursor.beginElement(QuakeMLXmlImpl.QUALITY);
+            cursor.beginElement(QUALITY);
 
-            if (qualityAzimuthalGap.isPresent()) {
-                cursor.insertElementWithText(QuakeMLXmlImpl.AZIMUTHAL_GAP, qualityAzimuthalGap.get());
-            }
-            if (qualityMinimumDistance.isPresent()) {
-                cursor.insertElementWithText(QuakeMLXmlImpl.MINIMUM_DISTANCE, qualityMinimumDistance.get());
-            }
-            if (qualityMaximumDistance.isPresent()) {
-                cursor.insertElementWithText(QuakeMLXmlImpl.MAXIMUM_DISTANCE, qualityMaximumDistance.get());
-            }
-            if (qualityUsedPhaseCount.isPresent()) {
-                cursor.insertElementWithText(QuakeMLXmlImpl.USED_PHASE_COUNT, qualityUsedPhaseCount.get());
-            }
-            if (qualityUsedStationCount.isPresent()) {
-                cursor.insertElementWithText(QuakeMLXmlImpl.USED_STATION_COUNT, qualityUsedStationCount.get());
-            }
-            if (qualityStandardError.isPresent()) {
-                cursor.insertElementWithText(QuakeMLXmlImpl.STANDARD_ERROR, qualityStandardError.get());
-            }
-
+            qualityAzimuthalGap.ifPresent(new InsertElementWithText(cursor, AZIMUTHAL_GAP));
+            qualityMinimumDistance.ifPresent(new InsertElementWithText(cursor, MINIMUM_DISTANCE));
+            qualityMaximumDistance.ifPresent(new InsertElementWithText(cursor, MAXIMUM_DISTANCE));
+            qualityUsedPhaseCount.ifPresent(new InsertElementWithText(cursor, USED_PHASE_COUNT));
+            qualityUsedStationCount.ifPresent(new InsertElementWithText(cursor, USED_STATION_COUNT));
+            qualityStandardError.ifPresent(new InsertElementWithText(cursor, STANDARD_ERROR));
 
             cursor.toNextToken();
         }
 
         final Optional<String> evaluationMode = event.getOriginEvaluationMode();
-        if(evaluationMode.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.EVALUATION_MODE, evaluationMode.get());
-        }
-
+        evaluationMode.ifPresent(new InsertElementWithText(cursor, EVALUATION_MODE));
         final Optional<String> evaluationStatus = event.getOriginEvaluationStatus();
-        if(evaluationStatus.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.EVALUATION_STATUS, evaluationStatus.get());
-        }
-
+        evaluationStatus.ifPresent(new InsertElementWithText(cursor, EVALUATION_STATUS));
 
         cursor.dispose();
 
@@ -693,23 +716,16 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
         cursor.toFirstContentToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.ORIGIN_UNCERTAINTY);
+        cursor.beginElement(ORIGIN_UNCERTAINTY);
+
         final Optional<String> horizontalUncertainty = event.getOriginUncertaintyHorizontalUncertainty();
-        if(horizontalUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.HORIZONTAL_UNCERTAINTY, horizontalUncertainty.get());
-        }
+        horizontalUncertainty.ifPresent(new InsertElementWithText(cursor, HORIZONTAL_UNCERTAINTY));
         final Optional<String> minHorizontalUncertainty = event.getOriginUncertaintyMinHorizontalUncertainty();
-        if(minHorizontalUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.MIN_HORIZONTAL_UNCERTAINTY, minHorizontalUncertainty.get());
-        }
+        minHorizontalUncertainty.ifPresent(new InsertElementWithText(cursor, MIN_HORIZONTAL_UNCERTAINTY));
         final Optional<String> maxHorizontalUncertainty = event.getOriginUncertaintyMaxHorizontalUncertainty();
-        if(maxHorizontalUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.MAX_HORIZONTAL_UNCERTAINTY, maxHorizontalUncertainty.get());
-        }
+        maxHorizontalUncertainty.ifPresent(new InsertElementWithText(cursor, MAX_HORIZONTAL_UNCERTAINTY));
         final Optional<String> azimuthMaxHorizontalUncertainty = event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty();
-        if(azimuthMaxHorizontalUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY, azimuthMaxHorizontalUncertainty.get());
-        }
+        azimuthMaxHorizontalUncertainty.ifPresent(new InsertElementWithText(cursor, AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY));
 
         cursor.toNextToken();
 
@@ -724,50 +740,36 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
         cursor.toFirstContentToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.MAGNITUDE);
+        cursor.beginElement(MAGNITUDE);
         final Optional<String> publicID = event.getMagnitudePublicID();
-        if(publicID.isPresent()) {
-            cursor.insertAttributeWithValue(QuakeMLXmlImpl.PUBLIC_ID, publicID.get());
-        }
+        publicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
 
-        cursor.beginElement(QuakeMLXmlImpl.MAG);
+        cursor.beginElement(MAG);
 
         final Optional<String> magValue = event.getMagnitudeMagValue();
-        if(magValue.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, magValue.get());
-        }
+        magValue.ifPresent(new InsertElementWithText(cursor, VALUE));
         final Optional<String> magUncertainty = event.getMagnitudeMagUncertainty();
-        if(magUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, magUncertainty.get());
-        }
+        magUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
 
         cursor.toNextToken();
 
 
         final Optional<String> type = event.getMagnitudeType();
-        if(type.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.TYPE, type.get());
-        }
+        type.ifPresent(new InsertElementWithText(cursor, TYPE));
 
         final Optional<String> evaluationStatus = event.getMagnitudeEvaluationStatus();
-        if(evaluationStatus.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.EVALUATION_STATUS, evaluationStatus.get());
-        }
+        evaluationStatus.ifPresent(new InsertElementWithText(cursor, EVALUATION_STATUS));
 
         final Optional<String> originID = event.getMagnitudeOriginID();
-        if(originID.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.ORIGIN_ID, originID.get());
-        }
+        originID.ifPresent(new InsertElementWithText(cursor, ORIGIN_ID));
 
         final Optional<String> stationCount = event.getMagnitudeStationCount();
-        if(stationCount.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.STATION_COUNT, stationCount.get());
-        }
+        stationCount.ifPresent(new InsertElementWithText(cursor, STATION_COUNT));
 
         final Optional<String> creationInfo = event.getMagnitudeCreationInfoValue();
         if(creationInfo.isPresent()) {
-            cursor.beginElement(QuakeMLXmlImpl.CREATION_INFO);
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, creationInfo.get());
+            cursor.beginElement(CREATION_INFO);
+            cursor.insertElementWithText(VALUE, creationInfo.get());
             cursor.toNextToken();
         }
 
@@ -783,53 +785,41 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
         cursor.toFirstContentToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.FOCAL_MECHANISM);
+        cursor.beginElement(FOCAL_MECHANISM);
         final Optional<String> publicID = event.getFocalMechanismPublicID();
-        if(publicID.isPresent()) {
-            cursor.insertAttributeWithValue(QuakeMLXmlImpl.PUBLIC_ID, publicID.get());
-        }
+        publicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
 
-        cursor.beginElement(QuakeMLXmlImpl.NODAL_PLANES);
-        cursor.beginElement(QuakeMLXmlImpl.NODAL_PLANE_1);
-        cursor.beginElement(QuakeMLXmlImpl.STRIKE);
+        cursor.beginElement(NODAL_PLANES);
+        cursor.beginElement(NODAL_PLANE_1);
+        cursor.beginElement(STRIKE);
+
         final Optional<String> strikeValue = event.getFocalMechanismNodalPlanesNodalPlane1StrikeValue();
-        if(strikeValue.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, strikeValue.get());
-        }
+        strikeValue.ifPresent(new InsertElementWithText(cursor, VALUE));
         final Optional<String> strikeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty();
-        if(strikeUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, strikeUncertainty.get());
-        }
+        strikeUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
+
         cursor.toNextToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.DIP);
+        cursor.beginElement(DIP);
         final Optional<String> dipValue = event.getFocalMechanismNodalPlanesNodalPlane1DipValue();
-        if(dipValue.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, dipValue.get());
-        }
+        dipValue.ifPresent(new InsertElementWithText(cursor, VALUE));
         final Optional<String> dipUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty();
-        if(dipUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, dipUncertainty.get());
-        }
+        dipUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
+
         cursor.toNextToken();
 
-        cursor.beginElement(QuakeMLXmlImpl.RAKE);
+        cursor.beginElement(RAKE);
         final Optional<String> rakeValue = event.getFocalMechanismNodalPlanesNodalPlane1RakeValue();
-        if(rakeValue.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, rakeValue.get());
-        }
+        rakeValue.ifPresent(new InsertElementWithText(cursor, VALUE));
         final Optional<String> rakeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1RakeUncertainty();
-        if(rakeUncertainty.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.UNCERTAINTY, rakeUncertainty.get());
-        }
+        rakeUncertainty.ifPresent(new InsertElementWithText(cursor, UNCERTAINTY));
+
         cursor.toNextToken();
 
         cursor.toNextToken();
 
         final Optional<String> preferredPlane = event.getFocalMechanismNodalPlanesPreferredNodalPlane();
-        if(preferredPlane.isPresent()) {
-            cursor.insertElementWithText(QuakeMLXmlImpl.PREFERRED_PLANE, preferredPlane.get());
-        }
+        preferredPlane.ifPresent(new InsertElementWithText(cursor, PREFERRED_PLANE));
 
         cursor.dispose();
 
@@ -848,19 +838,14 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
         if(Stream.of(publicID, type, genericAmplitudeValue).anyMatch(Optional::isPresent)) {
 
-            cursor.beginElement(QuakeMLXmlImpl.AMPLITUDE);
+            cursor.beginElement(AMPLITUDE);
 
-
-            if (publicID.isPresent()) {
-                cursor.insertAttributeWithValue(QuakeMLXmlImpl.PUBLIC_ID, publicID.get());
-            }
-            if (type.isPresent()) {
-                cursor.insertElementWithText(QuakeMLXmlImpl.TYPE, type.get());
-            }
+            publicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
+            type.ifPresent(new InsertElementWithText(cursor, TYPE));
 
             if (genericAmplitudeValue.isPresent()) {
-                cursor.beginElement(QuakeMLXmlImpl.GENERIC_AMPLITUDE);
-                cursor.insertElementWithText(QuakeMLXmlImpl.VALUE, genericAmplitudeValue.get());
+                cursor.beginElement(GENERIC_AMPLITUDE);
+                cursor.insertElementWithText(VALUE, genericAmplitudeValue.get());
             }
         }
         cursor.dispose();
