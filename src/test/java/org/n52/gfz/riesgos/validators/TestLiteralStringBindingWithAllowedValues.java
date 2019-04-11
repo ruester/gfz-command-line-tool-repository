@@ -28,8 +28,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Test case for LiteralStringBindingWithAllowedValues
@@ -83,5 +85,24 @@ public class TestLiteralStringBindingWithAllowedValues {
         final Optional<String> errorMessage = validator.check(value);
 
         assertTrue("There is a message indicating that there is a problem with the data", errorMessage.isPresent());
+    }
+
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final ICheckDataAndGetErrorMessage validator1 = new LiteralStringBindingWithAllowedValues(Arrays.asList("1", "2", "3"));
+        final ICheckDataAndGetErrorMessage validator2 = new LiteralStringBindingWithAllowedValues(Arrays.asList("1", "2", "3"));
+
+        assertEquals("Both are the same", validator1, validator2);
+
+        final ICheckDataAndGetErrorMessage validator3 = new LiteralStringBindingWithAllowedValues(Arrays.asList("3", "2", "1"));
+
+        assertEquals("There should be the same no matter of the values", validator1, validator3);
+
+        final ICheckDataAndGetErrorMessage validator4 = new LiteralStringBindingWithAllowedValues(Arrays.asList("6", "7"));
+
+        assertNotEquals("The fourth one is different", validator1, validator4);
     }
 }

@@ -22,6 +22,7 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -58,5 +59,22 @@ public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetEr
         }
 
         return error;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        LiteralStringBindingWithAllowedValues that = (LiteralStringBindingWithAllowedValues) o;
+        return Objects.equals(allowedValues, that.allowedValues);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(allowedValues);
     }
 }
