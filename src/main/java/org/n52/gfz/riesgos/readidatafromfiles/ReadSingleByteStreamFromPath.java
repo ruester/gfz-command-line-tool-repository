@@ -26,6 +26,7 @@ import org.n52.wps.io.data.IData;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * Implementation that reads a single byte array for one single file.
@@ -50,5 +51,22 @@ public class ReadSingleByteStreamFromPath implements IReadIDataFromFiles {
 
         final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
         return converter.convertToIData(content);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ReadSingleByteStreamFromPath that = (ReadSingleByteStreamFromPath) o;
+        return Objects.equals(converter, that.converter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(converter);
     }
 }
