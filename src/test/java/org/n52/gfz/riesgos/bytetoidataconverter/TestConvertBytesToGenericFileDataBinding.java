@@ -30,6 +30,9 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class TestConvertBytesToGenericFileDataBinding {
 
+    /**
+     * Tests if two instances are equal
+     */
     @Test
     public void testEquals() {
         final IConvertByteArrayToIData converter1 = new ConvertBytesToGenericFileDataBinding();

@@ -113,4 +113,15 @@ public class TestConvertBytesToGenericXMLDataBinding {
         }
 
     }
+
+    /**
+     * Tests if two instances are equal
+     */
+    @Test
+    public void testEquals() {
+        final IConvertByteArrayToIData converter1 = new ConvertBytesToGenericXMLDataBinding();
+        final IConvertByteArrayToIData converter2 = new ConvertBytesToGenericXMLDataBinding();
+
+        assertEquals("Both are the same", converter1, converter2);
+    }
 }
