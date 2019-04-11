@@ -46,8 +46,7 @@ public class ConvertBytesToGeotiffBinding implements IConvertByteArrayToIData {
                 IOUtils.write(content, writer);
             }
 
-            final GeotiffBinding binding = new GeotiffBinding(tempFile);
-            return binding;
+            return new GeotiffBinding(tempFile);
         } catch(final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
@@ -58,10 +57,7 @@ public class ConvertBytesToGeotiffBinding implements IConvertByteArrayToIData {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        return true;
+        return o != null && getClass() == o.getClass();
     }
 
     @Override

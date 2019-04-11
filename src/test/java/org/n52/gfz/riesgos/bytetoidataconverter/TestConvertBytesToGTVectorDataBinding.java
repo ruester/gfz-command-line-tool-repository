@@ -18,32 +18,24 @@ package org.n52.gfz.riesgos.bytetoidataconverter;
  *
  */
 
+import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
-import java.util.Objects;
+import static junit.framework.TestCase.assertEquals;
 
 /**
- * Function to convert bytes to a literal string binding
+ * Testclass for ConvertBytesToGTVectorDataBinding
  */
-public class ConvertBytesToLiteralStringBinding implements IConvertByteArrayToIData {
+public class TestConvertBytesToGTVectorDataBinding {
 
-    @Override
-    public IData convertToIData(final byte[] content) {
-        return new LiteralStringBinding(new String(content));
-    }
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IConvertByteArrayToIData converter1 = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
+        final IConvertByteArrayToIData converter2 = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        return o != null && getClass() == o.getClass();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getClass().getName());
+        assertEquals("Both converter are the same", converter1, converter2);
     }
 }
