@@ -23,6 +23,7 @@ import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -67,6 +68,14 @@ public class TestExceptionIfExitValueIsNotEmptyHandler {
         } catch(final NonZeroExitValueException exception) {
             assertNotNull("There is an exception", exception);
         }
+    }
+
+    @Test
+    public void testEquals() {
+        final IExitValueHandler handler1 = new ExceptionIfExitValueIsNotEmptyHandler();
+        final IExitValueHandler handler2 = new ExceptionIfExitValueIsNotEmptyHandler();
+
+        assertEquals("both must be equal", handler1, handler2);
     }
 
 

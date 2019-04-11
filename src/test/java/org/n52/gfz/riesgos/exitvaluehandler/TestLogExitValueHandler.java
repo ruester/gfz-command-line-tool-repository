@@ -76,5 +76,16 @@ public class TestLogExitValueHandler {
         }
     }
 
+    /**
+     * Test equality
+     */
+    @Test
+    public void testEquals() {
+        final IExitValueHandler handler1 = new LogExitValueHandler();
+        final IExitValueHandler handler2 = new LogExitValueHandler();
+
+        assertEquals("Both are the same", handler1, handler2);
+    }
+
 
 }

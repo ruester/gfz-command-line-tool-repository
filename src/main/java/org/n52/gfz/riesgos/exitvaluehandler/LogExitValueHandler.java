@@ -19,6 +19,8 @@ package org.n52.gfz.riesgos.exitvaluehandler;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 
+import java.util.Objects;
+
 /**
  * Handler for the exit value that logs the value
  */
@@ -27,5 +29,18 @@ public class LogExitValueHandler implements IExitValueHandler {
     @Override
     public void handleExitValue(int exitValue, final ILogger logger) {
         logger.log("Exit value: " + exitValue);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }
