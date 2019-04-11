@@ -21,8 +21,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
-import org.n52.gfz.riesgos.algorithm.predefinedconfig.QuakeledgerConfiguration;
-import org.n52.gfz.riesgos.algorithm.predefinedconfig.ShakygroundConfiguration;
+import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ProcessDescription;
@@ -143,13 +142,13 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 final String title = (String) process.get("title");
                 final String imageId = (String) process.get("imageId");
                 if("Quakeledger".equals(title)) {
-                    final Logger logger = LoggerFactory.getLogger(QuakeledgerConfiguration.class);
-                    final IAlgorithm algorithm = new BaseGfzRiesgosService(new QuakeledgerConfiguration(imageId), logger);
+                    final Logger logger = LoggerFactory.getLogger(title);
+                    final IAlgorithm algorithm = new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(imageId), logger);
                     final AlgorithmData data = new AlgorithmData(title, algorithm);
                     result.add(data);
                 } else if("Shakyground".equals(title)) {
-                    final Logger logger = LoggerFactory.getLogger(ShakygroundConfiguration.class);
-                    final IAlgorithm algorithm = new BaseGfzRiesgosService(new ShakygroundConfiguration(imageId), logger);
+                    final Logger logger = LoggerFactory.getLogger(title);
+                    final IAlgorithm algorithm = new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(imageId), logger);
                     final AlgorithmData data = new AlgorithmData(title, algorithm);
                     result.add(data);
                 }

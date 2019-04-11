@@ -27,6 +27,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.wps.io.data.IData;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -158,6 +159,36 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         return Optional.ofNullable(schema);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        IdentifierWithBindingImpl that = (IdentifierWithBindingImpl) o;
+        return Objects.equals(identifier, that.identifier) &&
+                Objects.equals(bindingClass, that.bindingClass) &&
+                Objects.equals(validator, that.validator) &&
+                Objects.equals(functionToTransformToCmd, that.functionToTransformToCmd) &&
+                Objects.equals(path, that.path) &&
+                Objects.equals(functionToWriteToFiles, that.functionToWriteToFiles) &&
+                Objects.equals(functionToWriteToStdin, that.functionToWriteToStdin) &&
+                Objects.equals(functionToHandleStderr, that.functionToHandleStderr) &&
+                Objects.equals(functionToHandleExitValue, that.functionToHandleExitValue) &&
+                Objects.equals(functionToHandleStdout, that.functionToHandleStdout) &&
+                Objects.equals(functionToReadFromFiles, that.functionToReadFromFiles) &&
+                Objects.equals(allowedValues, that.allowedValues) &&
+                Objects.equals(defaultValue, that.defaultValue) &&
+                Objects.equals(supportedCRSForBBox, that.supportedCRSForBBox) &&
+                Objects.equals(schema, that.schema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, bindingClass, validator, functionToTransformToCmd, path, functionToWriteToFiles, functionToWriteToStdin, functionToHandleStderr, functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles, allowedValues, defaultValue, supportedCRSForBBox, schema);
+    }
 
     /**
      * Builder for the Implementation
