@@ -1,4 +1,4 @@
-package org.n52.gfz.riesgos.configuration.parse;
+package org.n52.gfz.riesgos.exceptions;
 
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
@@ -18,10 +18,16 @@ package org.n52.gfz.riesgos.configuration.parse;
  *
  */
 
-import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
-public interface IParseConfiguration {
+/**
+ * Exception on parsing
+ */
+public class ParseConfigurationException extends Exception {
+    public ParseConfigurationException(final Throwable cause) {
+        super(cause);
+    }
 
-    public IConfiguration parse(final String inputText) throws ParseConfigurationException;
+    public ParseConfigurationException(final String message) {
+        super(message);
+    }
 }
