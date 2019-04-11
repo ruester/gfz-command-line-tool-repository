@@ -25,6 +25,7 @@ import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Function to convert an IData to a String.
@@ -59,5 +60,22 @@ public class LiteralBooleanBindingToStringCmd implements IConvertIDataToCommandL
         }
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        LiteralBooleanBindingToStringCmd that = (LiteralBooleanBindingToStringCmd) o;
+        return Objects.equals(commandLineFlag, that.commandLineFlag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(commandLineFlag);
     }
 }

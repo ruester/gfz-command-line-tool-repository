@@ -25,10 +25,12 @@ import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
+import javax.swing.*;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -73,6 +75,9 @@ public class TestLiteralIntBindingToStringCmd {
         }
     }
 
+    /**
+     * test with a default flag
+     */
     @Test
     public void testWithDefaultFlat() {
         final IData iData = new LiteralIntBinding(1);
@@ -90,5 +95,24 @@ public class TestLiteralIntBindingToStringCmd {
             fail("Therre should be no exception");
         }
     }
+
+    /**
+     * test for equality
+     */
+    @Test
+    public void testEquals() {
+        final IConvertIDataToCommandLineParameter converter1 = new LiteralIntBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter converter2 = new LiteralIntBindingToStringCmd();
+
+        assertEquals("The converter are equal", converter1, converter2);
+
+        final IConvertIDataToCommandLineParameter converter3 = new LiteralIntBindingToStringCmd(null);
+
+        assertEquals("The thrird is also equal", converter1, converter3);
+
+        final IConvertIDataToCommandLineParameter converter4 = new LiteralIntBindingToStringCmd("--int");
+        assertNotEquals("The fourth is different", converter1, converter4);
+    }
+
 
 }

@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.commandlineparametertransformer;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,13 +18,12 @@
  *
  */
 
-package org.n52.gfz.riesgos.commandlineparametertransformer;
-
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.IData;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class FileToStringCmd implements IConvertIDataToCommandLineParameter {
 
@@ -38,5 +39,22 @@ public class FileToStringCmd implements IConvertIDataToCommandLineParameter {
             return Collections.singletonList(filename);
         }
         throw new ConvertToStringCmdException("There is no filename");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FileToStringCmd that = (FileToStringCmd) o;
+        return Objects.equals(filename, that.filename);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(filename);
     }
 }

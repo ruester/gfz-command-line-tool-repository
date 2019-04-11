@@ -97,4 +97,16 @@ public class TestBoundingBoxDataToStringCmd {
             assertNotNull("There is an exception", exception);
         }
     }
+
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IConvertIDataToCommandLineParameter converter1 = new BoundingBoxDataToStringCmd();
+        final IConvertIDataToCommandLineParameter converter2 = new BoundingBoxDataToStringCmd();
+
+        assertEquals("Both must be equal", converter1, converter2);
+
+    }
 }
