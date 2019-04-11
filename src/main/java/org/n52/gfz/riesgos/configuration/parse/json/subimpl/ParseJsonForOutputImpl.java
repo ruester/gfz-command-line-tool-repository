@@ -23,7 +23,6 @@ import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
 import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
-import java.net.ProxySelector;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ import java.util.stream.Stream;
  */
 public class ParseJsonForOutputImpl {
 
-    final Map<String, FromStdoutOption> optionsToReadFromStdout;
+    private final Map<String, FromStdoutOption> optionsToReadFromStdout;
 
     public ParseJsonForOutputImpl() {
 
