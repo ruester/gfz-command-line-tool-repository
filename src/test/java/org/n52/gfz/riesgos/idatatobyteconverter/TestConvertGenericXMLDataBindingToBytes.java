@@ -85,4 +85,15 @@ public class TestConvertGenericXMLDataBindingToBytes {
         }
 
     }
+
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IConvertIDataToByteArray converter1 = new ConvertGenericXMLDataBindingToBytes();
+        final IConvertIDataToByteArray converter2 = new ConvertGenericXMLDataBindingToBytes();
+
+        assertEquals("Both are the same", converter1, converter2);
+    }
 }

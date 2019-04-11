@@ -25,6 +25,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
+import java.util.Objects;
+
 /**
  * Implementation to convert a GenericXMLDataBinding to a byte array
  */
@@ -40,5 +42,18 @@ public class ConvertGenericXMLDataBindingToBytes implements IConvertIDataToByteA
         } else {
             throw new ConvertToBytesException("Wrong binding class");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

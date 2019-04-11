@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.idatatobyteconverter;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,8 +18,6 @@
  *
  */
 
-package org.n52.gfz.riesgos.idatatobyteconverter;
-
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
@@ -30,6 +30,7 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Testcase for ConvertGenericXMLDataBindingToBytesWithoutHeader
@@ -113,5 +114,20 @@ public class TestConvertGenericXMLDataBindingToBytesWithoutHeader {
         } catch(final XmlException xmlException) {
             fail("There should be no xml exception");
         }
+    }
+
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IConvertIDataToByteArray converter1 = new ConvertGenericXMLDataBindingToBytesWithoutHeader();
+        final IConvertIDataToByteArray converter2 = new ConvertGenericXMLDataBindingToBytesWithoutHeader();
+
+        assertEquals("Both are equal", converter1, converter2);
+
+        final IConvertIDataToByteArray converter3 = new ConvertGenericXMLDataBindingToBytes();
+
+        assertNotEquals("The one with a header is different", converter1, converter3);
     }
 }

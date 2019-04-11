@@ -24,6 +24,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
+import java.util.Objects;
+
 /**
  * Is the same as ConvertGenericXMLDataBindingToBytes,
  * but here an addional fitlering applies.
@@ -49,6 +51,18 @@ public class ConvertGenericXMLDataBindingToBytesWithoutHeader implements IConver
 
     private String removeHeader(final String text) {
         return text.replace(HEADER, "");
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }
