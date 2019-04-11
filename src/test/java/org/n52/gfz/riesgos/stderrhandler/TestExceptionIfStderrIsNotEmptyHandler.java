@@ -23,6 +23,7 @@ import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -84,5 +85,16 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
         } catch(final NonEmptyStderrException exception) {
             fail("There must be no exception");
         }
+    }
+
+    /**
+     * tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IStderrHandler handler1 = new ExceptionIfStderrIsNotEmptyHandler();
+        final IStderrHandler handler2 = new ExceptionIfStderrIsNotEmptyHandler();
+
+        assertEquals("Both are equal", handler1, handler2);
     }
 }
