@@ -24,6 +24,7 @@ import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,10 +35,16 @@ import java.util.stream.Stream;
 public class ParseJsonForOutputImpl {
 
     private final Map<String, FromStdoutOption> optionsToReadFromStdout;
+    private final Map<String, FromFilesOption> optionsToReadFromFiles;
+    private final Map<String, FromStderrOption> optionsToReadFromStderr;
+    private final Map<String, FromExitValueOption> optionsToReadFromExitValue;
 
     public ParseJsonForOutputImpl() {
 
         this.optionsToReadFromStdout = getOptionsToReadFromStdout();
+        this.optionsToReadFromFiles = getOptionsToReadFromFiles();
+        this.optionsToReadFromStderr = getOptionsToReadFromStderr();
+        this.optionsToReadFromExitValue = getOptionsToReadFromExitValue();
     }
 
     private Map<String, FromStdoutOption> getOptionsToReadFromStdout() {
@@ -46,15 +53,56 @@ public class ParseJsonForOutputImpl {
         ));
     }
 
+    private Map<String, FromFilesOption> getOptionsToReadFromFiles() {
+        return Stream.of(FromFilesOption.values()).collect(Collectors.toMap(
+                FromFilesOption::getDataType, Function.identity()
+        ));
+    }
+
+    private Map<String, FromStderrOption> getOptionsToReadFromStderr() {
+        return Stream.of(FromStderrOption.values()).collect(Collectors.toMap(
+                FromStderrOption::getDataType, Function.identity()
+        ));
+    }
+
+    private Map<String, FromExitValueOption> getOptionsToReadFromExitValue() {
+        return Stream.of(FromExitValueOption.values()).collect(Collectors.toMap(
+                FromExitValueOption::getDataType, Function.identity()
+        ));
+    }
+
     public IIdentifierWithBinding parseOutput(final JSONObject json) throws ParseConfigurationException {
         final String identifier = getString(json, "title");
         final String readFrom = getString(json, "readFrom");
+        final String type = getString(json, "type");
+
+        final Optional<String> optionalSchema = getOptionalString(json, "schema");
 
         if("stdout".equals(readFrom)) {
-            final String type = getString(json, "type");
-            if(optionsToReadFromStdout.containsKey(type)) {
-                return optionsToReadFromStdout.get(type).getFactory().create(identifier);
+            if (optionsToReadFromStdout.containsKey(type)) {
+                return optionsToReadFromStdout.get(type).getFactory().create(identifier, optionalSchema.orElse(null));
 
+            } else {
+                throw new ParseConfigurationException("Not supported type value");
+            }
+        } else if("stderr".equals(readFrom)) {
+            if (optionsToReadFromStderr.containsKey(type)) {
+                return optionsToReadFromStderr.get(type).getFactory().create(identifier);
+            } else {
+                throw new ParseConfigurationException("Not supported type value");
+            }
+        } else if("exitValue".equals(readFrom)) {
+            if(optionsToReadFromExitValue.containsKey(type)) {
+                return optionsToReadFromExitValue.get(type).getFactory().create(identifier);
+            } else {
+                throw new ParseConfigurationException("Not supported type value");
+            }
+        } else if("file".equals(readFrom)) {
+
+            final String path = getString(json, "path");
+
+            if(optionsToReadFromFiles.containsKey(type)) {
+                return optionsToReadFromFiles.get(type).getFactory().create(identifier, path, optionalSchema.orElse(null));
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
@@ -74,13 +122,28 @@ public class ParseJsonForOutputImpl {
         return (String) rawValue;
     }
 
+    private Optional<String> getOptionalString(final JSONObject json, final String key) throws ParseConfigurationException {
+        final Optional<String> result;
+        if(json.containsKey(key)) {
+            final Object rawValue = json.get(key);
+            if(! (rawValue instanceof String)) {
+                throw new ParseConfigurationException("Wrong type for element '" + key + "', expected a String");
+            }
+            result = Optional.of((String) rawValue);
+        } else {
+            result = Optional.empty();
+        }
+        return result;
+    }
+
     @FunctionalInterface
     private interface IStdoutOutputFactory {
-        IIdentifierWithBinding create(final String identifier);
+        IIdentifierWithBinding create(final String identifier, final String schema);
     }
 
     private enum FromStdoutOption {
-        STRING("string", IdentifierWithBindingFactory::createStdoutString);
+        STRING("string", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutString(identifier)),
+        XML("xml", IdentifierWithBindingFactory::createStdoutXmlWithSchema);
 
         private final String dataType;
         private final IStdoutOutputFactory factory;
@@ -95,6 +158,85 @@ public class ParseJsonForOutputImpl {
         }
 
         public IStdoutOutputFactory getFactory() {
+            return factory;
+        }
+    }
+
+    @FunctionalInterface
+    private interface IStderrOutputFactory {
+        IIdentifierWithBinding create(final String identifier);
+    }
+
+    private enum FromStderrOption {
+        STRING("string", IdentifierWithBindingFactory::createStderrString);
+
+        private final String dataType;
+        private final IStderrOutputFactory factory;
+
+        FromStderrOption(final String dataType, final IStderrOutputFactory factory) {
+            this.dataType = dataType;
+            this.factory = factory;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public IStderrOutputFactory getFactory() {
+            return factory;
+        }
+    }
+
+    @FunctionalInterface
+    private interface IExitValueOutputFactory {
+        IIdentifierWithBinding create(final String identifier);
+    }
+
+    private enum FromExitValueOption {
+        INT("int", IdentifierWithBindingFactory::createExitValueInt);
+
+        private final String dataType;
+        private final IExitValueOutputFactory factory;
+
+        FromExitValueOption(final String dataType, final IExitValueOutputFactory factory) {
+            this.dataType = dataType;
+            this.factory = factory;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public IExitValueOutputFactory getFactory() {
+            return factory;
+        }
+    }
+
+    @FunctionalInterface
+    private interface IFileOutputFactory {
+        IIdentifierWithBinding create(final String identifier, final String path, final String schema);
+    }
+
+    private enum FromFilesOption {
+        XML("xml", IdentifierWithBindingFactory::createFileOutXmlWithSchema),
+        FILE("file", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeneric(identifier, path)),
+        GEOJSON("geojson", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeojson(identifier, path)),
+        GEOTIFF("geotiff", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeotiff(identifier, path)),
+        SHP("shapefile", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShapeFile(identifier, path));
+
+        private final String dataType;
+        private final IFileOutputFactory factory;
+
+        FromFilesOption(final String dataType, final IFileOutputFactory factory) {
+            this.dataType = dataType;
+            this.factory = factory;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public IFileOutputFactory getFactory() {
             return factory;
         }
     }
