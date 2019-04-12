@@ -124,9 +124,23 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentDouble(identifier);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentString(final String identifier, final String defaultCommandLineFlag, final String defaultValue) {
+        if(defaultCommandLineFlag != null && defaultValue != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentStringWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, defaultValue);
+        }
+        if(defaultValue != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentStringWithDefaultValue(identifier, defaultValue);
+        }
+        if(defaultCommandLineFlag != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentStringWithFlag(identifier, defaultCommandLineFlag);
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentString(identifier);
+    }
+
     private enum ToCommandLineArgumentOption {
         INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
-        DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble);
+        DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble),
+        STRING("string", ParseJsonForInputImpl::createCommandLineArgumentString);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;
