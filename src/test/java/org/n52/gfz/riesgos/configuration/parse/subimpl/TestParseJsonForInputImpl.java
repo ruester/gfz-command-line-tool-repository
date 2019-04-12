@@ -1,0 +1,287 @@
+package org.n52.gfz.riesgos.configuration.parse.subimpl;
+
+/*
+ * Copyright (C) 2019 GFZ German Research Centre for Geosciences
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the Licence is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the Licence for the specific language governing permissions and
+ *  limitations under the Licence.
+ *
+ *
+ */
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.junit.Test;
+import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
+import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
+import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.configuration.parse.json.subimpl.ParseJsonForInputImpl;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
+import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
+import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
+/**
+ * Test class for ParseJsonForInputImpl
+ */
+public class TestParseJsonForInputImpl {
+
+    private JSONObject parseJson(final String text) {
+        try {
+            return (JSONObject) new JSONParser().parse(text);
+        } catch(final ParseException parseException) {
+            fail("There should be no exception on just parsing the json");
+        }
+        return null;
+    }
+
+    @Test
+    public void testParseEmpty() {
+        final String text = "{}";
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        try {
+
+            parser.parseInput(parseJson(text));
+            fail("There must be an exception");
+
+        } catch(final ParseConfigurationException parseConfigException) {
+            assertNotNull("There is a exception", parseConfigException);
+        }
+    }
+
+    @Test
+    public void testParseTitleOnly() {
+        final String text = "{" +
+                "\"title\": \"a\"" +
+                "}";
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        try {
+
+            parser.parseInput(parseJson(text));
+            fail("There must be an exception");
+
+        } catch(final ParseConfigurationException parseConfigException) {
+            assertNotNull("There is a exception", parseConfigException);
+        }
+    }
+
+    @Test
+    public void parseComamndLineArgumentIntWithoutDefaultValue() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"type\": \"int\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd();
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralIntBinding", LiteralIntBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    @Test
+    public void parseComamndLineArgumentIntWithDefaultValue() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"default\": \"1\"," +
+                "\"type\": \"int\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd();
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralIntBinding", LiteralIntBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertTrue("There is a default value", inputIdentifier.getDefaultValue().isPresent());
+            assertEquals("The default value is 1", "1", inputIdentifier.getDefaultValue().get());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    @Test
+    public void parseComamndLineArgumentIntWithCommandLineFlag() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"commandLineFlag\": \"--a\"," +
+                "\"type\": \"int\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd("--a");
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralIntBinding", LiteralIntBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    @Test
+    public void parseComamndLineArgumentDoubleWithoutDefaultValue() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"type\": \"double\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd();
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralDoubleBinding", LiteralDoubleBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    @Test
+    public void parseComamndLineArgumentDoubleWithDefaultValue() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"default\": \"1.0\"," +
+                "\"type\": \"double\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd();
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralDoubleBinding", LiteralDoubleBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertTrue("There is a default value", inputIdentifier.getDefaultValue().isPresent());
+            assertEquals("The default value is 1.0", "1.0", inputIdentifier.getDefaultValue().get());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    @Test
+    public void parseComamndLineArgumentDoubleWithCommandLineFlag() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"commandLineFlag\": \"--a\"," +
+                "\"type\": \"double\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd("--a");
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralDoubleBinding", LiteralDoubleBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+}

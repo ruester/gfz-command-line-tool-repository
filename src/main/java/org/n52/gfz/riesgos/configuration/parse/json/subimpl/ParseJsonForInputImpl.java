@@ -20,15 +20,128 @@ package org.n52.gfz.riesgos.configuration.parse.json.subimpl;
 
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Sub implementation for parsing a single input input
  */
 public class ParseJsonForInputImpl {
 
+    private final Map<String, ToCommandLineArgumentOption> optionsToUseAsCommandLineArgument;
+
+    public ParseJsonForInputImpl() {
+        optionsToUseAsCommandLineArgument = getOptionsToUseAsCommandLineArgument();
+    }
+
+    private Map<String, ToCommandLineArgumentOption> getOptionsToUseAsCommandLineArgument() {
+        return Stream.of(ToCommandLineArgumentOption.values()).collect(Collectors.toMap(
+                ToCommandLineArgumentOption::getDataType, Function.identity()
+        ));
+    }
+
     public IIdentifierWithBinding parseInput(final JSONObject json) throws ParseConfigurationException {
-        // TODO
-        return null;
+        final String identifier = getString(json, "title");
+        final String useAs = getString(json, "useAs");
+        final String type = getString(json, "type");
+
+        final Optional<String> optionalDefaultValue = getOptionalString(json, "default");
+        final Optional<String> optionalDefaultCommandLineFlag = getOptionalString(json, "commandLineFlag");
+
+        if("commandLineArgument".equals(useAs)) {
+            if(optionsToUseAsCommandLineArgument.containsKey(type)) {
+                return optionsToUseAsCommandLineArgument.get(type).getFactory().create(
+                        identifier,
+                        optionalDefaultCommandLineFlag.orElse(null),
+                        optionalDefaultValue.orElse(null));
+            } else {
+                throw new ParseConfigurationException("Not supported type value");
+            }
+        } else {
+            throw new ParseConfigurationException("Not supported useAs value");
+        }
+    }
+
+    private String getString(final JSONObject json, final String key) throws ParseConfigurationException {
+        if(! json.containsKey(key)) {
+            throw new ParseConfigurationException("Missing element '" + key + "'");
+        }
+        final Object rawValue = json.get(key);
+        if(! (rawValue instanceof String)) {
+            throw new ParseConfigurationException("Wrong type for element '" + key + "', expected a String");
+        }
+        return (String) rawValue;
+    }
+
+    private Optional<String> getOptionalString(final JSONObject json, final String key) throws ParseConfigurationException {
+        final Optional<String> result;
+        if(json.containsKey(key)) {
+            final Object rawValue = json.get(key);
+            if(! (rawValue instanceof String)) {
+                throw new ParseConfigurationException("Wrong type for element '" + key + "', expected a String");
+            }
+            result = Optional.of((String) rawValue);
+        } else {
+            result = Optional.empty();
+        }
+        return result;
+    }
+
+    @FunctionalInterface
+    private interface IAsCommandLineArgumentFactory {
+        IIdentifierWithBinding create(final String identifier, final String defaultCommandLineFlag, final String defaultValue);
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentInt(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue) {
+        if(defaultCommandLineFlag != null && strDefaultValue != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentIntWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, Integer.parseInt(strDefaultValue));
+        }
+        if(strDefaultValue != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentIntWithDefaultValue(identifier, Integer.parseInt(strDefaultValue));
+        }
+        if(defaultCommandLineFlag != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentIntWithFlag(identifier, defaultCommandLineFlag);
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentInt(identifier);
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentDouble(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue) {
+        if(defaultCommandLineFlag != null && strDefaultValue != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, Double.parseDouble(strDefaultValue));
+        }
+        if(strDefaultValue != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue(identifier, Double.parseDouble(strDefaultValue));
+        }
+        if(defaultCommandLineFlag != null) {
+            return IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithFlag(identifier, defaultCommandLineFlag);
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentDouble(identifier);
+    }
+
+    private enum ToCommandLineArgumentOption {
+        INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
+        DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble);
+
+        private final String dataType;
+        private final IAsCommandLineArgumentFactory factory;
+
+        ToCommandLineArgumentOption(final String dataType, final IAsCommandLineArgumentFactory factory) {
+            this.dataType = dataType;
+            this.factory = factory;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public IAsCommandLineArgumentFactory getFactory() {
+            return factory;
+        }
     }
 }

@@ -119,6 +119,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -151,6 +153,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -182,6 +186,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -213,6 +219,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -246,6 +254,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -280,6 +290,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -316,6 +328,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -349,6 +363,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -382,6 +398,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -415,6 +433,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -448,6 +468,8 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
