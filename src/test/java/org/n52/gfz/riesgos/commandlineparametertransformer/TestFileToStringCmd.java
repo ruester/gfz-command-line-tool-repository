@@ -60,6 +60,28 @@ public class TestFileToStringCmd {
     }
 
     /**
+     * The converter can also work with a default flag
+     */
+    @Test
+    public void testValidWithFlag() {
+        final String filename = "test.xml";
+        final String flag = "--test-file";
+
+        final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(filename, flag);
+
+        try {
+            final List<String> result = converter.convertToCommandLineParameter(null);
+
+            assertEquals("There are two elements", 2, result.size());
+            assertEquals("The first one is the flag", flag, result.get(0));
+            assertEquals("The second one is the filename", filename, result.get(1));
+
+        } catch(final ConvertToStringCmdException convertToStringCmdException) {
+            fail("Should not happen");
+        }
+    }
+
+    /**
      * If there is no filename than an exception must be thrown
      */
     @Test
@@ -75,13 +97,23 @@ public class TestFileToStringCmd {
         }
     }
 
+    /**
+     * Tests equality
+     */
     @Test
     public void testEquals() {
         final IConvertIDataToCommandLineParameter converter1 = new FileToStringCmd("file1.txt");
         final IConvertIDataToCommandLineParameter converter2 = new FileToStringCmd("file1.txt");
         final IConvertIDataToCommandLineParameter converter3 = new FileToStringCmd("file3.txt");
 
+        final IConvertIDataToCommandLineParameter converter4 = new FileToStringCmd("file1.txt", "--file");
+
         assertEquals("1 and 2 are equal", converter1, converter2);
         assertNotEquals("1 and 3 are different", converter1, converter3);
+
+        assertNotEquals("1 and 4 are different", converter1, converter4);
+
+        final IConvertIDataToCommandLineParameter converter5 = new FileToStringCmd("file1.txt", "--file");
+        assertEquals("4 and 5 are equal", converter4, converter5);
     }
 }

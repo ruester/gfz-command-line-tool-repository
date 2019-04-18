@@ -188,20 +188,20 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (xml file) with a file path that will be written down as a temporary file
      * @param identifier identifier of the data
      * @param schema schema of the xml
+     * @param defaultFlag default flag for the command line argument (for example --file)
      * @return xml file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchema(
-            final String identifier, final String schema) {
+            final String identifier, final String schema, final String defaultFlag) {
 
         final String filename = createUUIDFilename("inputfile", ".xml");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, defaultFlag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(schema)
                 .build();
-
     }
 
     /**

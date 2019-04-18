@@ -58,6 +58,7 @@ public class ParseJsonForInputImpl {
         final Optional<String> optionalDefaultValue = getOptionalString(json, "default");
         final Optional<List<String>> optionalAllowedValues = getOptionalListOfStrings(json, "allowed");
         final Optional<List<String>> optionalSupportedCrs = getOptionalListOfStrings(json, "crs");
+        final Optional<String> optionalSchema = getOptionalString(json, "schema");
 
         if("commandLineArgument".equals(useAs)) {
             if(optionsToUseAsCommandLineArgument.containsKey(type)) {
@@ -66,7 +67,8 @@ public class ParseJsonForInputImpl {
                         optionalDefaultCommandLineFlag.orElse(null),
                         optionalDefaultValue.orElse(null),
                         optionalAllowedValues.orElse(null),
-                        optionalSupportedCrs.orElse(null));
+                        optionalSupportedCrs.orElse(null),
+                        optionalSchema.orElse(null));
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
@@ -130,7 +132,24 @@ public class ParseJsonForInputImpl {
                                       final String defaultCommandLineFlag,
                                       final String defaultValue,
                                       final List<String> allowedValues,
-                                      final List<String> supportedCrs) throws ParseConfigurationException;
+                                      final List<String> supportedCrs,
+                                      final String schema) throws ParseConfigurationException;
+    }
+
+    private static boolean strHasValue(final String str) {
+        return str != null && (! str.isEmpty());
+    }
+
+    private static boolean strHasNoValue(final String str) {
+        return ! strHasValue(str);
+    }
+
+    private static boolean listHasValue(final List<String> list) {
+        return list != null && (! list.isEmpty());
+    }
+
+    private static boolean listHasNoValues(final List<String> list) {
+        return ! listHasValue(list);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentInt(
@@ -138,9 +157,13 @@ public class ParseJsonForInputImpl {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
-            final List<String> supportedCrs) throws ParseConfigurationException {
-        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(listHasValue(supportedCrs)) {
             throw new ParseConfigurationException("crs are not supported for int types");
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for int types");
         }
         return IdentifierWithBindingFactory.createCommandLineArgumentInt(identifier, flag, defaultValue, allowedValues);
     }
@@ -150,9 +173,13 @@ public class ParseJsonForInputImpl {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
-            final List<String> supportedCrs) throws ParseConfigurationException {
-        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(listHasValue(supportedCrs)) {
             throw new ParseConfigurationException("crs are not supported for double types");
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for double types");
         }
         return IdentifierWithBindingFactory.createCommandLineArgumentDouble(identifier, flag, defaultValue, allowedValues);
     }
@@ -162,9 +189,13 @@ public class ParseJsonForInputImpl {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
-            final List<String> supportedCrs) throws ParseConfigurationException {
-        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(listHasValue(supportedCrs)) {
             throw new ParseConfigurationException(("crs are not supported for string types"));
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for string types");
         }
         return IdentifierWithBindingFactory.createCommandLineArgumentString(identifier, flag, defaultValue, allowedValues);
     }
@@ -174,14 +205,18 @@ public class ParseJsonForInputImpl {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
-            final List<String> supportedCrs) throws ParseConfigurationException {
-        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(listHasValue(supportedCrs)) {
             throw new ParseConfigurationException("crs are not supported for boolean types");
         }
-        if(allowedValues != null && (! allowedValues.isEmpty())) {
+        if(listHasValue(allowedValues)) {
             throw new ParseConfigurationException("allowed values are not supported for booleans");
         }
-        if(flag == null) {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for booleans");
+        }
+        if(strHasNoValue(flag)) {
             throw new ParseConfigurationException("flag is necessary for boolean type");
         }
         return IdentifierWithBindingFactory.createCommandLineArgumentBoolean(identifier, flag, defaultValue);
@@ -192,25 +227,49 @@ public class ParseJsonForInputImpl {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
-            final List<String> supportedCrs) throws ParseConfigurationException {
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
 
-        if(flag != null) {
+        if(strHasValue(flag)) {
             throw new ParseConfigurationException("commandLineFlag is not supported for bbox");
         }
 
-        if(defaultValue != null) {
+        if(strHasValue(defaultValue)) {
             throw new ParseConfigurationException("default is not supported for bbox");
         }
 
-        if(allowedValues != null && (! allowedValues.isEmpty())) {
+        if(listHasValue(allowedValues)) {
             throw new ParseConfigurationException("allowed values are not supported for bbox");
         }
 
-        if(supportedCrs == null || supportedCrs.isEmpty()) {
+        if(listHasNoValues(supportedCrs)) {
             throw new ParseConfigurationException("The element 'crs' for is necessary for bbox");
         }
 
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for bbox");
+        }
+
         return IdentifierWithBindingFactory.createCommandLineArgumentBBox(identifier, supportedCrs);
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentXmlFile(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for xml");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowed values are not supported for xml");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for xml");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchema(identifier, schema, flag);
     }
 
 
@@ -219,7 +278,8 @@ public class ParseJsonForInputImpl {
         DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble),
         BOOLEAN("boolean", ParseJsonForInputImpl::createCommandLineArgumentBoolean),
         STRING("string", ParseJsonForInputImpl::createCommandLineArgumentString),
-        BBOX("bbox", ParseJsonForInputImpl::createCommandLineArgumentBBox);
+        BBOX("bbox", ParseJsonForInputImpl::createCommandLineArgumentBBox),
+        XML("xml", ParseJsonForInputImpl::createCommandLineArgumentXmlFile);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;

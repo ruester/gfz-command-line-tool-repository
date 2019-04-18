@@ -29,6 +29,7 @@ import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Implementation to write all the files of a shapefile to files
@@ -52,6 +53,19 @@ public class WriteShapeFileToPath implements IWriteIDataToFiles {
         } else {
             throw new ConvertToBytesException("Wrong binding class");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 
     private byte[] readFile(final File file) throws IOException {

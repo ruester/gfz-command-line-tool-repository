@@ -21,24 +21,35 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.IData;
-import java.util.Collections;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class FileToStringCmd implements IConvertIDataToCommandLineParameter {
 
     private final String filename;
+    private final String defaultCommandLineFlag;
+
+    public FileToStringCmd(final String filename, final String defaultCommandLineFlag) {
+        this.filename = filename;
+        this.defaultCommandLineFlag = defaultCommandLineFlag;
+    }
 
     public FileToStringCmd(final String filename) {
-        this.filename = filename;
+        this(filename, null);
     }
 
     @Override
     public List<String> convertToCommandLineParameter(IData iData) throws ConvertToStringCmdException {
-        if(filename != null) {
-            return Collections.singletonList(filename);
+        final List<String> result = new ArrayList<>();
+        Optional.ofNullable(defaultCommandLineFlag).ifPresent(result::add);
+        if(filename == null) {
+            throw new ConvertToStringCmdException("There is no filename");
         }
-        throw new ConvertToStringCmdException("There is no filename");
+        result.add(filename);
+        return result;
     }
 
     @Override
@@ -50,11 +61,12 @@ public class FileToStringCmd implements IConvertIDataToCommandLineParameter {
             return false;
         }
         FileToStringCmd that = (FileToStringCmd) o;
-        return Objects.equals(filename, that.filename);
+        return Objects.equals(filename, that.filename) &&
+                Objects.equals(defaultCommandLineFlag, that.defaultCommandLineFlag);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(filename);
+        return Objects.hash(filename, defaultCommandLineFlag);
     }
 }
