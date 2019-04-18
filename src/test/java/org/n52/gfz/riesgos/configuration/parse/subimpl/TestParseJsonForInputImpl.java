@@ -61,6 +61,9 @@ public class TestParseJsonForInputImpl {
         return null;
     }
 
+    /**
+     * Test with some empty js-object
+     */
     @Test
     public void testParseEmpty() {
         final String text = "{}";
@@ -75,6 +78,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with just a title which is too less information
+     */
     @Test
     public void testParseTitleOnly() {
         final String text = "{" +
@@ -91,6 +97,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with an int (without any default value)
+     */
     @Test
     public void parseComamndLineArgumentIntWithoutDefaultValue() {
         final String text = "{" +
@@ -124,6 +133,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * Test with an int with a default value
+     */
     @Test
     public void parseComamndLineArgumentIntWithDefaultValue() {
         final String text = "{" +
@@ -159,6 +171,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with an int and a default command line flag
+     */
     @Test
     public void parseComamndLineArgumentIntWithCommandLineFlag() {
         final String text = "{" +
@@ -193,6 +208,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a double without a default value
+     */
     @Test
     public void parseComamndLineArgumentDoubleWithoutDefaultValue() {
         final String text = "{" +
@@ -226,6 +244,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a double with a default value
+     */
     @Test
     public void parseComamndLineArgumentDoubleWithDefaultValue() {
         final String text = "{" +
@@ -261,6 +282,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a double type with a command line flag
+     */
     @Test
     public void parseComamndLineArgumentDoubleWithCommandLineFlag() {
         final String text = "{" +
@@ -295,6 +319,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a string without a default value
+     */
     @Test
     public void parseComamndLineArgumentStringWithoutDefaultValue() {
         final String text = "{" +
@@ -328,6 +355,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a string with a default value
+     */
     @Test
     public void parseComamndLineArgumentStringWithDefaultValue() {
         final String text = "{" +
@@ -363,6 +393,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test wiht a string with a command line flag
+     */
     @Test
     public void parseCommandLineArgumentStringWithCommandLineFlag() {
         final String text = "{" +
@@ -397,6 +430,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a string with a default value and allowed values
+     */
     @Test
     public void parseCommandLineArgumentStringWithDefaultValueAndAllowedValues() {
         final String text = "{" +
@@ -437,6 +473,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a boolean
+     */
     @Test
     public void parseCommandLineArgumentBoolean() {
         final String text = "{" +
@@ -474,6 +513,9 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+    /**
+     * test with a bounding box
+     */
     @Test
     public void parseCommandLineArgumentBBox() {
         final String text = "{" +
@@ -507,7 +549,6 @@ public class TestParseJsonForInputImpl {
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
-
     }
 
 }
