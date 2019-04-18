@@ -22,6 +22,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
+import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
@@ -32,6 +33,8 @@ import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
+import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
+import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
@@ -216,7 +219,7 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the double as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
@@ -250,7 +253,7 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the double as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertTrue("There is a default value", inputIdentifier.getDefaultValue().isPresent());
             assertEquals("The default value is 1.0", "1.0", inputIdentifier.getDefaultValue().get());
         } catch(final ParseConfigurationException exception) {
@@ -285,7 +288,7 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the double as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
@@ -318,7 +321,7 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the string as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
@@ -352,7 +355,7 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the string as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertTrue("There is a default value", inputIdentifier.getDefaultValue().isPresent());
             assertEquals("The default value is dummy", "dummy", inputIdentifier.getDefaultValue().get());
         } catch(final ParseConfigurationException exception) {
@@ -387,7 +390,7 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the string as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
@@ -426,7 +429,7 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the string as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertTrue("There is a default value", inputIdentifier.getDefaultValue().isPresent());
             assertEquals("The default value is c", "b", inputIdentifier.getDefaultValue().get());
         } catch(final ParseConfigurationException exception) {
@@ -440,7 +443,7 @@ public class TestParseJsonForInputImpl {
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
                 "\"type\": \"boolean\"," +
-                "\"flag\": \"--verbose\"," +
+                "\"commandLineFlag\": \"--verbose\"," +
                 "\"default\": \"true\"" +
                 "}";
 
@@ -451,7 +454,7 @@ public class TestParseJsonForInputImpl {
         try {
             final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
-            assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
+            assertEquals("It uses a LiteralBoolean", LiteralBooleanBinding.class, inputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
             assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
             assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
@@ -463,12 +466,48 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertEquals("The converter is to write the boolean as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertTrue("There is a default value", inputIdentifier.getDefaultValue().isPresent());
             assertEquals("The default value is true", "true", inputIdentifier.getDefaultValue().get());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
+    }
+
+    @Test
+    public void parseCommandLineArgumentBBox() {
+        final String text = "{" +
+                "\"title\" : \"a\"," +
+                "\"useAs\": \"commandLineArgument\", " +
+                "\"type\": \"bbox\", " +
+                "\"crs\": [\"EPSG:4326\", \"EPSG:4328\"]" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new BoundingBoxDataToStringCmd();
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a BoundingBoxData", BoundingBoxData.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertTrue("There are supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertEquals("The crs are as expected", Arrays.asList("EPSG:4326", "EPSG:4328"), inputIdentifier.getSupportedCRSForBBox().get());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the bbox as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+
     }
 
 }

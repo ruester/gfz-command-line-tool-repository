@@ -54,9 +54,10 @@ public class ParseJsonForInputImpl {
         final String useAs = getString(json, "useAs");
         final String type = getString(json, "type");
 
+        final Optional<String> optionalDefaultCommandLineFlag = getOptionalString(json, "commandLineFlag");
         final Optional<String> optionalDefaultValue = getOptionalString(json, "default");
         final Optional<List<String>> optionalAllowedValues = getOptionalListOfStrings(json, "allowed");
-        final Optional<String> optionalDefaultCommandLineFlag = getOptionalString(json, "commandLineFlag");
+        final Optional<List<String>> optionalSupportedCrs = getOptionalListOfStrings(json, "crs");
 
         if("commandLineArgument".equals(useAs)) {
             if(optionsToUseAsCommandLineArgument.containsKey(type)) {
@@ -64,7 +65,8 @@ public class ParseJsonForInputImpl {
                         identifier,
                         optionalDefaultCommandLineFlag.orElse(null),
                         optionalDefaultValue.orElse(null),
-                        optionalAllowedValues.orElse(null));
+                        optionalAllowedValues.orElse(null),
+                        optionalSupportedCrs.orElse(null));
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
@@ -127,16 +129,57 @@ public class ParseJsonForInputImpl {
         IIdentifierWithBinding create(final String identifier,
                                       final String defaultCommandLineFlag,
                                       final String defaultValue,
-                                      final List<String> allowedValues) throws ParseConfigurationException;
+                                      final List<String> allowedValues,
+                                      final List<String> supportedCrs) throws ParseConfigurationException;
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentInt(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs) throws ParseConfigurationException {
+        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            throw new ParseConfigurationException("crs are not supported for int types");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentInt(identifier, flag, defaultValue, allowedValues);
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentDouble(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs) throws ParseConfigurationException {
+        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            throw new ParseConfigurationException("crs are not supported for double types");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentDouble(identifier, flag, defaultValue, allowedValues);
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentString(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs) throws ParseConfigurationException {
+        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            throw new ParseConfigurationException(("crs are not supported for string types"));
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentString(identifier, flag, defaultValue, allowedValues);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentBoolean(
             final String identifier,
             final String flag,
             final String defaultValue,
-            final List<String> allowedValues) throws ParseConfigurationException {
+            final List<String> allowedValues,
+            final List<String> supportedCrs) throws ParseConfigurationException {
+        if(supportedCrs != null && (! supportedCrs.isEmpty())) {
+            throw new ParseConfigurationException("crs are not supported for boolean types");
+        }
         if(allowedValues != null && (! allowedValues.isEmpty())) {
-            throw new ParseConfigurationException("allowed does not work for booleans");
+            throw new ParseConfigurationException("allowed values are not supported for booleans");
         }
         if(flag == null) {
             throw new ParseConfigurationException("flag is necessary for boolean type");
@@ -144,11 +187,39 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentBoolean(identifier, flag, defaultValue);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentBBox(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs) throws ParseConfigurationException {
+
+        if(flag != null) {
+            throw new ParseConfigurationException("commandLineFlag is not supported for bbox");
+        }
+
+        if(defaultValue != null) {
+            throw new ParseConfigurationException("default is not supported for bbox");
+        }
+
+        if(allowedValues != null && (! allowedValues.isEmpty())) {
+            throw new ParseConfigurationException("allowed values are not supported for bbox");
+        }
+
+        if(supportedCrs == null || supportedCrs.isEmpty()) {
+            throw new ParseConfigurationException("The element 'crs' for is necessary for bbox");
+        }
+
+        return IdentifierWithBindingFactory.createCommandLineArgumentBBox(identifier, supportedCrs);
+    }
+
+
     private enum ToCommandLineArgumentOption {
-        INT("int", IdentifierWithBindingFactory::createCommandLineArgumentInt),
-        DOUBLE("double", IdentifierWithBindingFactory::createCommandLineArgumentDouble),
+        INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
+        DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble),
         BOOLEAN("boolean", ParseJsonForInputImpl::createCommandLineArgumentBoolean),
-        STRING("string", IdentifierWithBindingFactory::createCommandLineArgumentString);
+        STRING("string", ParseJsonForInputImpl::createCommandLineArgumentString),
+        BBOX("bbox", ParseJsonForInputImpl::createCommandLineArgumentBBox);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;
