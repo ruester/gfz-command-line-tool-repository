@@ -357,6 +357,28 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentShapeFile(identifier, flag);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentGenericFile(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for file");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowed values are not supported for file");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for file");
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for file");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentFile(identifier, flag);
+    }
+
     private enum ToCommandLineArgumentOption {
         INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
         DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble),
@@ -367,7 +389,8 @@ public class ParseJsonForInputImpl {
         XML_WITHOUT_HEADER("xmlWithoutHeader", ParseJsonForInputImpl::createCommandLineArgumentXmlFileWithoutHeader),
         GEOFITT("geotiff", ParseJsonForInputImpl::createCommandLineArgumentGeotiffFile),
         GEOJSON("geojson", ParseJsonForInputImpl::createCommandLineArgumentGeojsonFile),
-        SHAPEFILE("shapefile", ParseJsonForInputImpl::createCommandLineArgumentShapefile);
+        SHAPEFILE("shapefile", ParseJsonForInputImpl::createCommandLineArgumentShapefile),
+        GENERIC_FILE("file", ParseJsonForInputImpl::createCommandLineArgumentGenericFile);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;

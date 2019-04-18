@@ -289,14 +289,17 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (generic file) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentFile(
-            final String identifier) {
+            final String identifier,
+            final String flag) {
         final String filename = createUUIDFilename("inputfile", ".dat");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath((new ConvertGenericFileDataBindingToBytes())))
                 .build();
     }
