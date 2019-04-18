@@ -950,4 +950,81 @@ public class TestParseJsonForInputImpl {
         }
     }
 
+
+    /**
+     * Tests a file as shapefile
+     */
+    @Test
+    public void parseFileInShapefile() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"file\"," +
+                "\"type\": \"shapefile\"," +
+                "\"path\": \"test.shp\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IWriteIDataToFiles writer = new WriteShapeFileToPath();
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertEquals("The path is as expected", "test.shp", inputIdentifier.getPathToWriteToOrReadFromFile().get());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertTrue("There is a function to write data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertEquals("The function to write data to files is as expected", writer, inputIdentifier.getFunctionToWriteIDataToFiles().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+            assertFalse("There is no function to write to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is no function to convert it to cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    /**
+     * Tests a file as generic file
+     */
+    @Test
+    public void parseFileInGenericFile() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"file\"," +
+                "\"type\": \"file\"," +
+                "\"path\": \"test.txt\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes());
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a GenericFileDataBinding", GenericFileDataBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertEquals("The path is as expected", "test.txt", inputIdentifier.getPathToWriteToOrReadFromFile().get());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertTrue("There is a function to write data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertEquals("The function to write data to files is as expected", writer, inputIdentifier.getFunctionToWriteIDataToFiles().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+            assertFalse("There is no function to write to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertFalse("There is no function to convert it to cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
 }

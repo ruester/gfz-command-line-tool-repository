@@ -515,10 +515,31 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInGeojson(identifier, path);
     }
 
+    private static IIdentifierWithBinding createFileInputGeneric(
+            final String identifier,
+            final String path,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for file");
+        }
+        return IdentifierWithBindingFactory.createFileInGeneric(identifier, path);
+    }
+
+    private static IIdentifierWithBinding createFileInputShapefile(
+            final String identifier,
+            final String path,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for shapefile");
+        }
+        return IdentifierWithBindingFactory.createFileInShapeFile(identifier, path);
+    }
 
     private enum ToFileInputOption {
         GEOTIFF("geotiff", ParseJsonForInputImpl::createFileInputGeotiff),
-        GEOJSON("geojson", ParseJsonForInputImpl::createFileInputGeojson);
+        GEOJSON("geojson", ParseJsonForInputImpl::createFileInputGeojson),
+        SHAPEFILE("shapefile", ParseJsonForInputImpl::createFileInputShapefile),
+        GENERIC_FILE("file", ParseJsonForInputImpl::createFileInputGeneric);
 
         private final String dataType;
         private final IAsFileInputFactory factory;
