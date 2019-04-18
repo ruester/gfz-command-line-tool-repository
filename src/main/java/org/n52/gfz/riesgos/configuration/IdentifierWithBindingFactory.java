@@ -51,6 +51,7 @@ import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -118,6 +119,64 @@ public class IdentifierWithBindingFactory {
                 .withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd(flag))
                 .withDefaultValue(String.valueOf(defaultValue))
                 .build();
+    }
+
+    public static IIdentifierWithBinding createCommandLineArgumentInt(
+            final String identifier,
+            final Optional<String> flag,
+            final Optional<String> defaultValue,
+            final Optional<List<String>> allowedValues) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd(flag.orElse(null)));
+
+        if(defaultValue.isPresent()) {
+            builder.withDefaultValue(defaultValue.get());
+        }
+
+        if(allowedValues.isPresent() && (! (allowedValues.get()).isEmpty())) {
+            builder.withAllowedValues(allowedValues.get());
+        }
+
+        return builder.build();
+    }
+
+    public static IIdentifierWithBinding createCommandLineArgumentDouble(
+            final String identifier,
+            final Optional<String> flag,
+            final Optional<String> defaultValue,
+            final Optional<List<String>> allowedValues) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralDoubleBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralDoubleBindingToStringCmd(flag.orElse(null)));
+
+        if(defaultValue.isPresent()) {
+            builder.withDefaultValue(defaultValue.get());
+        }
+
+        if(allowedValues.isPresent() && (! (allowedValues.get()).isEmpty())) {
+            builder.withAllowedValues(allowedValues.get());
+        }
+
+        return builder.build();
+    }
+
+    public static IIdentifierWithBinding createCommandLineArgumentString(
+            final String identifier,
+            final Optional<String> flag,
+            final Optional<String> defaultValue,
+            final Optional<List<String>> allowedValues) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd(flag.orElse(null)));
+
+        if(defaultValue.isPresent()) {
+            builder.withDefaultValue(defaultValue.get());
+        }
+
+        if(allowedValues.isPresent() && (! (allowedValues.get()).isEmpty())) {
+            builder.withAllowedValues(allowedValues.get());
+            builder.withValidator(new LiteralStringBindingWithAllowedValues(allowedValues.get()));
+        }
+
+        return builder.build();
     }
 
     /**

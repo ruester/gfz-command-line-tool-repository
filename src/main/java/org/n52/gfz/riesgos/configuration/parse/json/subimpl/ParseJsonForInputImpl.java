@@ -18,11 +18,14 @@ package org.n52.gfz.riesgos.configuration.parse.json.subimpl;
  *
  */
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
 import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -52,14 +55,16 @@ public class ParseJsonForInputImpl {
         final String type = getString(json, "type");
 
         final Optional<String> optionalDefaultValue = getOptionalString(json, "default");
+        final Optional<List<String>> optionalAllowedValues = getOptionalListOfStrings(json, "allowed");
         final Optional<String> optionalDefaultCommandLineFlag = getOptionalString(json, "commandLineFlag");
 
         if("commandLineArgument".equals(useAs)) {
             if(optionsToUseAsCommandLineArgument.containsKey(type)) {
                 return optionsToUseAsCommandLineArgument.get(type).getFactory().create(
                         identifier,
-                        optionalDefaultCommandLineFlag.orElse(null),
-                        optionalDefaultValue.orElse(null));
+                        optionalDefaultCommandLineFlag,
+                        optionalDefaultValue,
+                        optionalAllowedValues);
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
@@ -93,12 +98,40 @@ public class ParseJsonForInputImpl {
         return result;
     }
 
-    @FunctionalInterface
-    private interface IAsCommandLineArgumentFactory {
-        IIdentifierWithBinding create(final String identifier, final String defaultCommandLineFlag, final String defaultValue);
+    private Optional<List<String>> getOptionalListOfStrings(final JSONObject json, final String key) throws ParseConfigurationException {
+        final Optional<List<String>> result;
+        if(json.containsKey(key)) {
+            final Object rawValue = json.get(key);
+            if(! (rawValue instanceof JSONArray)) {
+                throw new ParseConfigurationException("Wrong type for element '" + key + "', expected a JSON array");
+            }
+            final List<String> list = new ArrayList<>();
+            for(final Object element : (JSONArray) rawValue) {
+                if(element instanceof String) {
+                    list.add((String) element);
+                } else if(element instanceof Double) {
+                    list.add(String.valueOf((Double) element));
+                } else if(element instanceof Integer) {
+                    list.add(String.valueOf((Integer) element));
+                } else if(element instanceof Boolean) {
+                    list.add(String.valueOf((Boolean) element));
+                } else {
+                    throw new ParseConfigurationException("Wrong type for element in '" + key + "', expected a String");
+                }
+            }
+            result = Optional.of(list);
+        } else {
+            result = Optional.empty();
+        }
+        return result;
     }
 
-    private static IIdentifierWithBinding createCommandLineArgumentInt(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue) {
+    @FunctionalInterface
+    private interface IAsCommandLineArgumentFactory {
+        IIdentifierWithBinding create(final String identifier, final Optional<String> defaultCommandLineFlag, final Optional<String> defaultValue, final Optional<List<String>> allowedValues);
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentInt(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue, final List<String> allowedValues) {
         if(defaultCommandLineFlag != null && strDefaultValue != null) {
             return IdentifierWithBindingFactory.createCommandLineArgumentIntWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, Integer.parseInt(strDefaultValue));
         }
@@ -111,7 +144,7 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentInt(identifier);
     }
 
-    private static IIdentifierWithBinding createCommandLineArgumentDouble(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue) {
+    private static IIdentifierWithBinding createCommandLineArgumentDouble(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue, final List<String> allowedValues) {
         if(defaultCommandLineFlag != null && strDefaultValue != null) {
             return IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, Double.parseDouble(strDefaultValue));
         }
@@ -124,7 +157,7 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentDouble(identifier);
     }
 
-    private static IIdentifierWithBinding createCommandLineArgumentString(final String identifier, final String defaultCommandLineFlag, final String defaultValue) {
+    private static IIdentifierWithBinding createCommandLineArgumentString(final String identifier, final String defaultCommandLineFlag, final String defaultValue, final List<String> allowedValues) {
         if(defaultCommandLineFlag != null && defaultValue != null) {
             return IdentifierWithBindingFactory.createCommandLineArgumentStringWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, defaultValue);
         }
@@ -138,9 +171,9 @@ public class ParseJsonForInputImpl {
     }
 
     private enum ToCommandLineArgumentOption {
-        INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
-        DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble),
-        STRING("string", ParseJsonForInputImpl::createCommandLineArgumentString);
+        INT("int", IdentifierWithBindingFactory::createCommandLineArgumentInt),
+        DOUBLE("double", IdentifierWithBindingFactory::createCommandLineArgumentDouble),
+        STRING("string", IdentifierWithBindingFactory::createCommandLineArgumentString);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;
