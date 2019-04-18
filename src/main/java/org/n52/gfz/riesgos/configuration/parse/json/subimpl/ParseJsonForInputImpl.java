@@ -39,10 +39,12 @@ public class ParseJsonForInputImpl {
 
     private final Map<String, ToCommandLineArgumentOption> optionsToUseAsCommandLineArgument;
     private final Map<String, ToStdinInputOption> optionsToUseAsStdinInput;
+    private final Map<String, ToFileInputOption> optionsToUseAsFileInput;
 
     public ParseJsonForInputImpl() {
         optionsToUseAsCommandLineArgument = getOptionsToUseAsCommandLineArgument();
         optionsToUseAsStdinInput = getOptionsToUseAsStdinInput();
+        optionsToUseAsFileInput = getOptionsToUseAsFileInput();
     }
 
     private Map<String, ToCommandLineArgumentOption> getOptionsToUseAsCommandLineArgument() {
@@ -54,6 +56,12 @@ public class ParseJsonForInputImpl {
     private Map<String, ToStdinInputOption> getOptionsToUseAsStdinInput() {
         return Stream.of(ToStdinInputOption.values()).collect(Collectors.toMap(
                 ToStdinInputOption::getDataType, Function.identity()
+        ));
+    }
+
+    private Map<String, ToFileInputOption> getOptionsToUseAsFileInput() {
+        return Stream.of(ToFileInputOption.values()).collect(Collectors.toMap(
+                ToFileInputOption::getDataType, Function.identity()
         ));
     }
 
@@ -81,7 +89,7 @@ public class ParseJsonForInputImpl {
                 throw new ParseConfigurationException("Not supported type value '" + type + "'");
             }
         } else if("stdin".equals(useAs)) {
-            if(optionsToUseAsStdinInput.containsKey(type)) {
+            if (optionsToUseAsStdinInput.containsKey(type)) {
                 return optionsToUseAsStdinInput.get(type).getFactory().create(
                         identifier,
                         optionalDefaultValue.orElse(null),
@@ -92,6 +100,18 @@ public class ParseJsonForInputImpl {
             } else {
                 throw new ParseConfigurationException("Not supported type value '" + type + "'");
             }
+        } else if("file".equals(useAs))
+            if(optionsToUseAsFileInput.containsKey(type)) {
+
+                final String path = getString(json, "path");
+
+                return optionsToUseAsFileInput.get(type).getFactory().create(
+                        identifier,
+                        path,
+                        optionalSchema.orElse(null)
+                );
+            } else {
+                throw new ParseConfigurationException("Not supported type value '" + type + "'");
         } else {
             throw new ParseConfigurationException("Not supported useAs value: '" + useAs + "'");
         }
@@ -467,6 +487,43 @@ public class ParseJsonForInputImpl {
             return factory;
         }
     }
+
+    @FunctionalInterface
+    private interface IAsFileInputFactory {
+        IIdentifierWithBinding create(final String identifier,
+                                      final String path,
+                                      final String schema) throws ParseConfigurationException;
+    }
+
+    private static IIdentifierWithBinding createFileInputGeotiff(
+            final String identifier,
+            final String path,
+            final String schema) throws ParseConfigurationException {
+        if (strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for geotiff");
+        }
+        return IdentifierWithBindingFactory.createFileInGeotiff(identifier, path);
+    }
+
+    private enum ToFileInputOption {
+        GEOTIFF("geotiff", ParseJsonForInputImpl::createFileInputGeotiff);
+        private final String dataType;
+        private final IAsFileInputFactory factory;
+
+        ToFileInputOption(final String dataType, final IAsFileInputFactory factory) {
+            this.dataType = dataType;
+            this.factory = factory;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public IAsFileInputFactory getFactory() {
+            return factory;
+        }
+    }
+
 
 
 }
