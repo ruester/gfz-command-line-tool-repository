@@ -39,6 +39,7 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToB
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteSingleByteStreamToPath;
@@ -833,6 +834,41 @@ public class TestParseJsonForInputImpl {
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
             assertEquals("The converter is to write the filename as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    /**
+     * Tests a string as stdin
+     */
+    @Test
+    public void parseStdinString() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"stdin\"," +
+                "\"type\": \"string\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+            assertTrue("There is a function to write to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertEquals("It is the function to write the string", new ConvertLiteralStringToBytes(), inputIdentifier.getFunctionToWriteToStdin().get());
+            assertFalse("There is no function to convert it to cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }

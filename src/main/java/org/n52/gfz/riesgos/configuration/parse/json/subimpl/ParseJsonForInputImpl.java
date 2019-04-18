@@ -38,14 +38,22 @@ import java.util.stream.Stream;
 public class ParseJsonForInputImpl {
 
     private final Map<String, ToCommandLineArgumentOption> optionsToUseAsCommandLineArgument;
+    private final Map<String, ToStdinInputOption> optionsToUseAsStdinInput;
 
     public ParseJsonForInputImpl() {
         optionsToUseAsCommandLineArgument = getOptionsToUseAsCommandLineArgument();
+        optionsToUseAsStdinInput = getOptionsToUseAsStdinInput();
     }
 
     private Map<String, ToCommandLineArgumentOption> getOptionsToUseAsCommandLineArgument() {
         return Stream.of(ToCommandLineArgumentOption.values()).collect(Collectors.toMap(
                 ToCommandLineArgumentOption::getDataType, Function.identity()
+        ));
+    }
+
+    private Map<String, ToStdinInputOption> getOptionsToUseAsStdinInput() {
+        return Stream.of(ToStdinInputOption.values()).collect(Collectors.toMap(
+                ToStdinInputOption::getDataType, Function.identity()
         ));
     }
 
@@ -61,7 +69,7 @@ public class ParseJsonForInputImpl {
         final Optional<String> optionalSchema = getOptionalString(json, "schema");
 
         if("commandLineArgument".equals(useAs)) {
-            if(optionsToUseAsCommandLineArgument.containsKey(type)) {
+            if (optionsToUseAsCommandLineArgument.containsKey(type)) {
                 return optionsToUseAsCommandLineArgument.get(type).getFactory().create(
                         identifier,
                         optionalDefaultCommandLineFlag.orElse(null),
@@ -70,10 +78,22 @@ public class ParseJsonForInputImpl {
                         optionalSupportedCrs.orElse(null),
                         optionalSchema.orElse(null));
             } else {
-                throw new ParseConfigurationException("Not supported type value");
+                throw new ParseConfigurationException("Not supported type value '" + type + "'");
+            }
+        } else if("stdin".equals(useAs)) {
+            if(optionsToUseAsStdinInput.containsKey(type)) {
+                return optionsToUseAsStdinInput.get(type).getFactory().create(
+                        identifier,
+                        optionalDefaultValue.orElse(null),
+                        optionalAllowedValues.orElse(null),
+                        optionalSchema.orElse(null)
+
+                );
+            } else {
+                throw new ParseConfigurationException("Not supported type value '" + type + "'");
             }
         } else {
-            throw new ParseConfigurationException("Not supported useAs value");
+            throw new ParseConfigurationException("Not supported useAs value: '" + useAs + "'");
         }
     }
 
@@ -408,4 +428,45 @@ public class ParseJsonForInputImpl {
             return factory;
         }
     }
+
+    @FunctionalInterface
+    private interface IAsStdinInputFactory {
+        IIdentifierWithBinding create(final String identifier,
+                                      final String defaultValue,
+                                      final List<String> allowedValues,
+                                      final String schema) throws ParseConfigurationException;
+    }
+
+    private static IIdentifierWithBinding createStdinString(
+            final String identifier,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for string");
+        }
+        return IdentifierWithBindingFactory.createStdinString(identifier, defaultValue, allowedValues);
+    }
+
+    private enum ToStdinInputOption {
+        STRING("string", ParseJsonForInputImpl::createStdinString);
+
+        private final String dataType;
+        private final IAsStdinInputFactory factory;
+
+        ToStdinInputOption(final String dataType, final IAsStdinInputFactory factory) {
+            this.dataType = dataType;
+            this.factory = factory;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public IAsStdinInputFactory getFactory() {
+            return factory;
+        }
+    }
+
+
 }

@@ -307,28 +307,26 @@ public class IdentifierWithBindingFactory {
     /**
      * Creates a stdin input with a string
      * @param identifier identifier of the data
-     * @return stdin input
+     * @param defaultValue optional default value of the argument
+     * @param allowedValues optional list with allowed values
+     * @return object with information about how to use the value as a string command line argument input parameter
      */
     public static IIdentifierWithBinding createStdinString(
-            final String identifier) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToWriteToStdin(new ConvertLiteralStringToBytes())
-                .build();
-    }
-
-    /**
-     * Creates a stdin input with a string with a default value
-     * @param identifier identifier of the data
-     * @param defaultValue default value of the data
-     * @return stdin input with a default value
-     */
-    public static IIdentifierWithBinding createStdinStringWithDefaultValue(
             final String identifier,
-            final String defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToWriteToStdin(new ConvertLiteralStringToBytes())
-                .withDefaultValue(defaultValue)
-                .build();
+            final String defaultValue,
+            final List<String> allowedValues) {
+
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class);
+        builder.withFunctionToWriteToStdin(new ConvertLiteralStringToBytes());
+
+        if(defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+        if(allowedValues != null && (! allowedValues.isEmpty())) {
+            builder.withAllowedValues(allowedValues);
+            builder.withValidator(new LiteralStringBindingWithAllowedValues(allowedValues));
+        }
+        return builder.build();
     }
 
     /**
