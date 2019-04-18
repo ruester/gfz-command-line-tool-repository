@@ -248,14 +248,16 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (geojson) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return geojson file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentGeojson(
-            final String identifier) {
+            final String identifier,
+            final String flag) {
         final String filename = createUUIDFilename("inputfile", ".json");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(
                         ConvertGTVectorDataBindingToBytes.Format.JSON

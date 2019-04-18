@@ -34,6 +34,7 @@ import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
@@ -41,6 +42,7 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteSingleByteStreamToPath;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
@@ -683,7 +685,7 @@ public class TestParseJsonForInputImpl {
     }
 
     /**
-     * Test with a xml file as command line argument with a schema
+     * Test with a geotiff file as command line argument
      */
     @Test
     public void parseCommandLineArgumentGeotiffFile() {
@@ -699,6 +701,44 @@ public class TestParseJsonForInputImpl {
             final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GeotiffBinding", GeotiffBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
+            final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertTrue("There is a function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertEquals("The function to write the data to files is as expected", writer, inputIdentifier.getFunctionToWriteIDataToFiles().get());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the filename as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    /**
+     * Test with a geojson file as command line argument
+     */
+    @Test
+    public void parseCommandLineArgumentGeojsonFile() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"type\": \"geojson\"" +
+                "}";
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON));
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, inputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
             assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
             assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
