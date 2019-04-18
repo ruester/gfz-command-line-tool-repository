@@ -22,6 +22,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
+import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
@@ -433,6 +434,41 @@ public class TestParseJsonForInputImpl {
         }
     }
 
-    // TODO
-    // test for createCommandLineArgumentStringWithDefaultValueAndAllowedValues
+    @Test
+    public void parseCommandLineArgumentBoolean() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"type\": \"boolean\"," +
+                "\"flag\": \"--verbose\"," +
+                "\"default\": \"true\"" +
+                "}";
+
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralBooleanBindingToStringCmd("--verbose");
+
+        try {
+            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
+            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
+            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
+            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the int as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertTrue("There is a default value", inputIdentifier.getDefaultValue().isPresent());
+            assertEquals("The default value is true", "true", inputIdentifier.getDefaultValue().get());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
 }

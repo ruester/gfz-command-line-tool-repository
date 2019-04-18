@@ -144,6 +144,27 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
+     * Creates a command line boolean argument
+     * @param identifier identifier of the data
+     * @param flag command line flag to insert if the value is true
+     * @param defaultValue optional default value
+     * @return object with information about how to use the value as a boolean command line argument input parameter
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentBoolean(
+            final String identifier,
+            final String flag,
+            final String defaultValue) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralBooleanBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralBooleanBindingToStringCmd(flag));
+
+        if (defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+
+        return builder.build();
+    }
+
+    /**
      * Creates a command line argument (input) which contains a boolean
      * @param identifier identifier of the data
      * @param commandLineFlag flag that is added if the value is true

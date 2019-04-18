@@ -109,7 +109,7 @@ public class ParseJsonForInputImpl {
             for(final Object element : (JSONArray) rawValue) {
                 if(element instanceof String) {
                     list.add((String) element);
-                } else if(element instanceof Double || element instanceof Integer || element instanceof Boolean) {
+                } else if(element instanceof Double || element instanceof Integer) {
                     list.add(String.valueOf(element));
                 } else {
                     throw new ParseConfigurationException("Wrong type for element in '" + key + "', expected a String");
@@ -127,12 +127,27 @@ public class ParseJsonForInputImpl {
         IIdentifierWithBinding create(final String identifier,
                                       final String defaultCommandLineFlag,
                                       final String defaultValue,
-                                      final List<String> allowedValues);
+                                      final List<String> allowedValues) throws ParseConfigurationException;
+    }
+
+    private static IIdentifierWithBinding createCommandLineArgumentBoolean(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues) throws ParseConfigurationException {
+        if(allowedValues != null && (! allowedValues.isEmpty())) {
+            throw new ParseConfigurationException("allowed does not work for booleans");
+        }
+        if(flag == null) {
+            throw new ParseConfigurationException("flag is necessary for boolean type");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentBoolean(identifier, flag, defaultValue);
     }
 
     private enum ToCommandLineArgumentOption {
         INT("int", IdentifierWithBindingFactory::createCommandLineArgumentInt),
         DOUBLE("double", IdentifierWithBindingFactory::createCommandLineArgumentDouble),
+        BOOLEAN("boolean", ParseJsonForInputImpl::createCommandLineArgumentBoolean),
         STRING("string", IdentifierWithBindingFactory::createCommandLineArgumentString);
 
         private final String dataType;
