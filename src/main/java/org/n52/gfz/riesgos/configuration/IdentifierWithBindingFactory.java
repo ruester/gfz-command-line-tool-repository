@@ -229,14 +229,16 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (geotiff file) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return geotiff file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentGeotiff(
-            final String identifier) {
+            final String identifier,
+            final String flag) {
         final String filename = createUUIDFilename("inputfile", ".tiff");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes()))
                 .build();

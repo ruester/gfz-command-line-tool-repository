@@ -291,6 +291,28 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchemaWithoutHeader(identifier, schema, flag);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentGeotiffFile(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for geotiff");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowed values are not supported for geotiff");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for geotiff");
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for geotiff");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentGeotiff(identifier, flag);
+    }
+
 
     private enum ToCommandLineArgumentOption {
         INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
@@ -299,7 +321,8 @@ public class ParseJsonForInputImpl {
         STRING("string", ParseJsonForInputImpl::createCommandLineArgumentString),
         BBOX("bbox", ParseJsonForInputImpl::createCommandLineArgumentBBox),
         XML("xml", ParseJsonForInputImpl::createCommandLineArgumentXmlFile),
-        XML_WITHOUT_HEADER("xmlWithoutHeader", ParseJsonForInputImpl::createCommandLineArgumentXmlFileWithoutHeader);
+        XML_WITHOUT_HEADER("xmlWithoutHeader", ParseJsonForInputImpl::createCommandLineArgumentXmlFileWithoutHeader),
+        GEOFITT("geotiff", ParseJsonForInputImpl::createCommandLineArgumentGeotiffFile);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;
