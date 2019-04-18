@@ -209,15 +209,16 @@ public class IdentifierWithBindingFactory {
      * writing it to a file
      * @param identifier identifier of the data
      * @param schema schema of the xml
+     * @param flag optional flag for the command line argument
      * @return xml file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
-            final String identifier, final String schema) {
+            final String identifier, final String schema, final String flag) {
 
         final String filename = createUUIDFilename("inputfile", ".xml");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader()))
                 .withSchema(schema)

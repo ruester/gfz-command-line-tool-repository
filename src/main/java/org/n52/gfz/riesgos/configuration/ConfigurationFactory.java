@@ -81,7 +81,7 @@ public class ConfigurationFactory {
                 Arrays.asList("python3", "service.py"))
                 .withAddedInputIdentifier(
                         IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
-                                "quakeMLFile", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
+                                "quakeMLFile", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", null)
                 )
                 .withAddedOutputIdentifier(
                         IdentifierWithBindingFactory.createStdoutXmlWithSchema(

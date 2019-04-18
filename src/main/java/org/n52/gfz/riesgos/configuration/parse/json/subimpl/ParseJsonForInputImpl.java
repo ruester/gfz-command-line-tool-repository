@@ -272,6 +272,25 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchema(identifier, schema, flag);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentXmlFileWithoutHeader(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for xml");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowed values are not supported for xml");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for xml");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchemaWithoutHeader(identifier, schema, flag);
+    }
+
 
     private enum ToCommandLineArgumentOption {
         INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
@@ -279,7 +298,8 @@ public class ParseJsonForInputImpl {
         BOOLEAN("boolean", ParseJsonForInputImpl::createCommandLineArgumentBoolean),
         STRING("string", ParseJsonForInputImpl::createCommandLineArgumentString),
         BBOX("bbox", ParseJsonForInputImpl::createCommandLineArgumentBBox),
-        XML("xml", ParseJsonForInputImpl::createCommandLineArgumentXmlFile);
+        XML("xml", ParseJsonForInputImpl::createCommandLineArgumentXmlFile),
+        XML_WITHOUT_HEADER("xmlWithoutHeader", ParseJsonForInputImpl::createCommandLineArgumentXmlFileWithoutHeader);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;
