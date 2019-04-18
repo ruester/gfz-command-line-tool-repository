@@ -24,6 +24,7 @@ import org.n52.gfz.riesgos.exitvaluehandler.LogExitValueHandler;
 import org.n52.gfz.riesgos.stderrhandler.LogStderrHandler;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Factory class for providing predefined configurations
@@ -47,16 +48,16 @@ public class ConfigurationFactory {
                 Arrays.asList("python3", "eventquery.py"))
                 .withAddedInputIdentifiers(Arrays.asList(
                         IdentifierWithBindingFactory.createCommandLineArgumentBBox("input-boundingbox", Arrays.asList("EPSG:4326", "EPSG:4328")),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmin", 6.6),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmax", 8.5),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmin", 5),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmax", 140),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("p", 0.1),
-                        IdentifierWithBindingFactory.createCommandLineArgumentStringWithDefaultValueAndAllowedValues(
-                                "etype", "deaggregation",
+                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmin", null, "6.6", null),
+                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmax", null, "8.5", null),
+                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmin", null, "5", null),
+                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmax", null, "140", null),
+                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("p", null, "0.1", null),
+                        IdentifierWithBindingFactory.createCommandLineArgumentString(
+                                "etype", null, "deaggregation",
                                 Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlon", -71.5730623712764),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlat", -33.1299174879672)
+                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlon", null, "-71.5730623712764", null),
+                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlat", null, "-33.1299174879672", null)
                 ))
                 .withAddedOutputIdentifier(
                         IdentifierWithBindingFactory.createFileOutXmlWithSchema(

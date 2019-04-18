@@ -34,12 +34,12 @@ public class TestIdentifierWithBindingFactory {
      */
     @Test
     public void testEquals() {
-        final IIdentifierWithBinding identifier1 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1");
-        final IIdentifierWithBinding identifier2 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1");
+        final IIdentifierWithBinding identifier1 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null);
+        final IIdentifierWithBinding identifier2 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null);
 
         assertEquals("Both are the same", identifier1, identifier2);
 
-        final IIdentifierWithBinding identifier3 = IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("val1", 0);
+        final IIdentifierWithBinding identifier3 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, "0", null);
         assertNotEquals("The third one is different", identifier1, identifier3);
     }
 }

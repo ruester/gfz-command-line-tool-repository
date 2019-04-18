@@ -62,9 +62,9 @@ public class ParseJsonForInputImpl {
             if(optionsToUseAsCommandLineArgument.containsKey(type)) {
                 return optionsToUseAsCommandLineArgument.get(type).getFactory().create(
                         identifier,
-                        optionalDefaultCommandLineFlag,
-                        optionalDefaultValue,
-                        optionalAllowedValues);
+                        optionalDefaultCommandLineFlag.orElse(null),
+                        optionalDefaultValue.orElse(null),
+                        optionalAllowedValues.orElse(null));
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
@@ -109,12 +109,8 @@ public class ParseJsonForInputImpl {
             for(final Object element : (JSONArray) rawValue) {
                 if(element instanceof String) {
                     list.add((String) element);
-                } else if(element instanceof Double) {
-                    list.add(String.valueOf((Double) element));
-                } else if(element instanceof Integer) {
-                    list.add(String.valueOf((Integer) element));
-                } else if(element instanceof Boolean) {
-                    list.add(String.valueOf((Boolean) element));
+                } else if(element instanceof Double || element instanceof Integer || element instanceof Boolean) {
+                    list.add(String.valueOf(element));
                 } else {
                     throw new ParseConfigurationException("Wrong type for element in '" + key + "', expected a String");
                 }
@@ -128,46 +124,10 @@ public class ParseJsonForInputImpl {
 
     @FunctionalInterface
     private interface IAsCommandLineArgumentFactory {
-        IIdentifierWithBinding create(final String identifier, final Optional<String> defaultCommandLineFlag, final Optional<String> defaultValue, final Optional<List<String>> allowedValues);
-    }
-
-    private static IIdentifierWithBinding createCommandLineArgumentInt(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue, final List<String> allowedValues) {
-        if(defaultCommandLineFlag != null && strDefaultValue != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentIntWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, Integer.parseInt(strDefaultValue));
-        }
-        if(strDefaultValue != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentIntWithDefaultValue(identifier, Integer.parseInt(strDefaultValue));
-        }
-        if(defaultCommandLineFlag != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentIntWithFlag(identifier, defaultCommandLineFlag);
-        }
-        return IdentifierWithBindingFactory.createCommandLineArgumentInt(identifier);
-    }
-
-    private static IIdentifierWithBinding createCommandLineArgumentDouble(final String identifier, final String defaultCommandLineFlag, final String strDefaultValue, final List<String> allowedValues) {
-        if(defaultCommandLineFlag != null && strDefaultValue != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, Double.parseDouble(strDefaultValue));
-        }
-        if(strDefaultValue != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue(identifier, Double.parseDouble(strDefaultValue));
-        }
-        if(defaultCommandLineFlag != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithFlag(identifier, defaultCommandLineFlag);
-        }
-        return IdentifierWithBindingFactory.createCommandLineArgumentDouble(identifier);
-    }
-
-    private static IIdentifierWithBinding createCommandLineArgumentString(final String identifier, final String defaultCommandLineFlag, final String defaultValue, final List<String> allowedValues) {
-        if(defaultCommandLineFlag != null && defaultValue != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentStringWithFlagAndDefaultValue(identifier, defaultCommandLineFlag, defaultValue);
-        }
-        if(defaultValue != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentStringWithDefaultValue(identifier, defaultValue);
-        }
-        if(defaultCommandLineFlag != null) {
-            return IdentifierWithBindingFactory.createCommandLineArgumentStringWithFlag(identifier, defaultCommandLineFlag);
-        }
-        return IdentifierWithBindingFactory.createCommandLineArgumentString(identifier);
+        IIdentifierWithBinding create(final String identifier,
+                                      final String defaultCommandLineFlag,
+                                      final String defaultValue,
+                                      final List<String> allowedValues);
     }
 
     private enum ToCommandLineArgumentOption {

@@ -226,20 +226,20 @@ public class TestProcessDescriptionGenerator {
         @Override
         public List<IIdentifierWithBinding> getInputIdentifiers() {
             return Arrays.asList(
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmin", 288),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("lonmax", 292),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmin", -70),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("latmax", -10),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmin", 6.6),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("mmax", 8.5),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmin", 5),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("zmax", 140),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("p", 0.1),
-                    IdentifierWithBindingFactory.createCommandLineArgumentStringWithDefaultValueAndAllowedValues(
-                            "etype", "deaggregation",
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmin", null, "288.0", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmax", null,  "292.0", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmin", null, "-70.0", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmax", null,  "-10.0", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmin",  null, "6.6", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmax",  null, "8.5", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmin", null,  "5.0", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmax", null,  "140.0", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("p",  null, "0.1", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentString(
+                            "etype", null, "deaggregation",
                             Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlon", -71.5730623712764),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDoubleWithDefaultValue("tlat", -33.1299174879672)
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlon",  null, "-71.5730623712764", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlat",  null, "-33.1299174879672", null)
             );
         }
 
