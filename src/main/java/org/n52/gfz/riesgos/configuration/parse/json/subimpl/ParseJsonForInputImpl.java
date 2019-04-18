@@ -335,6 +335,27 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentGeojson(identifier, flag);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentShapefile(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for shapefile");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowed values are not supported for shapefile");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for shapefile");
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for shapefile");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentShapeFile(identifier, flag);
+    }
 
     private enum ToCommandLineArgumentOption {
         INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
@@ -345,7 +366,8 @@ public class ParseJsonForInputImpl {
         XML("xml", ParseJsonForInputImpl::createCommandLineArgumentXmlFile),
         XML_WITHOUT_HEADER("xmlWithoutHeader", ParseJsonForInputImpl::createCommandLineArgumentXmlFileWithoutHeader),
         GEOFITT("geotiff", ParseJsonForInputImpl::createCommandLineArgumentGeotiffFile),
-        GEOJSON("geojson", ParseJsonForInputImpl::createCommandLineArgumentGeojsonFile);
+        GEOJSON("geojson", ParseJsonForInputImpl::createCommandLineArgumentGeojsonFile),
+        SHAPEFILE("shapefile", ParseJsonForInputImpl::createCommandLineArgumentShapefile);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;

@@ -269,15 +269,16 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (shapefile) with a file path that wlle be written down as a temporary file
      * (or multiple files, because one shapefile contains multiple files)
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return shapefile command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentShapeFile(
-            final String identifier) {
+            final String identifier, final String flag) {
 
         final String filename = createUUIDFilename("inputfile", ".shp");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteShapeFileToPath())
                 .build();
