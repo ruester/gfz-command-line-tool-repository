@@ -384,3 +384,49 @@ make sure that the execution will work - even on a different server.
 
 At the moment there is no final decision on running the services in docker or not.
 
+## How to add a service
+
+To add a service the following steps are necessary:
+
+1. Dockerfile
+
+Because the process should run inside of docker you must provide a docker file with the script and
+all of the dependencies.
+
+You may use the Dockerfiles for quakeledger and shakyground as templates. You can find them in the
+assistance/dockerfiles folder
+
+2. Build the docker image on the server
+
+You must also build the image on the server.
+
+You normally just have to run
+
+```shell
+docker build . --tag newprocess
+```
+in the folder with the new dockerfile.
+
+3. Check that the input and output you need are supported
+
+At the moment the supported input and output types are created to support the IO in the processes for
+quakeledger and shakyground.
+
+You can create an issue on the github page so that we can check how to implement this type.
+
+4. Create a json configuration file
+
+To add a configuration you must provide a json configuration file. You can use the configurations for
+quakeledger and shakyground as templates.
+
+5. Tell the server to use your configuration file
+
+At the moment the way to add a configuration file is to add it to the org/n52/gfz/riesgos/configuration folder in the resources sub
+folder of the mvn project. This needs several steps and should be improved in the future.
+
+* Add the file in the org/n52/gfz/riesgos/configuration folder
+* Add a method to load and parse this configuration in the ConfigurationFactory class
+* Call the method and add the algorithm in the parseConfigToAlgorithmEntries method of the GfzRiesgosRepositoryCM class
+* Build the package using mvn clean package
+* Copy the .jar file in the WEB-INF/lib folder of the wps server
+* Restart the server
