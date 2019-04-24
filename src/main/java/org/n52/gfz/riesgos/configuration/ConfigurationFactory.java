@@ -19,12 +19,17 @@ package org.n52.gfz.riesgos.configuration;
 
  */
 
+import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.configuration.impl.ConfigurationImpl;
+import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
+import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.exitvaluehandler.LogExitValueHandler;
 import org.n52.gfz.riesgos.stderrhandler.LogStderrHandler;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * Factory class for providing predefined configurations
@@ -37,58 +42,31 @@ public class ConfigurationFactory {
 
     /**
      * Creates the configuration for Quakeledger
-     * @param imageId imageId of the docker container
      * @return IConfiguration
      */
-    public static IConfiguration createQuakeledger(final String imageId) {
-        return new ConfigurationImpl.Builder(
-                "QuakeledgerTest",
-                imageId,
-                "/usr/share/git/quakeledger",
-                Arrays.asList("python3", "eventquery.py"))
-                .withAddedInputIdentifiers(Arrays.asList(
-                        IdentifierWithBindingFactory.createCommandLineArgumentBBox("input-boundingbox", Arrays.asList("EPSG:4326", "EPSG:4328")),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmin", null, "6.6", null),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmax", null, "8.5", null),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmin", null, "5", null),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmax", null, "140", null),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("p", null, "0.1", null),
-                        IdentifierWithBindingFactory.createCommandLineArgumentString(
-                                "etype", null, "deaggregation",
-                                Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlon", null, "-71.5730623712764", null),
-                        IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlat", null, "-33.1299174879672", null)
-                ))
-                .withAddedOutputIdentifier(
-                        IdentifierWithBindingFactory.createFileOutXmlWithSchema(
-                                "selectedRows", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
-                )
-                .withExitValueHandler(new LogExitValueHandler())
-                .withStderrHandler(new LogStderrHandler())
-                .build();
+    public static IConfiguration createQuakeledger() {
+        try {
+            final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/quakeledger.json");
+            final String content = new String(IOUtils.toByteArray(inputStream));
+            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+            return parser.parse(content);
+        } catch(final IOException | ParseConfigurationException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     /**
      * Creates the configuration for shakyground
-     * @param imageid imageId of the docker image
      * @return IConfiguration
      */
-    public static IConfiguration createShakyground(final String imageid) {
-        return new ConfigurationImpl.Builder(
-                "ShakygroundTest",
-                imageid,
-                "/usr/share/git/shakyground",
-                Arrays.asList("python3", "service.py"))
-                .withAddedInputIdentifier(
-                        IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
-                                "quakeMLFile", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", null)
-                )
-                .withAddedOutputIdentifier(
-                        IdentifierWithBindingFactory.createStdoutXmlWithSchema(
-                                "shakeMapFile", "http://earthquake.usgs.gov/eqcenter/shakemap")
-                )
-                .withStderrHandler(new LogStderrHandler())
-                .withExitValueHandler(new LogExitValueHandler())
-                .build();
+    public static IConfiguration createShakyground() {
+        try {
+            final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/shakyground.json");
+            final String content = new String(IOUtils.toByteArray(inputStream));
+            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+            return parser.parse(content);
+        } catch(final IOException | ParseConfigurationException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 }

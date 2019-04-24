@@ -140,15 +140,14 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
             for(final Object pureProcess : arrayOfProcesses) {
                 final JSONObject process = (JSONObject) pureProcess;
                 final String title = (String) process.get("title");
-                final String imageId = (String) process.get("imageId");
                 if("Quakeledger".equals(title)) {
                     final Logger logger = LoggerFactory.getLogger(title);
-                    final IAlgorithm algorithm = new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(imageId), logger);
+                    final IAlgorithm algorithm = new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(), logger);
                     final AlgorithmData data = new AlgorithmData(title, algorithm);
                     result.add(data);
                 } else if("Shakyground".equals(title)) {
                     final Logger logger = LoggerFactory.getLogger(title);
-                    final IAlgorithm algorithm = new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(imageId), logger);
+                    final IAlgorithm algorithm = new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(), logger);
                     final AlgorithmData data = new AlgorithmData(title, algorithm);
                     result.add(data);
                 }

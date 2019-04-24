@@ -147,7 +147,7 @@ on the host system (because of sharing the same docker demon).
 
 Go into the assistance/dockerfile/quakeledger folder and run
 ```
-docker build .
+docker build . --tag quakeledger
 ```
 
 This command needs some time to run.

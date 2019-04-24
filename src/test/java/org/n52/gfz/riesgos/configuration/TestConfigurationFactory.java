@@ -31,13 +31,16 @@ public class TestConfigurationFactory {
 
     @Test
     public void testEquals() {
-        final IConfiguration conf1 = ConfigurationFactory.createQuakeledger("123456");
-        final IConfiguration conf2 = ConfigurationFactory.createQuakeledger("123456");
+        final IConfiguration conf1 = ConfigurationFactory.createQuakeledger();
+        final IConfiguration conf2 = ConfigurationFactory.createQuakeledger();
 
         assertEquals("The configurations are the same", conf1, conf2);
 
-        final IConfiguration conf3 = ConfigurationFactory.createShakyground("123456");
+        final IConfiguration conf3 = ConfigurationFactory.createShakyground();
 
         assertNotEquals("conf3 is different", conf1, conf3);
+        // testing conf3 to be equal to another shakyground config will fail,
+        // because the temporary file name for the xml input file will be different
+
     }
 }
