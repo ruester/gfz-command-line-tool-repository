@@ -38,6 +38,7 @@ public class ConfigurationFactory {
 
     /**
      * Creates the configuration for Quakeledger
+     * It uses a predefined docker image (quakeledger:latest)
      * @return IConfiguration
      */
     public static IConfiguration createQuakeledger() {
@@ -53,6 +54,7 @@ public class ConfigurationFactory {
 
     /**
      * Creates the configuration for shakyground
+     * It uses a predefined docker image (shakyground:latest)
      * @return IConfiguration
      */
     public static IConfiguration createShakyground() {

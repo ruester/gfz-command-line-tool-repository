@@ -28,9 +28,6 @@ https://github.com/GFZ-Centre-for-Early-Warning/shakyground
 
 It takes an QuakeML input file and computes the shake map (this is xml too).
 
-The dockerfile you can find in this repository does not work because of an
-error on installing the python gmt library.
-
 ## Features
 
 All the processes are using a generic template for working with command line tools.
@@ -136,10 +133,10 @@ into
 This is necessary for the server that it searches for repostoties that are not
 part of the org.n52.wps package.
 
-6. Create the docker image for the processes
+6. Create the docker images for the processes
 
 You must create the docker images for each process you want to use.
-At the moment there is only the Quakeledger process.
+At the moment there are the Quakeledger and Shakyground processes.
 
 If you run the WPS Server on a decicated server you must build them on that server.
 If you run the WPS Server in docker than it is easily possible to build the images
@@ -162,38 +159,96 @@ docker images | head
 
 It should be the most recent one.
 
-7. Configure the process
-
-Now it is time to start/restart the WPS server.
-
-Once the server is ready you can go to to the configuration board of the server.
-If the server runs inside of docker you may access it via
+To build the docker image for shakyground go into the
+assistance/dockerfile/shakyground folder and run
 
 ```
-localhost:8080/wps
+docker build . --tag shakyground
 ```
 
-Under Repositories you find the GFZ RIESGOS Configuration Module.
-There is a text field for inserting a JSON-Configuration.
-
-After the imageId may change when build on another system, you have to edit this
-configuration.
-
-Insert the following:
-
-```$xslt
-[{"title": "Quakeledger", "imageId", "<INSERT_YOUR_IMAGE_ID_HERE>"}]
-```
-
-After a click on save you should be able to run the Quakeledger process.
 
 ## Configuration
 
-While it is the aim to provide a flexible approach to insert your own services,
-the configuration options in the moment are very sparsely.
+The configuration of the processes is done in json files.
+You can take a look at them in the resources/org/n52/gfz/riesgos/configuration
+folder.
 
-It is an ongoing work to improve the situation.
+The json files provide several informations:
+| title | This provides the title of the process |
+| imageId | ImageID or tag of the docker image to run the script |
+| workindDirectory | Directory that is used to run the script inside the docker container |
+| commandToExecute | The command to execute in the working directory to run the program in the docker container |
+| exitValueHandler | Optional field to add a handler for the exit value |
+| stderrHandler | Optional field to add a handler for the stderr output |
+| stderrHandler | Optional field to add a handler for the stdout output |
+| input | Array of input fields and how they are used |
+| output | Array of output fields and where they get the data from |
 
+Example for the quakeledger process:
+```javascript
+
+    "title": "QuakeledgerProcess",
+    "imageId": "quakeledger:latest",
+    "workingDirectory": "/usr/share/git/quakeledger",
+    "commandToExecute": "python3 eventquery.py",
+    "exitValueHandler": "logging",
+    "stderrHandler": "logging",
+    "input": [
+        { "title" : "input-boundingbox", "useAs": "commandLineArgument", "type": "bbox",   "crs": ["EPSG:4326", "EPSG:4328"]},
+        { "title" : "mmin",              "useAs": "commandLineArgument", "type": "double", "default": "6.6"},
+        { "title" : "mmax",              "useAs": "commandLineArgument", "type": "double", "default": "8.5"},
+        { "title" : "zmin",              "useAs": "commandLineArgument", "type": "double", "default": "5"},
+        { "title" : "zmax",              "useAs": "commandLineArgument", "type": "double", "default": "140"},
+        { "title" : "p",                 "useAs": "commandLineArgument", "type": "double", "default": "0.1"},
+        { "title" : "etype",             "useAs": "commandLineArgument", "type": "string", "default": "deaggregation", "allowed": ["observed", "deaggregation", "stochastic", "expert"]},
+        { "title" : "tlon",              "useAs": "commandLineArgument", "type": "double", "default": "-71.5730623712764"},
+        { "title" : "tlat",              "useAs": "commandLineArgument", "type": "double", "default": "-33.1299174879672"}
+    ],
+    "output": [
+        { "title": "selectedRows", "readFrom": "file", "path": "test.xml", "type": "xml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
+    ]
+}
+```
+
+## Exit Value Handler
+
+If no exitValueHandler is provided in the json configuration the exit value of the program will be ignored.
+There are the following options for the handler:
+#### logging
+
+The exit value will be added to the log file. This is for development and debugging processes.
+
+#### errorIfNotZero
+
+If the exit value is not zero than the process will be terminated without producing output, because the internal script
+has thrown an error.
+
+## Stderr Handler
+
+Same as for exit value, the stderr output is ignored by default.
+
+However there are some other handlers
+
+#### logging
+
+The stderr output text will be added to the log file. This is for development and debugging processes.
+
+##### errorIfNotEmpty
+
+If the stderr text is not empty than the process will be terminated without producing output, because the internal
+script has thrown an error.
+
+## Stdout Handler
+
+There are no stdout handler at the moment. You can read from stdout by providing an output.
+
+## Supported input
+
+TODO
+
+## Supported output
+
+TODO
 
 ## Supported types
 

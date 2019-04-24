@@ -124,6 +124,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
     private List<AlgorithmData> parseConfigToAlgorithmEntries() {
 
+
         final List<AlgorithmData> result = new ArrayList<>();
 
         /*
@@ -133,7 +134,10 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
          * Quakeledger using the file in the assistance folder the imageId changes).
          */
 
-        try {
+        result.add(new AlgorithmData("Quakeledger", new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(), LoggerFactory.getLogger("Quakeledger"))));
+        result.add(new AlgorithmData("Shakyground", new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(), LoggerFactory.getLogger("Shakyground"))));
+
+        /*try {
             final JSONParser parser = new JSONParser();
             final JSONArray arrayOfProcesses = (JSONArray) parser.parse(jsonConfiguration.getValue());
 
@@ -155,7 +159,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         } catch(final ParseException parseException) {
             // error handling must be improved too
             throw new RuntimeException(parseException);
-        }
+        }*/
 
         return result;
     }
