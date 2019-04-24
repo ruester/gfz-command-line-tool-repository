@@ -20,16 +20,12 @@ package org.n52.gfz.riesgos.configuration;
  */
 
 import org.apache.commons.io.IOUtils;
-import org.n52.gfz.riesgos.configuration.impl.ConfigurationImpl;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
-import org.n52.gfz.riesgos.exitvaluehandler.LogExitValueHandler;
-import org.n52.gfz.riesgos.stderrhandler.LogStderrHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 /**
  * Factory class for providing predefined configurations
