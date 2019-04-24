@@ -244,21 +244,110 @@ There are no stdout handler at the moment. You can read from stdout by providing
 
 ## Supported input
 
-TODO
+The input field in the configuration must provide an array with the data fields and how they should be given to the
+command line program.
+
+Each input must provide a title, and a useAs value.
+
+The following useAs values are possible
+
+#### commandLineArgument
+
+This will be given as a command line argument. The ordering of the elements matters as it is the ordering
+the data is given as command line parameter.
+
+The following types are supported via "type" value:
+* int
+* double
+* boolean
+* string
+* xml
+* xmlWithoutHeader
+* geotiff
+* geojson
+* shapefile
+
+For the following types the "flag" attribute is supported:
+* int
+* double
+* string
+* boolean (it is mandatory here)
+* xml
+* xmlWithoutHeader
+* geotiff
+* geojson
+* shapefile
+
+If there is a "flag" attribute then it is inserted before the command line argument.
+For example with the flag --etype and the value "expert"
+```
+[...] --etype "expert"
+```
+
+For booleans the flag is mandatory, because no value will be given as command line argument but the flag - but this
+only if the value is true.
+
+For the bbox the "crs" attribute must be provided with the list of the supported coordinate reference systems.
+
+For the xml and xmlWithoutHeader types there is an optional "schema" attribute, that is used to validate
+the input of the data.
+
+#### stdin
+
+You also can use the stdin as input. At the moment only string as type is supported.
+
+#### file
+
+If you use file as useAs value, than you must provide a "path" attribute.
+This path is relative to the working directory.
+
+The following file types are supported:
+* geotiff
+* geojson
+* shapfile
 
 ## Supported output
 
-TODO
+The output field in the configuration must provide an array with the data fields and how they can be read from
+the command line program.
 
-## Supported types
+Each input must provide a title, and a readFrom value.
 
-At the moment there are the possibilities to provide double and string
-command line arguments and to read xml files in after the exection of a
-command line program.
+The following readFrom values are supported:
 
-(This are only the types needed to implement Quakeledger and Shakyground).
+#### stdout
 
-Here is some work necessary too.
+You can convert the text from stdout to provide output.
+The following values for "type" are supported:
+
+* string
+* xml
+
+The xml type can accept an additional "schema" attribute, that is used to validate the output.
+
+#### stderr
+
+Same as stdout it is possible to read from stderr.
+Here only the string type is supported.
+
+#### exitValue
+
+You can also read from the exit value.
+
+At the moment only the int type is supported.
+
+#### file
+
+The file value for the "readFrom" attribute needs to have an additional "path" attribute which the file path
+of the given output file. This is relative to the working directory.
+
+The following "type" values are supported:
+* xml
+* geojson
+* geotiff
+* shapefile
+
+The xml type can also accept an "schema" attribute to validate the output.
 
 ## Known problems with docker
 
