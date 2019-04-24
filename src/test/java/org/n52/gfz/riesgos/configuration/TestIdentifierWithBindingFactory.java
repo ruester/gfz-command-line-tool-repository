@@ -21,6 +21,8 @@ package org.n52.gfz.riesgos.configuration;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -41,5 +43,10 @@ public class TestIdentifierWithBindingFactory {
 
         final IIdentifierWithBinding identifier3 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, "0", null);
         assertNotEquals("The third one is different", identifier1, identifier3);
+
+        final IIdentifierWithBinding identifier4 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, "x", Arrays.asList("x", "y"));
+        final IIdentifierWithBinding identifier5 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, "x", Arrays.asList("x", "y"));
+
+        assertEquals("4 and 5 are equal", identifier4, identifier5);
     }
 }
