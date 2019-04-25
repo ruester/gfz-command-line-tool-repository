@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.writeidatatofiles;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,7 +18,6 @@
  *
  */
 
-package org.n52.gfz.riesgos.writeidatatofiles;
 
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
