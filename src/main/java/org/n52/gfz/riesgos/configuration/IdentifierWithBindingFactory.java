@@ -38,6 +38,7 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
 import org.n52.gfz.riesgos.readidatafromfiles.ReadShapeFileFromPath;
 import org.n52.gfz.riesgos.readidatafromfiles.ReadSingleByteStreamFromPath;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
+import org.n52.gfz.riesgos.validators.XmlBindingWithAllowedSchema;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteSingleByteStreamToPath;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
@@ -195,8 +196,16 @@ public class IdentifierWithBindingFactory {
             final String identifier, final String schema, final String defaultFlag) {
 
         final String filename = createUUIDFilename("inputfile", ".xml");
+        XmlBindingWithAllowedSchema validator;
+
+        if (schema == null || schema.trim().length() == 0) {
+            validator = null;
+        } else {
+            validator = new XmlBindingWithAllowedSchema(schema);
+        }
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+                .withValidator(validator)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, defaultFlag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
@@ -216,12 +225,20 @@ public class IdentifierWithBindingFactory {
             final String identifier, final String schema, final String flag) {
 
         final String filename = createUUIDFilename("inputfile", ".xml");
+        XmlBindingWithAllowedSchema validator;
+
+        if (schema == null || schema.trim().length() == 0) {
+            validator = null;
+        } else {
+            validator = new XmlBindingWithAllowedSchema(schema);
+        }
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader()))
                 .withSchema(schema)
+                .withValidator(validator)
                 .build();
     }
 
@@ -402,10 +419,20 @@ public class IdentifierWithBindingFactory {
             final String identifier,
             final String path,
             final String schema) {
+
+        XmlBindingWithAllowedSchema validator;
+
+        if (schema == null || schema.trim().length() == 0) {
+            validator = null;
+        } else {
+            validator = new XmlBindingWithAllowedSchema(schema);
+        }
+
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withPath(path)
                 .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGenericXMLDataBinding()))
                 .withSchema(schema)
+                .withValidator(validator)
                 .build();
     }
 
