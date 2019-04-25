@@ -173,7 +173,10 @@ The configuration of the processes is done in json files.
 You can take a look at them in the resources/org/n52/gfz/riesgos/configuration
 folder.
 
-The json files provide several informations:
+The json files provide several information:
+
+| key | Explanation |
+|-----|-------------|
 | title | This provides the title of the process |
 | imageId | ImageID or tag of the docker image to run the script |
 | workingDirectory | Directory that is used to run the script inside the docker container |
