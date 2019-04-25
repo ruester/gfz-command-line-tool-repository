@@ -62,6 +62,7 @@
 		<attribute name="nominal_lat_spacing" type="string" use="optional" />
 		<attribute name="nlon" type="string" use="optional" />
 		<attribute name="nlat" type="string" use="optional" />
+		<attribute name="regular_grid" type="boolean" use="optional" />
 	</complexType>
 
 	<complexType name="event_specific_uncertainty_type">
