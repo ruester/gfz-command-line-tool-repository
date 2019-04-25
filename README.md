@@ -115,7 +115,7 @@ Additionally the jar for org.apache.ant and the version 1.10.5 must be provided.
 Once you build the new version of this repository you can find the jar in the
 m2 repository folder as well.
 
-5. Edit the WEB-INF/classes/dispatcher-servlet.xml file in the 52n-wps-webap-[...] folder
+5. Edit the WEB-INF/classes/dispatcher-servlet.xml file in the 52n-wps-webapp-[...] folder
 
 Same as the in the https://github.com/riesgos/52north-wps-osmtovector-process repository
 the WEB-INF/classes/dispatcher-servlet.xml file must be edited.
