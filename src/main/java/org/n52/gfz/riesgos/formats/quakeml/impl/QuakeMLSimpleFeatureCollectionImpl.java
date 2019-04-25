@@ -28,7 +28,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
+import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLDataProvider;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLEvent;
 import org.n52.wps.io.GTHelper;
 import org.opengis.feature.simple.SimpleFeature;
@@ -55,7 +55,7 @@ import java.util.function.Consumer;
  *
  * Like QuakeMLXmlImpl this class focus only on the eventParameters and event elements.
  */
-public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeML {
+public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeMLDataProvider {
 
     private final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection;
 
@@ -354,7 +354,7 @@ public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeML {
      * @param quakeML any quakeMl implementation
      * @return FeatureCollection featurecollection with all the quakeml data
      */
-    public static FeatureCollection<SimpleFeatureType, SimpleFeature> convertToSimpleFeatureCollection(final IQuakeML quakeML) {
+    public static FeatureCollection<SimpleFeatureType, SimpleFeature> convertToSimpleFeatureCollection(final IQuakeMLDataProvider quakeML) {
         final DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
 
 

@@ -26,19 +26,57 @@ import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLXmlImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class QuakeML {
+import java.util.List;
 
-    private QuakeML() {
-        // static
+/**
+ * Implementation for IQuakeML
+ * Provides static factory methods fromXyz
+ * and the implementations for the format conversion.
+ */
+public class QuakeML implements IQuakeML {
+
+    private final IQuakeMLDataProvider dataProvider;
+
+    /*
+     * Constructor
+     * Use the from... methods to construct the objects
+     */
+    private QuakeML(final IQuakeMLDataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
+    @Override
+    public List<IQuakeMLEvent> getEvents() {
+        return dataProvider.getEvents();
+    }
+
+    @Override
+    public XmlObject toXmlObject() {
+        return QuakeMLXmlImpl.convertToXml(dataProvider);
+    }
+
+    @Override
+    public FeatureCollection<SimpleFeatureType, SimpleFeature> toSimpleFeatureCollection() {
+        return QuakeMLSimpleFeatureCollectionImpl.convertToSimpleFeatureCollection(dataProvider);
+    }
+
+    /**
+     * Constructs the object from an xml object
+     * @param xmlObject quakeml xml representation
+     * @return IQuakeML object
+     * @throws ConvertFormatException may throw a ConvertFormatException
+     */
     public static IQuakeML fromXml(final XmlObject xmlObject) throws ConvertFormatException {
-        return new QuakeMLXmlImpl(xmlObject);
+        return new QuakeML(new QuakeMLXmlImpl(xmlObject));
     }
 
+    /**
+     * Constructs the object from a simple feature collection
+     * @param featureCollection quakeml feature collection implementation
+     * @return IQuakeML object
+     */
     public static IQuakeML fromFeatureCollection(final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
-        return new QuakeMLSimpleFeatureCollectionImpl(featureCollection);
+        return new QuakeML(new QuakeMLSimpleFeatureCollectionImpl(featureCollection));
     }
-
 
 }

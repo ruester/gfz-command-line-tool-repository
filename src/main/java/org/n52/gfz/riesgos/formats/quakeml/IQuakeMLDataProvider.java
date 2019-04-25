@@ -18,26 +18,16 @@ package org.n52.gfz.riesgos.formats.quakeml;
  *
  */
 
-import org.apache.xmlbeans.XmlObject;
-import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import java.util.List;
 
 /**
- * Extended interface for QuakeML that also contains some conversion methods
+ * Interface to provide quakeml data
  */
-public interface IQuakeML extends IQuakeMLDataProvider {
+public interface IQuakeMLDataProvider {
 
     /**
      *
-     * @return xml representation of quakeml
+     * @return list with quakeml events
      */
-    XmlObject toXmlObject();
-
-    /**
-     *
-     * @return simple feature collection representation of quakeml
-     */
-    FeatureCollection<SimpleFeatureType, SimpleFeature> toSimpleFeatureCollection();
-
+    List<IQuakeMLEvent> getEvents();
 }
