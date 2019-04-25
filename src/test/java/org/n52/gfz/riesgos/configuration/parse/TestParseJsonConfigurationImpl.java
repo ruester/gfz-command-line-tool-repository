@@ -29,6 +29,7 @@ import org.n52.gfz.riesgos.exitvaluehandler.LogExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.stderrhandler.LogStderrHandler;
+import org.n52.gfz.riesgos.stderrhandler.PythonTracebackStderrHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -196,6 +197,43 @@ public class TestParseJsonConfigurationImpl {
             assertTrue("There are no default command line flags", conf.getDefaultCommandLineFlags().isEmpty());
             assertTrue("There is a exit value handler present", conf.getExitValueHandler().isPresent());
             assertEquals("And it is a log handler", exitValueHandler, conf.getExitValueHandler().get());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    /**
+     * Test with a very simple configuration with no input and output but with
+     * an logging exit value handler and a python traceback stderr handler
+     */
+    @Test
+    public void testValidInputSimpleWithPythonTracebackHandlerValueHandler() {
+        final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+
+        final IExitValueHandler exitValueHandler = new LogExitValueHandler();
+        final IStderrHandler stderrHandler = new PythonTracebackStderrHandler();
+
+        final String text = "{" +
+                "\"title\": \"Quakeledger\"," +
+                "\"imageId\": \"123456\"," +
+                "\"workingDirectory\": \"/usr/share/git/quakeledger\"," +
+                "\"commandToExecute\": \"python3 eventquery.py\"," +
+                "\"exitValueHandler\": \"logging\"," +
+                "\"stderrHandler\": \"pythonTraceback\"" +
+                "}";
+
+
+        try {
+            final IConfiguration conf = parser.parse(text);
+            assertEquals("The title is as expected", "Quakeledger", conf.getIdentifier());
+            assertEquals("The imageId is as expected", "123456", conf.getImageId());
+            assertEquals("The workingDirectory is as expected", "/usr/share/git/quakeledger", conf.getWorkingDirectory());
+            assertEquals("The commandToExecute is as expected", Arrays.asList("python3", "eventquery.py"), conf.getCommandToExecute());
+            assertTrue("There are no default command line flags", conf.getDefaultCommandLineFlags().isEmpty());
+            assertTrue("There is a exit value handler present", conf.getExitValueHandler().isPresent());
+            assertEquals("And it is a log handler", exitValueHandler, conf.getExitValueHandler().get());
+            assertTrue("There is stderr handler", conf.getStderrHandler().isPresent());
+            assertEquals("And it is the python traceback handler", stderrHandler, conf.getStderrHandler().get());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
