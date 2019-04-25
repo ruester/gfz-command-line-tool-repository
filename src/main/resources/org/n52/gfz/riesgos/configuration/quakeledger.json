@@ -4,7 +4,7 @@
     "workingDirectory": "/usr/share/git/quakeledger",
     "commandToExecute": "python3 eventquery.py",
     "exitValueHandler": "logging",
-    "stderrHandler": "logging",
+    "stderrHandler": "pythonTraceback",
     "input": [
         { "title" : "input-boundingbox", "useAs": "commandLineArgument", "type": "bbox",   "crs": ["EPSG:4326", "EPSG:4328"]},
         { "title" : "mmin",              "useAs": "commandLineArgument", "type": "double", "default": "6.6"},
