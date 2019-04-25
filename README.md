@@ -111,7 +111,7 @@ folder. This is the folder used by maven for storing downloaded jar files in an
 Ubuntu 18.10 distribution.
 The name of the folder may differ on your system.
 
-Addionally the jar for org.apache.ant and the version 1.10.5 must be provided.
+Additionally the jar for org.apache.ant and the version 1.10.5 must be provided.
 Once you build the new version of this repository you can find the jar in the
 m2 repository folder as well.
 
@@ -176,7 +176,7 @@ folder.
 The json files provide several informations:
 | title | This provides the title of the process |
 | imageId | ImageID or tag of the docker image to run the script |
-| workindDirectory | Directory that is used to run the script inside the docker container |
+| workingDirectory | Directory that is used to run the script inside the docker container |
 | commandToExecute | The command to execute in the working directory to run the program in the docker container |
 | exitValueHandler | Optional field to add a handler for the exit value |
 | stderrHandler | Optional field to add a handler for the stderr output |
@@ -358,7 +358,7 @@ docker file system. So also temporary files that are already on the server must 
 copied to the container.
 
 The overhead may course longer runtimes - and may also course timeouts on 
-clientside.
+client side.
 
 Another problem is that the image id differ when created on different machines.
 The reason for that is that in most docker build processes there is a kind
@@ -375,7 +375,7 @@ However the use of docker gives some advantages:
 each other.
 * All temporary files created by the command line executable are removed 
 after the execution by removing the docker container.
-* Docker seperates the dependencies of the command line programs. Each process has
+* Docker separates the dependencies of the command line programs. Each process has
 its own Dockerfile, which specifies the dependencies for this single process.
 So it is possible to run several services that uses conflicting libraries.
 * It is possible to test the execution of a program inside of docker
@@ -394,7 +394,7 @@ Because the process should run inside of docker you must provide a docker file w
 all of the dependencies.
 
 You may use the Dockerfiles for quakeledger and shakyground as templates. You can find them in the
-assistance/dockerfiles folder
+assistance/dockerfiles folder.
 
 2. Build the docker image on the server
 
@@ -405,7 +405,7 @@ You normally just have to run
 ```shell
 docker build . --tag newprocess
 ```
-in the folder with the new dockerfile.
+in the folder with the new dockerfile. You may change the the tag of the image to match the name of your process.
 
 3. Check that the input and output you need are supported
 
@@ -419,14 +419,38 @@ You can create an issue on the github page so that we can check how to implement
 To add a configuration you must provide a json configuration file. You can use the configurations for
 quakeledger and shakyground as templates.
 
-5. Tell the server to use your configuration file
+5. Tell the server where to find your configuration file
 
-At the moment the way to add a configuration file is to add it to the org/n52/gfz/riesgos/configuration folder in the resources sub
-folder of the mvn project. This needs several steps and should be improved in the future.
+The configuration module for the gfz riesgos wps repository accepts a configuration string with the path of a folder.
+You can see this on the administration page for the wps server.
 
-* Add the file in the org/n52/gfz/riesgos/configuration folder
-* Add a method to load and parse this configuration in the ConfigurationFactory class
-* Call the method and add the algorithm in the parseConfigToAlgorithmEntries method of the GfzRiesgosRepositoryCM class
-* Build the package using mvn clean package
-* Copy the .jar file in the WEB-INF/lib folder of the wps server
-* Restart the server
+You can change this folder name at any time.
+
+If running the wps server itself in docker, you may need to add a volume to the server.
+For example it may be necessary to add the following line to a docker-compose.yml file in the part of the volumes:
+
+```
+- ./json-configs:/usr/share/riesgos/json-configurations
+```
+
+The path after the colon should match the path if the configuration folder you insert in the wps administration page
+for the GFZ RIESGOS Configuration Module.
+
+6. Add your config file in this folder
+
+If you run the wps server inside of docker itself, you can now add your configuration to the json-configs folder.
+If you don't run the wps server in docker, you can add your configuration to the folder you inserted in the text
+field for the GFZ RIESGOS Configuration Module on the wps administration page.
+
+It is important that your file has an .json ending, because those are the files that are recognized for parsing.
+
+Now your process should be included in the repository.
+
+If you have access to the logs you can check if the parsing is successful and
+if there are problems on running your process you can check that too.
+
+7. Change your process (optional)
+
+If you now just want to change your process configuration, you can change the configuration file and it will update on runtime.
+
+If you have to change the dockerfile, than you have to rebuild the image.
