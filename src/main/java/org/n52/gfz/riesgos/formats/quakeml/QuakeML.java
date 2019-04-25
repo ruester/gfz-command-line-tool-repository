@@ -28,11 +28,20 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 import java.util.List;
 
+/**
+ * Implementation for IQuakeML
+ * Provides static factory methods fromXyz
+ * and the implementations for the format conversion.
+ */
 public class QuakeML implements IQuakeML {
 
     private final IQuakeMLDataProvider dataProvider;
 
-    public QuakeML(final IQuakeMLDataProvider dataProvider) {
+    /*
+     * Constructor
+     * Use the from... methods to construct the objects
+     */
+    private QuakeML(final IQuakeMLDataProvider dataProvider) {
         this.dataProvider = dataProvider;
     }
 
@@ -51,10 +60,21 @@ public class QuakeML implements IQuakeML {
         return QuakeMLSimpleFeatureCollectionImpl.convertToSimpleFeatureCollection(dataProvider);
     }
 
+    /**
+     * Constructs the object from an xml object
+     * @param xmlObject quakeml xml representation
+     * @return IQuakeML object
+     * @throws ConvertFormatException may throw a ConvertFormatException
+     */
     public static IQuakeML fromXml(final XmlObject xmlObject) throws ConvertFormatException {
         return new QuakeML(new QuakeMLXmlImpl(xmlObject));
     }
 
+    /**
+     * Constructs the object from a simple feature collection
+     * @param featureCollection quakeml feature collection implementation
+     * @return IQuakeML object
+     */
     public static IQuakeML fromFeatureCollection(final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
         return new QuakeML(new QuakeMLSimpleFeatureCollectionImpl(featureCollection));
     }
