@@ -1,8 +1,5 @@
 package org.n52.gfz.riesgos.validators;
 
-import org.apache.xmlbeans.XmlException;
-import org.apache.xmlbeans.XmlObject;
-
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -17,9 +14,10 @@ import org.apache.xmlbeans.XmlObject;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
+
+import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
@@ -28,6 +26,7 @@ import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,13 +40,12 @@ import static org.junit.Assert.assertFalse;
  */
 public class TestXmlBindingWithAllowedSchema {
 
-    //private final String schemaQuakeml = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
-    //private final String schemaShakemap = "http://earthquake.usgs.gov/eqcenter/shakemap";
-    private final Path schemaQuakeml = Paths.get("src", "main", "resources", "org", "n52", "gfz", "riesgos", "validators", "xml", "QuakeML-BED-1.2.xsd");
-    private final Path schemaShakemap = Paths.get("src", "main", "resources", "org", "n52", "gfz", "riesgos", "validators", "xml", "shakemap.xsd");
+    private final String schemaQuakeml = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
+    private final String schemaShakemap = "http://earthquake.usgs.gov/eqcenter/shakemap";
 
     private final Path quakemlfile = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "convertformats", "quakeml.xml");
     private final Path shakemapfile = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "convertformats", "shakemap.xml");
+    private final Path shakemapfilegithub = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "convertformats", "shakemap_github.xml");
 
     /**
      * If the xml value does validate against the schema everything is fine
@@ -55,7 +53,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testValidQuakeml() throws XmlException, IOException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml.toString());
+        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
         final String filecontent = new String(Files.readAllBytes(quakemlfile));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
         final IData value = new GenericXMLDataBinding(content);
@@ -73,7 +71,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testInvalidQuakeml() throws XmlException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml.toString());
+        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
         final XmlObject content = XmlObject.Factory.parse("<test></test>");
         final IData value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
@@ -87,8 +85,35 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testValidShakemap() throws XmlException, IOException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaShakemap.toString());
+        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaShakemap);
         final String filecontent = new String(Files.readAllBytes(shakemapfile));
+        final XmlObject content = XmlObject.Factory.parse(filecontent);
+        final IData value = new GenericXMLDataBinding(content);
+        final Optional<String> errorMessage = validator.check(value);
+
+        if (errorMessage.isPresent()) {
+            System.err.println(errorMessage.get());
+        }
+
+        assertFalse("We expect the input file to validate", errorMessage.isPresent());
+    }
+
+    /**
+     * Test for valid xml with external schema url
+     * and no error message must be given back
+     */
+    @Test
+    public void testValidShakemapExternalSchema() throws XmlException, IOException {
+        final String externalSchema = "https://raw.githubusercontent.com/bpross-52n/shakemap-xmlbeans/master/src/main/xsd/shakemap.xsd";
+
+        try {
+            new URL(externalSchema).openStream().close();
+        } catch (Exception e) {
+            return;
+        }
+
+        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(externalSchema);
+        final String filecontent = new String(Files.readAllBytes(shakemapfilegithub));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
         final IData value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
@@ -105,7 +130,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testInvalidShakemap() throws XmlException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaShakemap.toString());
+        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaShakemap);
         final XmlObject content = XmlObject.Factory.parse("<test></test>");
         final IData value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
@@ -118,7 +143,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testWrongType() {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml.toString());
+        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
         final IData value = new LiteralIntBinding(1);
         final Optional<String> errorMessage = validator.check(value);
 

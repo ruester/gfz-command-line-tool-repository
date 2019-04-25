@@ -19,6 +19,7 @@ import org.apache.xmlbeans.XmlObject;
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
+import org.n52.gfz.riesgos.util.XmlSchemaFileTranslator;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.xml.sax.ErrorHandler;
@@ -28,6 +29,7 @@ import org.xml.sax.SAXParseException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -63,16 +65,27 @@ public class XmlBindingWithAllowedSchema implements ICheckDataAndGetErrorMessage
         if(iData instanceof GenericXMLDataBinding) {
             final GenericXMLDataBinding xmlbinding = (GenericXMLDataBinding) iData;
             final XmlObject xml = xmlbinding.getPayload();
-
-            // TODO: translate alias or URL to xsd schema
+            final XmlSchemaFileTranslator translator = new XmlSchemaFileTranslator();
 
             // https://stackoverflow.com/a/16054/2249798
-            File schemaFile = new File(allowedschema);
+            Object schemaFile = translator.translateUri(allowedschema);
+
+            if (schemaFile == null) {
+                return Optional.of("XML schema file could not be loaded: " + validationErrors.toString());
+            }
+
             Source xmlFile = new StreamSource(new StringReader(xml.toString()));
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
             try {
-                Schema schema = schemaFactory.newSchema(schemaFile);
+                Schema schema;
+
+                if (schemaFile instanceof URL) {
+                    schema = schemaFactory.newSchema((URL) schemaFile);
+                } else {
+                    schema = schemaFactory.newSchema((File) schemaFile);
+                }
+
                 Validator validator = schema.newValidator();
 
                 // https://stackoverflow.com/a/11131775/2249798
