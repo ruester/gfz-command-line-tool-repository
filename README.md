@@ -186,7 +186,7 @@ The json files provide several informations:
 
 Example for the quakeledger process:
 ```javascript
-
+{
     "title": "QuakeledgerProcess",
     "imageId": "quakeledger:latest",
     "workingDirectory": "/usr/share/git/quakeledger",
