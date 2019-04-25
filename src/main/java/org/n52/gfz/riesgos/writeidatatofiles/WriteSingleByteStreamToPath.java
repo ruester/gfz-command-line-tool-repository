@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.writeidatatofiles;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,7 +18,6 @@
  *
  */
 
-package org.n52.gfz.riesgos.writeidatatofiles;
 
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
@@ -25,6 +26,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.wps.io.data.IData;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Implementation that just uses a function to convert the
@@ -48,5 +50,22 @@ public class WriteSingleByteStreamToPath implements IWriteIDataToFiles {
     public void writeToFiles(IData iData, IExecutionContext context, String workingDirectory, String path) throws ConvertToBytesException, IOException {
         final byte[] content = converter.convertToBytes(iData);
         context.writeToFile(content, workingDirectory, path);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        WriteSingleByteStreamToPath that = (WriteSingleByteStreamToPath) o;
+        return Objects.equals(converter, that.converter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(converter);
     }
 }

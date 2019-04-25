@@ -20,6 +20,8 @@ import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 
+import java.util.Objects;
+
 /**
  * Handler for the exit value that throws an exception on a non zero
  * exit value
@@ -31,5 +33,18 @@ public class ExceptionIfExitValueIsNotEmptyHandler implements IExitValueHandler 
         if(exitValue != 0) {
             throw new NonZeroExitValueException(exitValue);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

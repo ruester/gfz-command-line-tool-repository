@@ -27,6 +27,7 @@ import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Implementation to convert a file binding to a byte array
@@ -47,5 +48,18 @@ public class ConvertGenericFileDataBindingToBytes implements IConvertIDataToByte
         } else {
             throw new ConvertToBytesException("Wrong binding class");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

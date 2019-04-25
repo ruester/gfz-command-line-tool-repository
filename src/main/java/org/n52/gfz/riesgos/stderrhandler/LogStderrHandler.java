@@ -19,6 +19,8 @@ package org.n52.gfz.riesgos.stderrhandler;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 
+import java.util.Objects;
+
 /**
  * Handler for stderr that logs the stderr text
  */
@@ -27,5 +29,18 @@ public class LogStderrHandler implements IStderrHandler {
     @Override
     public void handleSterr(String stderr, final ILogger logger) {
         logger.log("Text on stderr:\n" + stderr);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

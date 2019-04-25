@@ -29,6 +29,7 @@ import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * Function to create a GTVectorDataBinding from a byte array
@@ -54,6 +55,24 @@ public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIDa
         } catch(final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ConvertBytesToGTVectorDataBinding that = (ConvertBytesToGTVectorDataBinding) o;
+        return format == that.format;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(format);
     }
 
     @FunctionalInterface

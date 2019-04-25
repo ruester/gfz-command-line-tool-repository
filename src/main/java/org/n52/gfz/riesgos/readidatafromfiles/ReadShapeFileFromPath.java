@@ -1,3 +1,5 @@
+package org.n52.gfz.riesgos.readidatafromfiles;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,14 +18,11 @@
  *
  */
 
-package org.n52.gfz.riesgos.readidatafromfiles;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
-import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
 import org.n52.wps.io.data.IData;
@@ -31,19 +30,22 @@ import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
+/**
+ * Implementation to read multiple files for a shapefile
+ */
 public class ReadShapeFileFromPath implements IReadIDataFromFiles {
 
     @Override
     public IData readFromFiles(
             final IExecutionContext context,
             final String workingDirectory,
-            final String path) throws ConvertToIDataException, IOException {
+            final String path) throws IOException {
 
         final Path tempDir = Files.createTempDirectory("tempshapefile");
         final File tempDirAsFile = new File(path);
@@ -73,6 +75,19 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles {
         try(final FileOutputStream outputStream = new FileOutputStream(file)) {
             IOUtils.write(content, outputStream);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 
 }

@@ -28,6 +28,7 @@ import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Function to create a GeotiffBinding from a byte array
@@ -45,10 +46,22 @@ public class ConvertBytesToGeotiffBinding implements IConvertByteArrayToIData {
                 IOUtils.write(content, writer);
             }
 
-            final GeotiffBinding binding = new GeotiffBinding(tempFile);
-            return binding;
+            return new GeotiffBinding(tempFile);
         } catch(final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

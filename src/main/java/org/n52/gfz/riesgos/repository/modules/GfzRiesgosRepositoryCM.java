@@ -16,13 +16,13 @@ package org.n52.gfz.riesgos.repository.modules;
  * limitations under the Licence.
  */
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
-import org.n52.gfz.riesgos.algorithm.predefinedconfig.QuakeledgerConfiguration;
-import org.n52.gfz.riesgos.algorithm.predefinedconfig.ShakygroundConfiguration;
+import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
+import org.n52.gfz.riesgos.configuration.IConfiguration;
+import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
+import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ProcessDescription;
@@ -35,13 +35,22 @@ import org.n52.wps.webapp.api.types.StringConfigurationEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Configuration module for the gfz riesgos repository.
@@ -53,15 +62,13 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
     private static final String CONFIG_KEY = "json_configuration";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GfzRiesgosRepositoryCM.class);
+
     /*
-     * a default configuration to insert the Quakeledger process with a given image id
-     *
-     * it is already intended to provide a JSON configuration for handling the processes
-     * The actual format here and (of course) the content will change.
-     *
+     * This is the default folder that is used to read the json configuration files from
      */
-    private static final String DEFAULT_CONFIGURATION =
-            "[{\"title\": \"Quakeledger\", \"imageId\": \"sha256:71b93ade61bf41da8d68419bec12ec1e274eae28b36bc64cc156e1be33294821\"}]";
+    private static final String DEFAULT_CONFIGURATION_FOLDER =
+            "/usr/share/riesgos/json-configurations";
 
     private static final String MODULE_NAME = "GFZ RIESGOS Configuration Module";
     private static final String CLASS_NAME_OF_REPOSITORY_TO_CONFIG = GfzRiesgosRepository.class.getName();
@@ -69,7 +76,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
 
     private final List<? extends ConfigurationEntry<?>> configurationEntries;
-    private ConfigurationEntry<String> jsonConfiguration;
+    private ConfigurationEntry<String> jsonConfigurationFolder;
     private boolean isActive;
 
     /**
@@ -77,9 +84,11 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
      */
     public GfzRiesgosRepositoryCM() {
         isActive = true;
-        jsonConfiguration = new StringConfigurationEntry(CONFIG_KEY, "JSON Process Configuration", "JSON description of the processes",
-                true, DEFAULT_CONFIGURATION);
-        configurationEntries = Collections.singletonList(jsonConfiguration);
+        jsonConfigurationFolder = new StringConfigurationEntry(CONFIG_KEY, "JSON Process Configuration Folder",
+                "Folder that contains the json files to add / remove / configure the wps processes that use the " +
+                "skeleton to run command line processes in docker.",
+                true, DEFAULT_CONFIGURATION_FOLDER);
+        configurationEntries = Collections.singletonList(jsonConfigurationFolder);
     }
 
     @Override
@@ -125,41 +134,69 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
     private List<AlgorithmData> parseConfigToAlgorithmEntries() {
 
+
         final List<AlgorithmData> result = new ArrayList<>();
 
-        /*
-         * The code here should be improved to provide user specific configurations.
-         * This implementation is just a working state to provide access to the Quakeledger process
-         * and to specify the image id yourself (because on each time you build the docker image for
-         * Quakeledger using the file in the assistance folder the imageId changes).
-         */
+        // this both configurations are included by default
+        result.add(new AlgorithmData("QuakeledgerProcess", new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(), LoggerFactory.getLogger("Quakeledger"))));
+        result.add(new AlgorithmData("ShakygroundProcess", new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(), LoggerFactory.getLogger("Shakyground"))));
 
-        try {
-            final JSONParser parser = new JSONParser();
-            final JSONArray arrayOfProcesses = (JSONArray) parser.parse(jsonConfiguration.getValue());
+        // others can be added by using the folder
+        addConfigurationsFromFilder(this::getFileNamesFromConfig, result::add);
 
-            for(final Object pureProcess : arrayOfProcesses) {
-                final JSONObject process = (JSONObject) pureProcess;
-                final String title = (String) process.get("title");
-                final String imageId = (String) process.get("imageId");
-                if("Quakeledger".equals(title)) {
-                    final Logger logger = LoggerFactory.getLogger(QuakeledgerConfiguration.class);
-                    final IAlgorithm algorithm = new BaseGfzRiesgosService(new QuakeledgerConfiguration(imageId), logger);
-                    final AlgorithmData data = new AlgorithmData(title, algorithm);
-                    result.add(data);
-                } else if("Shakyground".equals(title)) {
-                    final Logger logger = LoggerFactory.getLogger(ShakygroundConfiguration.class);
-                    final IAlgorithm algorithm = new BaseGfzRiesgosService(new ShakygroundConfiguration(imageId), logger);
-                    final AlgorithmData data = new AlgorithmData(title, algorithm);
-                    result.add(data);
-                }
-            }
-        } catch(final ParseException parseException) {
-            // error handling must be improved too
-            throw new RuntimeException(parseException);
-        }
 
         return result;
+    }
+
+    private Collection<String> getFileNamesFromConfig() {
+        return getFileNamesFrom(new File(jsonConfigurationFolder.getValue()), this::filterJsonFiles);
+    }
+
+    private boolean filterJsonFiles(final File file) {
+        return file.isFile() && file.getAbsolutePath().toLowerCase().endsWith(".json");
+    }
+
+    private Collection<String> getFileNamesFrom(final File folder, final FileFilter fileFilter) {
+        if(! folder.exists()) {
+            LOGGER.error("The folder '" + folder.getAbsolutePath() + "' does not exist.");
+            return Collections.emptyList();
+        } else if(! folder.isDirectory()) {
+            LOGGER.error("The file '" + folder.getAbsolutePath() + "' is not a folder.");
+            return Collections.emptyList();
+        }
+
+        final File[] files = folder.listFiles(fileFilter);
+        final File[] filesNotNull = Optional.ofNullable(files).orElseGet(this::emptyFileArray);
+
+        return Stream.of(filesNotNull).map(File::getAbsolutePath).collect(Collectors.toList());
+    }
+
+    private File[] emptyFileArray() {
+        return new File[]{};
+    }
+
+
+    private void addConfigurationsFromFilder(final Supplier<Collection<String>> fileProvider, Consumer<AlgorithmData> adder) {
+        final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+
+        for(final String fileName : fileProvider.get()) {
+            try(final FileInputStream inputStream = new FileInputStream(fileName)) {
+                final String content = new String(IOUtils.toByteArray(inputStream));
+                final IConfiguration configuration = parser.parse(content);
+
+                final Logger logger = LoggerFactory.getLogger((configuration.getFullQualifiedIdentifier()));
+
+                final AlgorithmData algorithmData = new AlgorithmData(configuration.getIdentifier(),
+                        new BaseGfzRiesgosService(configuration, logger));
+
+                adder.accept(algorithmData);
+
+            } catch(final IOException ioException) {
+                LOGGER.error("Can't read the content from file '" + fileName + "': " + ioException);
+            } catch(final ParseConfigurationException parseConfigException) {
+                LOGGER.error("Can't parse the content of file '" + fileName + "': " + parseConfigException);
+            }
+        }
     }
 
     /**

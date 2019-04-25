@@ -25,6 +25,7 @@ import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -63,5 +64,22 @@ public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineP
         }
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        LiteralIntBindingToStringCmd that = (LiteralIntBindingToStringCmd) o;
+        return Objects.equals(defaultFlag, that.defaultFlag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(defaultFlag);
     }
 }

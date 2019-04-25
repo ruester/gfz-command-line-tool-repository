@@ -62,226 +62,108 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
-     * Creates a command line argument (input) which contains an int
+     * Creates a command line int argument
      * @param identifier identifier of the data
-     * @return Command line argument that contains an int
+     * @param flag optional command line flag (--x for a parameter x)
+     * @param defaultValue optional default value of the argument
+     * @param allowedValues optional list with allowed values
+     * @return object with information about how to use the value as a int command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentInt(
-            final String identifier) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class)
-                .withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd())
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains an int and a flag
-     * @param identifier identifier of the data
-     * @param flag command line flag to specify the argument
-     * @return Command line argument that contains an int and a command line flag
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentIntWithFlag(
-            final String identifier,
-            final String flag) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class)
-                .withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd(flag))
-                .build();
-    }
-
-
-    /**
-     * Creates a command line argument (input) which contains an int with a default value
-     * @param identifier identifier of the data
-     * @param defaultValue default value of the data
-     * @return Command line argument that contains an int with a default value
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentIntWithDefaultValue(
-            final String identifier,
-            final int defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class)
-                .withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd())
-                .withDefaultValue(String.valueOf(defaultValue))
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains an int, a flag and a default value
-     * @param identifier identifier of the data
-     * @param flag command line flag to specify the argument
-     * @param defaultValue default value of the data
-     * @return Command line argument that contains an int, a command line flag and a default value
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentIntWithFlagAndDefaultValue(
             final String identifier,
             final String flag,
-            final int defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class)
-                .withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd(flag))
-                .withDefaultValue(String.valueOf(defaultValue))
-                .build();
+            final String defaultValue,
+            final List<String> allowedValues) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd(flag));
+
+        if(defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+
+        if(allowedValues != null && (! allowedValues.isEmpty())) {
+            builder.withAllowedValues(allowedValues);
+        }
+
+        return builder.build();
     }
 
     /**
-     * Creates a command line argument (input) which contains a double
+     * Creates a command line double argument
      * @param identifier identifier of the data
-     * @return Command line argument that contains a double
+     * @param flag optional command line flag (--x for a parameter x)
+     * @param defaultValue optional default value of the argument
+     * @param allowedValues optional list with allowed values
+     * @return object with information about how to use the value as a double command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentDouble(
-            final String identifier) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralDoubleBinding.class)
-                .withFunctionToTransformToCmd(new LiteralDoubleBindingToStringCmd())
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains a double and a flag
-     * @param identifier identifier of the data
-     * @param flag command line flag to specify the argument
-     * @return Command line argument that contains a double with a command line flag
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentDoubleWithFlag(
-            final String identifier,
-            final String flag) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralDoubleBinding.class)
-                .withFunctionToTransformToCmd(new LiteralDoubleBindingToStringCmd(flag))
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains a double with a default value
-     * @param identifier identifier of the data
-     * @param defaultValue default value of the data
-     * @return Command line argument that contains a double with a default value
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentDoubleWithDefaultValue(
-            final String identifier,
-            final double defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralDoubleBinding.class)
-                .withFunctionToTransformToCmd(new LiteralDoubleBindingToStringCmd())
-                .withDefaultValue(String.valueOf(defaultValue))
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains a double, a flag and a default value
-     * @param identifier identifier of the data
-     * @param flag command line flag to specify the argument
-     * @param defaultValue default value of the data
-     * @return Command line argument that contains a double, a command line flag and a default value
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentDoubleWithFlagAndDefaultValue(
             final String identifier,
             final String flag,
-            final double defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralDoubleBinding.class)
-                .withFunctionToTransformToCmd(new LiteralDoubleBindingToStringCmd(flag))
-                .withDefaultValue(String.valueOf(defaultValue))
-                .build();
+            final String defaultValue,
+            final List<String> allowedValues) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralDoubleBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralDoubleBindingToStringCmd(flag));
+
+        if(defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+
+        if(allowedValues != null && (! allowedValues.isEmpty())) {
+            builder.withAllowedValues(allowedValues);
+        }
+
+        return builder.build();
     }
 
     /**
-     * Creates a command line argument (input) which contains a string
+     * Creates a command line string argument
      * @param identifier identifier of the data
-     * @return Command line argument that contains a string
+     * @param flag optional command line flag (--x for a parameter x)
+     * @param defaultValue optional default value of the argument
+     * @param allowedValues optional list with allowed values
+     * @return object with information about how to use the value as a string command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentString(
-            final String identifier) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd())
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains a string with a flag
-     * @param identifier identifier of the data
-     * @param flag command line flag to specify the argument
-     * @return Command line argument that contains a string and a command line flag
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentStringWithFlag(
-            final String identifier,
-            final String flag) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd(flag))
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains a string with a default value
-     * @param identifier identifier of the data
-     * @param defaultValue command line flag to specify the argument
-     * @return Command line argument that contains a string with a default value
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentStringWithDefaultValue(
-            final String identifier,
-            final String defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd())
-                .withDefaultValue(defaultValue)
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains a string with a command line flag and a default value
-     * @param identifier identifier of the data
-     * @param flag command line flag to specify the argument
-     * @param defaultValue default value of the data
-     * @return Command line argument that contains a string, a command line flag and a default value
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentStringWithFlagAndDefaultValue(
             final String identifier,
             final String flag,
-            final String defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd(flag))
-                .withDefaultValue(defaultValue)
-                .build();
+            final String defaultValue,
+            final List<String> allowedValues) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd(flag));
+
+        if(defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+
+        if(allowedValues != null && (! allowedValues.isEmpty())) {
+            builder.withAllowedValues(allowedValues);
+            builder.withValidator(new LiteralStringBindingWithAllowedValues(allowedValues));
+        }
+
+        return builder.build();
     }
 
     /**
-     * Creates a command line argument (input) which contains a string with a default value
-     * and a set of allowed values
+     * Creates a command line boolean argument
      * @param identifier identifier of the data
-     * @param defaultValue default value of the data
-     * @param allowedValues allowed values of the dat
-     * @return Command line argument that contains a string with a default value and some allowed values
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentStringWithDefaultValueAndAllowedValues(
-            final String identifier, final String defaultValue, final List<String> allowedValues) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withValidator(new LiteralStringBindingWithAllowedValues(allowedValues))
-                .withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd())
-                .withDefaultValue(defaultValue)
-                .withAllowedValues(allowedValues)
-                .build();
-    }
-
-    /**
-     * Creates a command line argument (input) which contains a boolean
-     * @param identifier identifier of the data
-     * @param commandLineFlag flag that is added if the value is true
-     * @return Command line argument that contains a boolean
+     * @param flag command line flag to insert if the value is true
+     * @param defaultValue optional default value
+     * @return object with information about how to use the value as a boolean command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentBoolean(
             final String identifier,
-            final String commandLineFlag) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralBooleanBinding.class)
-                .withFunctionToTransformToCmd(new LiteralBooleanBindingToStringCmd(commandLineFlag))
-                .build();
+            final String flag,
+            final String defaultValue) {
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralBooleanBinding.class);
+        builder.withFunctionToTransformToCmd(new LiteralBooleanBindingToStringCmd(flag));
+
+        if (defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+
+        return builder.build();
     }
 
-    /**
-     * Creates a command line argument (input) which contains a boolean with a default value
-     * @param identifier identifier of the data
-     * @param commandLineFlag flag that is added if the value is true
-     * @param defaultValue default value
-     * @return Command line argument that contains a boolean with a default value
-     */
-    public static IIdentifierWithBinding createCommandLineArgumentBooleanWithDefaultValue(
-            final String identifier, final String commandLineFlag, final boolean defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralBooleanBinding.class)
-                .withFunctionToTransformToCmd(new LiteralBooleanBindingToStringCmd(commandLineFlag))
-                .withDefaultValue(String.valueOf(defaultValue))
-                .build();
-    }
 
     /**
      * Creates a command line argument bounding box.
@@ -306,20 +188,20 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (xml file) with a file path that will be written down as a temporary file
      * @param identifier identifier of the data
      * @param schema schema of the xml
+     * @param defaultFlag default flag for the command line argument (for example --file)
      * @return xml file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchema(
-            final String identifier, final String schema) {
+            final String identifier, final String schema, final String defaultFlag) {
 
         final String filename = createUUIDFilename("inputfile", ".xml");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, defaultFlag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(schema)
                 .build();
-
     }
 
     /**
@@ -327,15 +209,16 @@ public class IdentifierWithBindingFactory {
      * writing it to a file
      * @param identifier identifier of the data
      * @param schema schema of the xml
+     * @param flag optional flag for the command line argument
      * @return xml file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
-            final String identifier, final String schema) {
+            final String identifier, final String schema, final String flag) {
 
         final String filename = createUUIDFilename("inputfile", ".xml");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader()))
                 .withSchema(schema)
@@ -346,14 +229,16 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (geotiff file) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return geotiff file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentGeotiff(
-            final String identifier) {
+            final String identifier,
+            final String flag) {
         final String filename = createUUIDFilename("inputfile", ".tiff");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes()))
                 .build();
@@ -363,14 +248,16 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (geojson) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return geojson file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentGeojson(
-            final String identifier) {
+            final String identifier,
+            final String flag) {
         final String filename = createUUIDFilename("inputfile", ".json");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(
                         ConvertGTVectorDataBindingToBytes.Format.JSON
@@ -382,15 +269,16 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (shapefile) with a file path that wlle be written down as a temporary file
      * (or multiple files, because one shapefile contains multiple files)
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return shapefile command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentShapeFile(
-            final String identifier) {
+            final String identifier, final String flag) {
 
         final String filename = createUUIDFilename("inputfile", ".shp");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteShapeFileToPath())
                 .build();
@@ -401,14 +289,17 @@ public class IdentifierWithBindingFactory {
      * Creates a command line argument (generic file) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
+     * @param flag optional command line flag
      * @return file command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentFile(
-            final String identifier) {
+            final String identifier,
+            final String flag) {
         final String filename = createUUIDFilename("inputfile", ".dat");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename))
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath((new ConvertGenericFileDataBindingToBytes())))
                 .build();
     }
@@ -416,28 +307,26 @@ public class IdentifierWithBindingFactory {
     /**
      * Creates a stdin input with a string
      * @param identifier identifier of the data
-     * @return stdin input
+     * @param defaultValue optional default value of the argument
+     * @param allowedValues optional list with allowed values
+     * @return object with information about how to use the value as a string command line argument input parameter
      */
     public static IIdentifierWithBinding createStdinString(
-            final String identifier) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToWriteToStdin(new ConvertLiteralStringToBytes())
-                .build();
-    }
-
-    /**
-     * Creates a stdin input with a string with a default value
-     * @param identifier identifier of the data
-     * @param defaultValue default value of the data
-     * @return stdin input with a default value
-     */
-    public static IIdentifierWithBinding createStdinStringWithDefaultValue(
             final String identifier,
-            final String defaultValue) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
-                .withFunctionToWriteToStdin(new ConvertLiteralStringToBytes())
-                .withDefaultValue(defaultValue)
-                .build();
+            final String defaultValue,
+            final List<String> allowedValues) {
+
+        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class);
+        builder.withFunctionToWriteToStdin(new ConvertLiteralStringToBytes());
+
+        if(defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+        if(allowedValues != null && (! allowedValues.isEmpty())) {
+            builder.withAllowedValues(allowedValues);
+            builder.withValidator(new LiteralStringBindingWithAllowedValues(allowedValues));
+        }
+        return builder.build();
     }
 
     /**

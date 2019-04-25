@@ -23,6 +23,7 @@ import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -65,5 +66,20 @@ public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLi
         return result;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        LiteralDoubleBindingToStringCmd that = (LiteralDoubleBindingToStringCmd) o;
+        return Objects.equals(defaultFlag, that.defaultFlag);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(defaultFlag);
+    }
 }

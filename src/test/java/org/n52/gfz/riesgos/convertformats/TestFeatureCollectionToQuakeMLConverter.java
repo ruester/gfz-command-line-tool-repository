@@ -227,8 +227,6 @@ public class TestFeatureCollectionToQuakeMLConverter {
             options.setSavePrettyPrint();
 
             assertEquals("The xml contents are the same", expectedResult.xmlText(options), result.xmlText(options));
-        } catch(final ConvertFormatException exception) {
-            fail("There should be no exception on convering");
         } catch(final XmlException exception) {
             fail("There should be no exception on parsing xml");
         }

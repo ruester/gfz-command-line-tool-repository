@@ -28,6 +28,7 @@ import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Objects;
 
 public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArray {
 
@@ -55,6 +56,23 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
         } else {
             throw new ConvertToBytesException("Wrong binding class");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ConvertGTVectorDataBindingToBytes that = (ConvertGTVectorDataBindingToBytes) o;
+        return format == that.format;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(format);
     }
 
     @FunctionalInterface

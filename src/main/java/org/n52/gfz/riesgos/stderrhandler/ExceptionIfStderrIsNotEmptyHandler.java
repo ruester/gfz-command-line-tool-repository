@@ -20,6 +20,8 @@ import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
 import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 
+import java.util.Objects;
+
 /**
  * Handler for stderr that throws an exception on non empty stderr
  */
@@ -30,6 +32,18 @@ public class ExceptionIfStderrIsNotEmptyHandler implements IStderrHandler {
         if(! stderr.trim().isEmpty()) {
             throw new NonEmptyStderrException(stderr);
         }
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

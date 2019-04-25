@@ -30,6 +30,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Test class for LiteralStringBindingToStringCmd
@@ -94,5 +95,24 @@ public class TestLiteralStringBindingToStringCmd {
         } catch(final ConvertToStringCmdException exception) {
             fail("There should be no exception");
         }
+    }
+
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IConvertIDataToCommandLineParameter converter1 = new LiteralStringBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter converter2 = new LiteralStringBindingToStringCmd();
+
+        assertEquals("The converter are the same", converter1, converter2);
+
+        final IConvertIDataToCommandLineParameter converter3 = new LiteralStringBindingToStringCmd(null);
+
+        assertEquals("The third one too", converter1, converter3);
+
+        final IConvertIDataToCommandLineParameter converter4 = new LiteralStringBindingToStringCmd("--string");
+
+        assertNotEquals("The fourth is different", converter1, converter4);
     }
 }

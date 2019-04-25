@@ -22,6 +22,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
+import java.util.Objects;
+
 /**
  * Function to convert bytes to a literal string binding
  */
@@ -30,5 +32,18 @@ public class ConvertBytesToLiteralStringBinding implements IConvertByteArrayToID
     @Override
     public IData convertToIData(final byte[] content) {
         return new LiteralStringBinding(new String(content));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

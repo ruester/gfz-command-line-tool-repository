@@ -28,6 +28,7 @@ import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Function to create a GenericFileDataBinding from a byte array
@@ -69,5 +70,22 @@ public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayTo
         } catch(final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ConvertBytesToGenericFileDataBinding that = (ConvertBytesToGenericFileDataBinding) o;
+        return Objects.equals(mimeType, that.mimeType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mimeType);
     }
 }

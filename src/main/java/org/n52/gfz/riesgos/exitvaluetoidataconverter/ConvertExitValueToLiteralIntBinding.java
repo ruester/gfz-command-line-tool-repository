@@ -22,10 +22,25 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
+import java.util.Objects;
+
 public class ConvertExitValueToLiteralIntBinding implements IConvertExitValueToIData {
 
     @Override
     public IData convertToIData(int exitValue) {
         return new LiteralIntBinding(exitValue);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }

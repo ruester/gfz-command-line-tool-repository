@@ -73,4 +73,15 @@ public class TestLogStderrHandler {
             fail("There should be no exception");
         }
     }
+
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IStderrHandler handler1 = new LogStderrHandler();
+        final IStderrHandler handler2 = new LogStderrHandler();
+
+        assertEquals("Both are equal", handler1, handler2);
+    }
 }

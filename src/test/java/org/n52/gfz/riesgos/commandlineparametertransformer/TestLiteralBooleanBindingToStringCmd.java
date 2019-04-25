@@ -30,6 +30,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -78,7 +79,7 @@ public class TestLiteralBooleanBindingToStringCmd {
      * Test with non valid input
      */
     @Test
-    public void tetNonValid() {
+    public void testNonValid() {
         final IData iData = new LiteralStringBinding("true");
 
         final IConvertIDataToCommandLineParameter converter = new LiteralBooleanBindingToStringCmd("--verbose");
@@ -89,6 +90,20 @@ public class TestLiteralBooleanBindingToStringCmd {
         } catch(final ConvertToStringCmdException exception) {
             assertNotNull("There must be an exception", exception);
         }
+    }
 
+    /**
+     * Tests equality
+     */
+    @Test
+    public void testEquals() {
+        final IConvertIDataToCommandLineParameter converter1 = new LiteralBooleanBindingToStringCmd("--verbose");
+        final IConvertIDataToCommandLineParameter converter2 = new LiteralBooleanBindingToStringCmd("--verbose");
+
+        assertEquals("Both are equal", converter1, converter2);
+
+        final IConvertIDataToCommandLineParameter converter3 = new LiteralBooleanBindingToStringCmd("--non-verbose");
+
+        assertNotEquals("The third is not equal", converter1, converter3);
     }
 }

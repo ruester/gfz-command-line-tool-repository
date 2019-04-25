@@ -24,6 +24,7 @@ import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLineParameter {
     @Override
@@ -53,5 +54,18 @@ public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLinePar
         }
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
     }
 }
