@@ -245,6 +245,11 @@ The stderr output text will be added to the log file. This is for development an
 If the stderr text is not empty than the process will be terminated without producing output, because the internal
 script has thrown an error.
 
+#### pythonTraceback
+
+This stderr handler searches for the text of a python traceback. It will not
+care about warnings on stderr, but recognizes an error in a python script.
+
 ## Stdout Handler
 
 There are no stdout handler at the moment. You can read from stdout by providing an output.

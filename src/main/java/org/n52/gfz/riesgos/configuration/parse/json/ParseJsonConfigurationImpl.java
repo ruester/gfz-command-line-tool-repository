@@ -37,6 +37,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.stderrhandler.ExceptionIfStderrIsNotEmptyHandler;
 import org.n52.gfz.riesgos.stderrhandler.LogStderrHandler;
+import org.n52.gfz.riesgos.stderrhandler.PythonTracebackStderrHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -232,7 +233,8 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
     private enum StderrHandlerOption {
         IGNORE("ignore", () -> null),
         LOG("logging", LogStderrHandler::new),
-        ERROR("errorIfNotEmpty", ExceptionIfStderrIsNotEmptyHandler::new);
+        ERROR("errorIfNotEmpty", ExceptionIfStderrIsNotEmptyHandler::new),
+        PYTHON_TRACEBACK("pythonTraceback", PythonTracebackStderrHandler::new);
 
         private final String key;
         private final Supplier<IStderrHandler> factory;
