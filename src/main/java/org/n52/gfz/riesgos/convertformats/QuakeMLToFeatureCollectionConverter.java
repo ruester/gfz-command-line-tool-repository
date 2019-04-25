@@ -21,9 +21,7 @@ package org.n52.gfz.riesgos.convertformats;
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
-import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
 import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
-import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLSimpleFeatureCollectionImpl;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertFormat;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -35,9 +33,7 @@ public class QuakeMLToFeatureCollectionConverter implements IConvertFormat<XmlOb
 
     @Override
     public FeatureCollection<SimpleFeatureType, SimpleFeature> convert(final XmlObject xmlObject) throws ConvertFormatException {
-
-        final IQuakeML quakeML = QuakeML.fromXml(xmlObject);
-        return QuakeMLSimpleFeatureCollectionImpl.convertToSimpleFeatureCollection(quakeML);
+        return QuakeML.fromXml(xmlObject).toSimpleFeatureCollection();
     }
 
 }

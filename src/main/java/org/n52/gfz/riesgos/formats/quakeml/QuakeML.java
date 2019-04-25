@@ -26,19 +26,37 @@ import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLXmlImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class QuakeML {
+import java.util.List;
 
-    private QuakeML() {
-        // static
+public class QuakeML implements IQuakeML {
+
+    private final IQuakeMLDataProvider dataProvider;
+
+    public QuakeML(final IQuakeMLDataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
+
+    @Override
+    public List<IQuakeMLEvent> getEvents() {
+        return dataProvider.getEvents();
+    }
+
+    @Override
+    public XmlObject toXmlObject() {
+        return QuakeMLXmlImpl.convertToXml(dataProvider);
+    }
+
+    @Override
+    public FeatureCollection<SimpleFeatureType, SimpleFeature> toSimpleFeatureCollection() {
+        return QuakeMLSimpleFeatureCollectionImpl.convertToSimpleFeatureCollection(dataProvider);
     }
 
     public static IQuakeML fromXml(final XmlObject xmlObject) throws ConvertFormatException {
-        return new QuakeMLXmlImpl(xmlObject);
+        return new QuakeML(new QuakeMLXmlImpl(xmlObject));
     }
 
     public static IQuakeML fromFeatureCollection(final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
-        return new QuakeMLSimpleFeatureCollectionImpl(featureCollection);
+        return new QuakeML(new QuakeMLSimpleFeatureCollectionImpl(featureCollection));
     }
-
 
 }

@@ -22,7 +22,7 @@ package org.n52.gfz.riesgos.formats.quakeml.impl;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
-import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
+import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLDataProvider;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLEvent;
 
 import javax.xml.namespace.QName;
@@ -39,7 +39,7 @@ import java.util.stream.Stream;
  * Also there is a function to convert any IQuakeML
  * to an xml structure.
  */
-public class QuakeMLXmlImpl implements IQuakeML {
+public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
 
     /*
      * example:
@@ -515,10 +515,10 @@ public class QuakeMLXmlImpl implements IQuakeML {
 
     /**
      * Converts any IQuakeML to an XmlObject
-     * @param quakeML
+     * @param quakeML the data provider to convert it to xml
      * @return XmlObject
      */
-    public static XmlObject convertToXml(final IQuakeML quakeML) {
+    public static XmlObject convertToXml(final IQuakeMLDataProvider quakeML) {
 
         final XmlObject result = XmlObject.Factory.newInstance();
         final XmlCursor cursor = result.newCursor();
