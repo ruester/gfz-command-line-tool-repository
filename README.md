@@ -9,13 +9,17 @@ should be included here.
 ### Quakeledger
 
 Quakeledger is the first services provided here. This implementation is
-based on the version provided by Benjamin Proß here:
+based on the version provided by Nils Brinckmann here:
 
-https://github.com/bpross-52n/quakeledger
+https://github.com/nbrinckm/quakeledger
 
 This is a slightly modified version of the repository here:
 
 https://github.com/GFZ-Centre-for-Early-Warning/quakeledger
+
+and here:
+
+https://github.com/bpross-52n/quakeledger
 
 The aim of the quakeledger process is to provide earth quake event informations
 in a given region (and with some other filtering criterias (depth, magnitude, ...)).
