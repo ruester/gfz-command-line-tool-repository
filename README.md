@@ -130,7 +130,7 @@ into
 <context:component-scan base-package="org.n52">
 ```
 
-This is necessary for the server that it searches for repositories that are not
+This is necessary for the server to searche for repositories that are not
 part of the org.n52.wps package.
 
 6. Create the docker images for the processes
