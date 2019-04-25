@@ -1,10 +1,6 @@
 package org.n52.gfz.riesgos.validators;
 
 import org.apache.xmlbeans.XmlObject;
-import org.apache.xmlbeans.XmlOptions;
-import org.codehaus.stax2.validation.XMLValidationSchema;
-import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
-import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
 
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences

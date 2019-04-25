@@ -22,7 +22,6 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
-import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLXmlImpl;
 
 import java.util.List;
 
