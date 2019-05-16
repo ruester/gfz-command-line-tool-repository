@@ -38,79 +38,18 @@ import java.util.stream.Stream;
  *
  * Also there is a function to convert any IQuakeML
  * to an xml structure.
+ *
+ * This is the code for the original quakeml as it is the output of
+ * the original quakeledger.
+ *
+ * This xml does not match the schema for quakeml.
  */
-public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
+public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
     /*
-     * example:
+     * example: see in the test/resource folder
+     * under "org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml"
      *
-     *
-<eventParameters namespace="http://quakeml.org/xmlns/quakeml/1.2">
-  <event publicID="84945">
-    <preferredOriginID>84945</preferredOriginID>
-    <preferredMagnitudeID>84945</preferredMagnitudeID>
-    <type>earthquake</type>
-    <description>
-      <text>stochastic</text>
-    </description>
-    <origin publicID="84945">
-      <time>
-        <value>16773-01-01T00:00:00.000000Z</value>
-        <uncertainty>nan</uncertainty>
-      </time>
-      <latitude>
-        <value>-30.9227</value>
-        <uncertainty>nan</uncertainty>
-      </latitude>
-      <longitude>
-        <value>-71.49875</value>
-        <uncertainty>nan</uncertainty>
-      </longitude>
-      <depth>
-        <value>34.75117</value>
-        <uncertainty>nan</uncertainty>
-      </depth>
-      <creationInfo>
-        <value>GFZ</value>
-      </creationInfo>
-    </origin>
-    <originUncertainty>
-      <horizontalUncertainty>nan</horizontalUncertainty>
-      <minHorizontalUncertainty>nan</minHorizontalUncertainty>
-      <maxHorizontalUncertainty>nan</maxHorizontalUncertainty>
-      <azimuthMaxHorizontalUncertainty>nan</azimuthMaxHorizontalUncertainty>
-    </originUncertainty>
-    <magnitude publicID="84945">
-      <mag>
-        <value>8.35</value>
-        <uncertainty>nan</uncertainty>
-      </mag>
-      <type>MW</type>
-      <creationInfo>
-        <value>GFZ</value>
-      </creationInfo>
-    </magnitude>
-    <focalMechanism publicID="84945">
-      <nodalPlanes>
-        <nodalPlane1>
-          <strike>
-            <value>7.310981</value>
-            <uncertainty>nan</uncertainty>
-          </strike>
-          <dip>
-            <value>16.352970000000003</value>
-            <uncertainty>nan</uncertainty>
-          </dip>
-          <rake>
-            <value>90.0</value>
-            <uncertainty>nan</uncertainty>
-          </rake>
-        </nodalPlane1>
-        <preferredPlane>nodalPlane1</preferredPlane>
-      </nodalPlanes>
-    </focalMechanism>
-  </event>
- </eventParameters>
      *
      * *******************************************************
      * This implementation queries mostly this format, however there is the
@@ -122,6 +61,8 @@ public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
      *
      * when you look at the QuakeML-BED-1.2.xsd file for the xml-schema-definition,
      * you can see that this implementation only focus on the EventParameters and the Event types.
+     *
+     * and the example shown here is not valid according to the xsd file.
      */
 
     private static final QName EVENT = new QName("event");
@@ -176,7 +117,7 @@ public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
 
     private final XmlObject quakeML;
 
-    public QuakeMLXmlImpl(final XmlObject quakeML) throws ConvertFormatException {
+    public QuakeMLOriginalXmlImpl(final XmlObject quakeML) throws ConvertFormatException {
         this.quakeML = validateNotNull(findEventParameters(quakeML));
     }
 
@@ -255,17 +196,17 @@ public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
             return getByFirstChildrenWithNLevel(DESCRIPTION, TEXT);
         }
 
-        private Optional<String> getByAttributeOfFirstChildOneLevel(final QName children, final QName attribute) {
+        private Optional<String> getPublicIDOfFirstChildOneLevel(final QName children) {
             final XmlObject[] candidates = event.selectChildren(children);
             if(candidates.length > 0) {
-                return Optional.ofNullable(candidates[0].selectAttribute(attribute).newCursor().getTextValue());
+                return Optional.ofNullable(candidates[0].selectAttribute(PUBLIC_ID).newCursor().getTextValue());
             }
             return Optional.empty();
         }
 
         @Override
         public Optional<String> getOriginPublicID() {
-            return getByAttributeOfFirstChildOneLevel(ORIGIN, PUBLIC_ID);
+            return getPublicIDOfFirstChildOneLevel(ORIGIN);
         }
 
         @Override
@@ -419,7 +360,7 @@ public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getMagnitudePublicID() {
-            return getByAttributeOfFirstChildOneLevel(MAGNITUDE, PUBLIC_ID);
+            return getPublicIDOfFirstChildOneLevel(MAGNITUDE);
         }
 
         @Override
@@ -459,7 +400,7 @@ public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getFocalMechanismPublicID() {
-            return getByAttributeOfFirstChildOneLevel(FOCAL_MECHANISM, PUBLIC_ID);
+            return getPublicIDOfFirstChildOneLevel(FOCAL_MECHANISM);
         }
 
         @Override
@@ -499,7 +440,7 @@ public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getAmplitudePublicID() {
-            return getByAttributeOfFirstChildOneLevel(AMPLITUDE, PUBLIC_ID);
+            return getPublicIDOfFirstChildOneLevel(AMPLITUDE);
         }
 
         @Override
@@ -514,11 +455,11 @@ public class QuakeMLXmlImpl implements IQuakeMLDataProvider {
     }
 
     /**
-     * Converts any IQuakeML to an XmlObject
+     * Converts any IQuakeML to an XmlObject (and uses the original quakeml format from quakeledger)
      * @param quakeML the data provider to convert it to xml
      * @return XmlObject
      */
-    public static XmlObject convertToXml(final IQuakeMLDataProvider quakeML) {
+    public static XmlObject convertToOriginalXml(final IQuakeMLDataProvider quakeML) {
 
         final XmlObject result = XmlObject.Factory.newInstance();
         final XmlCursor cursor = result.newCursor();

@@ -42,7 +42,7 @@ import static org.junit.Assert.fail;
 /**
  * This are the tests for the conversion of the quakeml xml to a feature collection
  */
-public class TestQuakeMLToFeatureCollectionConverter {
+public class TestOriginalQuakeMLToFeatureCollectionConverter {
 
     /**
      * Test with one feature and the old (original) xml that was produced from the original quakeledger
@@ -61,7 +61,7 @@ public class TestQuakeMLToFeatureCollectionConverter {
         try {
             final XmlObject xmlContent = XmlObject.Factory.parse(xmlRawContent);
 
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new QuakeMLToFeatureCollectionConverter().convert(xmlContent);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new OriginalQuakeMLToFeatureCollectionConverter().convert(xmlContent);
             final FeatureIterator<SimpleFeature> iterator = result.features();
 
             assertTrue("There is one element", iterator.hasNext());

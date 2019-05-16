@@ -44,7 +44,7 @@ import static org.junit.Assert.fail;
  * to xml.
  * It outputs the old xml format from the original quakeledger that doesn't match the schema.
  */
-public class TestFeatureCollectionToQuakeMLConverter {
+public class TestFeatureCollectionToOriginalQuakeMLConverter {
 
     /**
      * This tests the conversion of one feature to xml using the old original quakeml format
@@ -158,7 +158,7 @@ public class TestFeatureCollectionToQuakeMLConverter {
         featureCollection.add(feature);
 
         try {
-            final XmlObject result = new FeatureCollectionToQuakeMLConverter().convert(featureCollection);
+            final XmlObject result = new FeatureCollectionToOriginalQuakeMLConverter().convert(featureCollection);
             final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
 
             final XmlObject expectedResult = XmlObject.Factory.parse(xmlRawContent);
