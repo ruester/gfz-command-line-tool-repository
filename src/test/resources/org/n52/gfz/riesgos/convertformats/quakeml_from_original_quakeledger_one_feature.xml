@@ -1,0 +1,66 @@
+<eventParameters namespace="http://quakeml.org/xmlns/quakeml/1.2">
+  <event publicID="84945">
+    <preferredOriginID>84945</preferredOriginID>
+    <preferredMagnitudeID>84945</preferredMagnitudeID>
+    <type>earthquake</type>
+    <description>
+      <text>stochastic</text>
+    </description>
+    <origin publicID="84945">
+      <time>
+        <value>16773-01-01T00:00:00.000000Z</value>
+        <uncertainty>nan</uncertainty>
+      </time>
+      <latitude>
+        <value>-30.9227</value>
+        <uncertainty>nan</uncertainty>
+      </latitude>
+      <longitude>
+        <value>-71.49875</value>
+        <uncertainty>nan</uncertainty>
+      </longitude>
+      <depth>
+        <value>34.75117</value>
+        <uncertainty>nan</uncertainty>
+      </depth>
+      <creationInfo>
+        <value>GFZ</value>
+      </creationInfo>
+    </origin>
+    <originUncertainty>
+      <horizontalUncertainty>nan</horizontalUncertainty>
+      <minHorizontalUncertainty>nan</minHorizontalUncertainty>
+      <maxHorizontalUncertainty>nan</maxHorizontalUncertainty>
+      <azimuthMaxHorizontalUncertainty>nan</azimuthMaxHorizontalUncertainty>
+    </originUncertainty>
+    <magnitude publicID="84945">
+      <mag>
+        <value>8.35</value>
+        <uncertainty>nan</uncertainty>
+      </mag>
+      <type>MW</type>
+      <creationInfo>
+        <value>GFZ</value>
+      </creationInfo>
+    </magnitude>
+    <focalMechanism publicID="84945">
+      <nodalPlanes>
+        <nodalPlane1>
+          <strike>
+            <value>7.310981</value>
+            <uncertainty>nan</uncertainty>
+          </strike>
+          <dip>
+            <value>16.352970000000003</value>
+            <uncertainty>nan</uncertainty>
+          </dip>
+          <rake>
+            <value>90.0</value>
+            <uncertainty>nan</uncertainty>
+          </rake>
+        </nodalPlane1>
+        <preferredPlane>nodalPlane1</preferredPlane>
+      </nodalPlanes>
+    </focalMechanism>
+  </event>
+</eventParameters>
