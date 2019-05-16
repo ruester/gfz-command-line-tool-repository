@@ -1,5 +1,3 @@
-package org.n52.gfz.riesgos.formats.quakeml;
-
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -18,32 +16,22 @@ package org.n52.gfz.riesgos.formats.quakeml;
  *
  */
 
+package org.n52.gfz.riesgos.convertformats;
+
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
+import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
+import org.n52.gfz.riesgos.functioninterfaces.IConvertFormat;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Extended interface for QuakeML that also contains some conversion methods
+ * Class to convert a simplefeature collection with quakeml data to quake ml xml
+ * (the one that validates against the xsd file)
  */
-public interface IQuakeML extends IQuakeMLDataProvider {
-
-    /**
-     *
-     * @return xml representation of quakeml (original one from quakeledger process; is not valid according to the xml schema)
-     */
-    XmlObject toOriginalXmlObject();
-
-    /**
-     *
-     * @return xml representation of quakeml that is valid according to the xsd
-     */
-    XmlObject toValidatedXmlObject();
-
-    /**
-     *
-     * @return simple feature collection representation of quakeml
-     */
-    FeatureCollection<SimpleFeatureType, SimpleFeature> toSimpleFeatureCollection();
-
+public class FeatureCollectionToValidatedQuakeMLConverter implements IConvertFormat<FeatureCollection<SimpleFeatureType, SimpleFeature>, XmlObject> {
+    @Override
+    public XmlObject convert(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
+        return QuakeML.fromFeatureCollection(featureCollection).toValidatedXmlObject();
+    }
 }
