@@ -20,26 +20,20 @@ package org.n52.gfz.riesgos.convertformats;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
-import org.apache.commons.io.IOUtils;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
-import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
-import org.n52.gfz.riesgos.functioninterfaces.IConvertFormat;
+import org.n52.gfz.riesgos.util.StringUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertEquals;
@@ -165,12 +159,7 @@ public class TestFeatureCollectionToQuakeMLConverter {
 
         try {
             final XmlObject result = new FeatureCollectionToQuakeMLConverter().convert(featureCollection);
-
-            final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            IOUtils.copy(inputStream, outputStream);
-
-            final String xmlRawContent = new String(outputStream.toByteArray());
+            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
 
             final XmlObject expectedResult = XmlObject.Factory.parse(xmlRawContent);
 

@@ -20,19 +20,17 @@ package org.n52.gfz.riesgos.convertformats;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import org.apache.commons.io.IOUtils;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
+import org.n52.gfz.riesgos.util.StringUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -55,13 +53,8 @@ public class TestQuakeMLToFeatureCollectionConverter {
 
 
         String xmlRawContent = null;
-        try(final InputStream inputStream = getClass()
-                .getClassLoader()
-                .getResourceAsStream("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml")) {
-            assertNotNull("The inputStream must be not null", inputStream);
-            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            IOUtils.copy(inputStream, outputStream);
-            xmlRawContent = new String(outputStream.toByteArray());
+        try {
+            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
         } catch(final IOException ioException) {
             fail("There should be no io exception on reading the input file");
         }
