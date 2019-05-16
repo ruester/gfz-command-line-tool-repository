@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.convertformats;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import org.apache.commons.io.IOUtils;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
@@ -29,6 +30,10 @@ import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -36,82 +41,34 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+/**
+ * This are the tests for the conversion of the quakeml xml to a feature collection
+ */
 public class TestQuakeMLToFeatureCollectionConverter {
 
+    /**
+     * Test with one feature and the old (original) xml that was produced from the original quakeledger
+     * Because of adoptions to archive the schema validation, this may be not the test case to care later.
+     */
     @Test
-    public void testOneFeature() {
-        final String xmlRawContent =
-                "<eventParameters namespace=\"http://quakeml.org/xmlns/quakeml/1.2\">\n" +
-                "  <event publicID=\"84945\">\n" +
-                "    <preferredOriginID>84945</preferredOriginID>\n" +
-                "    <preferredMagnitudeID>84945</preferredMagnitudeID>\n" +
-                "    <type>earthquake</type>\n" +
-                "    <description>\n" +
-                "      <text>stochastic</text>\n" +
-                "    </description>\n" +
-                "    <origin publicID=\"84945\">\n" +
-                "      <time>\n" +
-                "        <value>16773-01-01T00:00:00.000000Z</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </time>\n" +
-                "      <latitude>\n" +
-                "        <value>-30.9227</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </latitude>\n" +
-                "      <longitude>\n" +
-                "        <value>-71.49875</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </longitude>\n" +
-                "      <depth>\n" +
-                "        <value>34.75117</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </depth>\n" +
-                "      <creationInfo>\n" +
-                "        <value>GFZ</value>\n" +
-                "      </creationInfo>\n" +
-                "    </origin>\n" +
-                "    <originUncertainty>\n" +
-                "      <horizontalUncertainty>nan</horizontalUncertainty>\n" +
-                "      <minHorizontalUncertainty>nan</minHorizontalUncertainty>\n" +
-                "      <maxHorizontalUncertainty>nan</maxHorizontalUncertainty>\n" +
-                "      <azimuthMaxHorizontalUncertainty>nan</azimuthMaxHorizontalUncertainty>\n" +
-                "    </originUncertainty>\n" +
-                "    <magnitude publicID=\"84945\">\n" +
-                "      <mag>\n" +
-                "        <value>8.35</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </mag>\n" +
-                "      <type>MW</type>\n" +
-                "      <creationInfo>\n" +
-                "        <value>GFZ</value>\n" +
-                "      </creationInfo>\n" +
-                "    </magnitude>\n" +
-                "    <focalMechanism publicID=\"84945\">\n" +
-                "      <nodalPlanes>\n" +
-                "        <nodalPlane1>\n" +
-                "          <strike>\n" +
-                "            <value>7.310981</value>\n" +
-                "            <uncertainty>nan</uncertainty>\n" +
-                "          </strike>\n" +
-                "          <dip>\n" +
-                "            <value>16.352970000000003</value>\n" +
-                "            <uncertainty>nan</uncertainty>\n" +
-                "          </dip>\n" +
-                "          <rake>\n" +
-                "            <value>90.0</value>\n" +
-                "            <uncertainty>nan</uncertainty>\n" +
-                "          </rake>\n" +
-                "        </nodalPlane1>\n" +
-                "        <preferredPlane>nodalPlane1</preferredPlane>\n" +
-                "      </nodalPlanes>\n" +
-                "    </focalMechanism>\n" +
-                "  </event>\n" +
-                "</eventParameters>";
+    public void testOneFeatureOriginalQuakeledgerFormat() {
 
+
+        String xmlRawContent = null;
+        try(final InputStream inputStream = getClass()
+                .getClassLoader()
+                .getResourceAsStream("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml")) {
+            assertNotNull("The inputStream must be not null", inputStream);
+            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            IOUtils.copy(inputStream, outputStream);
+            xmlRawContent = new String(outputStream.toByteArray());
+        } catch(final IOException ioException) {
+            fail("There should be no io exception on reading the input file");
+        }
         try {
             final XmlObject xmlContent = XmlObject.Factory.parse(xmlRawContent);
 
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new QuakeMLToFeatureCollectionConverter().convert    (xmlContent);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new QuakeMLToFeatureCollectionConverter().convert(xmlContent);
             final FeatureIterator<SimpleFeature> iterator = result.features();
 
             assertTrue("There is one element", iterator.hasNext());

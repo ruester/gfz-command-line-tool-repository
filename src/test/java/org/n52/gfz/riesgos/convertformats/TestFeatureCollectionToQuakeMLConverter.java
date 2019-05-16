@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.convertformats;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
+import org.apache.commons.io.IOUtils;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
@@ -36,15 +37,28 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * This are the test cases for the transformation of the quakeml simple feature collection
+ * to xml.
+ * It outputs the old xml format from the original quakeledger that doesn't match the schema.
+ */
 public class TestFeatureCollectionToQuakeMLConverter {
 
+    /**
+     * This tests the conversion of one feature to xml using the old original quakeml format
+     * that is the as the output of the original quakeledger process.
+     * This doesn't match the xml schema for quakeml.
+     */
     @Test
-    public void testOneFeatureQuakeML() {
+    public void testOneFeatureQuakeMLToOriginalQuakeledgerFormat() {
         final SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.setName("location");
         typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
@@ -152,74 +166,11 @@ public class TestFeatureCollectionToQuakeMLConverter {
         try {
             final XmlObject result = new FeatureCollectionToQuakeMLConverter().convert(featureCollection);
 
+            final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
+            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            IOUtils.copy(inputStream, outputStream);
 
-            final String xmlRawContent =
-                    "<eventParameters namespace=\"http://quakeml.org/xmlns/quakeml/1.2\">\n" +
-                            "  <event publicID=\"84945\">\n" +
-                            "    <preferredOriginID>84945</preferredOriginID>\n" +
-                            "    <preferredMagnitudeID>84945</preferredMagnitudeID>\n" +
-                            "    <type>earthquake</type>\n" +
-                            "    <description>\n" +
-                            "      <text>stochastic</text>\n" +
-                            "    </description>\n" +
-                            "    <origin publicID=\"84945\">\n" +
-                            "      <time>\n" +
-                            "        <value>16773-01-01T00:00:00.000000Z</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </time>\n" +
-                            "      <latitude>\n" +
-                            "        <value>-30.9227</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </latitude>\n" +
-                            "      <longitude>\n" +
-                            "        <value>-71.49875</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </longitude>\n" +
-                            "      <depth>\n" +
-                            "        <value>34.75117</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </depth>\n" +
-                            "      <creationInfo>\n" +
-                            "        <value>GFZ</value>\n" +
-                            "      </creationInfo>\n" +
-                            "    </origin>\n" +
-                            "    <originUncertainty>\n" +
-                            "      <horizontalUncertainty>nan</horizontalUncertainty>\n" +
-                            "      <minHorizontalUncertainty>nan</minHorizontalUncertainty>\n" +
-                            "      <maxHorizontalUncertainty>nan</maxHorizontalUncertainty>\n" +
-                            "      <azimuthMaxHorizontalUncertainty>nan</azimuthMaxHorizontalUncertainty>\n" +
-                            "    </originUncertainty>\n" +
-                            "    <magnitude publicID=\"84945\">\n" +
-                            "      <mag>\n" +
-                            "        <value>8.35</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </mag>\n" +
-                            "      <type>MW</type>\n" +
-                            "      <creationInfo>\n" +
-                            "        <value>GFZ</value>\n" +
-                            "      </creationInfo>\n" +
-                            "    </magnitude>\n" +
-                            "    <focalMechanism publicID=\"84945\">\n" +
-                            "      <nodalPlanes>\n" +
-                            "        <nodalPlane1>\n" +
-                            "          <strike>\n" +
-                            "            <value>7.310981</value>\n" +
-                            "            <uncertainty>nan</uncertainty>\n" +
-                            "          </strike>\n" +
-                            "          <dip>\n" +
-                            "            <value>16.352970000000003</value>\n" +
-                            "            <uncertainty>nan</uncertainty>\n" +
-                            "          </dip>\n" +
-                            "          <rake>\n" +
-                            "            <value>90.0</value>\n" +
-                            "            <uncertainty>nan</uncertainty>\n" +
-                            "          </rake>\n" +
-                            "        </nodalPlane1>\n" +
-                            "        <preferredPlane>nodalPlane1</preferredPlane>\n" +
-                            "      </nodalPlanes>\n" +
-                            "    </focalMechanism>\n" +
-                            "  </event>\n" +
-                            "</eventParameters>";
+            final String xmlRawContent = new String(outputStream.toByteArray());
 
             final XmlObject expectedResult = XmlObject.Factory.parse(xmlRawContent);
 
@@ -229,6 +180,8 @@ public class TestFeatureCollectionToQuakeMLConverter {
             assertEquals("The xml contents are the same", expectedResult.xmlText(options), result.xmlText(options));
         } catch(final XmlException exception) {
             fail("There should be no exception on parsing xml");
+        } catch(final IOException ioException) {
+            fail("There should be no exception on loading the xml content");
         }
     }
 }
