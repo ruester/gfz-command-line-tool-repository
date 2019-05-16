@@ -25,18 +25,16 @@ import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.util.StringUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 
 /**
  * This is the test class for the xml implementation
  */
-public class TestQuakeMLXmlImpl {
+public class TestQuakeMLOriginalXmlImpl {
 
     /**
      * Tests the old quakeml format
@@ -45,16 +43,15 @@ public class TestQuakeMLXmlImpl {
     public void testWithOneEvent() {
         String xmlRawContent = null;
 
-        try(final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml")) {
-            assertNotNull("The input stream must not be null", inputStream);
-            xmlRawContent = StringUtils.readFromStream(inputStream);
+        try{
+            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
         } catch(final IOException ioException) {
             fail("There should be no excepton on loading the file from the resources");
         }
         try {
             final XmlObject xmlContent = XmlObject.Factory.parse(xmlRawContent);
 
-            final IQuakeML quakeML = QuakeML.fromXml(xmlContent);
+            final IQuakeML quakeML = QuakeML.fromOriginalXml(xmlContent);
 
             final List<IQuakeMLEvent> events = quakeML.getEvents();
 

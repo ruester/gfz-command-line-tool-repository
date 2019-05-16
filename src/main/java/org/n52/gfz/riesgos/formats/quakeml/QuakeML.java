@@ -22,7 +22,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLSimpleFeatureCollectionImpl;
-import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLXmlImpl;
+import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLOriginalXmlImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -51,8 +51,8 @@ public class QuakeML implements IQuakeML {
     }
 
     @Override
-    public XmlObject toXmlObject() {
-        return QuakeMLXmlImpl.convertToXml(dataProvider);
+    public XmlObject toOriginalXmlObject() {
+        return QuakeMLOriginalXmlImpl.convertToOriginalXml(dataProvider);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class QuakeML implements IQuakeML {
      * @return IQuakeML object
      * @throws ConvertFormatException may throw a ConvertFormatException
      */
-    public static IQuakeML fromXml(final XmlObject xmlObject) throws ConvertFormatException {
-        return new QuakeML(new QuakeMLXmlImpl(xmlObject));
+    public static IQuakeML fromOriginalXml(final XmlObject xmlObject) throws ConvertFormatException {
+        return new QuakeML(new QuakeMLOriginalXmlImpl(xmlObject));
     }
 
     /**

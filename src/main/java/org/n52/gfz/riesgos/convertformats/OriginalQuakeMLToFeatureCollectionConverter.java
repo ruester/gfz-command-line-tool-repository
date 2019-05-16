@@ -28,12 +28,13 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Class to convert QuakeML XML to a FeatureCollection.
+ * It takes the original xml from the original quakeledger that does not match the schema
  */
-public class QuakeMLToFeatureCollectionConverter implements IConvertFormat<XmlObject, FeatureCollection<SimpleFeatureType, SimpleFeature>> {
+public class OriginalQuakeMLToFeatureCollectionConverter implements IConvertFormat<XmlObject, FeatureCollection<SimpleFeatureType, SimpleFeature>> {
 
     @Override
     public FeatureCollection<SimpleFeatureType, SimpleFeature> convert(final XmlObject xmlObject) throws ConvertFormatException {
-        return QuakeML.fromXml(xmlObject).toSimpleFeatureCollection();
+        return QuakeML.fromOriginalXml(xmlObject).toSimpleFeatureCollection();
     }
 
 }

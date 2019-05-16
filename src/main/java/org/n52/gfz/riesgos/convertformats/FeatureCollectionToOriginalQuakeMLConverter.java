@@ -27,10 +27,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Class to convert a simplefeature collection with quakeml data to quake ml xml
+ * (the original one from the original quakeledger that is not valid according to the schema).
  */
-public class FeatureCollectionToQuakeMLConverter implements IConvertFormat<FeatureCollection<SimpleFeatureType, SimpleFeature>, XmlObject> {
+public class FeatureCollectionToOriginalQuakeMLConverter implements IConvertFormat<FeatureCollection<SimpleFeatureType, SimpleFeature>, XmlObject> {
     @Override
     public XmlObject convert(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
-        return QuakeML.fromFeatureCollection(featureCollection).toXmlObject();
+        return QuakeML.fromFeatureCollection(featureCollection).toOriginalXmlObject();
     }
 }
