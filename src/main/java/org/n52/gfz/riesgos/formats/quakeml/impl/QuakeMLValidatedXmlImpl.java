@@ -1,5 +1,3 @@
-package org.n52.gfz.riesgos.formats.quakeml.impl;
-
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -18,6 +16,7 @@ package org.n52.gfz.riesgos.formats.quakeml.impl;
  *
  */
 
+package org.n52.gfz.riesgos.formats.quakeml.impl;
 
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
@@ -26,11 +25,10 @@ import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLDataProvider;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeMLEvent;
 
 import javax.xml.namespace.QName;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,16 +39,17 @@ import java.util.stream.Stream;
  * Also there is a function to convert any IQuakeML
  * to an xml structure.
  *
- * This is the code for the original quakeml as it is the output of
- * the original quakeledger.
+ * This is the code for the validated quakeml as it is the output of
+ * a customized quakeledger.
  *
- * This xml does not match the schema for quakeml.
+ * This xml *does* match the schema for quakeml (in contrast with
+ * the originial xml that does not).
  */
-public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
+public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
     /*
      * example: see in the test/resource folder
-     * under "org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml"
+     * under "org/n52/gfz/riesgos/convertformats/quakeml_validated_one_feature.xml"
      *
      *
      * *******************************************************
@@ -59,73 +58,77 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
      * These information can't be queried with the current approach.
      * This implementations focus only on the way quakeml is provided by
      * the program in the following github repository:
+     * https://github.com/nbrinckm/quakeledger
+     *
+     * This is a modified version of the old quakeledger you can find at
      * https://github.com/GFZ-Centre-for-Early-Warning/quakeledger
+     *
+     * However it validates to the QuakeML-BED-1.2.xsd file
      *
      * when you look at the QuakeML-BED-1.2.xsd file for the xml-schema-definition,
      * you can see that this implementation only focus on the EventParameters and the Event types.
-     *
-     * and the example shown here is not valid according to the xsd file.
      */
 
-    private static final QName EVENT = new QName("event");
-    private static final QName EVENT_PARAMETERS = new QName("eventParameters");
-    private static final QName QUAKE_ML = new QName("q", "quakeml");
+    private static final String NS = "http://quakeml.org/xmlns/bed/1.2";
+
+    private static final QName EVENT = new QName(NS,"event");
+    private static final QName EVENT_PARAMETERS = new QName(NS, "eventParameters");
+    private static final QName QUAKE_ML = new QName(NS, "quakeml");
 
     private static final QName PUBLIC_ID = new QName("publicID");
-    private static final QName PREFERRED_ORIGIN_ID = new QName("preferredOriginID");
-    private static final QName PREFERRED_MAGNITUDE_ID = new QName("preferredMagnitudeID");
-    private static final QName TYPE = new QName("type");
-    private static final QName DESCRIPTION = new QName("description");
-    private static final QName TEXT = new QName("text");
-    private static final QName TIME = new QName("time");
-    private static final QName VALUE = new QName("value");
-    private static final QName UNCERTAINTY = new QName("uncertainty");
-    private static final QName LATITUDE = new QName("latitude");
-    private static final QName ORIGIN = new QName("origin");
-    private static final QName LONGITUDE = new QName("longitude");
-    private static final QName DEPTH = new QName("depth");
-    private static final QName CREATION_INFO = new QName("creationInfo");
-    private static final QName HORIZONTAL_UNCERTAINTY = new QName("horizontalUncertainty");
-    private static final QName ORIGIN_UNCERTAINTY = new QName("originUncertainty");
-    private static final QName MIN_HORIZONTAL_UNCERTAINTY = new QName("minHorizontalUncertainty");
-    private static final QName MAX_HORIZONTAL_UNCERTAINTY = new QName("maxHorizontalUncertainty");
-    private static final QName AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY = new QName("azimuthMaxHorizontalUncertainty");
-    private static final QName MAGNITUDE = new QName("magnitude");
-    private static final QName MAG = new QName("mag");
-    private static final QName FOCAL_MECHANISM = new QName("focalMechanism");
-    private static final QName STRIKE = new QName("strike");
-    private static final QName NODAL_PLANE_1 = new QName("nodalPlane1");
-    private static final QName NODAL_PLANES = new QName("nodalPlanes");
-    private static final QName DIP = new QName("dip");
-    private static final QName RAKE = new QName("rake");
+    private static final QName PREFERRED_ORIGIN_ID = new QName(NS,"preferredOriginID");
+    private static final QName PREFERRED_MAGNITUDE_ID = new QName(NS,"preferredMagnitudeID");
+    private static final QName TYPE = new QName(NS,"type");
+    private static final QName DESCRIPTION = new QName(NS,"description");
+    private static final QName TEXT = new QName(NS,"text");
+    private static final QName TIME = new QName(NS,"time");
+    private static final QName VALUE = new QName(NS,"value");
+    private static final QName UNCERTAINTY = new QName(NS,"uncertainty");
+    private static final QName LATITUDE = new QName(NS,"latitude");
+    private static final QName ORIGIN = new QName(NS,"origin");
+    private static final QName LONGITUDE = new QName(NS,"longitude");
+    private static final QName DEPTH = new QName(NS,"depth");
+    private static final QName CREATION_INFO = new QName(NS,"creationInfo");
+    private static final QName AUTHOR = new QName(NS, "author");
+    private static final QName HORIZONTAL_UNCERTAINTY = new QName(NS,"horizontalUncertainty");
+    private static final QName ORIGIN_UNCERTAINTY = new QName(NS,"originUncertainty");
+    private static final QName MIN_HORIZONTAL_UNCERTAINTY = new QName(NS,"minHorizontalUncertainty");
+    private static final QName MAX_HORIZONTAL_UNCERTAINTY = new QName(NS,"maxHorizontalUncertainty");
+    private static final QName AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY = new QName(NS,"azimuthMaxHorizontalUncertainty");
+    private static final QName MAGNITUDE = new QName(NS,"magnitude");
+    private static final QName MAG = new QName(NS,"mag");
+    private static final QName FOCAL_MECHANISM = new QName(NS,"focalMechanism");
+    private static final QName STRIKE = new QName(NS,"strike");
+    private static final QName NODAL_PLANE_1 = new QName(NS,"nodalPlane1");
+    private static final QName NODAL_PLANES = new QName(NS,"nodalPlanes");
+    private static final QName DIP = new QName(NS,"dip");
+    private static final QName RAKE = new QName(NS,"rake");
+    // just an attribute -> no namespace required
     private static final QName PREFERRED_PLANE = new QName("preferredPlane");
-    private static final QName DEPTH_TYPE = new QName("depthType");
-    private static final QName TIME_FIXED = new QName("timeFixed");
+    private static final QName DEPTH_TYPE = new QName(NS,"depthType");
+    private static final QName TIME_FIXED = new QName(NS,"timeFixed");
     private static final QName EPICENTER_FIXED = new QName("epicenterFixed");
-    private static final QName REFERENCE_SYSTEM_ID = new QName("referenceSystemID");
-    private static final QName QUALITY = new QName("quality");
-    private static final QName AZIMUTHAL_GAP = new QName("azimuthalGap");
-    private static final QName MINIMUM_DISTANCE = new QName("minimumDistance");
-    private static final QName MAXIMUM_DISTANCE = new QName("maximumDistance");
-    private static final QName USED_PHASE_COUNT = new QName("usedPhaseCount");
-    private static final QName USED_STATION_COUNT = new QName("usedStationCount");
-    private static final QName STANDARD_ERROR = new QName("standardError");
-    private static final QName EVALUATION_MODE = new QName("evaluationMode");
-    private static final QName EVALUATION_STATUS = new QName("evaluationStatus");
-    private static final QName ORIGIN_ID = new QName("originID");
-    private static final QName STATION_COUNT = new QName("stationCount");
-    private static final QName AMPLITUDE = new QName("amplitude");
-    private static final QName GENERIC_AMPLITUDE = new QName("genericAmplitude");
+    private static final QName REFERENCE_SYSTEM_ID = new QName(NS,"referenceSystemID");
+    private static final QName QUALITY = new QName(NS,"quality");
+    private static final QName AZIMUTHAL_GAP = new QName(NS,"azimuthalGap");
+    private static final QName MINIMUM_DISTANCE = new QName(NS,"minimumDistance");
+    private static final QName MAXIMUM_DISTANCE = new QName(NS,"maximumDistance");
+    private static final QName USED_PHASE_COUNT = new QName(NS,"usedPhaseCount");
+    private static final QName USED_STATION_COUNT = new QName(NS,"usedStationCount");
+    private static final QName STANDARD_ERROR = new QName(NS,"standardError");
+    private static final QName EVALUATION_MODE = new QName(NS,"evaluationMode");
+    private static final QName EVALUATION_STATUS = new QName(NS,"evaluationStatus");
+    private static final QName ORIGIN_ID = new QName(NS,"originID");
+    private static final QName STATION_COUNT = new QName(NS,"stationCount");
+    private static final QName AMPLITUDE = new QName(NS,"amplitude");
+    private static final QName GENERIC_AMPLITUDE = new QName(NS,"genericAmplitude");
 
-    private static final String NAN = "nan";
-    private static final String ID_PREFIX = "quakeml:quakeledger/";
-
-    private static final Pattern PATTERN_TO_MATCH_ID = Pattern.compile("^.*/([0-9]+)$");
-
+    private static final String NAN = "NaN";
+    private static final String NODAL_PLANE = "nodalPlane";
 
     private final XmlObject quakeML;
 
-    public QuakeMLOriginalXmlImpl(final XmlObject quakeML) throws ConvertFormatException {
+    public QuakeMLValidatedXmlImpl(final XmlObject quakeML) throws ConvertFormatException {
         this.quakeML = validateNotNull(findEventParameters(quakeML));
     }
 
@@ -150,15 +153,19 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
     }
 
     @Override
+    public Optional<String> getPublicId() {
+        final XmlObject attribute = quakeML.selectAttribute(PUBLIC_ID);
+        if(attribute != null) {
+            return Optional.ofNullable(attribute.newCursor().getTextValue());
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public List<IQuakeMLEvent> getEvents() {
         return Stream.of(quakeML.selectChildren(EVENT))
                 .map(QuakeMLEventXmlImpl::new)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<String> getPublicId() {
-        return Optional.empty();
     }
 
     /*
@@ -173,7 +180,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public String getPublicID() {
-            return ID_PREFIX + event.selectAttribute(PUBLIC_ID).newCursor().getTextValue();
+            return event.selectAttribute(PUBLIC_ID).newCursor().getTextValue();
         }
 
         private Optional<String> getByFirstChildrenWithNLevel(final QName... children) {
@@ -191,16 +198,12 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getPreferredOriginID() {
-            return getByFirstChildrenWithNLevel(PREFERRED_ORIGIN_ID).map(this::addIdPrefix);
-        }
-
-        private String addIdPrefix(final String id) {
-            return ID_PREFIX + id;
+            return getByFirstChildrenWithNLevel(PREFERRED_ORIGIN_ID);
         }
 
         @Override
         public Optional<String> getPreferredMagnitudeID() {
-            return getByFirstChildrenWithNLevel(PREFERRED_MAGNITUDE_ID).map(this::addIdPrefix);
+            return getByFirstChildrenWithNLevel(PREFERRED_MAGNITUDE_ID);
         }
 
         @Override
@@ -223,12 +226,17 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginPublicID() {
-            return getPublicIDOfFirstChildOneLevel(ORIGIN).map(this::addIdPrefix);
+            return getPublicIDOfFirstChildOneLevel(ORIGIN);
         }
 
         @Override
         public Optional<String> getOriginTimeValue() {
             return getByFirstChildrenWithNLevel(ORIGIN, TIME, VALUE);
+        }
+
+        @Override
+        public Optional<String> getOriginTimeUncertainty() {
+            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, TIME, UNCERTAINTY));
         }
 
         private Optional<String> removeIfNaN(final Optional<String> possibleNaNValue) {
@@ -240,11 +248,6 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
                 return null;
             }
             return possibleNaNValue;
-        }
-
-        @Override
-        public Optional<String> getOriginTimeUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, TIME, UNCERTAINTY));
         }
 
         @Override
@@ -323,7 +326,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginCreationInfoValue() {
-            return getByFirstChildrenWithNLevel(ORIGIN, CREATION_INFO, VALUE);
+            return getByFirstChildrenWithNLevel(ORIGIN, CREATION_INFO, AUTHOR);
         }
 
         @Override
@@ -368,27 +371,27 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginUncertaintyHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN_UNCERTAINTY, HORIZONTAL_UNCERTAINTY));
+            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, HORIZONTAL_UNCERTAINTY));
         }
 
         @Override
         public Optional<String> getOriginUncertaintyMinHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN_UNCERTAINTY, MIN_HORIZONTAL_UNCERTAINTY));
+            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, MIN_HORIZONTAL_UNCERTAINTY));
         }
 
         @Override
         public Optional<String> getOriginUncertaintyMaxHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN_UNCERTAINTY, MAX_HORIZONTAL_UNCERTAINTY));
+            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, MAX_HORIZONTAL_UNCERTAINTY));
         }
 
         @Override
         public Optional<String> getOriginUncertaintyAzimuthMaxHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN_UNCERTAINTY, AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY));
+            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY));
         }
 
         @Override
         public Optional<String> getMagnitudePublicID() {
-            return getPublicIDOfFirstChildOneLevel(MAGNITUDE).map(this::addIdPrefix);
+            return getPublicIDOfFirstChildOneLevel(MAGNITUDE);
         }
 
         @Override
@@ -408,7 +411,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getMagnitudeCreationInfoValue() {
-            return getByFirstChildrenWithNLevel(MAGNITUDE, CREATION_INFO, VALUE);
+            return getByFirstChildrenWithNLevel(MAGNITUDE, CREATION_INFO, AUTHOR);
         }
 
         @Override
@@ -428,7 +431,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getFocalMechanismPublicID() {
-            return getPublicIDOfFirstChildOneLevel(FOCAL_MECHANISM).map(this::addIdPrefix);
+            return getPublicIDOfFirstChildOneLevel(FOCAL_MECHANISM);
         }
 
         @Override
@@ -463,7 +466,25 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getFocalMechanismNodalPlanesPreferredNodalPlane() {
-            return getByFirstChildrenWithNLevel(FOCAL_MECHANISM, NODAL_PLANES, PREFERRED_PLANE);
+
+            XmlObject searchElement = event;
+            for (final QName childrenQName : Arrays.asList(FOCAL_MECHANISM, NODAL_PLANES)) {
+                final XmlObject[] candidates = searchElement.selectChildren(childrenQName);
+                if (candidates.length > 0) {
+                    searchElement = candidates[0];
+                }
+            }
+
+            final Optional<String> attributeText;
+            if (searchElement != null) {
+                final String pureAttributeTextAsNumber = searchElement.selectAttribute(PREFERRED_PLANE).newCursor().getTextValue();
+                final String pureAttributeText = NODAL_PLANE + pureAttributeTextAsNumber;
+                attributeText = Optional.ofNullable(pureAttributeText);
+            } else {
+                attributeText = Optional.empty();
+            }
+
+            return attributeText;
         }
 
         @Override
@@ -483,18 +504,20 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
     }
 
     /**
-     * Converts any IQuakeML to an XmlObject (and uses the original quakeml format from quakeledger)
+     * Converts any IQuakeML to an XmlObject (and uses the validated quakeml)
      * @param quakeML the data provider to convert it to xml
      * @return XmlObject
      */
-    public static XmlObject convertToOriginalXml(final IQuakeMLDataProvider quakeML) {
+    public static XmlObject convertToValidatedXml(final IQuakeMLDataProvider quakeML) {
 
         final XmlObject result = XmlObject.Factory.newInstance();
         final XmlCursor cursor = result.newCursor();
         cursor.toFirstContentToken();
 
         cursor.beginElement(EVENT_PARAMETERS);
-        cursor.insertAttributeWithValue("namespace", "http://quakeml.org/xmlns/quakeml/1.2");
+        final String publicId = quakeML.getPublicId().orElse("quakeml:quakeledger/0");
+        cursor.insertAttributeWithValue(PUBLIC_ID, publicId);
+
 
         for(final IQuakeMLEvent event : quakeML.getEvents()) {
             final XmlObject eventXml = convertFeatureToXml(event);
@@ -504,6 +527,10 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.dispose();
 
         return result;
+    }
+
+    private static boolean notNaN(final String atext) {
+        return ! atext.toLowerCase().equals("nan");
     }
 
     private static class InsertElementWithText implements Consumer<String> {
@@ -544,12 +571,12 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.toFirstContentToken();
         cursor.beginElement(EVENT);
         final String publicID = event.getPublicID();
-        cursor.insertAttributeWithValue(PUBLIC_ID, onlyNumeric(publicID));
+        cursor.insertAttributeWithValue(PUBLIC_ID, publicID);
 
-        final Optional<String> preferredOriginID = event.getPreferredOriginID().map(QuakeMLOriginalXmlImpl::onlyNumeric);
+        final Optional<String> preferredOriginID = event.getPreferredOriginID();
         preferredOriginID.ifPresent(new InsertElementWithText(cursor, PREFERRED_ORIGIN_ID));
 
-        final Optional<String> preferredMagnitudeID = event.getPreferredMagnitudeID().map(QuakeMLOriginalXmlImpl::onlyNumeric);
+        final Optional<String> preferredMagnitudeID = event.getPreferredMagnitudeID();
         preferredMagnitudeID.ifPresent(new InsertElementWithText(cursor, PREFERRED_MAGNITUDE_ID));
 
         final Optional<String> type = event.getType();
@@ -564,8 +591,6 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         final XmlObject partOrigin = convertFeatureToXmlOriginSection(event);
         partOrigin.newCursor().copyXmlContents(cursor);
-        final XmlObject partOriginUncertainty = convertFeatureToXmlOriginUncertaintySection(event);
-        partOriginUncertainty.newCursor().copyXmlContents(cursor);
         final XmlObject partMagnitude = convertFeatureToXmlMagnitudeSection(event);
         partMagnitude.newCursor().copyXmlContents(cursor);
         final XmlObject partFocalMechanism = convertFeatureToFocalMechanismSection(event);
@@ -578,19 +603,6 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         return result;
     }
 
-    private static String onlyNumeric(final String textWithNumbersAtTheEnd) {
-        // should transform something like 'quakeml:quakeledger/84945' to '84945'
-        // so should only match the number at the end
-        final Matcher matcher = PATTERN_TO_MATCH_ID.matcher(textWithNumbersAtTheEnd);
-        final String result;
-        if(matcher.matches()) {
-            result = matcher.group(1);
-        } else {
-            result = textWithNumbersAtTheEnd;
-        }
-        return result;
-    }
-
     private static XmlObject convertFeatureToXmlOriginSection(final IQuakeMLEvent event) {
         final XmlObject result = XmlObject.Factory.newInstance();
         final XmlCursor cursor = result.newCursor();
@@ -599,7 +611,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         cursor.beginElement(ORIGIN);
 
-        final Optional<String> originPublicID = event.getOriginPublicID().map(QuakeMLOriginalXmlImpl::onlyNumeric);
+        final Optional<String> originPublicID = event.getOriginPublicID();
         originPublicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
 
         cursor.beginElement(TIME);
@@ -607,7 +619,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         final Optional<String> timeValue = event.getOriginTimeValue();
         timeValue.ifPresent(new InsertElementWithText(cursor, VALUE));
 
-        final String timeUncertainty = event.getOriginTimeUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String timeUncertainty = event.getOriginTimeUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(timeUncertainty);
 
         cursor.toNextToken();
@@ -615,7 +627,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.beginElement(LATITUDE);
 
         cursor.insertElementWithText(VALUE, String.valueOf(event.getOriginLatitudeValue()));
-        final String latitudeUncertainty = event.getOriginLatitudeUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String latitudeUncertainty = event.getOriginLatitudeUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(latitudeUncertainty);
 
         cursor.toNextToken();
@@ -623,7 +635,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.beginElement(LONGITUDE);
 
         cursor.insertElementWithText(VALUE, String.valueOf(event.getOriginLongitudeValue()));
-        final String longitudeUncertainty = event.getOriginLongitudeUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String longitudeUncertainty = event.getOriginLongitudeUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(longitudeUncertainty);
 
         cursor.toNextToken();
@@ -632,7 +644,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         final Optional<String> depthValue = event.getOriginDepthValue();
         depthValue.ifPresent(new InsertElementWithText(cursor, VALUE));
-        final String depthUncertainty = event.getOriginDepthUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        String depthUncertainty = event.getOriginDepthUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(depthUncertainty);
 
         cursor.toNextToken();
@@ -655,7 +667,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         final Optional<String> creationInfo = event.getOriginCreationInfoValue();
         if(creationInfo.isPresent()) {
             cursor.beginElement(CREATION_INFO);
-            cursor.insertElementWithText(VALUE, creationInfo.get());
+            cursor.insertElementWithText(AUTHOR, creationInfo.get());
             cursor.toNextToken();
         }
 
@@ -687,13 +699,12 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         final Optional<String> evaluationStatus = event.getOriginEvaluationStatus();
         evaluationStatus.ifPresent(new InsertElementWithText(cursor, EVALUATION_STATUS));
 
+        final XmlObject partOriginUncertainty = convertFeatureToXmlOriginUncertaintySection(event);
+        partOriginUncertainty.newCursor().copyXmlContents(cursor);
+
         cursor.dispose();
 
         return result;
-    }
-
-    private static boolean notNaN(final String atext) {
-        return ! atext.toLowerCase().equals("nan");
     }
 
     private static XmlObject convertFeatureToXmlOriginUncertaintySection(final IQuakeMLEvent event) {
@@ -704,13 +715,13 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
 
         cursor.beginElement(ORIGIN_UNCERTAINTY);
 
-        final String horizontalUncertainty = event.getOriginUncertaintyHorizontalUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String horizontalUncertainty = event.getOriginUncertaintyHorizontalUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, HORIZONTAL_UNCERTAINTY).accept(horizontalUncertainty);
-        final String minHorizontalUncertainty = event.getOriginUncertaintyMinHorizontalUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String minHorizontalUncertainty = event.getOriginUncertaintyMinHorizontalUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, MIN_HORIZONTAL_UNCERTAINTY).accept(minHorizontalUncertainty);
-        final String maxHorizontalUncertainty = event.getOriginUncertaintyMaxHorizontalUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String maxHorizontalUncertainty = event.getOriginUncertaintyMaxHorizontalUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, MAX_HORIZONTAL_UNCERTAINTY).accept(maxHorizontalUncertainty);
-        final String azimuthMaxHorizontalUncertainty = event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String azimuthMaxHorizontalUncertainty = event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY).accept(azimuthMaxHorizontalUncertainty);
 
         cursor.toNextToken();
@@ -727,14 +738,14 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.toFirstContentToken();
 
         cursor.beginElement(MAGNITUDE);
-        final Optional<String> publicID = event.getMagnitudePublicID().map(QuakeMLOriginalXmlImpl::onlyNumeric);
+        final Optional<String> publicID = event.getMagnitudePublicID();
         publicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
 
         cursor.beginElement(MAG);
 
         final Optional<String> magValue = event.getMagnitudeMagValue();
         magValue.ifPresent(new InsertElementWithText(cursor, VALUE));
-        final String magUncertainty = event.getMagnitudeMagUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String magUncertainty = event.getMagnitudeMagUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(magUncertainty);
 
         cursor.toNextToken();
@@ -755,7 +766,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         final Optional<String> creationInfo = event.getMagnitudeCreationInfoValue();
         if(creationInfo.isPresent()) {
             cursor.beginElement(CREATION_INFO);
-            cursor.insertElementWithText(VALUE, creationInfo.get());
+            cursor.insertElementWithText(AUTHOR, creationInfo.get());
             cursor.toNextToken();
         }
 
@@ -765,6 +776,10 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         return result;
     }
 
+    private static String removeNodalPlaneTextBefore(final String textWithNodalPlaneTextInFront) {
+        return textWithNodalPlaneTextInFront.replaceAll("[a-zA-Z]", "");
+    }
+
     private static XmlObject convertFeatureToFocalMechanismSection(final IQuakeMLEvent event) {
         final XmlObject result = XmlObject.Factory.newInstance();
         final XmlCursor cursor = result.newCursor();
@@ -772,16 +787,25 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.toFirstContentToken();
 
         cursor.beginElement(FOCAL_MECHANISM);
-        final Optional<String> publicID = event.getFocalMechanismPublicID().map(QuakeMLOriginalXmlImpl::onlyNumeric);
+        final Optional<String> publicID = event.getFocalMechanismPublicID();
         publicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
 
         cursor.beginElement(NODAL_PLANES);
+        final Optional<String> preferredPlane = event.getFocalMechanismNodalPlanesPreferredNodalPlane();
+        if(preferredPlane.isPresent()) {
+            final String preferredPlaneValue = preferredPlane.get();
+            final String preferredPlaneJustIntegerValue = removeNodalPlaneTextBefore(preferredPlaneValue);
+            new InsertAttributeWithText(cursor, PREFERRED_PLANE).accept(preferredPlaneJustIntegerValue);
+        }
+
+
+
         cursor.beginElement(NODAL_PLANE_1);
         cursor.beginElement(STRIKE);
 
         final Optional<String> strikeValue = event.getFocalMechanismNodalPlanesNodalPlane1StrikeValue();
         strikeValue.ifPresent(new InsertElementWithText(cursor, VALUE));
-        final String strikeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String strikeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(strikeUncertainty);
 
         cursor.toNextToken();
@@ -789,7 +813,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.beginElement(DIP);
         final Optional<String> dipValue = event.getFocalMechanismNodalPlanesNodalPlane1DipValue();
         dipValue.ifPresent(new InsertElementWithText(cursor, VALUE));
-        final String dipUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String dipUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(dipUncertainty);
 
         cursor.toNextToken();
@@ -797,15 +821,12 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
         cursor.beginElement(RAKE);
         final Optional<String> rakeValue = event.getFocalMechanismNodalPlanesNodalPlane1RakeValue();
         rakeValue.ifPresent(new InsertElementWithText(cursor, VALUE));
-        final String rakeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1RakeUncertainty().filter(QuakeMLOriginalXmlImpl::notNaN).orElse(NAN);
+        final String rakeUncertainty = event.getFocalMechanismNodalPlanesNodalPlane1RakeUncertainty().filter(QuakeMLValidatedXmlImpl::notNaN).orElse(NAN);
         new InsertElementWithText(cursor, UNCERTAINTY).accept(rakeUncertainty);
 
         cursor.toNextToken();
 
         cursor.toNextToken();
-
-        final Optional<String> preferredPlane = event.getFocalMechanismNodalPlanesPreferredNodalPlane();
-        preferredPlane.ifPresent(new InsertElementWithText(cursor, PREFERRED_PLANE));
 
         cursor.dispose();
 
@@ -827,7 +848,7 @@ public class QuakeMLOriginalXmlImpl implements IQuakeMLDataProvider {
             cursor.beginElement(AMPLITUDE);
 
             publicID.ifPresent(new InsertAttributeWithText(cursor, PUBLIC_ID));
-            type.ifPresent(new InsertElementWithText(cursor, TYPE));
+            type.ifPresent(new InsertAttributeWithText(cursor, TYPE));
 
             if (genericAmplitudeValue.isPresent()) {
                 cursor.beginElement(GENERIC_AMPLITUDE);

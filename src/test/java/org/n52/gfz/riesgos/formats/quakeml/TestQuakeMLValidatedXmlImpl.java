@@ -1,5 +1,3 @@
-package org.n52.gfz.riesgos.formats.quakeml;
-
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -18,6 +16,8 @@ package org.n52.gfz.riesgos.formats.quakeml;
  *
  */
 
+package org.n52.gfz.riesgos.formats.quakeml;
+
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
@@ -31,28 +31,27 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertFalse;
 
-/**
- * This is the test class for the xml implementation
- */
-public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunctions {
+public class TestQuakeMLValidatedXmlImpl implements ICommonTestQuakeMLXmlTestFunctions {
 
     /**
-     * Tests the old quakeml format
+     * Tests the validated quakeml format
      */
     @Test
     public void testWithOneEvent() {
-        try {
-            final XmlObject xmlContent = readOriginalOneFeature();
 
-            final IQuakeML quakeML = QuakeML.fromOriginalXml(xmlContent);
+        try {
+            final XmlObject xmlContent = readValidatedOneFeature();
+
+            final IQuakeML quakeML = QuakeML.fromValidatedXml(xmlContent);
 
             final List<IQuakeMLEvent> events = quakeML.getEvents();
 
             assertEquals("The list has one element", 1, events.size());
 
-            assertFalse("The publicID of the eventparameters not is present", quakeML.getPublicId().isPresent());
-
             final IQuakeMLEvent event = events.get(0);
+
+            assertTrue("There is publicID for the eventparameters", quakeML.getPublicId().isPresent());
+            assertEquals("The of the eventparameters publicID is as expected", "quakeml:quakeledger/0", quakeML.getPublicId().get());
 
             assertEquals("The publicID is as expected", "quakeml:quakeledger/84945", event.getPublicID());
             assertTrue("The preferredOriginID is present", event.getPreferredOriginID().isPresent());
@@ -67,12 +66,11 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
             assertEquals("The originPublicID is as expected", "quakeml:quakeledger/84945", event.getOriginPublicID().get());
             assertTrue("The originTimeVlaue is present", event.getOriginTimeValue().isPresent());
             assertEquals("The originTimeValue is as expeced", "16773-01-01T00:00:00.000000Z", event.getOriginTimeValue().get());
-            // those nan values should be treated as nulls
             assertFalse("The originTimeUncertainty is not present", event.getOriginTimeUncertainty().isPresent());
             assertTrue("The latitudeValue is as expected", Math.abs(-30.9227 - event.getOriginLatitudeValue()) < 0.001);
             assertFalse("The latitudeUncertainty is not present", event.getOriginLatitudeUncertainty().isPresent());
             assertTrue("The longitudeValue is as expected", Math.abs(-71.49875 - event.getOriginLongitudeValue()) < 0.001);
-            assertFalse("The longitudeUnvertainty is not present", event.getOriginLongitudeUncertainty().isPresent());
+            assertFalse("The longitudeUncertainty is not present", event.getOriginLongitudeUncertainty().isPresent());
             assertTrue("The depthValue is present", event.getOriginDepthValue().isPresent());
             assertEquals("The depthValue is as expected", "34.75117", event.getOriginDepthValue().get());
             assertFalse("The depthUncertainty is not present", event.getOriginDepthUncertainty().isPresent());
@@ -86,8 +84,8 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
             assertEquals("The magnitude publicID is as expected", "quakeml:quakeledger/84945", event.getMagnitudePublicID().get());
             assertTrue("The magnitude value is present", event.getMagnitudeMagValue().isPresent());
             assertEquals("The magnitude value is as expected", "8.35", event.getMagnitudeMagValue().get());
-            assertFalse("The magnitude uncertainty is not present", event.getMagnitudeMagUncertainty().isPresent());
-            assertTrue("The magnitude type is prsent", event.getMagnitudeType().isPresent());
+            assertFalse("The magnitude uncertainty not present", event.getMagnitudeMagUncertainty().isPresent());
+            assertTrue("The magnitude type is present", event.getMagnitudeType().isPresent());
             assertEquals("The magnitude type is as expected", "MW", event.getMagnitudeType().get());
             assertTrue("The magnitude creationInfo is present", event.getMagnitudeCreationInfoValue().isPresent());
             assertEquals("The magnitude creationInfo is as expected", "GFZ", event.getMagnitudeCreationInfoValue().get());
@@ -95,22 +93,46 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
             assertEquals("The focal mechanism publicID is as expected", "quakeml:quakeledger/84945", event.getFocalMechanismPublicID().get());
             assertTrue("The strike value is as present", event.getFocalMechanismNodalPlanesNodalPlane1StrikeValue().isPresent());
             assertEquals("The strike value is as expected", "7.310981", event.getFocalMechanismNodalPlanesNodalPlane1StrikeValue().get());
-            assertFalse("The strike unvertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty().isPresent());
+            assertFalse("The strike uncertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty().isPresent());
             assertTrue("The dip value is present", event.getFocalMechanismNodalPlanesNodalPlane1DipValue().isPresent());
             assertEquals("The dip value is as expected", "16.352970000000003", event.getFocalMechanismNodalPlanesNodalPlane1DipValue().get());
-            assertFalse("The dip unvertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty().isPresent());
+            assertFalse("The dip uncertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty().isPresent());
             assertTrue("The rake value is present", event.getFocalMechanismNodalPlanesNodalPlane1RakeValue().isPresent());
             assertEquals("The rake value is as expected", "90.0", event.getFocalMechanismNodalPlanesNodalPlane1RakeValue().get());
             assertFalse("The rake uncertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1RakeUncertainty().isPresent());
             assertTrue("The preferred plane is present", event.getFocalMechanismNodalPlanesPreferredNodalPlane().isPresent());
             assertEquals("The preferred plane is as expected", "nodalPlane1", event.getFocalMechanismNodalPlanesPreferredNodalPlane().get());
 
+        } catch (final XmlException exception) {
+            fail("There should be no xml exception");
+        } catch (final ConvertFormatException exception) {
+            fail("There should be no exception on converting");
+        } catch (final IOException ioException) {
+            fail("There should be no exception on loading the file from the resources");
+        }
+    }
+
+    /**
+     * Converts the validated xml to the original one
+     */
+    @Test
+    public void testConversionToOriginalXml() {
+        try {
+            final XmlObject validatedXml = readValidatedOneFeature();
+            final XmlObject origignalXml = readOriginalOneFeature();
+
+            final IQuakeML quakeml = QuakeML.fromValidatedXml(validatedXml);
+
+            final XmlObject originalXmlRecreated = quakeml.toOriginalXmlObject();
+
+            assertEquals("The converted quakeml should match the original one", origignalXml.toString(), originalXmlRecreated.toString());
+
         } catch(final XmlException exception) {
             fail("There should be no xml exception");
-        } catch(final ConvertFormatException exception) {
-            fail("There should be no exception on converting");
         } catch(final IOException ioException) {
-            fail("There should be no exception on loading the file from the resources");
+            fail("There should be no exception on loading the file form the resources");
+        } catch(final ConvertFormatException exception) {
+            fail("Ther should be no exception on converting");
         }
     }
 
@@ -121,11 +143,11 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
     @Test
     public void testOutputIsTheSameAsInput() {
         try {
-            final XmlObject xmlContent = readOriginalOneFeature();
+            final XmlObject xmlContent = readValidatedOneFeature();
 
-            final IQuakeML quakeML = QuakeML.fromOriginalXml(xmlContent);
+            final IQuakeML quakeML = QuakeML.fromValidatedXml(xmlContent);
 
-            final XmlObject xmlOutput = quakeML.toOriginalXmlObject();
+            final XmlObject xmlOutput = quakeML.toValidatedXmlObject();
 
             assertEquals("The input and the output in the same format are equal", xmlContent.toString(), xmlOutput.toString());
         } catch(final XmlException xmlException) {
@@ -134,27 +156,6 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
             fail("There should be no io exception on reading the contents");
         } catch(final ConvertFormatException convertException) {
             fail("There should be no exception on conversion");
-        }
-    }
-
-    @Test
-    public void testConversionToValidatedOutput() {
-        try {
-            final XmlObject validatedXml = readValidatedOneFeature();
-            final XmlObject origignalXml = readOriginalOneFeature();
-
-            final IQuakeML quakeml = QuakeML.fromOriginalXml(origignalXml);
-
-            final XmlObject validatedXmlRecreated = quakeml.toValidatedXmlObject();
-
-            assertEquals("The converted quakeml should match the validated one", validatedXml.toString(), validatedXmlRecreated.toString());
-
-        } catch(final XmlException exception) {
-            fail("There should be no xml exception");
-        } catch(final IOException ioException) {
-            fail("There should be no exception on loading the file form the resources");
-        } catch(final ConvertFormatException exception) {
-            fail("Ther should be no exception on converting");
         }
     }
 }

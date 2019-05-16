@@ -23,10 +23,12 @@ import org.geotools.feature.FeatureCollection;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLSimpleFeatureCollectionImpl;
 import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLOriginalXmlImpl;
+import org.n52.gfz.riesgos.formats.quakeml.impl.QuakeMLValidatedXmlImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation for IQuakeML
@@ -51,8 +53,18 @@ public class QuakeML implements IQuakeML {
     }
 
     @Override
+    public Optional<String> getPublicId() {
+        return dataProvider.getPublicId();
+    }
+
+    @Override
     public XmlObject toOriginalXmlObject() {
         return QuakeMLOriginalXmlImpl.convertToOriginalXml(dataProvider);
+    }
+
+    @Override
+    public XmlObject toValidatedXmlObject() {
+        return QuakeMLValidatedXmlImpl.convertToValidatedXml(dataProvider);
     }
 
     @Override
@@ -61,13 +73,23 @@ public class QuakeML implements IQuakeML {
     }
 
     /**
-     * Constructs the object from an xml object
+     * Constructs the object from an xml object (the one from the original quakeledger, that is not valid according to the schema)
      * @param xmlObject quakeml xml representation
      * @return IQuakeML object
      * @throws ConvertFormatException may throw a ConvertFormatException
      */
     public static IQuakeML fromOriginalXml(final XmlObject xmlObject) throws ConvertFormatException {
         return new QuakeML(new QuakeMLOriginalXmlImpl(xmlObject));
+    }
+
+    /**
+     * Constructs the object form an xml object (the one that validates against the schema)
+     * @param xmlObject quakeml
+     * @return IQuakeML Object
+     * @throws ConvertFormatException may throw a ConvertFormatException
+     */
+    public static IQuakeML fromValidatedXml(final XmlObject xmlObject) throws ConvertFormatException {
+        return new QuakeML(new QuakeMLValidatedXmlImpl(xmlObject));
     }
 
     /**

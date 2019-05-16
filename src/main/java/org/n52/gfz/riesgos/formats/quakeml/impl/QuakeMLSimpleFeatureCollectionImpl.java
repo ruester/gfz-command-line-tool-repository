@@ -81,6 +81,11 @@ public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeMLDataProvider 
         return result;
     }
 
+    @Override
+    public Optional<String> getPublicId() {
+        return Optional.empty();
+    }
+
     private static class QuakeMLEventSimpleFeatureImpl  implements IQuakeMLEvent {
         private final SimpleFeature feature;
 
