@@ -380,6 +380,16 @@ public class IdentifierWithBindingFactory {
                 .build();
     }
 
+    public static IIdentifierWithBinding createFileInQuakeML(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+                .withPath(path)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withSchema(QUAKE_ML_SCHEMA)
+                .build();
+    }
+
     /**
      * Creates a input file argument (generic)
      * @param identifier identifier of the data

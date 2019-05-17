@@ -67,4 +67,15 @@ public class ConfigurationFactory {
             throw new RuntimeException(exception);
         }
     }
+
+    public static IConfiguration createQuakeMLTransformer() {
+        try {
+            final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/quakemltransformer.json");
+            final String content = new String(IOUtils.toByteArray(inputStream));
+            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+            return parser.parse(content);
+        } catch(final IOException | ParseConfigurationException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 }
