@@ -16,9 +16,11 @@ package org.n52.gfz.riesgos.repository;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLGML3Generator;
 import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLGeoJsonGenerator;
 import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLOriginalXmlGenerator;
 import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLValidatedXmlGenerator;
+import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLGML3Parser;
 import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLGeoJsonParser;
 import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLOriginalXmlParser;
 import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLValidatedXmlParser;
@@ -69,7 +71,8 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
         Stream.of(
                 new QuakeMLValidatedXmlGenerator(),
                 new QuakeMLOriginalXmlGenerator(),
-                new QuakeMLGeoJsonGenerator()
+                new QuakeMLGeoJsonGenerator(),
+                new QuakeMLGML3Generator()
         ).forEach(new RegisterGeneratorTask());
     }
 
@@ -77,7 +80,8 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
         Stream.of(
                 new QuakeMLValidatedXmlParser(),
                 new QuakeMLOriginalXmlParser(),
-                new QuakeMLGeoJsonParser()
+                new QuakeMLGeoJsonParser(),
+                new QuakeMLGML3Parser()
         ).forEach(new RegisterParserTask());
     }
 
