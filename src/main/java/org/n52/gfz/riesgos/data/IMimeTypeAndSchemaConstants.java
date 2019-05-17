@@ -18,10 +18,33 @@
 
 package org.n52.gfz.riesgos.data;
 
+/**
+ * Constants for mime types and schema values
+ */
 public interface IMimeTypeAndSchemaConstants {
-    static final String MIME_TYPE_XML = "text/xml";
-    static final String MIME_TYPE_GEOJSON = "application/vnd.geo+json";
 
-    static final String SCHEMA_QUAKE_ML = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
-    static final String SCHEMA_QUAKE_ML_OLD = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)";
+    /**
+     * Mime-Type for xml
+     */
+    String MIME_TYPE_XML = "text/xml";
+
+    /**
+     * Mime-Type for geojson
+     */
+    String MIME_TYPE_GEOJSON = "application/vnd.geo+json";
+
+    /**
+     * Schema for quakeML
+     */
+    String SCHEMA_QUAKE_ML = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
+
+    /**
+     * Dummy value for the quakeML that does not match the schema
+     */
+    String SCHEMA_QUAKE_ML_OLD = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)";
+
+    /**
+     * Schema for GML 3.2.1
+     */
+    String SCHEMA_GML_3_2_1 = "http://schemas.opengis.net/gml/3.2.1/base/feature.xsd";
 }
