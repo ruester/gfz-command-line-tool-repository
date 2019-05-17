@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.data.quakeml.generators;
 
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
+import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
@@ -41,19 +42,17 @@ import java.io.InputStream;
 /**
  * Generator that takes the IQuakeMLXmlDataBinding and returns GeoJson
  */
-public class QuakeMLGeoJsonGenerator extends AbstractGenerator {
+public class QuakeMLGeoJsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
 
     private static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonGenerator.class);
-
-    private static final String MIME_TYPE_GEOJSON = "application/vnd.geo+json";
 
     public QuakeMLGeoJsonGenerator() {
         super();
 
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(MIME_TYPE_GEOJSON);
-        supportedEncodings.add(IOHandler.DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_GEOJSON, null, IOHandler.DEFAULT_ENCODING, true));
+        supportedEncodings.add(DEFAULT_ENCODING);
+        formats.add(new FormatEntry(MIME_TYPE_GEOJSON, null, DEFAULT_ENCODING, true));
     }
 
     @Override
