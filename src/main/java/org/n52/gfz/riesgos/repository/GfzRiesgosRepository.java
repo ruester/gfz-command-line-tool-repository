@@ -19,6 +19,8 @@ package org.n52.gfz.riesgos.repository;
 import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLGeoJsonGenerator;
 import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLOriginalXmlGenerator;
 import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLValidatedXmlGenerator;
+import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLGeoJsonParser;
+import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLOriginalXmlParser;
 import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLValidatedXmlParser;
 import org.n52.gfz.riesgos.repository.modules.GfzRiesgosRepositoryCM;
 import org.n52.wps.commons.WPSConfig;
@@ -73,7 +75,9 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
 
     private void registerParsers() {
         Stream.of(
-                new QuakeMLValidatedXmlParser()
+                new QuakeMLValidatedXmlParser(),
+                new QuakeMLOriginalXmlParser(),
+                new QuakeMLGeoJsonParser()
         ).forEach(new RegisterParserTask());
     }
 
