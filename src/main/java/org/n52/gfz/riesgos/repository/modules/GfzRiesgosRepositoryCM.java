@@ -138,8 +138,9 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         final List<AlgorithmData> result = new ArrayList<>();
 
         // this both configurations are included by default
-        result.add(new AlgorithmData("QuakeledgerProcess", new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(), LoggerFactory.getLogger("Quakeledger"))));
-        result.add(new AlgorithmData("ShakygroundProcess", new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(), LoggerFactory.getLogger("Shakyground"))));
+        result.add(new AlgorithmData("QuakeledgerProcess", new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(), LoggerFactory.getLogger("QuakeledgerProcess"))));
+        result.add(new AlgorithmData("ShakygroundProcess", new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(), LoggerFactory.getLogger("ShakygroundProcess"))));
+        result.add(new AlgorithmData("QuakeMLTransformerProcess", new BaseGfzRiesgosService(ConfigurationFactory.createQuakeMLTransformer(), LoggerFactory.getLogger("QuakeMLTransformerProcess"))));
 
         // others can be added by using the folder
         addConfigurationsFromFilder(this::getFileNamesFromConfig, result::add);

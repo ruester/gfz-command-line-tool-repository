@@ -1,0 +1,12 @@
+{
+  "title": "QuakeMLTransformer",
+  "imageId": "quakeledger:latest",
+  "workingDirectory": "/usr/share/git/quakeledger",
+  "commandToExecute": "echo 'All the work is done by the parsers and generators'",
+  "input": [
+    { "title" : "input", "useAs": "file", "path": "convert_quakeml.xml", "type": "quakeml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
+  ],
+  "output": [
+    { "title": "output", "readFrom": "file", "path": "convert_quakeml.xml", "type": "quakeml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
+  ]
+}

@@ -50,7 +50,7 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
      */
     public GfzRiesgosRepository() {
 
-        final WPSConfig wpsConfig = WPSConfig.getInstance(null);
+        final WPSConfig wpsConfig = WPSConfig.getInstance();
 
         registerGenerators();
         registerParsers();

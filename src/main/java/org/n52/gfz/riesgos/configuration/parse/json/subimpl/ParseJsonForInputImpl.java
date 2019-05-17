@@ -539,7 +539,9 @@ public class ParseJsonForInputImpl {
         GEOTIFF("geotiff", ParseJsonForInputImpl::createFileInputGeotiff),
         GEOJSON("geojson", ParseJsonForInputImpl::createFileInputGeojson),
         SHAPEFILE("shapefile", ParseJsonForInputImpl::createFileInputShapefile),
-        GENERIC_FILE("file", ParseJsonForInputImpl::createFileInputGeneric);
+        GENERIC_FILE("file", ParseJsonForInputImpl::createFileInputGeneric),
+        // the schema for quakeml can be provided, but it will be ignored
+        QUAKEML("quakeml", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileInQuakeML(identifier, path));
 
         private final String dataType;
         private final IAsFileInputFactory factory;
