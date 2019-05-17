@@ -45,6 +45,8 @@ import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.ILiteralData;
 import org.n52.wps.webapp.api.FormatEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.math.BigInteger;
@@ -59,6 +61,8 @@ import java.util.stream.Collectors;
  * Implementation of the process description generation
  */
 public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGenerator {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDescriptionGeneratorImpl.class);
 
     private final Supplier<List<IParser>> parserSupplier;
     private final Supplier<List<IGenerator>> generatorSupplier;
@@ -164,7 +168,7 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                     final SupportedComplexDataInputType complexData = inputDescriptionType.addNewComplexData();
                     final List<IParser> parsers = parserSupplier.get();
                     final List<IParser> foundParsers = findParser(parsers, inputDataTypeClass);
-                    addInputFormats(complexData, foundParsers, input.getSchema().orElse("null"));
+                    addInputFormats(complexData, foundParsers);
                 }
             }
         }
@@ -211,7 +215,7 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                 final SupportedComplexDataType complexData = outputDescriptionType.addNewComplexOutput();
                 final List<IGenerator> generators = generatorSupplier.get();
                 final List<IGenerator> foundGenerators = findGenerators(generators, outputDataTypeClass);
-                addOutputFormats(complexData, foundGenerators, output.getSchema().orElse("null"));
+                addOutputFormats(complexData, foundGenerators);
             }
         }
         return result;
@@ -275,8 +279,7 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
      *
      * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
      */
-    private void addInputFormats(final SupportedComplexDataInputType complexData, final List<IParser> foundParsers,
-                                 final String optionalSchema) {
+    private void addInputFormats(final SupportedComplexDataInputType complexData, final List<IParser> foundParsers) {
         final ComplexDataCombinationsType supportedInputFormat = complexData.addNewSupported();
 
         for(final IParser parser : foundParsers) {
@@ -294,8 +297,6 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                 String schema = format.getSchema();
                 if (schema != null && !schema.equals("")) {
                     supportedFormat.setSchema(schema);
-                } else if(optionalSchema != null && "text/xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
                 }
             }
 
@@ -308,8 +309,6 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
 
                 if (format.getSchema() != null) {
                     supportedFormat.setSchema(format.getSchema());
-                } else if(optionalSchema != null && "text.xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
                 }
             }
         }
@@ -321,7 +320,7 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
      *
      * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
      */
-    private void addOutputFormats(SupportedComplexDataType complexData, List<IGenerator> foundGenerators, final String optionalSchema) {
+    private void addOutputFormats(SupportedComplexDataType complexData, List<IGenerator> foundGenerators) {
         final ComplexDataCombinationsType supportedOutputFormat = complexData.addNewSupported();
 
         for(final IGenerator generator : foundGenerators) {
@@ -339,8 +338,6 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                 String schema = format.getSchema();
                 if (schema != null && !schema.equals("")) {
                     supportedFormat.setSchema(schema);
-                } else if(optionalSchema != null && "text/xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
                 }
             }
 
@@ -353,8 +350,6 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
 
                 if (format.getSchema() != null) {
                     supportedFormat.setSchema(format.getSchema());
-                } else if(optionalSchema != null && "text/xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
                 }
             }
         }

@@ -192,13 +192,11 @@ public class TestProcessDescriptionGenerator {
                 "          <Default>\n" +
                 "            <Format>\n" +
                 "              <MimeType>text/xml</MimeType>\n" +
-                "              <Schema>http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd</Schema>\n" +
                 "            </Format>\n" +
                 "          </Default>\n" +
                 "          <Supported>\n" +
                 "            <Format>\n" +
                 "              <MimeType>text/xml</MimeType>\n" +
-                "              <Schema>http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd</Schema>\n" +
                 "            </Format>\n" +
                 "          </Supported>\n" +
                 "        </ComplexOutput>\n" +

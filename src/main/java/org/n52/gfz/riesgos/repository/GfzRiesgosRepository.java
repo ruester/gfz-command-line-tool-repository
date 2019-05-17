@@ -16,8 +16,16 @@ package org.n52.gfz.riesgos.repository;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLGeoJsonGenerator;
+import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLOriginalXmlGenerator;
+import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLValidatedXmlGenerator;
+import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLValidatedXmlParser;
 import org.n52.gfz.riesgos.repository.modules.GfzRiesgosRepositoryCM;
 import org.n52.wps.commons.WPSConfig;
+import org.n52.wps.io.GeneratorFactory;
+import org.n52.wps.io.IGenerator;
+import org.n52.wps.io.IParser;
+import org.n52.wps.io.ParserFactory;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ITransactionalAlgorithmRepository;
 import org.n52.wps.server.ProcessDescription;
@@ -25,6 +33,9 @@ import org.n52.wps.webapp.api.ConfigurationCategory;
 import org.n52.wps.webapp.api.ConfigurationModule;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * Repository for the algorithms for the gfz in riesgos using the generation of services
@@ -39,14 +50,31 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
      */
     public GfzRiesgosRepository() {
 
-        // implementation detail
-        // -> reads the configuration out of a database
-        final ConfigurationModule cm = WPSConfig.getInstance().getConfigurationModuleForClass(getClass().getName(), ConfigurationCategory.REPOSITORY);
+        final WPSConfig wpsConfig = WPSConfig.getInstance(null);
+
+        registerGenerators();
+        registerParsers();
+
+        final ConfigurationModule cm = wpsConfig.getConfigurationModuleForClass(getClass().getName(), ConfigurationCategory.REPOSITORY);
         if(cm instanceof GfzRiesgosRepositoryCM) {
             configurationModule = (GfzRiesgosRepositoryCM) cm;
         } else {
             throw new RuntimeException("Configuration Module has wrong type");
         }
+    }
+
+    private void registerGenerators() {
+        Stream.of(
+                new QuakeMLValidatedXmlGenerator(),
+                new QuakeMLOriginalXmlGenerator(),
+                new QuakeMLGeoJsonGenerator()
+        ).forEach(new RegisterGeneratorTask());
+    }
+
+    private void registerParsers() {
+        Stream.of(
+                new QuakeMLValidatedXmlParser()
+        ).forEach(new RegisterParserTask());
     }
 
     @Override
@@ -82,5 +110,38 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
     @Override
     public void shutdown() {
         // nothing to do
+    }
+
+    /*
+     * Warning:
+     * This class uses the side-effects of adding a generator to a modifiable list.
+     * That may break if the getAllGenerators() Method is generated or has an unmodifiable view.
+     *
+     * But in the current implementation that works.
+     */
+    private static class RegisterGeneratorTask implements Consumer<IGenerator> {
+
+        private final List<IGenerator> allGenerators;
+
+        RegisterGeneratorTask() {
+            allGenerators = GeneratorFactory.getInstance().getAllGenerators();
+        }
+
+        public void accept(final IGenerator generator) {
+            allGenerators.add(generator);
+        }
+    }
+
+    private static class RegisterParserTask implements Consumer<IParser> {
+
+        private final List<IParser> allParsers;
+
+        RegisterParserTask() {
+            allParsers = ParserFactory.getInstance().getAllParsers();
+        }
+
+        public void accept(final IParser parser) {
+            allParsers.add(parser);
+        }
     }
 }

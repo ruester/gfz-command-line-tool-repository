@@ -199,7 +199,7 @@ Example for the quakeledger process:
     "workingDirectory": "/usr/share/git/quakeledger",
     "commandToExecute": "python3 eventquery.py",
     "exitValueHandler": "logging",
-    "stderrHandler": "logging",
+    "stderrHandler": "pythonTraceback",
     "input": [
         { "title" : "input-boundingbox", "useAs": "commandLineArgument", "type": "bbox",   "crs": ["EPSG:4326", "EPSG:4328"]},
         { "title" : "mmin",              "useAs": "commandLineArgument", "type": "double", "default": "6.6"},
@@ -212,7 +212,7 @@ Example for the quakeledger process:
         { "title" : "tlat",              "useAs": "commandLineArgument", "type": "double", "default": "-33.1299174879672"}
     ],
     "output": [
-        { "title": "selectedRows", "readFrom": "file", "path": "test.xml", "type": "xml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
+        { "title": "selectedRows", "readFrom": "file", "path": "test.xml", "type": "quakeml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
     ]
 }
 ```
@@ -334,6 +334,7 @@ The following values for "type" are supported:
 
 * string
 * xml
+* quakeml
 
 The xml type can accept an additional "schema" attribute, that is used to validate the output.
 
@@ -358,6 +359,7 @@ The following "type" values are supported:
 * geojson
 * geotiff
 * shapefile
+* quakeml
 
 The xml type can also accept an "schema" attribute to validate the output.
 
@@ -466,3 +468,13 @@ if there are problems on running your process you can check that too.
 If you now just want to change your process configuration, you can change the configuration file and it will update on runtime.
 
 If you have to change the dockerfile, than you have to rebuild the image.
+
+## Notes about quakeml
+
+This services now support a custom type quakeml.
+It is provided as xml that is confirm to the schema http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd.
+The early version of the quakeledger process uses a different version of the xml.
+We try to support it as input and output, but the underlying process now uses the
+validated xml only.
+
+There is also the possibility to convert the quakeml to geojson. 
