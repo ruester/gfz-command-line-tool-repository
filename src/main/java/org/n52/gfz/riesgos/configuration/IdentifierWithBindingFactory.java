@@ -29,6 +29,7 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingT
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
+import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
@@ -52,7 +53,6 @@ import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
-import org.springframework.util.InvalidMimeTypeException;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,8 +61,6 @@ import java.util.UUID;
  * Factory for several predefined kinds of input and output data
  */
 public class IdentifierWithBindingFactory {
-
-    private static final String QUAKE_ML_SCHEMA = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
 
     private IdentifierWithBindingFactory() {
         // static
@@ -404,7 +402,7 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
                 .withPath(path)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
-                .withSchema(QUAKE_ML_SCHEMA)
+                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
                 .build();
     }
 
@@ -463,8 +461,8 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
                 .withPath(path)
                 .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToQuakeMLXmlBinding()))
-                .withSchema(QUAKE_ML_SCHEMA)
-                .withValidator(new XmlBindingWithAllowedSchema(QUAKE_ML_SCHEMA))
+                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
+                .withValidator(new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML))
                 .build();
     }
 
@@ -555,8 +553,8 @@ public class IdentifierWithBindingFactory {
             final String identifier) {
         return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
                 .withFunctionToHandleStdout(new ConvertBytesToQuakeMLXmlBinding())
-                .withSchema(QUAKE_ML_SCHEMA)
-                .withValidator(new XmlBindingWithAllowedSchema(QUAKE_ML_SCHEMA))
+                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
+                .withValidator(new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML))
                 .build();
     }
 

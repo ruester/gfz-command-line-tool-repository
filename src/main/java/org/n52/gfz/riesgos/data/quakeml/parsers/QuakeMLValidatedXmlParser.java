@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.data.quakeml.parsers;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
 import org.n52.wps.io.IOHandler;
 import org.n52.wps.io.data.IData;
@@ -34,12 +35,9 @@ import java.io.InputStream;
 /**
  * This parser parses the validated quakeml xml.
  */
-public class QuakeMLValidatedXmlParser extends AbstractParser {
+public class QuakeMLValidatedXmlParser extends AbstractParser implements IMimeTypeAndSchemaConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLValidatedXmlParser.class);
-
-    private static final String MIME_TYPE_XML = "text/xml";
-    private static final String SCHEMA_QUAKE_ML = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
 
     /**
      * default constructor
@@ -49,8 +47,8 @@ public class QuakeMLValidatedXmlParser extends AbstractParser {
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(MIME_TYPE_XML);
         supportedSchemas.add(SCHEMA_QUAKE_ML);
-        supportedEncodings.add(IOHandler.DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_QUAKE_ML, IOHandler.DEFAULT_ENCODING, true));
+        supportedEncodings.add(DEFAULT_ENCODING);
+        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_QUAKE_ML, DEFAULT_ENCODING, true));
     }
 
     @Override

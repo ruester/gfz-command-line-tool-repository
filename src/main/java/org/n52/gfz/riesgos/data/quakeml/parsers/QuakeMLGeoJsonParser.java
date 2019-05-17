@@ -22,6 +22,7 @@ package org.n52.gfz.riesgos.data.quakeml.parsers;
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
+import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
@@ -40,11 +41,9 @@ import java.io.InputStream;
 /**
  * Parser to convert geojson to validated quakeml
  */
-public class QuakeMLGeoJsonParser extends AbstractParser {
+public class QuakeMLGeoJsonParser extends AbstractParser implements IMimeTypeAndSchemaConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonParser.class);
-
-    private static final String MIME_TYPE_GEOJSON = "application/vnd.geo+json";
 
     /**
      * default constructor
@@ -54,8 +53,8 @@ public class QuakeMLGeoJsonParser extends AbstractParser {
 
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(MIME_TYPE_GEOJSON);
-        supportedEncodings.add(IOHandler.DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_GEOJSON, null, IOHandler.DEFAULT_ENCODING, true));
+        supportedEncodings.add(DEFAULT_ENCODING);
+        formats.add(new FormatEntry(MIME_TYPE_GEOJSON, null, DEFAULT_ENCODING, true));
     }
 
     @Override

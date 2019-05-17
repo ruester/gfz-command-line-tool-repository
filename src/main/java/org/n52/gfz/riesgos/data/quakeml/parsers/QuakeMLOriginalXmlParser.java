@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.data.quakeml.parsers;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
@@ -37,12 +38,9 @@ import java.io.InputStream;
 /**
  * Parser that parses the original quakeml (the non valid one) to the validated quakeml
  */
-public class QuakeMLOriginalXmlParser extends AbstractParser {
+public class QuakeMLOriginalXmlParser extends AbstractParser implements IMimeTypeAndSchemaConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLOriginalXmlParser.class);
-
-    private static final String MIME_TYPE_XML = "text/xml";
-    private static final String SCHEMA_QUAKE_ML = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)";
 
     /**
      * default constructor
@@ -51,9 +49,9 @@ public class QuakeMLOriginalXmlParser extends AbstractParser {
         super();
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_QUAKE_ML);
-        supportedEncodings.add(IOHandler.DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_QUAKE_ML, IOHandler.DEFAULT_ENCODING, true));
+        supportedSchemas.add(SCHEMA_QUAKE_ML_OLD);
+        supportedEncodings.add(DEFAULT_ENCODING);
+        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_QUAKE_ML_OLD, DEFAULT_ENCODING, true));
     }
 
     @Override
