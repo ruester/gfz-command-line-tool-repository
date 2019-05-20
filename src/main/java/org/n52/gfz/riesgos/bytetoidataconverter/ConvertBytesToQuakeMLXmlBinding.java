@@ -20,7 +20,7 @@ package org.n52.gfz.riesgos.bytetoidataconverter;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.wps.io.data.IData;

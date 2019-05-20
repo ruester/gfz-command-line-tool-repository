@@ -16,13 +16,13 @@
  *
  */
 
-package org.n52.gfz.riesgos.data.quakeml.parsers;
+package org.n52.gfz.riesgos.formats.quakeml.parsers;
 
 import org.apache.xmlbeans.XmlObject;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
 import org.n52.gfz.riesgos.formats.quakeml.QuakeML;

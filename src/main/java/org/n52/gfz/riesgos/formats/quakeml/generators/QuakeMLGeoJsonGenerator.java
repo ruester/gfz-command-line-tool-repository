@@ -16,57 +16,57 @@
  *
  */
 
-package org.n52.gfz.riesgos.data.quakeml.generators;
+package org.n52.gfz.riesgos.formats.quakeml.generators;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
+import org.geotools.feature.FeatureCollection;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
 import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
-import org.n52.wps.io.IOHandler;
 import org.n52.wps.io.data.IData;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
+import org.n52.wps.io.datahandler.generator.GeoJSONGenerator;
 import org.n52.wps.webapp.api.FormatEntry;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Generator implementation that takes the QuakeMLXmlDataBinding and its validated xml format
- * and converts it into the original format from the original quakeledger (that is not valid
- * according to the schema).
+ * Generator that takes the IQuakeMLXmlDataBinding and returns GeoJson
  */
-public class QuakeMLOriginalXmlGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class QuakeMLGeoJsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLOriginalXmlGenerator.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonGenerator.class);
 
-    public QuakeMLOriginalXmlGenerator() {
+    public QuakeMLGeoJsonGenerator() {
         super();
 
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_QUAKE_ML_OLD);
+        supportedFormats.add(MIME_TYPE_GEOJSON);
         supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_QUAKE_ML_OLD, DEFAULT_ENCODING, true));
+        formats.add(new FormatEntry(MIME_TYPE_GEOJSON, null, DEFAULT_ENCODING, true));
     }
 
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) {
+    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
             final XmlObject xmlObject = binding.getPayload();
 
             try {
                 final IQuakeML quakeML = QuakeML.fromValidatedXml(xmlObject);
-                final XmlObject originalQuakeML = quakeML.toOriginalXmlObject();
+                final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
 
-                return new ByteArrayInputStream(originalQuakeML.xmlText().getBytes());
+                return new GeoJSONGenerator().generateStream(new GTVectorDataBinding(featureCollection), MIME_TYPE_GEOJSON, null);
             } catch(final ConvertFormatException convertFormatException) {
-                LOGGER.error("Can't convert the validated quakeml format to the original quakeml xml");
+                LOGGER.error("Can't convert the validated quakeml format to geojson");
                 LOGGER.error(convertFormatException.toString());
                 throw new RuntimeException(convertFormatException);
             }

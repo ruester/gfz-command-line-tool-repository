@@ -16,7 +16,7 @@
  *
  */
 
-package org.n52.gfz.riesgos.data;
+package org.n52.gfz.riesgos.formats;
 
 /**
  * Constants for mime types and schema values

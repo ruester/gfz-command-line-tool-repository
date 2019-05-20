@@ -16,13 +16,12 @@
  *
  */
 
-package org.n52.gfz.riesgos.data.quakeml.parsers;
+package org.n52.gfz.riesgos.formats.quakeml.parsers;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
-import org.n52.wps.io.IOHandler;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.parser.AbstractParser;
 import org.n52.wps.webapp.api.FormatEntry;
