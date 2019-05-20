@@ -35,32 +35,46 @@ public class QuakeMLXmlDataBinding extends GenericXMLDataBinding {
 
     private static final long serialVersionUID = 1921993767115464931L;
 
-    /**
-     * default constructor
-     * @param quakeML IQuakeML Object
+    /*
+     * The class uses the valdiated xml as payload object
      */
-    private QuakeMLXmlDataBinding(IQuakeML quakeML) {
-        this(quakeML.toValidatedXmlObject());
-    }
-
     private QuakeMLXmlDataBinding(final XmlObject validatedXml) {
         super(validatedXml);
     }
 
+    /**
+     * get the quakeML as payload
+     * @return IQuakeML
+     * @throws ConvertFormatException may throws an ConvertFormatException (if there are no tags for the events)
+     */
     public IQuakeML getPayloadQuakeML() throws ConvertFormatException {
         return QuakeML.fromValidatedXml(getPayload());
     }
 
+    /**
+     * returns the validated xml that is used as payload
+     * @return validated quakeml xml
+     */
     public XmlObject getPayloadValidatedXml() {
         return getPayload();
     }
 
+    /**
+     * Creates the binding from the validated xml
+     * @param validatedXml validated quakeml xml
+     * @return QuakeMLXmlDataBinding
+     */
     public static QuakeMLXmlDataBinding fromValidatedXml(final XmlObject validatedXml) {
         return new QuakeMLXmlDataBinding(validatedXml);
     }
 
+    /**
+     * Creates the binding for any QuakeML-Implementation
+     * @param quakeML any quakeml implementation
+     * @return QuakeMLXmlDataBinding
+     */
     public static QuakeMLXmlDataBinding fromQuakeML(final IQuakeML quakeML) {
-        return new QuakeMLXmlDataBinding(quakeML);
+        return new QuakeMLXmlDataBinding(quakeML.toValidatedXmlObject());
     }
 
 }
