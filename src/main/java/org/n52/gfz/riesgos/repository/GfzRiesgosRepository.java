@@ -16,14 +16,14 @@ package org.n52.gfz.riesgos.repository;
  * limitations under the Licence.
  */
 
-import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLGML3Generator;
-import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLGeoJsonGenerator;
-import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLOriginalXmlGenerator;
-import org.n52.gfz.riesgos.data.quakeml.generators.QuakeMLValidatedXmlGenerator;
-import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLGML3Parser;
-import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLGeoJsonParser;
-import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLOriginalXmlParser;
-import org.n52.gfz.riesgos.data.quakeml.parsers.QuakeMLValidatedXmlParser;
+import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGML3Generator;
+import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGeoJsonGenerator;
+import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLOriginalXmlGenerator;
+import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLValidatedXmlGenerator;
+import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLGML3Parser;
+import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLGeoJsonParser;
+import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLOriginalXmlParser;
+import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLValidatedXmlParser;
 import org.n52.gfz.riesgos.repository.modules.GfzRiesgosRepositoryCM;
 import org.n52.wps.commons.WPSConfig;
 import org.n52.wps.io.GeneratorFactory;

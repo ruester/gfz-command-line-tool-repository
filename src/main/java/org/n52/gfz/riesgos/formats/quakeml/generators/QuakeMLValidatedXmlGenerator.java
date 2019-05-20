@@ -16,12 +16,11 @@
  *
  */
 
-package org.n52.gfz.riesgos.data.quakeml.generators;
+package org.n52.gfz.riesgos.formats.quakeml.generators;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
-import org.n52.wps.io.IOHandler;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
 import org.n52.wps.webapp.api.FormatEntry;

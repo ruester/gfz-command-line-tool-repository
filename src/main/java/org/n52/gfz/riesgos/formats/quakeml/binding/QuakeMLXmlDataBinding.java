@@ -16,7 +16,7 @@
  *
  */
 
-package org.n52.gfz.riesgos.data.quakeml;
+package org.n52.gfz.riesgos.formats.quakeml.binding;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;

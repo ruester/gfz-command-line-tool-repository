@@ -16,58 +16,55 @@
  *
  */
 
-package org.n52.gfz.riesgos.data.quakeml.generators;
+package org.n52.gfz.riesgos.formats.quakeml.generators;
 
 import org.apache.xmlbeans.XmlObject;
-import org.geotools.feature.FeatureCollection;
-import org.n52.gfz.riesgos.data.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.data.quakeml.QuakeMLXmlDataBinding;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
 import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
 import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
-import org.n52.wps.io.datahandler.generator.GML3BasicGenerator;
 import org.n52.wps.webapp.api.FormatEntry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
- * Generator to transform the validated xml from the QuakeMLXmlDataBinding to gml
+ * Generator implementation that takes the QuakeMLXmlDataBinding and its validated xml format
+ * and converts it into the original format from the original quakeledger (that is not valid
+ * according to the schema).
  */
-public class QuakeMLGML3Generator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class QuakeMLOriginalXmlGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Generator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLOriginalXmlGenerator.class);
 
-    public QuakeMLGML3Generator() {
+    public QuakeMLOriginalXmlGenerator() {
         super();
 
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_GML_3_2_1);
+        supportedSchemas.add(SCHEMA_QUAKE_ML_OLD);
         supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_GML_3_2_1, DEFAULT_ENCODING, true));
+        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_QUAKE_ML_OLD, DEFAULT_ENCODING, true));
     }
 
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
+    public InputStream generateStream(final IData data, final String mimeType, final String schema) {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
             final XmlObject xmlObject = binding.getPayload();
 
             try {
                 final IQuakeML quakeML = QuakeML.fromValidatedXml(xmlObject);
-                final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
+                final XmlObject originalQuakeML = quakeML.toOriginalXmlObject();
 
-                return new GML3BasicGenerator().generateStream(new GTVectorDataBinding(featureCollection), MIME_TYPE_XML, SCHEMA_GML_3_2_1);
+                return new ByteArrayInputStream(originalQuakeML.xmlText().getBytes());
             } catch(final ConvertFormatException convertFormatException) {
-                LOGGER.error("Can't convert the validated quakeml format to gml3");
+                LOGGER.error("Can't convert the validated quakeml format to the original quakeml xml");
                 LOGGER.error(convertFormatException.toString());
                 throw new RuntimeException(convertFormatException);
             }
