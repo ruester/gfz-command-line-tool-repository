@@ -55,7 +55,7 @@ public class QuakeMLValidatedXmlParser extends AbstractParser implements IMimeTy
 
         try {
             final XmlObject xmlObject = XmlObject.Factory.parse(stream);
-            return new QuakeMLXmlDataBinding(xmlObject);
+            return QuakeMLXmlDataBinding.fromValidatedXml(xmlObject);
         } catch(final XmlException xmlException) {
             LOGGER.error("Can't parse the provided xml because of a XMLException");
             LOGGER.error(xmlException.toString());

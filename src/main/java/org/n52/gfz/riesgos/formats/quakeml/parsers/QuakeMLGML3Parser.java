@@ -62,8 +62,7 @@ public class QuakeMLGML3Parser extends AbstractParser implements IMimeTypeAndSch
                 final SimpleFeatureCollection simpleFeatureCollection = (SimpleFeatureCollection) featureCollection;
 
                 final IQuakeML quakeML = QuakeML.fromFeatureCollection(simpleFeatureCollection);
-                final XmlObject validatedXml = quakeML.toValidatedXmlObject();
-                return new QuakeMLXmlDataBinding(validatedXml);
+                return QuakeMLXmlDataBinding.fromQuakeML(quakeML);
 
             } else {
                 throw new ConvertFormatException("No simplefeature collection provided");

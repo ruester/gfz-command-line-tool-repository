@@ -71,8 +71,7 @@ public class QuakeMLGeoJsonParser extends AbstractParser implements IMimeTypeAnd
                     final SimpleFeatureCollection simpleFeatureCollection = (SimpleFeatureCollection) featureCollection;
 
                     final IQuakeML quakeML = QuakeML.fromFeatureCollection(simpleFeatureCollection);
-                    final XmlObject validatedXml = quakeML.toValidatedXmlObject();
-                    return new QuakeMLXmlDataBinding(validatedXml);
+                    return QuakeMLXmlDataBinding.fromQuakeML(quakeML);
 
                 } else {
                     throw new ConvertFormatException("No simplefeature collection provided");

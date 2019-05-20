@@ -60,8 +60,7 @@ public class QuakeMLOriginalXmlParser extends AbstractParser implements IMimeTyp
             final XmlObject xmlObject = XmlObject.Factory.parse(stream);
 
             final IQuakeML quakeML = QuakeML.fromOriginalXml(xmlObject);
-            final XmlObject xmlValidated = quakeML.toValidatedXmlObject();
-            return new QuakeMLXmlDataBinding(xmlValidated);
+            return QuakeMLXmlDataBinding.fromQuakeML(quakeML);
         } catch(final XmlException xmlException) {
             LOGGER.error("Can't parse the provided xml because of a XMLException");
             LOGGER.error(xmlException.toString());

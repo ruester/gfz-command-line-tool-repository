@@ -59,10 +59,9 @@ public class QuakeMLGML3Generator extends AbstractGenerator implements IMimeType
     public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
-            final XmlObject xmlObject = binding.getPayload();
 
             try {
-                final IQuakeML quakeML = QuakeML.fromValidatedXml(xmlObject);
+                final IQuakeML quakeML = binding.getPayloadQuakeML();
                 final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
 
                 return new GML3BasicGenerator().generateStream(new GTVectorDataBinding(featureCollection), MIME_TYPE_XML, SCHEMA_GML_3_2_1);

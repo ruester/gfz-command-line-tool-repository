@@ -38,7 +38,7 @@ public class ConvertBytesToQuakeMLXmlBinding implements IConvertByteArrayToIData
     @Override
     public IData convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
-            return new QuakeMLXmlDataBinding(XmlObject.Factory.parse(byteArrayInputStream));
+            return QuakeMLXmlDataBinding.fromValidatedXml(XmlObject.Factory.parse(byteArrayInputStream));
         } catch(final XmlException | IOException exception) {
             throw new ConvertToIDataException(exception);
         }
