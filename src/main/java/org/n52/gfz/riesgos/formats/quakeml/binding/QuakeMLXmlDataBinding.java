@@ -19,6 +19,9 @@
 package org.n52.gfz.riesgos.formats.quakeml.binding;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
+import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
+import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
 /**
@@ -34,10 +37,30 @@ public class QuakeMLXmlDataBinding extends GenericXMLDataBinding {
 
     /**
      * default constructor
-     * @param payload XmlObject to wrap
+     * @param quakeML IQuakeML Object
      */
-    public QuakeMLXmlDataBinding(XmlObject payload) {
-        super(payload);
+    private QuakeMLXmlDataBinding(IQuakeML quakeML) {
+        this(quakeML.toValidatedXmlObject());
+    }
+
+    private QuakeMLXmlDataBinding(final XmlObject validatedXml) {
+        super(validatedXml);
+    }
+
+    public IQuakeML getPayloadQuakeML() throws ConvertFormatException {
+        return QuakeML.fromValidatedXml(getPayload());
+    }
+
+    public XmlObject getPayloadValidatedXml() {
+        return getPayload();
+    }
+
+    public static QuakeMLXmlDataBinding fromValidatedXml(final XmlObject validatedXml) {
+        return new QuakeMLXmlDataBinding(validatedXml);
+    }
+
+    public static QuakeMLXmlDataBinding fromQuakeML(final IQuakeML quakeML) {
+        return new QuakeMLXmlDataBinding(quakeML);
     }
 
 }

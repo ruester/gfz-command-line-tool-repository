@@ -18,13 +18,11 @@
 
 package org.n52.gfz.riesgos.formats.quakeml.generators;
 
-import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
-import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
@@ -58,10 +56,9 @@ public class QuakeMLGeoJsonGenerator extends AbstractGenerator implements IMimeT
     public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
-            final XmlObject xmlObject = binding.getPayload();
 
             try {
-                final IQuakeML quakeML = QuakeML.fromValidatedXml(xmlObject);
+                final IQuakeML quakeML = binding.getPayloadQuakeML();
                 final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
 
                 return new GeoJSONGenerator().generateStream(new GTVectorDataBinding(featureCollection), MIME_TYPE_GEOJSON, null);

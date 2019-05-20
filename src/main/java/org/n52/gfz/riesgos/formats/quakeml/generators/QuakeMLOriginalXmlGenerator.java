@@ -56,10 +56,9 @@ public class QuakeMLOriginalXmlGenerator extends AbstractGenerator implements IM
     public InputStream generateStream(final IData data, final String mimeType, final String schema) {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
-            final XmlObject xmlObject = binding.getPayload();
 
             try {
-                final IQuakeML quakeML = QuakeML.fromValidatedXml(xmlObject);
+                final IQuakeML quakeML = binding.getPayloadQuakeML();
                 final XmlObject originalQuakeML = quakeML.toOriginalXmlObject();
 
                 return new ByteArrayInputStream(originalQuakeML.xmlText().getBytes());
