@@ -115,7 +115,7 @@ public class TestParseJsonForInputImpl {
      * test with an int (without any default value)
      */
     @Test
-    public void parseComamndLineArgumentIntWithoutDefaultValue() {
+    public void parseCommandLineArgumentIntWithoutDefaultValue() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -151,7 +151,7 @@ public class TestParseJsonForInputImpl {
      * Test with an int with a default value
      */
     @Test
-    public void parseComamndLineArgumentIntWithDefaultValue() {
+    public void parseCommandLineArgumentIntWithDefaultValue() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -189,7 +189,7 @@ public class TestParseJsonForInputImpl {
      * test with an int and a default command line flag
      */
     @Test
-    public void parseComamndLineArgumentIntWithCommandLineFlag() {
+    public void parseCommandLineArgumentIntWithCommandLineFlag() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -226,7 +226,7 @@ public class TestParseJsonForInputImpl {
      * test with a double without a default value
      */
     @Test
-    public void parseComamndLineArgumentDoubleWithoutDefaultValue() {
+    public void parseCommandLineArgumentDoubleWithoutDefaultValue() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -262,7 +262,7 @@ public class TestParseJsonForInputImpl {
      * test with a double with a default value
      */
     @Test
-    public void parseComamndLineArgumentDoubleWithDefaultValue() {
+    public void parseCommandLineArgumentDoubleWithDefaultValue() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -300,7 +300,7 @@ public class TestParseJsonForInputImpl {
      * test with a double type with a command line flag
      */
     @Test
-    public void parseComamndLineArgumentDoubleWithCommandLineFlag() {
+    public void parseCommandLineArgumentDoubleWithCommandLineFlag() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -337,7 +337,7 @@ public class TestParseJsonForInputImpl {
      * test with a string without a default value
      */
     @Test
-    public void parseComamndLineArgumentStringWithoutDefaultValue() {
+    public void parseCommandLineArgumentStringWithoutDefaultValue() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -373,7 +373,7 @@ public class TestParseJsonForInputImpl {
      * test with a string with a default value
      */
     @Test
-    public void parseComamndLineArgumentStringWithDefaultValue() {
+    public void parseCommandLineArgumentStringWithDefaultValue() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
@@ -408,7 +408,7 @@ public class TestParseJsonForInputImpl {
     }
 
     /**
-     * test wiht a string with a command line flag
+     * test with a string with a command line flag
      */
     @Test
     public void parseCommandLineArgumentStringWithCommandLineFlag() {

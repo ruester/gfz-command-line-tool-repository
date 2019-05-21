@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * This class works as ConvertBytesToGenericXMLDataBindung but it returns a QuakeMLXmlDataBinding
+ * This class works as ConvertBytesToGenericXMLDataBinding but it returns a QuakeMLXmlDataBinding
  * It reads the bytes to an xml object and wraps it with a QuakeMLXmlDataBinding
  */
 public class ConvertBytesToQuakeMLXmlBinding implements IConvertByteArrayToIData {

@@ -109,7 +109,7 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
 
     @Override
     public Collection<String> getAlgorithmNames() {
-        return configurationModule.getAlgortihmNames();
+        return configurationModule.getAlgorithmNames();
     }
 
     @Override

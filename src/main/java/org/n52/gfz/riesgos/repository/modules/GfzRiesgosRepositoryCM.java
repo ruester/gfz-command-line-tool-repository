@@ -61,8 +61,8 @@ import java.util.stream.Stream;
 /**
  * Configuration module for the gfz riesgos repository.
  *
- * The aim is to provide all the informations about the process configurations here, so it should be possible to
- * add a process description on runtime and to execute it immediatly.
+ * The aim is to provide all the information about the process configurations here, so it should be possible to
+ * add a process description on runtime and to execute it immediately.
  */
 public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
@@ -82,7 +82,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
 
     private final List<? extends ConfigurationEntry<?>> configurationEntries;
-    private ConfigurationEntry<String> jsonConfigurationFolder;
+    private final ConfigurationEntry<String> jsonConfigurationFolder;
     private boolean isActive;
 
     /**
@@ -181,7 +181,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
 
         // others can be added by using the folder
-        addConfigurationsFromFilder(this::getFileNamesFromConfig, result::add);
+        addConfigurationsFromFolder(this::getFileNamesFromConfig, result::add);
 
 
         return result;
@@ -215,7 +215,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     }
 
 
-    private void addConfigurationsFromFilder(final Supplier<Collection<String>> fileProvider, Consumer<AlgorithmData> adder) {
+    private void addConfigurationsFromFolder(final Supplier<Collection<String>> fileProvider, Consumer<AlgorithmData> adder) {
         final IParseConfiguration parser = new ParseJsonConfigurationImpl();
 
         for(final String fileName : fileProvider.get()) {
@@ -242,7 +242,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
      *
      * @return Set with all the algorithm names
      */
-    public Set<String> getAlgortihmNames() {
+    public Set<String> getAlgorithmNames() {
         return getAlgorithmEntries().stream().map(AlgorithmEntry::getAlgorithm).collect(Collectors.toSet());
     }
 

@@ -39,7 +39,7 @@ public class StringUtils {
      * @return String from the input stream
      * @throws IOException may throw an IOException
      */
-    public static final String readFromStream(final InputStream inputStream) throws IOException {
+    public static String readFromStream(final InputStream inputStream) throws IOException {
         try(final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             IOUtils.copy(inputStream, outputStream);
             return new String(outputStream.toByteArray());
@@ -48,11 +48,11 @@ public class StringUtils {
 
     /**
      * Reads the content from a resource file
-     * @param path
+     * @param path path of the resource file to read
      * @return String from the resource file
      * @throws IOException may throw an IOException
      */
-    public static final String readFromResourceFile(final String path) throws IOException {
+    public static String readFromResourceFile(final String path) throws IOException {
         try(final InputStream inputStream = StringUtils.class.getClassLoader().getResourceAsStream(path)) {
             return readFromStream(inputStream);
         }

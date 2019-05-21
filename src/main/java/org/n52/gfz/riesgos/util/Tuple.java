@@ -21,7 +21,7 @@ package org.n52.gfz.riesgos.util;
 import java.util.Map;
 
 /**
- * Utitly class to provide a tuple of two values
+ * Utility class to provide a tuple of two values
  * @param <A> a first type
  * @param <B> a second type
  */

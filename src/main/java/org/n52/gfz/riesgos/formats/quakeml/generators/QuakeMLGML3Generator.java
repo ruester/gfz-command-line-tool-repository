@@ -18,13 +18,11 @@
 
 package org.n52.gfz.riesgos.formats.quakeml.generators;
 
-import org.apache.xmlbeans.XmlObject;
 import org.geotools.feature.FeatureCollection;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
-import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
@@ -43,7 +41,7 @@ import java.io.InputStream;
  */
 public class QuakeMLGML3Generator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Generator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Generator.class);
 
     /**
      * Default constructor

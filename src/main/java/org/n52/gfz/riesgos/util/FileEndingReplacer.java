@@ -32,7 +32,7 @@ public class FileEndingReplacer {
      * @param filename filename that should be changed
      * @param endingToReplace ending that should be replaced
      * @param replacement replacement
-     * @return
+     * @return String with a replaced ending
      */
     public static String replaceFileEnding(final String filename, final String endingToReplace, final String replacement) {
         if(filename.endsWith(endingToReplace)) {

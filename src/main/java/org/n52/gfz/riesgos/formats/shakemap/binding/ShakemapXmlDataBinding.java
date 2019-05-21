@@ -21,13 +21,14 @@ package org.n52.gfz.riesgos.formats.shakemap.binding;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.Shakemap;
-import org.n52.gfz.riesgos.formats.shakemap.impl.ShakemapXmlImpl;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
 /**
  * Binding class for Shakemaps (XML)
  */
 public class ShakemapXmlDataBinding extends GenericXMLDataBinding {
+
+    private static final long serialVersionUID = -2049159915689920061L;
 
     /*
      * creates a new shakemap binding object

@@ -36,7 +36,7 @@ public class QuakeMLXmlDataBinding extends GenericXMLDataBinding {
     private static final long serialVersionUID = 1921993767115464931L;
 
     /*
-     * The class uses the valdiated xml as payload object
+     * The class uses the validated xml as payload object
      */
     private QuakeMLXmlDataBinding(final XmlObject validatedXml) {
         super(validatedXml);

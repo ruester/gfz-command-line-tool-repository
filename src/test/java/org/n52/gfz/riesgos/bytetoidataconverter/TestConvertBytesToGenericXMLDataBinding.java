@@ -95,7 +95,7 @@ public class TestConvertBytesToGenericXMLDataBinding {
     @Test
     public void testWithNonString() {
         final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        // just some intengers, they may match to chars
+        // just some integers, they may match to chars
         byteStream.write(-1);
         byteStream.write(0);
         byteStream.write(9999);

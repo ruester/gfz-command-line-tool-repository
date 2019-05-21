@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 /**
  * Reader that works in another stream to read
  * from a stream.
- * Text is concated to one single string
+ * Text is joined to one single string
  */
 public class ThreadedStreamStringReader extends Thread {
 
@@ -68,7 +68,7 @@ public class ThreadedStreamStringReader extends Thread {
 
     /**
      *
-     * @return concated result string of all the streams output
+     * @return joined result string of all the streams output
      */
     public String getResult() {
         return resultBuilder.toString();

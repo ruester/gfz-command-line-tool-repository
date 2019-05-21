@@ -27,7 +27,7 @@ import java.util.Objects;
 public class LogStderrHandler implements IStderrHandler {
 
     @Override
-    public void handleSterr(String stderr, final ILogger logger) {
+    public void handleStderr(String stderr, final ILogger logger) {
         logger.log("Text on stderr:\n" + stderr);
     }
 

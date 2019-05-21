@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractProcessDescriptionGenerator implements IProcessDescriptionGenerator {
 
     /*
-     * takes all the constructors and searchs for one constructor getting a single element
+     * takes all the constructors and searches for one constructor getting a single element
      * the class of this element is the name to search for.
      *
      * Example:

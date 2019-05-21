@@ -35,7 +35,7 @@ import java.util.Objects;
  */
 public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayToIData {
 
-    private static final String MOST_GENERIC_MIMETYPE = "application/octet-stream";
+    private static final String MOST_GENERIC_MIME_TYPE = "application/octet-stream";
 
     private final String mimeType;
 
@@ -51,7 +51,7 @@ public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayTo
      * Constructor with most generic mime type
      */
     public ConvertBytesToGenericFileDataBinding() {
-        this(MOST_GENERIC_MIMETYPE);
+        this(MOST_GENERIC_MIME_TYPE);
     }
 
     @Override

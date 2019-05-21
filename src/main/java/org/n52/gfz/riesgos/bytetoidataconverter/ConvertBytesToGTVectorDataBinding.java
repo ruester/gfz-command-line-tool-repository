@@ -87,7 +87,7 @@ public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIDa
     public enum Format implements IFeatureReader {
         JSON((in) -> new FeatureJSON().readFeatureCollection(in));
 
-        private IFeatureReader featureReader;
+        private final IFeatureReader featureReader;
 
         Format(final IFeatureReader featureReader) {
             this.featureReader = featureReader;
