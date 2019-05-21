@@ -1,0 +1,12 @@
+{
+  "title": "ShakemapTransformer",
+  "imageId": "shakyground:latest",
+  "workingDirectory": "/usr/share/git/shakyground",
+  "commandToExecute": "echo 'All the work is done by the parsers and generators'",
+  "input": [
+    { "title" : "input", "useAs": "file", "path": "convert_shakemap.xml", "type": "shakemap", "schema": "http://earthquake.usgs.gov/eqcenter/shakemap/xml/schemas/shakemap.xsd"}
+  ],
+  "output": [
+    { "title": "output", "readFrom": "file", "path": "convert_shakemap.xml", "type": "shakemap", "schema": "http://earthquake.usgs.gov/eqcenter/shakemap/xml/schemas/shakemap.xsd"}
+  ]
+}

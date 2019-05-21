@@ -24,6 +24,9 @@ import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLGML3Parser;
 import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLGeoJsonParser;
 import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLOriginalXmlParser;
 import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLValidatedXmlParser;
+import org.n52.gfz.riesgos.formats.shakemap.generators.ShakemapGeoJsonGenerator;
+import org.n52.gfz.riesgos.formats.shakemap.generators.ShakemapXmlGenerator;
+import org.n52.gfz.riesgos.formats.shakemap.parsers.ShakemapXmlParser;
 import org.n52.gfz.riesgos.repository.modules.GfzRiesgosRepositoryCM;
 import org.n52.wps.commons.WPSConfig;
 import org.n52.wps.io.GeneratorFactory;
@@ -69,19 +72,26 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
 
     private void registerGenerators() {
         Stream.of(
+                // quakeml
                 new QuakeMLValidatedXmlGenerator(),
                 new QuakeMLOriginalXmlGenerator(),
                 new QuakeMLGeoJsonGenerator(),
-                new QuakeMLGML3Generator()
+                new QuakeMLGML3Generator(),
+                // shakemap
+                new ShakemapXmlGenerator(),
+                new ShakemapGeoJsonGenerator()
         ).forEach(new RegisterGeneratorTask());
     }
 
     private void registerParsers() {
         Stream.of(
+                // quakeml
                 new QuakeMLValidatedXmlParser(),
                 new QuakeMLOriginalXmlParser(),
                 new QuakeMLGeoJsonParser(),
-                new QuakeMLGML3Parser()
+                new QuakeMLGML3Parser(),
+                // shakemap
+                new ShakemapXmlParser()
         ).forEach(new RegisterParserTask());
     }
 

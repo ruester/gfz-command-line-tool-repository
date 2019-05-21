@@ -23,6 +23,9 @@ import org.apache.xmlbeans.XmlObject;
 
 import static junit.framework.TestCase.fail;
 
+/**
+ * This is an interface to provide some basic shakemap creation
+ */
 public interface ICommonTestShakemapFunctions {
 
     default XmlObject createExampleShakemap() {
@@ -98,8 +101,7 @@ public interface ICommonTestShakemapFunctions {
                 "</shakemap_grid>";
 
         try {
-            final XmlObject veryBasicShakemap = XmlObject.Factory.parse(veryBasicShakemapRaw);
-            return veryBasicShakemap;
+            return XmlObject.Factory.parse(veryBasicShakemapRaw);
         } catch(final XmlException xmlException) {
             fail("There should be no xml exception on parsing the shakemap");
         }
@@ -180,8 +182,7 @@ public interface ICommonTestShakemapFunctions {
                 "</shakemap_grid>";
 
         try {
-            final XmlObject veryBasicShakemap = XmlObject.Factory.parse(veryBasicShakemapRaw);
-            return veryBasicShakemap;
+            return XmlObject.Factory.parse(veryBasicShakemapRaw);
         } catch(final XmlException xmlException) {
             fail("There should be no xml exception on parsing the shakemap");
         }

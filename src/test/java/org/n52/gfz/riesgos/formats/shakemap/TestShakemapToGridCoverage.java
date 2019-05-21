@@ -88,7 +88,6 @@ public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions 
     }
 
     private GridCoverage transformToGridCoverage(final XmlObject xmlShakemap) {
-
         return new ShakemapToGridCoverage().apply(new ShakemapXmlImpl(xmlShakemap));
     }
 }

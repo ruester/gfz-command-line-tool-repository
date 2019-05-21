@@ -22,6 +22,7 @@ import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBind
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToQuakeMLXmlBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToShakemapXmlBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.FileToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
@@ -32,6 +33,7 @@ import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
+import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
@@ -396,6 +398,12 @@ public class IdentifierWithBindingFactory {
                 .build();
     }
 
+    /**
+     * Creates an input file argument with quakeml
+     * @param identifier identifier of the data
+     * @param path path of the file to write before starting the process
+     * @return quakeml input file
+     */
     public static IIdentifierWithBinding createFileInQuakeML(
             final String identifier,
             final String path) {
@@ -404,6 +412,22 @@ public class IdentifierWithBindingFactory {
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
                 .build();
+    }
+
+    /**
+     * Creates an input file argument with shakemap
+     * @param identifier identifier of the data
+     * @param path path of the file to write before starting the process
+     * @return shakemap input file
+     */
+    public static IIdentifierWithBinding createFileInShakemap(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+            .withPath(path)
+            .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+            .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP)
+            .build();
     }
 
     /**
@@ -453,7 +477,7 @@ public class IdentifierWithBindingFactory {
      * Creates a xml file for quakeml on a given path with an additional schema
      * @param identifier identifier of the data
      * @param path path of the file to read after process termination
-     * @return output argument containing the quakenml xml that will be read from a given file
+     * @return output argument containing the quakeml xml that will be read from a given file
      */
     public static IIdentifierWithBinding createFileOutQuakeMLFile(
             final String identifier,
@@ -464,6 +488,22 @@ public class IdentifierWithBindingFactory {
                 .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
                 .withValidator(new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML))
                 .build();
+    }
+
+    /**
+     * Creates a xml file for shakemap on a given path with an additional schema
+     * @param identifier identifier of the data
+     * @param path path of the file to read after process termination
+     * @return output argument containing the shakemap xml that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutShakemap(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+            .withPath(path)
+            .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToShakemapXmlBinding()))
+            .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP)
+            .build();
     }
 
 
@@ -546,7 +586,7 @@ public class IdentifierWithBindingFactory {
 
     /**
      * Creates a quakeml xml output (via stdout) with an additional schema
-     * @param identifier identifiert of the data
+     * @param identifier identifier of the data
      * @return output argument containing quakeml xml that will be read from stdout
      */
     public static IIdentifierWithBinding createStdoutQuakeML(
@@ -557,6 +597,20 @@ public class IdentifierWithBindingFactory {
                 .withValidator(new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML))
                 .build();
     }
+
+    /**
+     * Creates a shakemap xml output (via stdout) with an additional schema
+     * @param identifier identifier of the data
+     * @return output argument containing shakemap xml that will be read from stdout
+     */
+    public static IIdentifierWithBinding createStdoutShakemap(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+                .withFunctionToHandleStdout(new ConvertBytesToShakemapXmlBinding())
+                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP)
+                .build();
+    }
+
 
     /**
      * Creates a string output (via stdout)

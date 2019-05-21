@@ -546,12 +546,23 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInQuakeML(identifier, path);
     }
 
+    private static IIdentifierWithBinding createFileInShakemap(
+            final String identifier,
+            final String path,
+             @SuppressWarnings({"unused"})
+            final String schema) {
+        // schema is ignored here
+        // takes the schema for shakemap
+        return IdentifierWithBindingFactory.createFileInShakemap(identifier, path);
+    }
+
     private enum ToFileInputOption {
         GEOTIFF("geotiff", ParseJsonForInputImpl::createFileInputGeotiff),
         GEOJSON("geojson", ParseJsonForInputImpl::createFileInputGeojson),
         SHAPEFILE("shapefile", ParseJsonForInputImpl::createFileInputShapefile),
         GENERIC_FILE("file", ParseJsonForInputImpl::createFileInputGeneric),
-        QUAKEML("quakeml", ParseJsonForInputImpl::createFileInQuakeML);
+        QUAKEML("quakeml", ParseJsonForInputImpl::createFileInQuakeML),
+        SHAKEMAP("shakemap", ParseJsonForInputImpl::createFileInShakemap);
 
         private final String dataType;
         private final IAsFileInputFactory factory;
