@@ -16,21 +16,14 @@
  *
  */
 
-package org.n52.gfz.riesgos.convertformats;
+package org.n52.gfz.riesgos.formats.shakemap.binding;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
-import org.n52.gfz.riesgos.formats.quakeml.QuakeML;
-import org.n52.gfz.riesgos.functioninterfaces.IConvertFormat;
+import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
-/**
- * Class to convert the new QuakeML XML (valid according to the schema) to
- * the original quakeml xml that is not valid accoring to the schema
- */
-public class ValidatedQuakeMLToOriginalQuakeMLConverter implements IConvertFormat<XmlObject, XmlObject> {
+public class ShakemapXmlDataBinding extends GenericXMLDataBinding {
 
-    @Override
-    public XmlObject convert(final XmlObject xmlObject) throws ConvertFormatException {
-        return QuakeML.fromValidatedXml(xmlObject).toOriginalXmlObject();
+    public ShakemapXmlDataBinding(final XmlObject shakemap) {
+        super(shakemap);
     }
 }
