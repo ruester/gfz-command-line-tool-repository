@@ -19,6 +19,7 @@
 package org.n52.gfz.riesgos.formats.shakemap.functions;
 
 import org.geotools.coverage.CoverageFactoryFinder;
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -40,13 +41,13 @@ import java.util.stream.Collectors;
 /**
  * Function to convert the IShakemap to a GridCoverage
  */
-public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage> {
+public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage2D> {
 
     private static final String COVERAGE_NAME = "Shakemap";
     private static final int DATA_TYPE = DataBuffer.TYPE_DOUBLE;
 
     @Override
-    public GridCoverage apply(final IShakemap shakemap) {
+    public GridCoverage2D apply(final IShakemap shakemap) {
         final IShakemapSpecification specification = shakemap.getSpecification();
 
         final int width = specification.getNLon();

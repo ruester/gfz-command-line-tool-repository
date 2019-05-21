@@ -34,6 +34,11 @@ public interface IMimeTypeAndSchemaConstants {
     String MIME_TYPE_GEOJSON = "application/vnd.geo+json";
 
     /**
+     * Mime-Type for geotiff
+     */
+    String MIME_TYPE_GEOTIFF = "image/geotiff";
+
+    /**
      * Schema for quakeML
      */
     String SCHEMA_QUAKE_ML = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
