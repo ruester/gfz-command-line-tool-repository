@@ -198,7 +198,7 @@ public interface ICommonTestShakemapFunctions {
      */
     default XmlObject createExampleShakemapFull() {
         try {
-            final String raw = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/shakemap.xml");
+            final String raw = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/shakemap.xml");
             return XmlObject.Factory.parse(raw);
         } catch(final XmlException xmlException) {
             fail("There should be no xml exception on parsing the shakemap");

@@ -53,7 +53,7 @@ public class TestValidatedQuakeMLToFeatureCollectionConverter {
 
         String xmlRawContent = null;
         try {
-            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_validated_one_feature.xml");
+            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_validated_one_feature.xml");
         } catch(final IOException ioException) {
             fail("There should be no io exception on reading the input file");
         }

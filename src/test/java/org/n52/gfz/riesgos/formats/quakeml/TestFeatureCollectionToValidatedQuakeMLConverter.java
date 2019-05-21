@@ -158,7 +158,7 @@ public class TestFeatureCollectionToValidatedQuakeMLConverter {
 
         try {
             final XmlObject result = QuakeML.fromFeatureCollection(featureCollection).toValidatedXmlObject();
-            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_validated_one_feature.xml");
+            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_validated_one_feature.xml");
 
             final XmlObject expectedResult = XmlObject.Factory.parse(xmlRawContent);
 
@@ -281,7 +281,7 @@ public class TestFeatureCollectionToValidatedQuakeMLConverter {
 
         try {
             final XmlObject result = QuakeML.fromFeatureCollection(featureCollection).toValidatedXmlObject();
-            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_validated_one_feature.xml");
+            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_validated_one_feature.xml");
 
             final XmlObject expectedResult = XmlObject.Factory.parse(xmlRawContent);
 
