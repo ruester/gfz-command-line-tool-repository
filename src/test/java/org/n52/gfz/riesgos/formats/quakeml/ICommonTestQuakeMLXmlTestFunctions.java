@@ -27,12 +27,12 @@ import java.io.IOException;
 public interface ICommonTestQuakeMLXmlTestFunctions {
 
     default XmlObject readOriginalOneFeature() throws IOException, XmlException {
-        final String content = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
+        final String content = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_from_original_quakeledger_one_feature.xml");
         return XmlObject.Factory.parse(content);
     }
 
     default XmlObject readValidatedOneFeature() throws IOException, XmlException {
-        final String content = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_validated_one_feature.xml");
+        final String content = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_validated_one_feature.xml");
         return XmlObject.Factory.parse(content);
     }
 }

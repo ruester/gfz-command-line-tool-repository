@@ -54,7 +54,7 @@ public class TestOriginalQuakeMLToFeatureCollectionConverter {
 
         String xmlRawContent = null;
         try {
-            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
+            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_from_original_quakeledger_one_feature.xml");
         } catch(final IOException ioException) {
             fail("There should be no io exception on reading the input file");
         }

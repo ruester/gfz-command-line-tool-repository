@@ -159,7 +159,7 @@ public class TestFeatureCollectionToOriginalQuakeMLConverter {
 
         try {
             final XmlObject result = QuakeML.fromFeatureCollection(featureCollection).toOriginalXmlObject();
-            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
+            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_from_original_quakeledger_one_feature.xml");
 
             final XmlObject expectedResult = XmlObject.Factory.parse(xmlRawContent);
 
