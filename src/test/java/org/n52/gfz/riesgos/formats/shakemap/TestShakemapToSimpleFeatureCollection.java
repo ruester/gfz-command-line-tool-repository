@@ -35,9 +35,12 @@ import static junit.framework.TestCase.assertTrue;
 /**
  * This is a test class for ShakemapToSimpleFeatureCollection.
  */
-public class TestShakemapToSimpleFeatureCollection implements ICommonTestShakemapFunctions{
+public class TestShakemapToSimpleFeatureCollection implements ICommonTestShakemapFunctions {
 
 
+    /**
+     * This is test with a very simple shakemap that is converted to a simple feature collection
+     */
     @Test
     public void testConversion() {
 
@@ -66,6 +69,9 @@ public class TestShakemapToSimpleFeatureCollection implements ICommonTestShakema
         assertTrue("The VAL field of the first feature is 0", Math.abs((Double) feature.getAttribute("VAL")) < 0.0001);
     }
 
+    /**
+     * This is a test with a more advanced shakemap (two additional variables) + different values
+     */
     @Test
     public void testConversion2() {
         final XmlObject extendedShakemap = createExampleShakemapExtended();

@@ -31,8 +31,14 @@ import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+/**
+ * This is the test class for the conversion of shakemaps to grids
+ */
 public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions {
 
+    /**
+     * A very basic shakemap with just 0 values in one single band
+     */
     @Test
     public void testExample1() {
         final XmlObject veryBasicShakemap = createExampleShakemap();
@@ -44,6 +50,10 @@ public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions 
                 Math.abs(gridCoverage.getRenderedImage().getData().getSampleDouble(0, 0, 0)) < 0.00001);
     }
 
+    /**
+     * A more interesting test case with a shakemap with different values and two
+     * bands
+     */
     @Test
     public void testExample2() {
         final XmlObject veryBasicShakemap = createExampleShakemapExtended();
