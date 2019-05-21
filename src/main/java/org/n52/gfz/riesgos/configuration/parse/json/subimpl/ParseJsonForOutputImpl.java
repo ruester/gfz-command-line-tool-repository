@@ -146,7 +146,8 @@ public class ParseJsonForOutputImpl {
     private enum FromStdoutOption {
         STRING("string", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutString(identifier)),
         XML("xml", IdentifierWithBindingFactory::createStdoutXmlWithSchema),
-        QUAKEML("quakeml", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutQuakeML(identifier));
+        QUAKEML("quakeml", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutQuakeML(identifier)),
+        SHAKEMAP("shakemap", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutShakemap(identifier));
 
         private final String dataType;
         private final IStdoutOutputFactory factory;
@@ -226,7 +227,8 @@ public class ParseJsonForOutputImpl {
         GEOJSON("geojson", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeojson(identifier, path)),
         GEOTIFF("geotiff", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeotiff(identifier, path)),
         SHP("shapefile", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShapeFile(identifier, path)),
-        QUAKEML("quakeml", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutQuakeMLFile(identifier, path));
+        QUAKEML("quakeml", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutQuakeMLFile(identifier, path)),
+        SHAKEMAP("shakemap", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShakemap(identifier, path));
 
         private final String dataType;
         private final IFileOutputFactory factory;

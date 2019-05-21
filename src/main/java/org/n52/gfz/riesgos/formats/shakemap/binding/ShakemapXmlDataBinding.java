@@ -19,11 +19,37 @@
 package org.n52.gfz.riesgos.formats.shakemap.binding;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
+import org.n52.gfz.riesgos.formats.shakemap.Shakemap;
+import org.n52.gfz.riesgos.formats.shakemap.impl.ShakemapXmlImpl;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
+/**
+ * Binding class for Shakemaps (XML)
+ */
 public class ShakemapXmlDataBinding extends GenericXMLDataBinding {
 
-    public ShakemapXmlDataBinding(final XmlObject shakemap) {
+    /*
+     * creates a new shakemap binding object
+     */
+    private ShakemapXmlDataBinding(final XmlObject shakemap) {
         super(shakemap);
+    }
+
+    /**
+     *
+     * @return returns the payload bound to an IShakemap interface
+     */
+    public IShakemap getPayloadShakemap() {
+        return Shakemap.fromOriginalXml(getPayload());
+    }
+
+    /**
+     * Creates a new shakemap binding from a xml object
+     * @param shakemap xml with the data of the shakemap
+     * @return ShakemapXmlDataBinding
+     */
+    public static ShakemapXmlDataBinding fromXml(final XmlObject shakemap) {
+        return new ShakemapXmlDataBinding(shakemap);
     }
 }

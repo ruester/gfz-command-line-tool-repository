@@ -68,9 +68,28 @@ public class ConfigurationFactory {
         }
     }
 
+    /**
+     * Creates a configuration for a transformation process for quakeml
+     * @return IConfiguration
+     */
     public static IConfiguration createQuakeMLTransformer() {
         try {
             final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/quakemltransformer.json");
+            final String content = new String(IOUtils.toByteArray(inputStream));
+            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+            return parser.parse(content);
+        } catch(final IOException | ParseConfigurationException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    /**
+     * Creates a configuration for a transformation process for shakemaps
+     * @return  IConfiguration
+     */
+    public static IConfiguration createShakemapTransformer() {
+        try {
+            final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/shakemaptransformer.json");
             final String content = new String(IOUtils.toByteArray(inputStream));
             final IParseConfiguration parser = new ParseJsonConfigurationImpl();
             return parser.parse(content);

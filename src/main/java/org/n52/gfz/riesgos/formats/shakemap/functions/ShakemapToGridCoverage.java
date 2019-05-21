@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Function to convert the IShakemap to a GridCoverage
+ */
 public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage> {
 
     private static final String COVERAGE_NAME = "Shakemap";

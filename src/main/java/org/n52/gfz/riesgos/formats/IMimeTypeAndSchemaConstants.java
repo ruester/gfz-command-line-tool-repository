@@ -47,4 +47,9 @@ public interface IMimeTypeAndSchemaConstants {
      * Schema for GML 3.2.1
      */
     String SCHEMA_GML_3_2_1 = "http://schemas.opengis.net/gml/3.2.1/base/feature.xsd";
+
+    /**
+     * Schema for shakemap
+     */
+    String SCHEMA_SHAKEMAP = "http://earthquake.usgs.gov/eqcenter/shakemap/xml/schemas/shakemap.xsd";
 }
