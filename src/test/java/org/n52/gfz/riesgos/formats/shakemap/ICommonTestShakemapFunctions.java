@@ -20,6 +20,9 @@ package org.n52.gfz.riesgos.formats.shakemap;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.gfz.riesgos.util.StringUtils;
+
+import java.io.IOException;
 
 import static junit.framework.TestCase.fail;
 
@@ -185,6 +188,22 @@ public interface ICommonTestShakemapFunctions {
             return XmlObject.Factory.parse(veryBasicShakemapRaw);
         } catch(final XmlException xmlException) {
             fail("There should be no xml exception on parsing the shakemap");
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @return Xml with a full shakemap (output of quakeledger)
+     */
+    default XmlObject createExampleShakemapFull() {
+        try {
+            final String raw = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/shakemap.xml");
+            return XmlObject.Factory.parse(raw);
+        } catch(final XmlException xmlException) {
+            fail("There should be no xml exception on parsing the shakemap");
+        } catch(final IOException ioException) {
+            fail("There should be no io exception on reading the input file");
         }
         return null;
     }

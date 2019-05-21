@@ -101,6 +101,19 @@ public class TestShakemapToSimpleFeatureCollection implements ICommonTestShakema
         assertTrue("The VAL2 field of the first feature is 7", Math.abs((Double) feature.getAttribute("VAL2") - 7.0) < 0.0001);
     }
 
+
+    /**
+     * This tests the conversion of a full shakemap.
+     * The most inteeresting part here is the time it needs to do that.
+     */
+    @Test
+    public void testFull() {
+        final XmlObject shakemap = createExampleShakemapFull();
+        final SimpleFeatureCollection collection = transformToSimpleFeatureCollection(shakemap);
+
+        assertNotNull("The collection is not null", collection);
+    }
+
     private SimpleFeatureCollection transformToSimpleFeatureCollection(final XmlObject xmlShakemap) {
         return new ShakemapToSimpleFeatureCollection().apply(new ShakemapXmlImpl(xmlShakemap));
     }

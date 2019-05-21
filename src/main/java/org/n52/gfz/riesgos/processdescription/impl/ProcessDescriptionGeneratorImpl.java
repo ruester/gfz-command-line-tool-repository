@@ -64,28 +64,36 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDescriptionGeneratorImpl.class);
 
+    private final IConfiguration configuration;
+
     private final Supplier<List<IParser>> parserSupplier;
     private final Supplier<List<IGenerator>> generatorSupplier;
 
     /**
      * Constructor (for testing purpose)
+     * @param configuration the configuration for which the process description should be generated
      * @param parserSupplier supplier for getting all the parsers
      * @param generatorSupplier supplier for getting all the generators
      */
-    public ProcessDescriptionGeneratorImpl(final Supplier<List<IParser>> parserSupplier, final Supplier<List<IGenerator>> generatorSupplier) {
+    public ProcessDescriptionGeneratorImpl(
+            final IConfiguration configuration,
+            final Supplier<List<IParser>> parserSupplier,
+            final Supplier<List<IGenerator>> generatorSupplier) {
+        this.configuration = configuration;
         this.parserSupplier = parserSupplier;
         this.generatorSupplier = generatorSupplier;
     }
 
     /**
-     * Default constructor
+     *
+     * @param configruation configuration for which the description should be generated
      */
-    public ProcessDescriptionGeneratorImpl() {
-        this(() -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
+    public ProcessDescriptionGeneratorImpl(final IConfiguration configruation) {
+        this(configruation, () -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
     }
 
     @Override
-    public ProcessDescriptionsDocument generateProcessDescription(final IConfiguration configuration) {
+    public ProcessDescriptionsDocument generateProcessDescription() {
 
         final ProcessDescriptionsDocument result = ProcessDescriptionsDocument.Factory.newInstance();
         final ProcessDescriptionsDocument.ProcessDescriptions processDescriptions = result.addNewProcessDescriptions();

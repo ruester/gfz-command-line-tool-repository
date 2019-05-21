@@ -176,8 +176,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
     @Override
     public ProcessDescription getDescription() {
 
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl();
-        final ProcessDescriptionsDocument description = generator.generateProcessDescription(configuration);
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(configuration);
+        final ProcessDescriptionsDocument description = generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
         processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
         return processDescription;

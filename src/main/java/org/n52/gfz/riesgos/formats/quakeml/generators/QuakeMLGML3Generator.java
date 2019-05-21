@@ -45,6 +45,9 @@ public class QuakeMLGML3Generator extends AbstractGenerator implements IMimeType
 
     private static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Generator.class);
 
+    /**
+     * Default constructor
+     */
     public QuakeMLGML3Generator() {
         super();
 

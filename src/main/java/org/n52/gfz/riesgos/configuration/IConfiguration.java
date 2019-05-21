@@ -28,6 +28,8 @@ import java.util.Optional;
  */
 public interface IConfiguration {
 
+    String PATH_FULL_QUALIFIED = "org.n52.gfz.riesgos.algorithm.impl.";
+
     /**
      *
      * @return Identifier that will be displayed as the title of the process
@@ -40,7 +42,7 @@ public interface IConfiguration {
      * just used for the generation of the process description
      */
     default String getFullQualifiedIdentifier() {
-        return "org.n52.gfz.riesgos.algorithm.impl." + getIdentifier();
+        return PATH_FULL_QUALIFIED + getIdentifier();
     }
 
     /**

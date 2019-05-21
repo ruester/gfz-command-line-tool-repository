@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.formats.shakemap;
 
 import org.apache.xmlbeans.XmlObject;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Test;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverage;
 import org.n52.gfz.riesgos.formats.shakemap.impl.ShakemapXmlImpl;
@@ -85,6 +86,18 @@ public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions 
         assertTrue("But the upperCornerX is at 2", Math.abs(upperCornerX - 2.0) < 0.0001);
         assertFalse("The upperCornerY is not exactly at 8", Math.abs(upperCornerY - 8) < 0.0001);
         assertTrue("But The upperCornerY is at 10", Math.abs(upperCornerY - 10) < 0.0001);
+    }
+
+    /**
+     * This tests the conversion of a full shakemap.
+     * The most inteeresting part here is the time it needs to do that.
+     */
+    @Test
+    public void testFull() {
+        final XmlObject shakemap = createExampleShakemapFull();
+        final GridCoverage grid = transformToGridCoverage(shakemap);
+
+        assertNotNull("The collection is not null", grid);
     }
 
     private GridCoverage transformToGridCoverage(final XmlObject xmlShakemap) {

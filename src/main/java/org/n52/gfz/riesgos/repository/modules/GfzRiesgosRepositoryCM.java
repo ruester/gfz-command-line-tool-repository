@@ -18,12 +18,17 @@ package org.n52.gfz.riesgos.repository.modules;
 
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
+import org.n52.gfz.riesgos.algorithm.TransformDataFormatProcess;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
+import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
+import org.n52.gfz.riesgos.util.Tuple;
+import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ProcessDescription;
 import org.n52.wps.webapp.api.AlgorithmEntry;
@@ -40,6 +45,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -138,10 +144,41 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         final List<AlgorithmData> result = new ArrayList<>();
 
         // this both configurations are included by default
-        result.add(new AlgorithmData("QuakeledgerProcess", new BaseGfzRiesgosService(ConfigurationFactory.createQuakeledger(), LoggerFactory.getLogger("QuakeledgerProcess"))));
-        result.add(new AlgorithmData("ShakygroundProcess", new BaseGfzRiesgosService(ConfigurationFactory.createShakyground(), LoggerFactory.getLogger("ShakygroundProcess"))));
-        result.add(new AlgorithmData("QuakeMLTransformerProcess", new BaseGfzRiesgosService(ConfigurationFactory.createQuakeMLTransformer(), LoggerFactory.getLogger("QuakeMLTransformerProcess"))));
-        result.add(new AlgorithmData("ShakemapTransformerProcess", new BaseGfzRiesgosService(ConfigurationFactory.createShakemapTransformer(), LoggerFactory.getLogger("ShakemapTransformerProcess"))));
+        result.add(
+                new AlgorithmData(
+                        "QuakeledgerProcess",
+                        new BaseGfzRiesgosService(
+                                ConfigurationFactory.createQuakeledger(),
+                                LoggerFactory.getLogger("QuakeledgerProcess")
+                        )
+                )
+        );
+        result.add(
+                new AlgorithmData(
+                        "ShakygroundProcess",
+                        new BaseGfzRiesgosService(
+                                ConfigurationFactory.createShakyground(),
+                                LoggerFactory.getLogger("ShakygroundProcess")
+                        )
+                )
+        );
+        // and also the algorithms to transform the new defined binding classes
+        for(Tuple<? extends Class<? extends IComplexData>, String> clazzWithName : Arrays.asList(
+             new Tuple<>(QuakeMLXmlDataBinding.class, "QuakeMLTransformationProcess"),
+             new Tuple<>(ShakemapXmlDataBinding.class, "ShakemapTransformationProcess")
+        )) {
+            final String processName = clazzWithName.getSecond();
+            result.add(
+                    new AlgorithmData(
+                            processName,
+                            new TransformDataFormatProcess(
+                                    processName,
+                                    clazzWithName.getFirst(),
+                                    LoggerFactory.getLogger(processName)))
+            );
+        }
+
+
 
         // others can be added by using the folder
         addConfigurationsFromFilder(this::getFileNamesFromConfig, result::add);
