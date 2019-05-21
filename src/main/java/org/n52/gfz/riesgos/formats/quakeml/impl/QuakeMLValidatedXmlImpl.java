@@ -43,7 +43,7 @@ import java.util.stream.Stream;
  * a customized quakeledger.
  *
  * This xml *does* match the schema for quakeml (in contrast with
- * the originial xml that does not).
+ * the original xml that does not).
  */
 public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
@@ -236,11 +236,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginTimeUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, TIME, UNCERTAINTY));
-        }
-
-        private Optional<String> removeIfNaN(final Optional<String> possibleNaNValue) {
-            return possibleNaNValue.map(this::removeIfNanValue);
+            return getByFirstChildrenWithNLevel(ORIGIN, TIME, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         private String removeIfNanValue(final String possibleNaNValue) {
@@ -263,7 +259,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginLatitudeUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, LATITUDE, UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(ORIGIN, LATITUDE, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         private double parseDouble(final String strDouble) {
@@ -286,7 +282,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginLongitudeUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, LONGITUDE, UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(ORIGIN, LONGITUDE, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
@@ -296,7 +292,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginDepthUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, DEPTH, UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(ORIGIN, DEPTH, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
@@ -371,22 +367,22 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getOriginUncertaintyHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, HORIZONTAL_UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, HORIZONTAL_UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
         public Optional<String> getOriginUncertaintyMinHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, MIN_HORIZONTAL_UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, MIN_HORIZONTAL_UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
         public Optional<String> getOriginUncertaintyMaxHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, MAX_HORIZONTAL_UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, MAX_HORIZONTAL_UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
         public Optional<String> getOriginUncertaintyAzimuthMaxHorizontalUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(ORIGIN, ORIGIN_UNCERTAINTY, AZIMUTZ_MAX_HORIZONTAL_UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
@@ -401,7 +397,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getMagnitudeMagUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(MAGNITUDE, MAG, UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(MAGNITUDE, MAG, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
@@ -441,7 +437,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(FOCAL_MECHANISM, NODAL_PLANES, NODAL_PLANE_1, STRIKE, UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(FOCAL_MECHANISM, NODAL_PLANES, NODAL_PLANE_1, STRIKE, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
@@ -451,7 +447,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getFocalMechanismNodalPlanesNodalPlane1DipUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(FOCAL_MECHANISM, NODAL_PLANES, NODAL_PLANE_1, DIP, UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(FOCAL_MECHANISM, NODAL_PLANES, NODAL_PLANE_1, DIP, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
@@ -461,7 +457,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
 
         @Override
         public Optional<String> getFocalMechanismNodalPlanesNodalPlane1RakeUncertainty() {
-            return removeIfNaN(getByFirstChildrenWithNLevel(FOCAL_MECHANISM, NODAL_PLANES, NODAL_PLANE_1, RAKE, UNCERTAINTY));
+            return getByFirstChildrenWithNLevel(FOCAL_MECHANISM, NODAL_PLANES, NODAL_PLANE_1, RAKE, UNCERTAINTY).map(this::removeIfNanValue);
         }
 
         @Override
@@ -479,7 +475,7 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
             if (searchElement != null) {
                 final String pureAttributeTextAsNumber = searchElement.selectAttribute(PREFERRED_PLANE).newCursor().getTextValue();
                 final String pureAttributeText = NODAL_PLANE + pureAttributeTextAsNumber;
-                attributeText = Optional.ofNullable(pureAttributeText);
+                attributeText = Optional.of(pureAttributeText);
             } else {
                 attributeText = Optional.empty();
             }
@@ -529,8 +525,8 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
         return result;
     }
 
-    private static boolean notNaN(final String atext) {
-        return ! atext.toLowerCase().equals("nan");
+    private static boolean notNaN(final String text) {
+        return ! text.toLowerCase().equals("nan");
     }
 
     private static class InsertElementWithText implements Consumer<String> {

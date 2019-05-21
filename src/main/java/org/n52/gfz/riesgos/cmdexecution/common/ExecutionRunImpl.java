@@ -25,7 +25,7 @@ import java.io.PrintStream;
 
 /**
  * Implementation that provides stdin, exit value
- * and provides the results of sterr and stdout streams
+ * and provides the results of stderr and stdout streams
  */
 public class ExecutionRunImpl implements IExecutionRun {
 

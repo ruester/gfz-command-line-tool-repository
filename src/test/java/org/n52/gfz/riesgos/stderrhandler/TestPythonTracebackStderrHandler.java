@@ -46,7 +46,7 @@ public class TestPythonTracebackStderrHandler {
 
         final StringBuilder stringBuilder = new StringBuilder();
         try {
-            stderrHandler.handleSterr(stderrText, stringBuilder::append);
+            stderrHandler.handleStderr(stderrText, stringBuilder::append);
             fail("There must be a exception");
         } catch(final NonEmptyStderrException exception) {
             assertTrue("the logging is still empty", stringBuilder.toString().isEmpty());
@@ -65,7 +65,7 @@ public class TestPythonTracebackStderrHandler {
 
         final StringBuilder stringBuilder = new StringBuilder();
         try {
-            stderrHandler.handleSterr(stderrText, stringBuilder::append);
+            stderrHandler.handleStderr(stderrText, stringBuilder::append);
             assertTrue("the logging is still empty", stringBuilder.toString().isEmpty());
         } catch(final NonEmptyStderrException exception) {
             fail("There must be no exception");
@@ -83,7 +83,7 @@ public class TestPythonTracebackStderrHandler {
 
         final StringBuilder stringBuilder = new StringBuilder();
         try {
-            stderrHandler.handleSterr(stderrText, stringBuilder::append);
+            stderrHandler.handleStderr(stderrText, stringBuilder::append);
             assertTrue("the logging is still empty", stringBuilder.toString().isEmpty());
         } catch(final NonEmptyStderrException exception) {
             fail("There must be no exception");
@@ -104,7 +104,7 @@ public class TestPythonTracebackStderrHandler {
 
         final StringBuilder stringBuilder = new StringBuilder();
         try {
-            stderrHandler.handleSterr(stderrText, stringBuilder::append);
+            stderrHandler.handleStderr(stderrText, stringBuilder::append);
             fail("There must be a exception");
         } catch(final NonEmptyStderrException exception) {
             assertTrue("the logging is still empty", stringBuilder.toString().isEmpty());

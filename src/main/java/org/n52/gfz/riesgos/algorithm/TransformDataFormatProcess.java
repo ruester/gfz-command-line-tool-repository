@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is sceleton to provide processes that just takes the input as it is.
+ * This is skeleton to provide processes that just takes the input as it is.
  * It it the job of the parsers and generators to transform the data formats.
  */
 public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm {
@@ -48,10 +48,11 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
     private final Logger logger;
 
     /**
+     * Creates a new process to transform the binding class data
      *
-     * @param identifier
-     * @param clazz
-     * @param logger
+     * @param identifier identifier of the process
+     * @param clazz binding class the process uses
+     * @param logger logger to write information to
      */
     public TransformDataFormatProcess(
             final String identifier,

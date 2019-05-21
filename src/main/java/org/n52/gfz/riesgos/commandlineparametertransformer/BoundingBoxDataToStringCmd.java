@@ -40,15 +40,15 @@ public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLinePar
                 throw new ConvertToStringCmdException("Not enough coordinates in the bounding box lower corner");
             }
 
-            final double latmin = lowerCorner[0];
-            final double lonmin = lowerCorner[1];
-            final double latmax = upperCorner[0];
-            final double lonmax = upperCorner[1];
+            final double latMin = lowerCorner[0];
+            final double lonMin = lowerCorner[1];
+            final double latMax = upperCorner[0];
+            final double lonMax = upperCorner[1];
 
-            result.add(String.valueOf(lonmin));
-            result.add(String.valueOf(lonmax));
-            result.add(String.valueOf(latmin));
-            result.add(String.valueOf(latmax));
+            result.add(String.valueOf(lonMin));
+            result.add(String.valueOf(lonMax));
+            result.add(String.valueOf(latMin));
+            result.add(String.valueOf(latMax));
         } else {
             throw new ConvertToStringCmdException("Wrong binding class");
         }

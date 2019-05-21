@@ -41,7 +41,7 @@ import java.io.InputStream;
  */
 public class QuakeMLGeoJsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonGenerator.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonGenerator.class);
 
     public QuakeMLGeoJsonGenerator() {
         super();

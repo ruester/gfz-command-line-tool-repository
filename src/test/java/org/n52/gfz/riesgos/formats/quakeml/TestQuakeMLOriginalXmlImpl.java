@@ -65,14 +65,14 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
             assertEquals("The descriptionText is as expected", "stochastic", event.getDescription().get());
             assertTrue("The originPublicID is present", event.getOriginPublicID().isPresent());
             assertEquals("The originPublicID is as expected", "quakeml:quakeledger/84945", event.getOriginPublicID().get());
-            assertTrue("The originTimeVlaue is present", event.getOriginTimeValue().isPresent());
-            assertEquals("The originTimeValue is as expeced", "16773-01-01T00:00:00.000000Z", event.getOriginTimeValue().get());
+            assertTrue("The originTimeValue is present", event.getOriginTimeValue().isPresent());
+            assertEquals("The originTimeValue is as expected", "16773-01-01T00:00:00.000000Z", event.getOriginTimeValue().get());
             // those nan values should be treated as nulls
             assertFalse("The originTimeUncertainty is not present", event.getOriginTimeUncertainty().isPresent());
             assertTrue("The latitudeValue is as expected", Math.abs(-30.9227 - event.getOriginLatitudeValue()) < 0.001);
             assertFalse("The latitudeUncertainty is not present", event.getOriginLatitudeUncertainty().isPresent());
             assertTrue("The longitudeValue is as expected", Math.abs(-71.49875 - event.getOriginLongitudeValue()) < 0.001);
-            assertFalse("The longitudeUnvertainty is not present", event.getOriginLongitudeUncertainty().isPresent());
+            assertFalse("The longitudeUncertainty is not present", event.getOriginLongitudeUncertainty().isPresent());
             assertTrue("The depthValue is present", event.getOriginDepthValue().isPresent());
             assertEquals("The depthValue is as expected", "34.75117", event.getOriginDepthValue().get());
             assertFalse("The depthUncertainty is not present", event.getOriginDepthUncertainty().isPresent());
@@ -81,13 +81,13 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
             assertFalse("The horizontalUncertainty is not present", event.getOriginUncertaintyHorizontalUncertainty().isPresent());
             assertFalse("The minHorizontalUncertainty is not present", event.getOriginUncertaintyMinHorizontalUncertainty().isPresent());
             assertFalse("The maxHorizontalUncertainty is not present", event.getOriginUncertaintyMaxHorizontalUncertainty().isPresent());
-            assertFalse("The azimutzMaxHorizontalUncertainty is not present", event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty().isPresent());
+            assertFalse("The azimuthMaxHorizontalUncertainty is not present", event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty().isPresent());
             assertTrue("The magnitude publicID is present", event.getMagnitudePublicID().isPresent());
             assertEquals("The magnitude publicID is as expected", "quakeml:quakeledger/84945", event.getMagnitudePublicID().get());
             assertTrue("The magnitude value is present", event.getMagnitudeMagValue().isPresent());
             assertEquals("The magnitude value is as expected", "8.35", event.getMagnitudeMagValue().get());
             assertFalse("The magnitude uncertainty is not present", event.getMagnitudeMagUncertainty().isPresent());
-            assertTrue("The magnitude type is prsent", event.getMagnitudeType().isPresent());
+            assertTrue("The magnitude type is present", event.getMagnitudeType().isPresent());
             assertEquals("The magnitude type is as expected", "MW", event.getMagnitudeType().get());
             assertTrue("The magnitude creationInfo is present", event.getMagnitudeCreationInfoValue().isPresent());
             assertEquals("The magnitude creationInfo is as expected", "GFZ", event.getMagnitudeCreationInfoValue().get());
@@ -95,10 +95,10 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
             assertEquals("The focal mechanism publicID is as expected", "quakeml:quakeledger/84945", event.getFocalMechanismPublicID().get());
             assertTrue("The strike value is as present", event.getFocalMechanismNodalPlanesNodalPlane1StrikeValue().isPresent());
             assertEquals("The strike value is as expected", "7.310981", event.getFocalMechanismNodalPlanesNodalPlane1StrikeValue().get());
-            assertFalse("The strike unvertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty().isPresent());
+            assertFalse("The strike uncertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1StrikeUncertainty().isPresent());
             assertTrue("The dip value is present", event.getFocalMechanismNodalPlanesNodalPlane1DipValue().isPresent());
             assertEquals("The dip value is as expected", "16.352970000000003", event.getFocalMechanismNodalPlanesNodalPlane1DipValue().get());
-            assertFalse("The dip unvertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty().isPresent());
+            assertFalse("The dip uncertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1DipUncertainty().isPresent());
             assertTrue("The rake value is present", event.getFocalMechanismNodalPlanesNodalPlane1RakeValue().isPresent());
             assertEquals("The rake value is as expected", "90.0", event.getFocalMechanismNodalPlanesNodalPlane1RakeValue().get());
             assertFalse("The rake uncertainty is not present", event.getFocalMechanismNodalPlanesNodalPlane1RakeUncertainty().isPresent());
@@ -154,7 +154,7 @@ public class TestQuakeMLOriginalXmlImpl implements ICommonTestQuakeMLXmlTestFunc
         } catch(final IOException ioException) {
             fail("There should be no exception on loading the file form the resources");
         } catch(final ConvertFormatException exception) {
-            fail("Ther should be no exception on converting");
+            fail("There should be no exception on converting");
         }
     }
 }

@@ -28,7 +28,7 @@ import java.util.Objects;
 
 /**
  * Is the same as ConvertGenericXMLDataBindingToBytes,
- * but here an addional fitlering applies.
+ * but here an additional filtering applies.
  * There should be no header for the xml specifying the encoding.
  * This is a very specific adjustment, that I hope I can remove in
  * the next time

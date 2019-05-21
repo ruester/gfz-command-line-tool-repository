@@ -104,7 +104,7 @@ public class TestShakemapToSimpleFeatureCollection implements ICommonTestShakema
 
     /**
      * This tests the conversion of a full shakemap.
-     * The most inteeresting part here is the time it needs to do that.
+     * The most interesting part here is the time it needs to do that.
      */
     @Test
     public void testFull() {

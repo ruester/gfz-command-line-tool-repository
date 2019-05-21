@@ -22,7 +22,7 @@ and here:
 https://github.com/bpross-52n/quakeledger
 
 The aim of the quakeledger process is to provide earth quake event informations
-in a given region (and with some other filtering criterias (depth, magnitude, ...)).
+in a given region (and with some other filtering criteria (depth, magnitude, ...)).
 
 ### Shakyground
 
@@ -48,7 +48,7 @@ For output there are the following options:
 
 The processes itself run inside of docker containers.
 Example Dockerfiles to create the images necessary for this are included in the
-assistence folder.
+assistance folder.
 
 ## Installation
 
@@ -134,7 +134,7 @@ into
 <context:component-scan base-package="org.n52">
 ```
 
-This is necessary for the server to searche for repositories that are not
+This is necessary for the server to search for repositories that are not
 part of the org.n52.wps package.
 
 6. Create the docker images for the processes
@@ -142,7 +142,7 @@ part of the org.n52.wps package.
 You must create the docker images for each process you want to use.
 At the moment there are the Quakeledger and Shakyground processes.
 
-If you run the WPS Server on a decicated server you must build them on that server.
+If you run the WPS Server on a dedicated server you must build them on that server.
 If you run the WPS Server in docker than it is easily possible to build the images
 on the host system (because of sharing the same docker demon).
 
@@ -371,21 +371,21 @@ For all input and output files there must be communication with the underlying
 docker file system. So also temporary files that are already on the server must be
 copied to the container.
 
-The overhead may course longer runtimes - and may also course timeouts on 
+The overhead may course longer run times - and may also course timeouts on 
 client side.
 
 Another problem is that the image id differ when created on different machines.
 The reason for that is that in most docker build processes there is a kind
 of update for a linux package manager. Executed on different machines and in a 
 different time forces differences in the files of the system. That means that
-the checksums of the layers of the docker build process will differ.
+the check sums of the layers of the docker build process will differ.
 
 
 Also the whole process of the installation is much more complicated.
 
 However the use of docker gives some advantages:
 
-* All the process executions are seperated. There is no way that they may influence
+* All the process executions are separated. There is no way that they may influence
 each other.
 * All temporary files created by the command line executable are removed 
 after the execution by removing the docker container.

@@ -36,7 +36,7 @@ import java.util.Objects;
  */
 public class WriteSingleByteStreamToPath implements IWriteIDataToFiles {
 
-    public IConvertIDataToByteArray converter;
+    public final IConvertIDataToByteArray converter;
 
     /**
      *

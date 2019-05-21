@@ -288,7 +288,7 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
-     * Creates a command line argument (shapefile) with a file path that wlle be written down as a temporary file
+     * Creates a command line argument (shapefile) with a file path that will be written down as a temporary file
      * (or multiple files, because one shapefile contains multiple files)
      * @param identifier identifier of the data
      * @param flag optional command line flag

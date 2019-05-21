@@ -20,7 +20,6 @@ package org.n52.gfz.riesgos.formats.shakemap;
 
 import org.apache.xmlbeans.XmlObject;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Test;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverage;
 import org.n52.gfz.riesgos.formats.shakemap.impl.ShakemapXmlImpl;
@@ -90,7 +89,7 @@ public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions 
 
     /**
      * This tests the conversion of a full shakemap.
-     * The most inteeresting part here is the time it needs to do that.
+     * The most interesting part here is the time it needs to do that.
      */
     @Test
     public void testFull() {

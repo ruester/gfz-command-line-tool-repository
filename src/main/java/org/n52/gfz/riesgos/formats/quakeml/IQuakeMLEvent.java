@@ -75,13 +75,13 @@ public interface IQuakeMLEvent {
     double getOriginLatitudeValue();
     /**
      *
-     * @return optional uncertainty for the latitute (in the cases handled here
+     * @return optional uncertainty for the latitude (in the cases handled here
      * always empty / NaN)
      */
     Optional<String> getOriginLatitudeUncertainty();
     /**
      *
-     * @return longtitude value of the location of the earthquake
+     * @return longitude value of the location of the earthquake
      */
     double getOriginLongitudeValue();
     /**

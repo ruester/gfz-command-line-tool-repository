@@ -40,7 +40,7 @@ import java.util.function.Function;
  */
 public class ShakemapGML3Generator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(ShakemapGML3Generator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGML3Generator.class);
     private static final Function<IShakemap, SimpleFeatureCollection> TO_FEATURE_COLLECTION =
             new ShakemapToSimpleFeatureCollection();
 

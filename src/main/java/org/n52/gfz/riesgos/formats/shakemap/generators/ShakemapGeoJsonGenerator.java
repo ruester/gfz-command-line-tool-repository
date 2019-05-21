@@ -40,7 +40,7 @@ import java.util.function.Function;
  */
 public class ShakemapGeoJsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(ShakemapGeoJsonGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGeoJsonGenerator.class);
     private static final Function<IShakemap, SimpleFeatureCollection> TO_FEATURE_COLLECTION =
             new ShakemapToSimpleFeatureCollection();
 

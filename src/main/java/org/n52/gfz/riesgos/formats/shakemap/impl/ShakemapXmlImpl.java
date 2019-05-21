@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -73,8 +74,13 @@ public class ShakemapXmlImpl implements IShakemap {
         this.fields = readFields();
 
         // both must be there
-        this.latField = fields.stream().filter(IShakemapField::isLat).findFirst().get();
-        this.lonField = fields.stream().filter(IShakemapField::isLon).findFirst().get();
+        final Optional<IShakemapField> optionalLatField = fields.stream().filter(IShakemapField::isLat).findFirst();
+        final Optional<IShakemapField> optionalLonField = fields.stream().filter(IShakemapField::isLon).findFirst();
+        if(! optionalLatField.isPresent() || ! optionalLonField.isPresent()) {
+            throw new IllegalArgumentException("There must be fields for lat and lon");
+        }
+        this.latField = optionalLatField.get();
+        this.lonField = optionalLonField.get();
 
         this.data = readData();
     }

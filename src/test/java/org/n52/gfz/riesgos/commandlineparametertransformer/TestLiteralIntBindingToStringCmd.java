@@ -53,7 +53,7 @@ public class TestLiteralIntBindingToStringCmd {
 
             assertEquals("This value is as expected", String.valueOf(1), result.get(0));
         } catch(final ConvertToStringCmdException exception) {
-            fail("Therre should be no exception");
+            fail("There should be no exception");
         }
     }
 
@@ -91,7 +91,7 @@ public class TestLiteralIntBindingToStringCmd {
             assertEquals("The flag is before the value", "--level", result.get(0));
             assertEquals("This value is as expected", String.valueOf(1), result.get(1));
         } catch(final ConvertToStringCmdException exception) {
-            fail("Therre should be no exception");
+            fail("There should be no exception");
         }
     }
 
@@ -107,7 +107,7 @@ public class TestLiteralIntBindingToStringCmd {
 
         final IConvertIDataToCommandLineParameter converter3 = new LiteralIntBindingToStringCmd(null);
 
-        assertEquals("The thrird is also equal", converter1, converter3);
+        assertEquals("The third is also equal", converter1, converter3);
 
         final IConvertIDataToCommandLineParameter converter4 = new LiteralIntBindingToStringCmd("--int");
         assertNotEquals("The fourth is different", converter1, converter4);

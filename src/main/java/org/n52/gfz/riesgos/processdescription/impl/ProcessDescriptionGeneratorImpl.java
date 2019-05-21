@@ -21,9 +21,6 @@ import net.opengis.ows.x11.CodeType;
 import net.opengis.ows.x11.DomainMetadataType;
 import net.opengis.ows.x11.LanguageStringType;
 import net.opengis.wps.x100.CRSsType;
-import net.opengis.wps.x100.ComplexDataCombinationType;
-import net.opengis.wps.x100.ComplexDataCombinationsType;
-import net.opengis.wps.x100.ComplexDataDescriptionType;
 import net.opengis.wps.x100.InputDescriptionType;
 import net.opengis.wps.x100.LiteralInputType;
 import net.opengis.wps.x100.LiteralOutputType;
@@ -35,7 +32,6 @@ import net.opengis.wps.x100.SupportedComplexDataInputType;
 import net.opengis.wps.x100.SupportedComplexDataType;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
 import org.n52.wps.io.GeneratorFactory;
 import org.n52.wps.io.IGenerator;
 import org.n52.wps.io.IParser;
@@ -44,18 +40,14 @@ import org.n52.wps.io.data.IBBOXData;
 import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.ILiteralData;
-import org.n52.wps.webapp.api.FormatEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of the process description generation
@@ -86,10 +78,10 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
     /**
      *
-     * @param configruation configuration for which the description should be generated
+     * @param configuration configuration for which the description should be generated
      */
-    public ProcessDescriptionGeneratorImpl(final IConfiguration configruation) {
-        this(configruation, () -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
+    public ProcessDescriptionGeneratorImpl(final IConfiguration configuration) {
+        this(configuration, () -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
     }
 
     @Override

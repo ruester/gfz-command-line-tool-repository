@@ -64,8 +64,8 @@ public class TestQuakeMLValidatedXmlImpl implements ICommonTestQuakeMLXmlTestFun
             assertEquals("The descriptionText is as expected", "stochastic", event.getDescription().get());
             assertTrue("The originPublicID is present", event.getOriginPublicID().isPresent());
             assertEquals("The originPublicID is as expected", "quakeml:quakeledger/84945", event.getOriginPublicID().get());
-            assertTrue("The originTimeVlaue is present", event.getOriginTimeValue().isPresent());
-            assertEquals("The originTimeValue is as expeced", "16773-01-01T00:00:00.000000Z", event.getOriginTimeValue().get());
+            assertTrue("The originTimeValue is present", event.getOriginTimeValue().isPresent());
+            assertEquals("The originTimeValue is as expected", "16773-01-01T00:00:00.000000Z", event.getOriginTimeValue().get());
             assertFalse("The originTimeUncertainty is not present", event.getOriginTimeUncertainty().isPresent());
             assertTrue("The latitudeValue is as expected", Math.abs(-30.9227 - event.getOriginLatitudeValue()) < 0.001);
             assertFalse("The latitudeUncertainty is not present", event.getOriginLatitudeUncertainty().isPresent());
@@ -79,7 +79,7 @@ public class TestQuakeMLValidatedXmlImpl implements ICommonTestQuakeMLXmlTestFun
             assertFalse("The horizontalUncertainty is not present", event.getOriginUncertaintyHorizontalUncertainty().isPresent());
             assertFalse("The minHorizontalUncertainty is not present", event.getOriginUncertaintyMinHorizontalUncertainty().isPresent());
             assertFalse("The maxHorizontalUncertainty is not present", event.getOriginUncertaintyMaxHorizontalUncertainty().isPresent());
-            assertFalse("The azimutzMaxHorizontalUncertainty is not present", event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty().isPresent());
+            assertFalse("The azimuthMaxHorizontalUncertainty is not present", event.getOriginUncertaintyAzimuthMaxHorizontalUncertainty().isPresent());
             assertTrue("The magnitude publicID is present", event.getMagnitudePublicID().isPresent());
             assertEquals("The magnitude publicID is as expected", "quakeml:quakeledger/84945", event.getMagnitudePublicID().get());
             assertTrue("The magnitude value is present", event.getMagnitudeMagValue().isPresent());
@@ -119,20 +119,20 @@ public class TestQuakeMLValidatedXmlImpl implements ICommonTestQuakeMLXmlTestFun
     public void testConversionToOriginalXml() {
         try {
             final XmlObject validatedXml = readValidatedOneFeature();
-            final XmlObject origignalXml = readOriginalOneFeature();
+            final XmlObject originalXml = readOriginalOneFeature();
 
             final IQuakeML quakeml = QuakeML.fromValidatedXml(validatedXml);
 
             final XmlObject originalXmlRecreated = quakeml.toOriginalXmlObject();
 
-            assertEquals("The converted quakeml should match the original one", origignalXml.toString(), originalXmlRecreated.toString());
+            assertEquals("The converted quakeml should match the original one", originalXml.toString(), originalXmlRecreated.toString());
 
         } catch(final XmlException exception) {
             fail("There should be no xml exception");
         } catch(final IOException ioException) {
             fail("There should be no exception on loading the file form the resources");
         } catch(final ConvertFormatException exception) {
-            fail("Ther should be no exception on converting");
+            fail("There should be no exception on converting");
         }
     }
 

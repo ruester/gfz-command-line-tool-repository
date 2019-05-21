@@ -44,7 +44,7 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
         final ILogger logger = (text) -> {};
 
         try {
-            handler.handleSterr(stderrText, logger);
+            handler.handleStderr(stderrText, logger);
         } catch(final NonEmptyStderrException exception) {
             fail("There must be no exception");
         }
@@ -52,7 +52,7 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
 
     /**
      * In case that there is some error text
-     * an exeption must be thrown
+     * an exception must be thrown
      */
     @Test
     public void testWithErrorText() {
@@ -62,10 +62,10 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
         final ILogger logger = (text) -> {};
 
         try {
-            handler.handleSterr(stderrText, logger);
+            handler.handleStderr(stderrText, logger);
             fail("There must be an exception");
-        } catch(final NonEmptyStderrException excepction) {
-            assertNotNull("There is an exception", excepction);
+        } catch(final NonEmptyStderrException exception) {
+            assertNotNull("There is an exception", exception);
         }
     }
 
@@ -81,7 +81,7 @@ public class TestExceptionIfStderrIsNotEmptyHandler {
         final ILogger logger = (text) -> {};
 
         try {
-            handler.handleSterr(stderrText, logger);
+            handler.handleStderr(stderrText, logger);
         } catch(final NonEmptyStderrException exception) {
             fail("There must be no exception");
         }

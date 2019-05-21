@@ -34,7 +34,7 @@ public class PythonTracebackStderrHandler implements IStderrHandler  {
     private static final String TRACEBACK = "Traceback (most recent call";
 
     @Override
-    public void handleSterr(String stderr, ILogger logger) throws NonEmptyStderrException {
+    public void handleStderr(String stderr, ILogger logger) throws NonEmptyStderrException {
         final int index = stderr.indexOf(TRACEBACK);
 
         if(index >= 0) {

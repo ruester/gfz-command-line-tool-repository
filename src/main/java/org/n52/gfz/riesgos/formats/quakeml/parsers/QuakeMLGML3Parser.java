@@ -18,7 +18,6 @@
 
 package org.n52.gfz.riesgos.formats.quakeml.parsers;
 
-import org.apache.xmlbeans.XmlObject;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;

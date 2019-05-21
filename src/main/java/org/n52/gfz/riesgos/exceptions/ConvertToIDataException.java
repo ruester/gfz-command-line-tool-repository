@@ -17,7 +17,7 @@ package org.n52.gfz.riesgos.exceptions;
  */
 
 /**
- * Exception on converting to a idata
+ * Exception on converting to an IData binding class
  */
 public class ConvertToIDataException extends Exception {
 

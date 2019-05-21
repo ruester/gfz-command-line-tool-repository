@@ -30,8 +30,8 @@ public class ExecutionRunResultImpl implements IExecutionRunResult {
     /**
      *
      * @param exitValue exit value of the process
-     * @param stderr contated stderr text
-     * @param stdout concated stdout text
+     * @param stderr joined stderr text
+     * @param stdout joined stdout text
      */
     ExecutionRunResultImpl(final int exitValue, final String stderr, final String stdout) {
         this.exitValue = exitValue;

@@ -42,7 +42,7 @@ public class TestLogStderrHandler {
         final IStderrHandler handler = new LogStderrHandler();
 
         try {
-            handler.handleSterr(stderrText, logger::append);
+            handler.handleStderr(stderrText, logger::append);
 
             final String text = logger.toString();
 
@@ -64,7 +64,7 @@ public class TestLogStderrHandler {
         final IStderrHandler handler = new LogStderrHandler();
 
         try {
-            handler.handleSterr(stderrText, logger::append);
+            handler.handleStderr(stderrText, logger::append);
 
             final String text = logger.toString();
 
