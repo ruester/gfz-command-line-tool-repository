@@ -26,8 +26,7 @@ public interface IProcessDescriptionGenerator {
 
     /**
      * Generates the process description
-     * @param configuration configuration to use for the description
      * @return process description (xml) for the service based on the configuration
      */
-    ProcessDescriptionsDocument generateProcessDescription(final IConfiguration configuration);
+    ProcessDescriptionsDocument generateProcessDescription();
 }

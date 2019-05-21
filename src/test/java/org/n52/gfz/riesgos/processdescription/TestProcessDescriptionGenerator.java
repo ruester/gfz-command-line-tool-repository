@@ -58,11 +58,10 @@ public class TestProcessDescriptionGenerator {
         // because of the test case
         // there is no direct access to the ParserFactory and GeneratorFactory classes
         // it only uses a Supplier to get the the parsers and generators
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(createParserSupplier(), createGeneratorSupplier());
-
         final IConfiguration configuration = new QuakeledgerConfig();
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(configuration, createParserSupplier(), createGeneratorSupplier());
 
-        final ProcessDescriptionsDocument processDescription = generator.generateProcessDescription(configuration);
+        final ProcessDescriptionsDocument processDescription = generator.generateProcessDescription();
 
         final String expecedProcessDescriptionString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<wps:ProcessDescriptions xml:lang=\"en-US\" service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\">\n" +
