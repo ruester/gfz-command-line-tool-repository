@@ -16,7 +16,7 @@
  *
  */
 
-package org.n52.gfz.riesgos.convertformats;
+package org.n52.gfz.riesgos.formats.quakeml;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -42,25 +42,26 @@ import static org.junit.Assert.fail;
 /**
  * This are the tests for the conversion of the quakeml xml to a feature collection
  */
-public class TestValidatedQuakeMLToFeatureCollectionConverter {
+public class TestOriginalQuakeMLToFeatureCollectionConverter {
 
     /**
-     * Test with one feature and the new (improved) xml that was validates against the schema.
+     * Test with one feature and the old (original) xml that was produced from the original quakeledger
+     * Because of adoptions to archive the schema validation, this may be not the test case to care later.
      */
     @Test
-    public void testOneFeatureValidatedQuakeledgerFormat() {
+    public void testOneFeatureOriginalQuakeledgerFormat() {
 
 
         String xmlRawContent = null;
         try {
-            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_validated_one_feature.xml");
+            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/convertformats/quakeml_from_original_quakeledger_one_feature.xml");
         } catch(final IOException ioException) {
             fail("There should be no io exception on reading the input file");
         }
         try {
             final XmlObject xmlContent = XmlObject.Factory.parse(xmlRawContent);
 
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new ValidatedQuakeMLToFeatureCollectionConverter().convert(xmlContent);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = QuakeML.fromOriginalXml(xmlContent).toSimpleFeatureCollection();
             final FeatureIterator<SimpleFeature> iterator = result.features();
 
             assertTrue("There is one element", iterator.hasNext());
@@ -116,7 +117,6 @@ public class TestValidatedQuakeMLToFeatureCollectionConverter {
             assertNull("The amplitude.publicID is as expected", simpleFeature.getAttribute("amplitude.publicID"));
             assertNull("The amplitude.type is as expected", simpleFeature.getAttribute("amplitude.type"));
             assertNull("The amplitude.genericAmplitude.value is as expected", simpleFeature.getAttribute("amplitude.genericAmplitude.value"));
-
 
             final Geometry geom = ((Geometry) simpleFeature.getDefaultGeometry());
             final Coordinate coordinate = geom.getCoordinate();
