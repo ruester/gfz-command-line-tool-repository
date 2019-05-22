@@ -21,7 +21,7 @@ package org.n52.gfz.riesgos.formats.shakemap.functions;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -41,22 +41,49 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * This function provides a way to transform the data in a Shakemap to a simpleFeatureCollection
+ * This is the same as ShakemapToSimpleFeatureCollection but the outputs are Polygons instead of points
  */
-public class ShakemapToSimpleFeatureCollection extends AbstractShakemapToSimpleFeatureCollection {
+public class ShakemapToSimpleFeatureCollectionPolygons extends AbstractShakemapToSimpleFeatureCollection {
 
     @Override
     protected Class<? extends Geometry> getGeometryClass() {
-        return Point.class;
+        return Polygon.class;
     }
+
 
     @Override
     protected Geometry createGeometry(final GeometryFactory geometryFactory,
                                       final IShakemapData singleRow,
                                       final IShakemapSpecification specification) {
-        return geometryFactory.createPoint(
+
+        final double addLon = specification.getNominalLonSpacing() / 2.0;
+        final double addLat = specification.getNominalLatSpacing() / 2.0;
+
+        final double lon = singleRow.getLon();
+        final double lat = singleRow.getLat();
+
+        final Coordinate[] coordinates = new Coordinate[] {
                 new Coordinate(
-                        singleRow.getLon(),
-                        singleRow.getLat()));
+                        lon + addLon,
+                        lat + addLat
+                ),
+                new Coordinate(
+                        lon - addLon,
+                        lat + addLat
+                ),
+                new Coordinate(
+                        lon - addLon,
+                        lat - addLat
+                ),
+                new Coordinate(
+                        lon + addLon,
+                        lat - addLat
+                ),
+                new Coordinate(
+                        lon + addLon,
+                        lat + addLat
+                )
+        };
+        return geometryFactory.createPolygon(coordinates);
     }
 }
