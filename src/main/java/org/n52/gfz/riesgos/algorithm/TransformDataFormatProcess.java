@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.algorithm;
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
+import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorForTransformationImpl;
 import org.n52.wps.io.data.IComplexData;
@@ -33,6 +34,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This is skeleton to provide processes that just takes the input as it is.
@@ -46,6 +48,7 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
     private final String identifier;
     private final Class<? extends IComplexData> clazz;
     private final Logger logger;
+    private final ICheckDataAndGetErrorMessage validator;
 
     /**
      * Creates a new process to transform the binding class data
@@ -57,10 +60,12 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
     public TransformDataFormatProcess(
             final String identifier,
             final Class<? extends IComplexData> clazz,
-            final Logger logger) {
+            final Logger logger,
+            final ICheckDataAndGetErrorMessage validator) {
         this.identifier = identifier;
         this.clazz = clazz;
         this.logger = logger;
+        this.validator = validator;
     }
 
     @Override
@@ -87,6 +92,15 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
                 logger.warn("Too many entries in inputData. Additional elements are ignored");
             }
             final IData data = value.get(0);
+
+            if(validator != null) {
+                final Optional<String> optionalErrorMessage = validator.check(data);
+                if(optionalErrorMessage.isPresent()) {
+                    throw new ExceptionReport(optionalErrorMessage.get(), ExceptionReport.INVALID_PARAMETER_VALUE);
+                }
+            }
+            // if there is an error -> the exception is thrown before
+            // only valid input is given back to the results
             result.put(OUTPUT_IDENTIFIER, data);
         }
 

@@ -24,10 +24,12 @@ import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
+import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
-import org.n52.gfz.riesgos.util.Tuple;
+import org.n52.gfz.riesgos.validators.XmlBindingWithAllowedSchema;
 import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ProcessDescription;
@@ -182,17 +184,18 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     }
 
     private void addAlgorithmsOfFormatTransformations(final Consumer<AlgorithmData> adder) {
-        for(Tuple<? extends Class<? extends IComplexData>, String> clazzWithName : Arrays.asList(
-                new Tuple<>(QuakeMLXmlDataBinding.class, "QuakeMLTransformationProcess"),
-                new Tuple<>(ShakemapXmlDataBinding.class, "ShakemapTransformationProcess")
+        for(ClassTransformationProcess transformationProcess : Arrays.asList(
+                new ClassTransformationProcess(QuakeMLXmlDataBinding.class, "QuakeMLTransformationProcess", new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)),
+                new ClassTransformationProcess(ShakemapXmlDataBinding.class, "ShakemapTransformationProcess", new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP))
         )) {
-            final String processName = clazzWithName.getSecond();
+            final String processName = transformationProcess.getProcessName();
             final AlgorithmData algorithmData = new AlgorithmData(
                     processName,
                     new TransformDataFormatProcess(
                             processName,
-                            clazzWithName.getFirst(),
-                            LoggerFactory.getLogger(processName)));
+                            transformationProcess.getClazz(),
+                            LoggerFactory.getLogger(processName),
+                            transformationProcess.getValidator()));
             adder.accept(algorithmData);
         }
     }
@@ -313,6 +316,33 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
         IAlgorithm getAlgorithm() {
             return algorithm;
+        }
+    }
+
+    private static class ClassTransformationProcess {
+        private final Class<? extends IComplexData> clazz;
+        private final String processName;
+        private final ICheckDataAndGetErrorMessage validator;
+
+        ClassTransformationProcess(
+                final Class<? extends IComplexData> clazz,
+                final String processName,
+                final ICheckDataAndGetErrorMessage validator) {
+            this.clazz = clazz;
+            this.processName = processName;
+            this.validator = validator;
+        }
+
+        Class<? extends IComplexData> getClazz() {
+            return clazz;
+        }
+
+        String getProcessName() {
+            return processName;
+        }
+
+        ICheckDataAndGetErrorMessage getValidator() {
+            return validator;
         }
     }
 }

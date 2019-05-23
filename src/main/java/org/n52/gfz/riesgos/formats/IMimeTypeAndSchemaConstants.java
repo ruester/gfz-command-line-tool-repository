@@ -56,5 +56,5 @@ public interface IMimeTypeAndSchemaConstants {
     /**
      * Schema for shakemap
      */
-    String SCHEMA_SHAKEMAP = "http://earthquake.usgs.gov/eqcenter/shakemap/xml/schemas/shakemap.xsd";
+    String SCHEMA_SHAKEMAP = "http://earthquake.usgs.gov/eqcenter/shakemap";
 }

@@ -331,6 +331,28 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchemaWithoutHeader(identifier, schema, flag);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentQuakeML(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final List<String> supportedCrs,
+            @SuppressWarnings({"unused"})
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for quakeml");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowed values are not supported for quakemml");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for quakeml");
+        }
+        // ignore schema
+        return IdentifierWithBindingFactory.createCommandLineArgumentQuakeML(identifier, flag);
+    }
+
+
     private static IIdentifierWithBinding createCommandLineArgumentGeotiffFile(
             final String identifier,
             final String flag,
@@ -430,7 +452,8 @@ public class ParseJsonForInputImpl {
         GEOFITT("geotiff", ParseJsonForInputImpl::createCommandLineArgumentGeotiffFile),
         GEOJSON("geojson", ParseJsonForInputImpl::createCommandLineArgumentGeojsonFile),
         SHAPEFILE("shapefile", ParseJsonForInputImpl::createCommandLineArgumentShapefile),
-        GENERIC_FILE("file", ParseJsonForInputImpl::createCommandLineArgumentGenericFile);
+        GENERIC_FILE("file", ParseJsonForInputImpl::createCommandLineArgumentGenericFile),
+        QUAKEML("quakeml", ParseJsonForInputImpl::createCommandLineArgumentQuakeML);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;

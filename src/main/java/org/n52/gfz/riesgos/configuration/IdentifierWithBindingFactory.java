@@ -250,6 +250,27 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
+     * Same as  createCommandLineArgumentXmlFileWithSchema but with QuakeML
+     * @param identifier identifier of the data
+     * @param flag optional flag for the command line argument
+     * @return quakeml xml file command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentQuakeML(
+            final String identifier, final String flag) {
+        final String filename = createUUIDFilename(".xml");
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withPath(filename)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .build();
+    }
+
+    /**
      * Creates a command line argument (geotiff file) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
