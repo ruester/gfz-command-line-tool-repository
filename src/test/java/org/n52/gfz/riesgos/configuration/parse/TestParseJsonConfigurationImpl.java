@@ -313,8 +313,11 @@ public class TestParseJsonConfigurationImpl {
                     IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlat", null, "-33.1299174879672", null),
                     input.get(8));
 
-            assertEquals("The output is xml", IdentifierWithBindingFactory.createFileOutXmlWithSchema("selectedRows", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"),
-                    output.get(0));
+            assertEquals(
+                "The output is xml",
+                IdentifierWithBindingFactory.createFileOutXmlWithSchema("selectedRows", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"),
+                output.get(0)
+            );
 
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
