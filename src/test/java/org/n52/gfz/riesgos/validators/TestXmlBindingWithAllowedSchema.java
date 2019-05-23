@@ -34,6 +34,7 @@ import java.util.Optional;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * Test case for TestXmlBindingWithAllowedSchema
@@ -99,18 +100,57 @@ public class TestXmlBindingWithAllowedSchema {
     }
 
     /**
-     * Test for valid xml with external schema url
+     * Test for valid xml with external schema url (QuakeML)
+     * and no error message must be given back
+     */
+    @Test
+    public void testValidQuakemlExternalSchema() throws XmlException, IOException {
+        final String externalSchema = "http://quake.ethz.ch/schema/xsd/QuakeML-BED-1.2.xsd";
+
+        boolean connected = false;
+
+        try {
+            new URL(externalSchema).openStream().close();
+            connected = true;
+        } catch (Exception e) {
+            return;
+        }
+
+        // skip test if no internet connection available or URL broken
+        assumeTrue(connected);
+
+        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(externalSchema);
+        final String filecontent = new String(Files.readAllBytes(quakemlfile));
+        final XmlObject content = XmlObject.Factory.parse(filecontent);
+        final IData value = new GenericXMLDataBinding(content);
+        final Optional<String> errorMessage = validator.check(value);
+
+        if (errorMessage.isPresent()) {
+            System.err.println(errorMessage.get());
+        }
+
+        assertFalse("We expect the input file to validate", errorMessage.isPresent());
+    }
+
+    /**
+     * Test for valid xml with external schema url (ShakeMap)
      * and no error message must be given back
      */
     @Test
     public void testValidShakemapExternalSchema() throws XmlException, IOException {
         final String externalSchema = "https://raw.githubusercontent.com/bpross-52n/shakemap-xmlbeans/master/src/main/xsd/shakemap.xsd";
 
+        boolean connected = false;
+
         try {
             new URL(externalSchema).openStream().close();
+            connected = true;
         } catch (Exception e) {
             return;
         }
+
+        // skip test if no internet connection available or URL broken
+        assumeTrue(connected);
 
         final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(externalSchema);
         final String filecontent = new String(Files.readAllBytes(shakemapfilegithub));
