@@ -665,7 +665,6 @@ public class IdentifierWithBindingFactory {
                 .build();
     }
 
-
     /**
      * Creates a string output (via stdout)
      * @param identifier identifier of the data

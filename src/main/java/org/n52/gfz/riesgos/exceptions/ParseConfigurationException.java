@@ -23,7 +23,7 @@ package org.n52.gfz.riesgos.exceptions;
  * Exception on parsing
  */
 public class ParseConfigurationException extends Exception {
-    private static final long serialVersionUID = -4833382600660829956L;
+    private static final long serialVersionUID = -6974706324180266454L;
 
     public ParseConfigurationException(final Throwable cause) {
         super(cause);
