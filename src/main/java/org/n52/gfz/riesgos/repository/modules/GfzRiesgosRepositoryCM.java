@@ -48,10 +48,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -138,53 +140,67 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         return null;
     }
 
+
+    private List<IConfiguration> createPredefinedConfigurations() {
+        return Arrays.asList(
+                ConfigurationFactory.createQuakeledger(),
+                ConfigurationFactory.createShakyground()
+        );
+    }
+
     private List<AlgorithmData> parseConfigToAlgorithmEntries() {
 
 
         final List<AlgorithmData> result = new ArrayList<>();
 
-        // this both configurations are included by default
-        result.add(
-                new AlgorithmData(
-                        "QuakeledgerProcess",
-                        new BaseGfzRiesgosService(
-                                ConfigurationFactory.createQuakeledger(),
-                                LoggerFactory.getLogger("QuakeledgerProcess")
-                        )
-                )
-        );
-        result.add(
-                new AlgorithmData(
-                        "ShakygroundProcess",
-                        new BaseGfzRiesgosService(
-                                ConfigurationFactory.createShakyground(),
-                                LoggerFactory.getLogger("ShakygroundProcess")
-                        )
-                )
-        );
-        // and also the algorithms to transform the new defined binding classes
-        for(Tuple<? extends Class<? extends IComplexData>, String> clazzWithName : Arrays.asList(
-             new Tuple<>(QuakeMLXmlDataBinding.class, "QuakeMLTransformationProcess"),
-             new Tuple<>(ShakemapXmlDataBinding.class, "ShakemapTransformationProcess")
-        )) {
-            final String processName = clazzWithName.getSecond();
-            result.add(
-                    new AlgorithmData(
-                            processName,
-                            new TransformDataFormatProcess(
-                                    processName,
-                                    clazzWithName.getFirst(),
-                                    LoggerFactory.getLogger(processName)))
+        // first, insert all the data format transformation processes
+        addAlgorithmsOfFormatTransformations(result::add);
+
+        // then load all the configurations for the custom processes
+        // using this approach the predefined services
+        // can be overwritten by improved ones on server runtime
+        final Map<String, IConfiguration> configurationProcesses = new HashMap<>();
+
+        // step 1: the predefined ones
+        for(final IConfiguration predefinedConfig : createPredefinedConfigurations()) {
+            configurationProcesses.put(
+                    predefinedConfig.getIdentifier(),
+                    predefinedConfig
             );
         }
 
-
-
         // others can be added by using the folder
-        addConfigurationsFromFolder(this::getFileNamesFromConfig, result::add);
+        addConfigurationsFromFolder(this::getFileNamesFromConfig, configurationProcesses::put);
+
+        // than add all to the result
+        configurationProcesses.values().stream()
+                .map(this::configurationToAlgorithm)
+                .forEach(result::add);
 
 
         return result;
+    }
+
+    private void addAlgorithmsOfFormatTransformations(final Consumer<AlgorithmData> adder) {
+        for(Tuple<? extends Class<? extends IComplexData>, String> clazzWithName : Arrays.asList(
+                new Tuple<>(QuakeMLXmlDataBinding.class, "QuakeMLTransformationProcess"),
+                new Tuple<>(ShakemapXmlDataBinding.class, "ShakemapTransformationProcess")
+        )) {
+            final String processName = clazzWithName.getSecond();
+            final AlgorithmData algorithmData = new AlgorithmData(
+                    processName,
+                    new TransformDataFormatProcess(
+                            processName,
+                            clazzWithName.getFirst(),
+                            LoggerFactory.getLogger(processName)));
+            adder.accept(algorithmData);
+        }
+    }
+
+    private AlgorithmData configurationToAlgorithm(final IConfiguration configuration) {
+        return new AlgorithmData(configuration.getIdentifier(),
+                new BaseGfzRiesgosService(configuration,
+                        LoggerFactory.getLogger(configuration.getFullQualifiedIdentifier())));
     }
 
     private Collection<String> getFileNamesFromConfig() {
@@ -215,7 +231,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     }
 
 
-    private void addConfigurationsFromFolder(final Supplier<Collection<String>> fileProvider, Consumer<AlgorithmData> adder) {
+    private void addConfigurationsFromFolder(final Supplier<Collection<String>> fileProvider, BiConsumer<String, IConfiguration> adder) {
         final IParseConfiguration parser = new ParseJsonConfigurationImpl();
 
         for(final String fileName : fileProvider.get()) {
@@ -223,12 +239,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 final String content = new String(IOUtils.toByteArray(inputStream));
                 final IConfiguration configuration = parser.parse(content);
 
-                final Logger logger = LoggerFactory.getLogger((configuration.getFullQualifiedIdentifier()));
-
-                final AlgorithmData algorithmData = new AlgorithmData(configuration.getIdentifier(),
-                        new BaseGfzRiesgosService(configuration, logger));
-
-                adder.accept(algorithmData);
+                adder.accept(configuration.getIdentifier(), configuration);
 
             } catch(final IOException ioException) {
                 LOGGER.error("Can't read the content from file '" + fileName + "': " + ioException);
