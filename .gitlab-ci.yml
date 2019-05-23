@@ -1,0 +1,34 @@
+# based on example file for maven projects:
+# https://gitlab.com/gitlab-org/gitlab-ci-yml/blob/master/Maven.gitlab-ci.yml
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+before_script:
+  - env
+  - which java
+  - java -version
+
+.validate: &validate
+  stage: build
+  script:
+    - 'mvn $MAVEN_CLI_OPTS test-compile'
+
+.verify: &verify
+  stage: test
+  script:
+    - 'mvn $MAVEN_CLI_OPTS verify'
+
+validate:jdk8:
+  <<: *validate
+  image: maven:3.6.1-jdk-8
+
+verify:jdk8:
+  <<: *verify
+  image: maven:3.6.1-jdk-8
