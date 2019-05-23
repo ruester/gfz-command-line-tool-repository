@@ -34,6 +34,7 @@ import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
+import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
@@ -407,10 +408,14 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInQuakeML(
             final String identifier,
             final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
         return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
                 .withPath(path)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
-                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
@@ -423,10 +428,14 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInShakemap(
             final String identifier,
             final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
+
         return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
             .withPath(path)
             .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
-            .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP)
+            .withSchema(schema)
+            .withValidator(new XmlBindingWithAllowedSchema(schema))
             .build();
     }
 
@@ -482,11 +491,14 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutQuakeMLFile(
             final String identifier,
             final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
         return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
                 .withPath(path)
                 .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToQuakeMLXmlBinding()))
-                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
-                .withValidator(new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML))
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
@@ -499,10 +511,14 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutShakemap(
             final String identifier,
             final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
+
         return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
             .withPath(path)
             .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToShakemapXmlBinding()))
-            .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP)
+            .withSchema(schema)
+            .withValidator(new XmlBindingWithAllowedSchema(schema))
             .build();
     }
 
@@ -578,9 +594,19 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createStdoutXmlWithSchema(
             final String identifier,
             final String schema) {
+
+        final ICheckDataAndGetErrorMessage validator;
+
+        if (schema == null || schema.trim().length() == 0) {
+            validator = null;
+        } else {
+            validator = new XmlBindingWithAllowedSchema(schema);
+        }
+
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withFunctionToHandleStdout(new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
+                .withValidator(validator)
                 .build();
     }
 
@@ -591,10 +617,13 @@ public class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStdoutQuakeML(
             final String identifier) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
         return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
                 .withFunctionToHandleStdout(new ConvertBytesToQuakeMLXmlBinding())
-                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)
-                .withValidator(new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML))
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
@@ -605,9 +634,13 @@ public class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStdoutShakemap(
             final String identifier) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
+
         return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
                 .withFunctionToHandleStdout(new ConvertBytesToShakemapXmlBinding())
-                .withSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP)
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
