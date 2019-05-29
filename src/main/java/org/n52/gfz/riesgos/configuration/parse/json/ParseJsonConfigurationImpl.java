@@ -94,7 +94,7 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
     /**
      * Parses the configuration
      * @param inputText input text with a json object
-     * @return IConfiguratation
+     * @return IConfiguration
      * @throws ParseConfigurationException exception indicating that there is problem on parsing the input
      */
     @Override
@@ -203,8 +203,8 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
                 if(! (element instanceof String)) {
                     throw new ParseConfigurationException("Wrong type for element in " + key + ", expected a String");
                 }
-                final String defaultComamndLineFlag = (String) element;
-                result.add(defaultComamndLineFlag);
+                final String defaultCommandLineFlag = (String) element;
+                result.add(defaultCommandLineFlag);
             }
         }
         return result;
@@ -222,7 +222,7 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
             if(optionsForStderrHandler.containsKey(value)) {
                 result = optionsForStderrHandler.get(value).factory.get();
             } else {
-                throw new ParseConfigurationException("Unspoorted value '" + value + "' for key '" + key + "'");
+                throw new ParseConfigurationException("Unsupported value '" + value + "' for key '" + key + "'");
             }
         } else {
             result = null;
@@ -265,7 +265,7 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
             if(optionsForExitValueHandler.containsKey(value)) {
                 result = optionsForExitValueHandler.get(value).getFactory().get();
             } else {
-                throw new ParseConfigurationException("Unsupprted value '" + value + "' for key '" + key + "'");
+                throw new ParseConfigurationException("Unsupported value '" + value + "' for key '" + key + "'");
             }
         } else {
             result = null;

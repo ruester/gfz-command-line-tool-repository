@@ -29,13 +29,13 @@ public interface IExecutionRunResult  {
 
     /**
      *
-     * @return concated string of stderr stream
+     * @return joined string of stderr stream
      */
     String getStderrResult();
 
     /**
      *
-     * @return concated string of stdout stream
+     * @return joined string of stdout stream
      */
     String getStdoutResult();
 }

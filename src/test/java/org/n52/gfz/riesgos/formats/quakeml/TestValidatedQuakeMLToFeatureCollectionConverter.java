@@ -1,5 +1,3 @@
-package org.n52.gfz.riesgos.convertformats;
-
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -18,6 +16,8 @@ package org.n52.gfz.riesgos.convertformats;
  *
  */
 
+package org.n52.gfz.riesgos.formats.quakeml;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import org.apache.xmlbeans.XmlException;
@@ -26,8 +26,11 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
+import org.n52.gfz.riesgos.util.StringUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+
+import java.io.IOException;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -36,82 +39,28 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-public class TestQuakeMLToFeatureCollectionConverter {
+/**
+ * This are the tests for the conversion of the quakeml xml to a feature collection
+ */
+public class TestValidatedQuakeMLToFeatureCollectionConverter {
 
+    /**
+     * Test with one feature and the new (improved) xml that was validates against the schema.
+     */
     @Test
-    public void testOneFeature() {
-        final String xmlRawContent =
-                "<eventParameters namespace=\"http://quakeml.org/xmlns/quakeml/1.2\">\n" +
-                "  <event publicID=\"84945\">\n" +
-                "    <preferredOriginID>84945</preferredOriginID>\n" +
-                "    <preferredMagnitudeID>84945</preferredMagnitudeID>\n" +
-                "    <type>earthquake</type>\n" +
-                "    <description>\n" +
-                "      <text>stochastic</text>\n" +
-                "    </description>\n" +
-                "    <origin publicID=\"84945\">\n" +
-                "      <time>\n" +
-                "        <value>16773-01-01T00:00:00.000000Z</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </time>\n" +
-                "      <latitude>\n" +
-                "        <value>-30.9227</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </latitude>\n" +
-                "      <longitude>\n" +
-                "        <value>-71.49875</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </longitude>\n" +
-                "      <depth>\n" +
-                "        <value>34.75117</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </depth>\n" +
-                "      <creationInfo>\n" +
-                "        <value>GFZ</value>\n" +
-                "      </creationInfo>\n" +
-                "    </origin>\n" +
-                "    <originUncertainty>\n" +
-                "      <horizontalUncertainty>nan</horizontalUncertainty>\n" +
-                "      <minHorizontalUncertainty>nan</minHorizontalUncertainty>\n" +
-                "      <maxHorizontalUncertainty>nan</maxHorizontalUncertainty>\n" +
-                "      <azimuthMaxHorizontalUncertainty>nan</azimuthMaxHorizontalUncertainty>\n" +
-                "    </originUncertainty>\n" +
-                "    <magnitude publicID=\"84945\">\n" +
-                "      <mag>\n" +
-                "        <value>8.35</value>\n" +
-                "        <uncertainty>nan</uncertainty>\n" +
-                "      </mag>\n" +
-                "      <type>MW</type>\n" +
-                "      <creationInfo>\n" +
-                "        <value>GFZ</value>\n" +
-                "      </creationInfo>\n" +
-                "    </magnitude>\n" +
-                "    <focalMechanism publicID=\"84945\">\n" +
-                "      <nodalPlanes>\n" +
-                "        <nodalPlane1>\n" +
-                "          <strike>\n" +
-                "            <value>7.310981</value>\n" +
-                "            <uncertainty>nan</uncertainty>\n" +
-                "          </strike>\n" +
-                "          <dip>\n" +
-                "            <value>16.352970000000003</value>\n" +
-                "            <uncertainty>nan</uncertainty>\n" +
-                "          </dip>\n" +
-                "          <rake>\n" +
-                "            <value>90.0</value>\n" +
-                "            <uncertainty>nan</uncertainty>\n" +
-                "          </rake>\n" +
-                "        </nodalPlane1>\n" +
-                "        <preferredPlane>nodalPlane1</preferredPlane>\n" +
-                "      </nodalPlanes>\n" +
-                "    </focalMechanism>\n" +
-                "  </event>\n" +
-                "</eventParameters>";
+    public void testOneFeatureValidatedQuakeledgerFormat() {
 
+
+        String xmlRawContent = null;
+        try {
+            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_validated_one_feature.xml");
+        } catch(final IOException ioException) {
+            fail("There should be no io exception on reading the input file");
+        }
         try {
             final XmlObject xmlContent = XmlObject.Factory.parse(xmlRawContent);
 
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = new QuakeMLToFeatureCollectionConverter().convert    (xmlContent);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = QuakeML.fromValidatedXml(xmlContent).toSimpleFeatureCollection();
             final FeatureIterator<SimpleFeature> iterator = result.features();
 
             assertTrue("There is one element", iterator.hasNext());
@@ -120,15 +69,15 @@ public class TestQuakeMLToFeatureCollectionConverter {
 
             assertFalse("There is no other feature", iterator.hasNext());
 
-            assertEquals("The preferredOriginID is as expected", "84945", simpleFeature.getAttribute("preferredOriginID"));
-            assertEquals("The preferredMagnitudeID is as expected", "84945", simpleFeature.getAttribute("preferredMagnitudeID"));
+            assertEquals("The preferredOriginID is as expected", "quakeml:quakeledger/84945", simpleFeature.getAttribute("preferredOriginID"));
+            assertEquals("The preferredMagnitudeID is as expected", "quakeml:quakeledger/84945", simpleFeature.getAttribute("preferredMagnitudeID"));
             assertEquals("The type is as expected", "earthquake", simpleFeature.getAttribute("type"));
             assertEquals("The description.text is as excepted", "stochastic", simpleFeature.getAttribute("description.text"));
-            assertEquals("The origin.publicID is as excepted", "84945", simpleFeature.getAttribute("origin.publicID"));
+            assertEquals("The origin.publicID is as excepted", "quakeml:quakeledger/84945", simpleFeature.getAttribute("origin.publicID"));
             assertEquals("The origin.time.value is as expected", "16773-01-01T00:00:00.000000Z", simpleFeature.getAttribute("origin.time.value"));
-            assertEquals("The origin.time.uncertainty is as expected", "nan", simpleFeature.getAttribute("origin.time.uncertainty"));
+            assertNull("The origin.time.uncertainty is as expected", simpleFeature.getAttribute("origin.time.uncertainty"));
             assertEquals("The origin.depth.value is as excepted", "34.75117", simpleFeature.getAttribute("origin.depth.value"));
-            assertEquals("The origin.depth.uncertainty is as expected", "nan", simpleFeature.getAttribute("origin.depth.uncertainty"));
+            assertNull("The origin.depth.uncertainty is as expected", simpleFeature.getAttribute("origin.depth.uncertainty"));
             // it is not specified in the data input
             assertNull("The origin.depthType is as expected", simpleFeature.getAttribute("origin.depthType"));
             assertNull("The origin.timeFixed is as expected", simpleFeature.getAttribute("origin.timeFixed"));
@@ -144,29 +93,30 @@ public class TestQuakeMLToFeatureCollectionConverter {
             assertNull("The origin.quality.standardError is as expected", simpleFeature.getAttribute("origin.quality.standardError"));
             assertNull("The origin.evaluationMode is as expected", simpleFeature.getAttribute("origin.evaluationMode"));
             assertNull("The origin.evaluationStatus is as expected", simpleFeature.getAttribute("origin.evaluationStatus"));
-            assertEquals("The originUncertainty.horizontalUncertainty is as expected", "nan", simpleFeature.getAttribute("originUncertainty.horizontalUncertainty"));
-            assertEquals("The originUncertainty.minHorizontalUncertainty is as expected", "nan", simpleFeature.getAttribute("originUncertainty.minHorizontalUncertainty"));
-            assertEquals("The originUncertainty.maxHorizontalUncertainty is as expected", "nan", simpleFeature.getAttribute("originUncertainty.maxHorizontalUncertainty"));
-            assertEquals("The originUncertainty.azimuthMaxHorizontalUncertainty is as expected", "nan", simpleFeature.getAttribute("originUncertainty.azimuthMaxHorizontalUncertainty"));
-            assertEquals("The magnitude.publicID is as expected", "84945", simpleFeature.getAttribute("magnitude.publicID"));
+            assertNull("The originUncertainty.horizontalUncertainty is as expected", simpleFeature.getAttribute("originUncertainty.horizontalUncertainty"));
+            assertNull("The originUncertainty.minHorizontalUncertainty is as expected", simpleFeature.getAttribute("originUncertainty.minHorizontalUncertainty"));
+            assertNull("The originUncertainty.maxHorizontalUncertainty is as expected", simpleFeature.getAttribute("originUncertainty.maxHorizontalUncertainty"));
+            assertNull("The originUncertainty.azimuthMaxHorizontalUncertainty is as expected", simpleFeature.getAttribute("originUncertainty.azimuthMaxHorizontalUncertainty"));
+            assertEquals("The magnitude.publicID is as expected", "quakeml:quakeledger/84945", simpleFeature.getAttribute("magnitude.publicID"));
             assertEquals("The magnitude.mag.value is as expected", "8.35", simpleFeature.getAttribute("magnitude.mag.value"));
-            assertEquals("The magnitude.mag.uncertainty is as expected", "nan", simpleFeature.getAttribute("magnitude.mag.uncertainty"));
+            assertNull("The magnitude.mag.uncertainty is as expected", simpleFeature.getAttribute("magnitude.mag.uncertainty"));
             assertEquals("The magnitude.type is as expected", "MW", simpleFeature.getAttribute("magnitude.type"));
             assertNull("The magnitude.evaluationStatus is as expected", simpleFeature.getAttribute("magnitude.evaluationStatus"));
             assertNull("The magnitude.originID is as expected", simpleFeature.getAttribute("magnitude.originID"));
             assertNull("The magnitude.stationCount is as expected", simpleFeature.getAttribute("magnitude.stationCount"));
             assertEquals("The magnitude.creationInfo.value is as expected", "GFZ", simpleFeature.getAttribute("magnitude.creationInfo.value"));
-            assertEquals("The focalMechanism.publicID is as expected", "84945", simpleFeature.getAttribute("focalMechanism.publicID"));
+            assertEquals("The focalMechanism.publicID is as expected", "quakeml:quakeledger/84945", simpleFeature.getAttribute("focalMechanism.publicID"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.strike.value is as expected", "7.310981", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.strike.value"));
-            assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty is as expected", "nan", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty"));
+            assertNull("The focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty is as expected", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.dip.value is as expected", "16.352970000000003", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.dip.value"));
-            assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.dip.uncertainty is as expected", "nan", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.dip.uncertainty"));
+            assertNull("The focalMechanism.nodalPlanes.nodalPlane1.dip.uncertainty is as expected", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.dip.uncertainty"));
             assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.rake.value is as expected", "90.0", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.rake.value"));
-            assertEquals("The focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty is as expected", "nan", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty"));
+            assertNull("The focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty is as expected", simpleFeature.getAttribute("focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty"));
             assertEquals("The focalMechanism.nodalPlanes.preferredPlane is as expected", "nodalPlane1", simpleFeature.getAttribute("focalMechanism.nodalPlanes.preferredPlane"));
             assertNull("The amplitude.publicID is as expected", simpleFeature.getAttribute("amplitude.publicID"));
             assertNull("The amplitude.type is as expected", simpleFeature.getAttribute("amplitude.type"));
             assertNull("The amplitude.genericAmplitude.value is as expected", simpleFeature.getAttribute("amplitude.genericAmplitude.value"));
+
 
             final Geometry geom = ((Geometry) simpleFeature.getDefaultGeometry());
             final Coordinate coordinate = geom.getCoordinate();

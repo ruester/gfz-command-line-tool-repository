@@ -250,7 +250,7 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no path", outputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertTrue("There is a schema", outputIdentifier.getSchema().isPresent());
             assertEquals("The schema is abc", "abc", outputIdentifier.getSchema().get());
-            assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
+            assertTrue("There is a validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
             assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
             assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());

@@ -16,7 +16,7 @@
  *
  */
 
-package org.n52.gfz.riesgos.convertformats;
+package org.n52.gfz.riesgos.formats.quakeml;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
@@ -29,18 +29,30 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.n52.gfz.riesgos.util.StringUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.fail;
 
-public class TestFeatureCollectionToQuakeMLConverter {
+/**
+ * This are the test cases for the transformation of the quakeml simple feature collection
+ * to xml.
+ * It outputs the old xml format from the original quakeledger that doesn't match the schema.
+ */
+public class TestFeatureCollectionToOriginalQuakeMLConverter {
 
+    /**
+     * This tests the conversion of one feature to xml using the old original quakeml format
+     * that is the as the output of the original quakeledger process.
+     * This doesn't match the xml schema for quakeml.
+     */
     @Test
-    public void testOneFeatureQuakeML() {
+    public void testOneFeatureQuakeMLToOriginalQuakeledgerFormat() {
         final SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.setName("location");
         typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
@@ -110,112 +122,44 @@ public class TestFeatureCollectionToQuakeMLConverter {
         final Point point = JTSFactoryFinder.getGeometryFactory().createPoint(new Coordinate(x, y));
 
         featureBuilder.set("the_geom", point);
-        featureBuilder.set("preferredOriginID", "84945");
-        featureBuilder.set("preferredMagnitudeID", "84945");
+        featureBuilder.set("preferredOriginID", "quakeml:quakeledger/84945");
+        featureBuilder.set("preferredMagnitudeID", "quakeml:quakeledger/84945");
         featureBuilder.set("type", "earthquake");
         featureBuilder.set("description.text", "stochastic");
-        featureBuilder.set("origin.publicID", "84945");
+        featureBuilder.set("origin.publicID", "quakeml:quakeledger/84945");
         featureBuilder.set("origin.time.value", "16773-01-01T00:00:00.000000Z");
-        featureBuilder.set("origin.time.uncertainty", "nan");
-        featureBuilder.set("origin.latitude.uncertainty", "nan");
-        featureBuilder.set("origin.longitude.uncertainty", "nan");
+        featureBuilder.set("origin.time.uncertainty", null);
+        featureBuilder.set("origin.latitude.uncertainty", null);
+        featureBuilder.set("origin.longitude.uncertainty", null);
         featureBuilder.set("origin.depth.value", "34.75117");
-        featureBuilder.set("origin.depth.uncertainty", "nan");
+        featureBuilder.set("origin.depth.uncertainty", null);
         featureBuilder.set("origin.creationInfo.value", "GFZ");
-        featureBuilder.set("originUncertainty.horizontalUncertainty", "nan");
-        featureBuilder.set("originUncertainty.minHorizontalUncertainty", "nan");
-        featureBuilder.set("originUncertainty.maxHorizontalUncertainty", "nan");
-        featureBuilder.set("originUncertainty.azimuthMaxHorizontalUncertainty", "nan");
-        featureBuilder.set("magnitude.publicID", "84945");
+        featureBuilder.set("originUncertainty.horizontalUncertainty", null);
+        featureBuilder.set("originUncertainty.minHorizontalUncertainty", null);
+        featureBuilder.set("originUncertainty.maxHorizontalUncertainty", null);
+        featureBuilder.set("originUncertainty.azimuthMaxHorizontalUncertainty", null);
+        featureBuilder.set("magnitude.publicID", "quakeml:quakeledger/84945");
         featureBuilder.set("magnitude.mag.value", "8.35");
-        featureBuilder.set("magnitude.mag.uncertainty", "nan");
+        featureBuilder.set("magnitude.mag.uncertainty", null);
         featureBuilder.set("magnitude.type", "MW");
         featureBuilder.set("magnitude.creationInfo.value", "GFZ");
-        featureBuilder.set("focalMechanism.publicID", "84945");
+        featureBuilder.set("focalMechanism.publicID", "quakeml:quakeledger/84945");
         featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.strike.value", "7.310981");
-        featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty", "nan");
+        featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.strike.uncertainty", null);
         featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.dip.value", "16.352970000000003");
-        featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.dip.uncertainty", "nan");
+        featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.dip.uncertainty", null);
         featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.rake.value", "90.0");
-        featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty", "nan");
+        featureBuilder.set("focalMechanism.nodalPlanes.nodalPlane1.rake.uncertainty", null);
         featureBuilder.set("focalMechanism.nodalPlanes.preferredPlane", "nodalPlane1");
 
 
-        final SimpleFeature feature = featureBuilder.buildFeature("84945");
+        final SimpleFeature feature = featureBuilder.buildFeature("quakeml:quakeledger/84945");
         final DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
         featureCollection.add(feature);
 
         try {
-            final XmlObject result = new FeatureCollectionToQuakeMLConverter().convert(featureCollection);
-
-
-            final String xmlRawContent =
-                    "<eventParameters namespace=\"http://quakeml.org/xmlns/quakeml/1.2\">\n" +
-                            "  <event publicID=\"84945\">\n" +
-                            "    <preferredOriginID>84945</preferredOriginID>\n" +
-                            "    <preferredMagnitudeID>84945</preferredMagnitudeID>\n" +
-                            "    <type>earthquake</type>\n" +
-                            "    <description>\n" +
-                            "      <text>stochastic</text>\n" +
-                            "    </description>\n" +
-                            "    <origin publicID=\"84945\">\n" +
-                            "      <time>\n" +
-                            "        <value>16773-01-01T00:00:00.000000Z</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </time>\n" +
-                            "      <latitude>\n" +
-                            "        <value>-30.9227</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </latitude>\n" +
-                            "      <longitude>\n" +
-                            "        <value>-71.49875</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </longitude>\n" +
-                            "      <depth>\n" +
-                            "        <value>34.75117</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </depth>\n" +
-                            "      <creationInfo>\n" +
-                            "        <value>GFZ</value>\n" +
-                            "      </creationInfo>\n" +
-                            "    </origin>\n" +
-                            "    <originUncertainty>\n" +
-                            "      <horizontalUncertainty>nan</horizontalUncertainty>\n" +
-                            "      <minHorizontalUncertainty>nan</minHorizontalUncertainty>\n" +
-                            "      <maxHorizontalUncertainty>nan</maxHorizontalUncertainty>\n" +
-                            "      <azimuthMaxHorizontalUncertainty>nan</azimuthMaxHorizontalUncertainty>\n" +
-                            "    </originUncertainty>\n" +
-                            "    <magnitude publicID=\"84945\">\n" +
-                            "      <mag>\n" +
-                            "        <value>8.35</value>\n" +
-                            "        <uncertainty>nan</uncertainty>\n" +
-                            "      </mag>\n" +
-                            "      <type>MW</type>\n" +
-                            "      <creationInfo>\n" +
-                            "        <value>GFZ</value>\n" +
-                            "      </creationInfo>\n" +
-                            "    </magnitude>\n" +
-                            "    <focalMechanism publicID=\"84945\">\n" +
-                            "      <nodalPlanes>\n" +
-                            "        <nodalPlane1>\n" +
-                            "          <strike>\n" +
-                            "            <value>7.310981</value>\n" +
-                            "            <uncertainty>nan</uncertainty>\n" +
-                            "          </strike>\n" +
-                            "          <dip>\n" +
-                            "            <value>16.352970000000003</value>\n" +
-                            "            <uncertainty>nan</uncertainty>\n" +
-                            "          </dip>\n" +
-                            "          <rake>\n" +
-                            "            <value>90.0</value>\n" +
-                            "            <uncertainty>nan</uncertainty>\n" +
-                            "          </rake>\n" +
-                            "        </nodalPlane1>\n" +
-                            "        <preferredPlane>nodalPlane1</preferredPlane>\n" +
-                            "      </nodalPlanes>\n" +
-                            "    </focalMechanism>\n" +
-                            "  </event>\n" +
-                            "</eventParameters>";
+            final XmlObject result = QuakeML.fromFeatureCollection(featureCollection).toOriginalXmlObject();
+            final String xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_from_original_quakeledger_one_feature.xml");
 
             final XmlObject expectedResult = XmlObject.Factory.parse(xmlRawContent);
 
@@ -225,6 +169,8 @@ public class TestFeatureCollectionToQuakeMLConverter {
             assertEquals("The xml contents are the same", expectedResult.xmlText(options), result.xmlText(options));
         } catch(final XmlException exception) {
             fail("There should be no exception on parsing xml");
+        } catch(final IOException ioException) {
+            fail("There should be no exception on loading the xml content");
         }
     }
 }

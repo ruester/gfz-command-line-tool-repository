@@ -46,11 +46,11 @@ import java.util.function.Consumer;
  * SimpleFeatureCollection.
  *
  * While there may be more ways to represent quakeML in an feature collection,
- * this is sutable to transform xml quakeml to an feature collection and
+ * this is suitable to transform xml quakeml to an feature collection and
  * to query this data then via the IQuakeML interface.
  *
  * Most things are build to provide the best representation in GeoJSON
- * (so there are mostly no type conversions, and the naming stategy matches the
+ * (so there are mostly no type conversions, and the naming strategy matches the
  * json structure - by splitting the elements with dots (origin.latitude.uncertainty for example).
  *
  * Like QuakeMLXmlImpl this class focus only on the eventParameters and event elements.
@@ -79,6 +79,11 @@ public class QuakeMLSimpleFeatureCollectionImpl implements IQuakeMLDataProvider 
         }
 
         return result;
+    }
+
+    @Override
+    public Optional<String> getPublicId() {
+        return Optional.empty();
     }
 
     private static class QuakeMLEventSimpleFeatureImpl  implements IQuakeMLEvent {

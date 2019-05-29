@@ -30,9 +30,15 @@ public interface IQuakeML extends IQuakeMLDataProvider {
 
     /**
      *
-     * @return xml representation of quakeml
+     * @return xml representation of quakeml (original one from quakeledger process; is not valid according to the xml schema)
      */
-    XmlObject toXmlObject();
+    XmlObject toOriginalXmlObject();
+
+    /**
+     *
+     * @return xml representation of quakeml that is valid according to the xsd
+     */
+    XmlObject toValidatedXmlObject();
 
     /**
      *

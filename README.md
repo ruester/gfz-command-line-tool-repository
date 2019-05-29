@@ -22,7 +22,7 @@ and here:
 https://github.com/bpross-52n/quakeledger
 
 The aim of the quakeledger process is to provide earth quake event informations
-in a given region (and with some other filtering criterias (depth, magnitude, ...)).
+in a given region (and with some other filtering criteria (depth, magnitude, ...)).
 
 ### Shakyground
 
@@ -48,7 +48,7 @@ For output there are the following options:
 
 The processes itself run inside of docker containers.
 Example Dockerfiles to create the images necessary for this are included in the
-assistence folder.
+assistance folder.
 
 ## Installation
 
@@ -134,7 +134,7 @@ into
 <context:component-scan base-package="org.n52">
 ```
 
-This is necessary for the server to searche for repositories that are not
+This is necessary for the server to search for repositories that are not
 part of the org.n52.wps package.
 
 6. Create the docker images for the processes
@@ -142,7 +142,7 @@ part of the org.n52.wps package.
 You must create the docker images for each process you want to use.
 At the moment there are the Quakeledger and Shakyground processes.
 
-If you run the WPS Server on a decicated server you must build them on that server.
+If you run the WPS Server on a dedicated server you must build them on that server.
 If you run the WPS Server in docker than it is easily possible to build the images
 on the host system (because of sharing the same docker demon).
 
@@ -199,7 +199,7 @@ Example for the quakeledger process:
     "workingDirectory": "/usr/share/git/quakeledger",
     "commandToExecute": "python3 eventquery.py",
     "exitValueHandler": "logging",
-    "stderrHandler": "logging",
+    "stderrHandler": "pythonTraceback",
     "input": [
         { "title" : "input-boundingbox", "useAs": "commandLineArgument", "type": "bbox",   "crs": ["EPSG:4326", "EPSG:4328"]},
         { "title" : "mmin",              "useAs": "commandLineArgument", "type": "double", "default": "6.6"},
@@ -212,7 +212,7 @@ Example for the quakeledger process:
         { "title" : "tlat",              "useAs": "commandLineArgument", "type": "double", "default": "-33.1299174879672"}
     ],
     "output": [
-        { "title": "selectedRows", "readFrom": "file", "path": "test.xml", "type": "xml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
+        { "title": "selectedRows", "readFrom": "file", "path": "test.xml", "type": "quakeml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
     ]
 }
 ```
@@ -334,6 +334,7 @@ The following values for "type" are supported:
 
 * string
 * xml
+* quakeml
 
 The xml type can accept an additional "schema" attribute, that is used to validate the output.
 
@@ -358,6 +359,7 @@ The following "type" values are supported:
 * geojson
 * geotiff
 * shapefile
+* quakeml
 
 The xml type can also accept an "schema" attribute to validate the output.
 
@@ -369,21 +371,21 @@ For all input and output files there must be communication with the underlying
 docker file system. So also temporary files that are already on the server must be
 copied to the container.
 
-The overhead may course longer runtimes - and may also course timeouts on 
+The overhead may course longer run times - and may also course timeouts on 
 client side.
 
 Another problem is that the image id differ when created on different machines.
 The reason for that is that in most docker build processes there is a kind
 of update for a linux package manager. Executed on different machines and in a 
 different time forces differences in the files of the system. That means that
-the checksums of the layers of the docker build process will differ.
+the check sums of the layers of the docker build process will differ.
 
 
 Also the whole process of the installation is much more complicated.
 
 However the use of docker gives some advantages:
 
-* All the process executions are seperated. There is no way that they may influence
+* All the process executions are separated. There is no way that they may influence
 each other.
 * All temporary files created by the command line executable are removed 
 after the execution by removing the docker container.
@@ -466,3 +468,13 @@ if there are problems on running your process you can check that too.
 If you now just want to change your process configuration, you can change the configuration file and it will update on runtime.
 
 If you have to change the dockerfile, than you have to rebuild the image.
+
+## Notes about quakeml
+
+This services now support a custom type quakeml.
+It is provided as xml that is confirm to the schema http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd.
+The early version of the quakeledger process uses a different version of the xml.
+We try to support it as input and output, but the underlying process now uses the
+validated xml only.
+
+There is also the possibility to convert the quakeml to geojson. 

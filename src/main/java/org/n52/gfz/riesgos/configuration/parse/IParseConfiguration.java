@@ -21,7 +21,17 @@ package org.n52.gfz.riesgos.configuration.parse;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
+/**
+ * Interface to parse the configuration
+ */
 public interface IParseConfiguration {
 
-    public IConfiguration parse(final String inputText) throws ParseConfigurationException;
+    /**
+     * parses the configuration text
+     * @param inputText text with the configuration
+     * @return IConfiguration
+     * @throws ParseConfigurationException exception that is thrown
+     * in case of a problem on parsing
+     */
+    IConfiguration parse(final String inputText) throws ParseConfigurationException;
 }

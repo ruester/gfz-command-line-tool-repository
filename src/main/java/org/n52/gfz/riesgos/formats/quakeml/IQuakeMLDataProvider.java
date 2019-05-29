@@ -19,6 +19,7 @@ package org.n52.gfz.riesgos.formats.quakeml;
  */
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Interface to provide quakeml data
@@ -30,4 +31,10 @@ public interface IQuakeMLDataProvider {
      * @return list with quakeml events
      */
     List<IQuakeMLEvent> getEvents();
+
+    /**
+     *
+     * @return Returns a public ID (something like quakeml:quakeledger/0
+     */
+    Optional<String > getPublicId();
 }

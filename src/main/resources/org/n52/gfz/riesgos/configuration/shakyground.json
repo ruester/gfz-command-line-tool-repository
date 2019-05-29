@@ -9,6 +9,6 @@
     { "title" : "quakeMLFile", "useAs": "commandLineArgument", "type": "xmlWithoutHeader", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
   ],
   "output": [
-    { "title": "shakeMapFile", "readFrom": "stdout", "type": "xml", "schema": "http://earthquake.usgs.gov/eqcenter/shakemap"}
+    { "title": "shakeMapFile", "readFrom": "stdout", "type": "shakemap", "schema": "http://earthquake.usgs.gov/eqcenter/shakemap"}
   ]
 }

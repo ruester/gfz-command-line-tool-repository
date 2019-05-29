@@ -44,6 +44,9 @@ public class ConfigurationFactory {
     public static IConfiguration createQuakeledger() {
         try {
             final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/quakeledger.json");
+            if(inputStream == null) {
+                throw new IOException("Input stream is null");
+            }
             final String content = new String(IOUtils.toByteArray(inputStream));
             final IParseConfiguration parser = new ParseJsonConfigurationImpl();
             return parser.parse(content);
@@ -60,6 +63,9 @@ public class ConfigurationFactory {
     public static IConfiguration createShakyground() {
         try {
             final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/shakyground.json");
+            if(inputStream == null) {
+                throw new IOException("Input stream is null");
+            }
             final String content = new String(IOUtils.toByteArray(inputStream));
             final IParseConfiguration parser = new ParseJsonConfigurationImpl();
             return parser.parse(content);

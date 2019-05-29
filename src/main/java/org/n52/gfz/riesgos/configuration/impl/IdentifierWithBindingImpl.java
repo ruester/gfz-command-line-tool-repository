@@ -214,7 +214,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         /**
          * Constructor
          * @param identifier identifier of the value
-         * @param bindingClass bindingclass of the value
+         * @param bindingClass binding class of the value
          */
         public Builder(final String identifier, final Class<? extends IData> bindingClass) {
             this.identifier = identifier;

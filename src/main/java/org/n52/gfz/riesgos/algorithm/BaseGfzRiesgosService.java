@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  * configuration like approach for a branch of command line
  * applications that run inside of docker.
  *
- * The processes should be created by instacing this class.
+ * The processes should be created by creating an instance of this class.
  */
 public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
@@ -170,14 +170,14 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
     }
 
     /**
-     * Generates the Processdescription by using the configuration
+     * Generates the process description by using the configuration
      * @return ProcessDescription of the process (xml)
      */
     @Override
     public ProcessDescription getDescription() {
 
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl();
-        final ProcessDescriptionsDocument description = generator.generateProcessDescription(configuration);
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(configuration);
+        final ProcessDescriptionsDocument description = generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
         processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
         return processDescription;
@@ -260,7 +260,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             final String workingDirectory = configuration.getWorkingDirectory();
             final List<String> cmd = createCommandToExecute();
 
-            logger.debug("List with cmds: " + cmd);
+            logger.debug("List with cmd-arguments: " + cmd);
 
             final IExecutionContextManager contextManager = new DockerContainerExecutionContextManagerImpl(imageId);
 
@@ -321,7 +321,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                     handleExitValue(result.getExitValue());
                     handleStdout(result.getStdoutResult());
 
-                    logger.debug("Handling of stderr/exitvalue/stdout finished");
+                    logger.debug("Handling of stderr/exitValue/stdout finished");
 
                     readFromOutputFiles(context);
 
@@ -386,7 +386,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             final Optional<IStderrHandler> mainStderrHandler = configuration.getStderrHandler();
             if(mainStderrHandler.isPresent()) {
                 try {
-                    mainStderrHandler.get().handleSterr(stderr, logger::debug);
+                    mainStderrHandler.get().handleStderr(stderr, logger::debug);
                 } catch (final NonEmptyStderrException exception) {
                     throw new ExceptionReport("There is an error on stderr", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
                 }
@@ -449,7 +449,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         }
 
         /*
-         * handles stdout stream output (logging, use as ouput)
+         * handles stdout stream output (logging, use as output)
          */
         private void handleStdout(final String stdout) throws ExceptionReport {
             final Optional<IStdoutHandler> mainStdoutHandler = configuration.getStdoutHandler();

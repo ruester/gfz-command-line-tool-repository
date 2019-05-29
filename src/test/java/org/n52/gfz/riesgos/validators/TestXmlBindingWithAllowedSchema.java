@@ -44,9 +44,9 @@ public class TestXmlBindingWithAllowedSchema {
     private final String schemaQuakeml = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
     private final String schemaShakemap = "http://earthquake.usgs.gov/eqcenter/shakemap";
 
-    private final Path quakemlfile = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "convertformats", "quakeml.xml");
-    private final Path shakemapfile = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "convertformats", "shakemap.xml");
-    private final Path shakemapfilegithub = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "convertformats", "shakemap_github.xml");
+    private final Path quakemlfile = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "formats", "quakeml.xml");
+    private final Path shakemapfile = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "formats", "shakemap.xml");
+    private final Path shakemapfilegithub = Paths.get("src", "test", "resources", "org", "n52", "gfz", "riesgos", "formats", "shakemap_github.xml");
 
     /**
      * If the xml value does validate against the schema everything is fine

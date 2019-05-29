@@ -31,7 +31,7 @@ import java.util.Optional;
 /**
  * Configuration of an input or output parameter.
  *
- * This is a very generel interface.
+ * This is a very general interface.
  * Depending on that values are provided via the Optionals
  * the data can be written to files, read from files, converted to command line parameter,
  * written to stdin, or read from stdout / stderr or from the exit value.

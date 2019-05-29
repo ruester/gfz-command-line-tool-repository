@@ -49,7 +49,7 @@ public interface IExecutionContext extends AutoCloseable {
      * @param content byte array with the data
      * @param workingDir working directory to write to
      * @param fileName filename in the working directory
-     * @throws IOException there may be an IOException on wriring the file
+     * @throws IOException there may be an IOException on writing the file
      */
     void writeToFile(final byte[] content, final String workingDir, final String fileName) throws IOException;
 }

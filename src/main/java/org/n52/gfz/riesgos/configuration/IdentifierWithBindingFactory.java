@@ -21,6 +21,8 @@ import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericFileDataBin
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToQuakeMLXmlBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToShakemapXmlBinding;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.FileToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
@@ -28,7 +30,11 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingT
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
+import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
+import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
@@ -58,6 +64,7 @@ import java.util.UUID;
  * Factory for several predefined kinds of input and output data
  */
 public class IdentifierWithBindingFactory {
+
     private IdentifierWithBindingFactory() {
         // static
     }
@@ -195,8 +202,8 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchema(
             final String identifier, final String schema, final String defaultFlag) {
 
-        final String filename = createUUIDFilename("inputfile", ".xml");
-        XmlBindingWithAllowedSchema validator;
+        final String filename = createUUIDFilename(".xml");
+        final XmlBindingWithAllowedSchema validator;
 
         if (schema == null || schema.trim().length() == 0) {
             validator = null;
@@ -224,8 +231,8 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
             final String identifier, final String schema, final String flag) {
 
-        final String filename = createUUIDFilename("inputfile", ".xml");
-        XmlBindingWithAllowedSchema validator;
+        final String filename = createUUIDFilename(".xml");
+        final XmlBindingWithAllowedSchema validator;
 
         if (schema == null || schema.trim().length() == 0) {
             validator = null;
@@ -243,6 +250,27 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
+     * Same as  createCommandLineArgumentXmlFileWithSchema but with QuakeML
+     * @param identifier identifier of the data
+     * @param flag optional flag for the command line argument
+     * @return quakeml xml file command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentQuakeML(
+            final String identifier, final String flag) {
+        final String filename = createUUIDFilename(".xml");
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withPath(filename)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .build();
+    }
+
+    /**
      * Creates a command line argument (geotiff file) with a file path that will be written down as a
      * temporary file
      * @param identifier identifier of the data
@@ -252,7 +280,7 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentGeotiff(
             final String identifier,
             final String flag) {
-        final String filename = createUUIDFilename("inputfile", ".tiff");
+        final String filename = createUUIDFilename(".tiff");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
@@ -271,8 +299,7 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentGeojson(
             final String identifier,
             final String flag) {
-        final String filename = createUUIDFilename("inputfile", ".json");
-
+        final String filename = createUUIDFilename(".json");
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
@@ -283,7 +310,7 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
-     * Creates a command line argument (shapefile) with a file path that wlle be written down as a temporary file
+     * Creates a command line argument (shapefile) with a file path that will be written down as a temporary file
      * (or multiple files, because one shapefile contains multiple files)
      * @param identifier identifier of the data
      * @param flag optional command line flag
@@ -292,7 +319,7 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentShapeFile(
             final String identifier, final String flag) {
 
-        final String filename = createUUIDFilename("inputfile", ".shp");
+        final String filename = createUUIDFilename(".shp");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
@@ -312,7 +339,7 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentFile(
             final String identifier,
             final String flag) {
-        final String filename = createUUIDFilename("inputfile", ".dat");
+        final String filename = createUUIDFilename(".dat");
 
         return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
@@ -394,6 +421,46 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
+     * Creates an input file argument with quakeml
+     * @param identifier identifier of the data
+     * @param path path of the file to write before starting the process
+     * @return quakeml input file
+     */
+    public static IIdentifierWithBinding createFileInQuakeML(
+            final String identifier,
+            final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+                .withPath(path)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .build();
+    }
+
+    /**
+     * Creates an input file argument with shakemap
+     * @param identifier identifier of the data
+     * @param path path of the file to write before starting the process
+     * @return shakemap input file
+     */
+    public static IIdentifierWithBinding createFileInShakemap(
+            final String identifier,
+            final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+            .withPath(path)
+            .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+            .withSchema(schema)
+            .withValidator(new XmlBindingWithAllowedSchema(schema))
+            .build();
+    }
+
+    /**
      * Creates a input file argument (generic)
      * @param identifier identifier of the data
      * @param path path of the file to write before staring the process
@@ -435,6 +502,47 @@ public class IdentifierWithBindingFactory {
                 .withValidator(validator)
                 .build();
     }
+
+    /**
+     * Creates a xml file for quakeml on a given path with an additional schema
+     * @param identifier identifier of the data
+     * @param path path of the file to read after process termination
+     * @return output argument containing the quakeml xml that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutQuakeMLFile(
+            final String identifier,
+            final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+                .withPath(path)
+                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToQuakeMLXmlBinding()))
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .build();
+    }
+
+    /**
+     * Creates a xml file for shakemap on a given path with an additional schema
+     * @param identifier identifier of the data
+     * @param path path of the file to read after process termination
+     * @return output argument containing the shakemap xml that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutShakemap(
+            final String identifier,
+            final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+            .withPath(path)
+            .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToShakemapXmlBinding()))
+            .withSchema(schema)
+            .withValidator(new XmlBindingWithAllowedSchema(schema))
+            .build();
+    }
+
 
     /**
      * creates a geotiff file (output) on a given path
@@ -507,9 +615,53 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createStdoutXmlWithSchema(
             final String identifier,
             final String schema) {
+
+        final ICheckDataAndGetErrorMessage validator;
+
+        if (schema == null || schema.trim().length() == 0) {
+            validator = null;
+        } else {
+            validator = new XmlBindingWithAllowedSchema(schema);
+        }
+
         return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
                 .withFunctionToHandleStdout(new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
+                .withValidator(validator)
+                .build();
+    }
+
+    /**
+     * Creates a quakeml xml output (via stdout) with an additional schema
+     * @param identifier identifier of the data
+     * @return output argument containing quakeml xml that will be read from stdout
+     */
+    public static IIdentifierWithBinding createStdoutQuakeML(
+            final String identifier) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+                .withFunctionToHandleStdout(new ConvertBytesToQuakeMLXmlBinding())
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .build();
+    }
+
+    /**
+     * Creates a shakemap xml output (via stdout) with an additional schema
+     * @param identifier identifier of the data
+     * @return output argument containing shakemap xml that will be read from stdout
+     */
+    public static IIdentifierWithBinding createStdoutShakemap(
+            final String identifier) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
+
+        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+                .withFunctionToHandleStdout(new ConvertBytesToShakemapXmlBinding())
+                .withSchema(schema)
+                .withValidator(new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
@@ -552,7 +704,8 @@ public class IdentifierWithBindingFactory {
     /*
      * creates a unique filename
      */
-    private static String createUUIDFilename(final String prefix, final String ending) {
+    private static String createUUIDFilename(final String ending) {
+        final String prefix = "inputfile";
         return prefix + UUID.randomUUID() + ending;
     }
 }

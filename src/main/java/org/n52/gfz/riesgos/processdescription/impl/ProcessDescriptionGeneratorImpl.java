@@ -21,9 +21,6 @@ import net.opengis.ows.x11.CodeType;
 import net.opengis.ows.x11.DomainMetadataType;
 import net.opengis.ows.x11.LanguageStringType;
 import net.opengis.wps.x100.CRSsType;
-import net.opengis.wps.x100.ComplexDataCombinationType;
-import net.opengis.wps.x100.ComplexDataCombinationsType;
-import net.opengis.wps.x100.ComplexDataDescriptionType;
 import net.opengis.wps.x100.InputDescriptionType;
 import net.opengis.wps.x100.LiteralInputType;
 import net.opengis.wps.x100.LiteralOutputType;
@@ -35,7 +32,6 @@ import net.opengis.wps.x100.SupportedComplexDataInputType;
 import net.opengis.wps.x100.SupportedComplexDataType;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
 import org.n52.wps.io.GeneratorFactory;
 import org.n52.wps.io.IGenerator;
 import org.n52.wps.io.IParser;
@@ -44,44 +40,52 @@ import org.n52.wps.io.data.IBBOXData;
 import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.ILiteralData;
-import org.n52.wps.webapp.api.FormatEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of the process description generation
  */
-public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGenerator {
+public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionGenerator {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDescriptionGeneratorImpl.class);
+
+    private final IConfiguration configuration;
 
     private final Supplier<List<IParser>> parserSupplier;
     private final Supplier<List<IGenerator>> generatorSupplier;
 
     /**
      * Constructor (for testing purpose)
+     * @param configuration the configuration for which the process description should be generated
      * @param parserSupplier supplier for getting all the parsers
      * @param generatorSupplier supplier for getting all the generators
      */
-    public ProcessDescriptionGeneratorImpl(final Supplier<List<IParser>> parserSupplier, final Supplier<List<IGenerator>> generatorSupplier) {
+    public ProcessDescriptionGeneratorImpl(
+            final IConfiguration configuration,
+            final Supplier<List<IParser>> parserSupplier,
+            final Supplier<List<IGenerator>> generatorSupplier) {
+        this.configuration = configuration;
         this.parserSupplier = parserSupplier;
         this.generatorSupplier = generatorSupplier;
     }
 
     /**
-     * Default constructor
+     *
+     * @param configuration configuration for which the description should be generated
      */
-    public ProcessDescriptionGeneratorImpl() {
-        this(() -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
+    public ProcessDescriptionGeneratorImpl(final IConfiguration configuration) {
+        this(configuration, () -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
     }
 
     @Override
-    public ProcessDescriptionsDocument generateProcessDescription(final IConfiguration configuration) {
+    public ProcessDescriptionsDocument generateProcessDescription() {
 
         final ProcessDescriptionsDocument result = ProcessDescriptionsDocument.Factory.newInstance();
         final ProcessDescriptionsDocument.ProcessDescriptions processDescriptions = result.addNewProcessDescriptions();
@@ -164,7 +168,7 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                     final SupportedComplexDataInputType complexData = inputDescriptionType.addNewComplexData();
                     final List<IParser> parsers = parserSupplier.get();
                     final List<IParser> foundParsers = findParser(parsers, inputDataTypeClass);
-                    addInputFormats(complexData, foundParsers, input.getSchema().orElse("null"));
+                    addInputFormats(complexData, foundParsers);
                 }
             }
         }
@@ -211,184 +215,11 @@ public class ProcessDescriptionGeneratorImpl implements IProcessDescriptionGener
                 final SupportedComplexDataType complexData = outputDescriptionType.addNewComplexOutput();
                 final List<IGenerator> generators = generatorSupplier.get();
                 final List<IGenerator> foundGenerators = findGenerators(generators, outputDataTypeClass);
-                addOutputFormats(complexData, foundGenerators, output.getSchema().orElse("null"));
+                addOutputFormats(complexData, foundGenerators);
             }
         }
         return result;
     }
 
-    /*
-     * takes all the constructors and searchs for one constructor getting a single element
-     * the class of this element is the name to search for.
-     *
-     * Example:
-     * I search in the constructors of LiteralStringBinding
-     * There is a constructor using a single string argument
-     * --> the result is string
-     *
-     * Same for LiteralDoubleBinding and so on
-     */
-    private Optional<String> findSimpleNameOfFirstConstructorParameter(final Constructor<?>[] constructors) {
-        Optional<String> result = Optional.empty();
-        for(final Constructor<?> constructor : constructors) {
-            final Class<?>[] supportedClasses = constructor.getParameterTypes();
-            if(supportedClasses.length == 1) {
-                result = Optional.of(supportedClasses[0].getSimpleName());
-            }
-        }
-        return result;
-    }
 
-    /*
-     * searches for all the interfaces a class implements
-     * It is used to search for IData implementations that are using
-     * the classes for LiteralData and ComplexData.
-     * If the current class has no interfaces the search will be extended
-     * to the super class
-     */
-    private List<Class<?>> findInterfaces(final Class<?> clazz) {
-        final List<Class<?>> result = Arrays.asList(clazz.getInterfaces());
-        final Class<?> superClass = clazz.getSuperclass();
-        if(result.isEmpty() && superClass != null) {
-            return findInterfaces(superClass);
-        }
-        return result;
-    }
-
-    /*
-     * searches for a parser that supports a specific binding class
-     */
-    private List<IParser> findParser(final List<IParser> allParsers, final Class<?> clazz) {
-        return allParsers.stream().filter(new ParserSupportsClass(clazz)).collect(Collectors.toList());
-    }
-
-    /*
-     * searches for a generator that supports a specific binding class
-     */
-    private List<IGenerator> findGenerators(final List<IGenerator> allGenerators, final Class<?> clazz) {
-        return allGenerators.stream().filter(new GeneratorSupportsClass(clazz)).collect(Collectors.toList());
-    }
-
-    /*
-     * adds a complex input format to the description of the data input
-     * uses all the parsers that support the given class
-     *
-     * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
-     */
-    private void addInputFormats(final SupportedComplexDataInputType complexData, final List<IParser> foundParsers,
-                                 final String optionalSchema) {
-        final ComplexDataCombinationsType supportedInputFormat = complexData.addNewSupported();
-
-        for(final IParser parser : foundParsers) {
-            final List<FormatEntry> supportedFullFormats = parser.getSupportedFullFormats();
-            if (complexData.getDefault() == null) {
-                ComplexDataCombinationType defaultInputFormat = complexData.addNewDefault();
-                final FormatEntry format = supportedFullFormats.get(0);
-                final ComplexDataDescriptionType supportedFormat = defaultInputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                String encoding = format.getEncoding();
-                if (encoding != null && !encoding.equals("")) {
-                    supportedFormat.setEncoding(encoding);
-                }
-
-                String schema = format.getSchema();
-                if (schema != null && !schema.equals("")) {
-                    supportedFormat.setSchema(schema);
-                } else if(optionalSchema != null && "text/xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
-                }
-            }
-
-            for(final FormatEntry format : supportedFullFormats) {
-                final ComplexDataDescriptionType supportedFormat = supportedInputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                if (format.getEncoding() != null) {
-                    supportedFormat.setEncoding(format.getEncoding());
-                }
-
-                if (format.getSchema() != null) {
-                    supportedFormat.setSchema(format.getSchema());
-                } else if(optionalSchema != null && "text.xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
-                }
-            }
-        }
-    }
-
-    /*
-    * adds a complex output format to the description of the process outputs
-     * uses all the generators that support the given class
-     *
-     * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
-     */
-    private void addOutputFormats(SupportedComplexDataType complexData, List<IGenerator> foundGenerators, final String optionalSchema) {
-        final ComplexDataCombinationsType supportedOutputFormat = complexData.addNewSupported();
-
-        for(final IGenerator generator : foundGenerators) {
-            final List<FormatEntry> supportedFullFormats = generator.getSupportedFullFormats();
-            if (complexData.getDefault() == null) {
-                ComplexDataCombinationType defaultInputFormat = complexData.addNewDefault();
-                final FormatEntry format = supportedFullFormats.get(0);
-                final ComplexDataDescriptionType supportedFormat = defaultInputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                String encoding = format.getEncoding();
-                if (encoding != null && !encoding.equals("")) {
-                    supportedFormat.setEncoding(encoding);
-                }
-
-                String schema = format.getSchema();
-                if (schema != null && !schema.equals("")) {
-                    supportedFormat.setSchema(schema);
-                } else if(optionalSchema != null && "text/xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
-                }
-            }
-
-            for(final FormatEntry format : supportedFullFormats) {
-                final ComplexDataDescriptionType supportedFormat = supportedOutputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                if (format.getEncoding() != null) {
-                    supportedFormat.setEncoding(format.getEncoding());
-                }
-
-                if (format.getSchema() != null) {
-                    supportedFormat.setSchema(format.getSchema());
-                } else if(optionalSchema != null && "text/xml".equals(format.getMimeType())) {
-                    supportedFormat.setSchema(optionalSchema);
-                }
-            }
-        }
-    }
-
-    /*
-     * Predicate to filter parser that support the class
-     */
-    private static class ParserSupportsClass implements Predicate<IParser> {
-        private final Class<?> clazz;
-
-        ParserSupportsClass(final Class<?> clazz) {
-            this.clazz = clazz;
-        }
-
-        @Override
-        public boolean test(final IParser parser) {
-            return Arrays.asList(parser.getSupportedDataBindings()).contains(clazz);
-        }
-    }
-
-    /*
-     * Predicate to filter generators that support the class
-     */
-    private static class GeneratorSupportsClass implements Predicate<IGenerator> {
-        private final Class<?> clazz;
-
-        GeneratorSupportsClass(final Class<?> clazz) {
-            this.clazz = clazz;
-        }
-
-        @Override
-        public boolean test(final IGenerator generator) {
-            return Arrays.asList(generator.getSupportedDataBindings()).contains(clazz);
-        }
-    }
 }

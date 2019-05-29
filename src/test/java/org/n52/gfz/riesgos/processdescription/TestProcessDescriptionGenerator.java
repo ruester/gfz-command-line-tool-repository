@@ -58,13 +58,12 @@ public class TestProcessDescriptionGenerator {
         // because of the test case
         // there is no direct access to the ParserFactory and GeneratorFactory classes
         // it only uses a Supplier to get the the parsers and generators
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(createParserSupplier(), createGeneratorSupplier());
-
         final IConfiguration configuration = new QuakeledgerConfig();
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(configuration, createParserSupplier(), createGeneratorSupplier());
 
-        final ProcessDescriptionsDocument processDescription = generator.generateProcessDescription(configuration);
+        final ProcessDescriptionsDocument processDescription = generator.generateProcessDescription();
 
-        final String expecedProcessDescriptionString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        final String expectedProcessDescriptionString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<wps:ProcessDescriptions xml:lang=\"en-US\" service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\">\n" +
                 "  <ProcessDescription statusSupported=\"true\" storeSupported=\"true\" wps:processVersion=\"1.0.0\">\n" +
                 "    <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.QuakeledgerTest</ows:Identifier>\n" +
@@ -192,13 +191,11 @@ public class TestProcessDescriptionGenerator {
                 "          <Default>\n" +
                 "            <Format>\n" +
                 "              <MimeType>text/xml</MimeType>\n" +
-                "              <Schema>http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd</Schema>\n" +
                 "            </Format>\n" +
                 "          </Default>\n" +
                 "          <Supported>\n" +
                 "            <Format>\n" +
                 "              <MimeType>text/xml</MimeType>\n" +
-                "              <Schema>http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd</Schema>\n" +
                 "            </Format>\n" +
                 "          </Supported>\n" +
                 "        </ComplexOutput>\n" +
@@ -208,9 +205,9 @@ public class TestProcessDescriptionGenerator {
                 "</wps:ProcessDescriptions>";
 
         try {
-            final XmlObject expecedProcessDescriptionXml = XmlObject.Factory.parse(expecedProcessDescriptionString);
+            final XmlObject expectedProcessDescriptionXml = XmlObject.Factory.parse(expectedProcessDescriptionString);
 
-            assertEquals("The xml output should be equal", expecedProcessDescriptionXml.xmlText(XML_OPTIONS), processDescription.xmlText(XML_OPTIONS));
+            assertEquals("The xml output should be equal", expectedProcessDescriptionXml.xmlText(XML_OPTIONS), processDescription.xmlText(XML_OPTIONS));
         } catch(final XmlException xmlException) {
             fail("There is an xml exception");
         }

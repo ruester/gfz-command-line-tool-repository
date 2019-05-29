@@ -141,6 +141,9 @@ public class ConfigurationImpl implements IConfiguration {
         return Objects.hash(identifier, imageId, workingDirectory, commandToExecute, defaultCommandLineFlags, inputIdentifier, outputIdentifier, stderrHandler, exitValueHandler, stdoutHandler);
     }
 
+    /**
+     * The builder class helps to build an identifier
+     */
     public static class Builder {
         private final String identifier;
         private final String imageId;
@@ -155,6 +158,14 @@ public class ConfigurationImpl implements IConfiguration {
         private IExitValueHandler exitValueHandler;
         private IStdoutHandler stdoutHandler;
 
+
+        /**
+         * Constructor
+         * @param identifier identifier of the process
+         * @param imageId image id for docker
+         * @param workingDirectory working directory to run the process in (inside docker)
+         * @param commandToExecute command to execute (inside docker)
+         */
         public Builder(final String identifier, final String imageId, final String workingDirectory, final List<String> commandToExecute) {
             this.identifier = identifier;
             this.imageId = imageId;
@@ -166,46 +177,90 @@ public class ConfigurationImpl implements IConfiguration {
             this.outputIdentifier = new ArrayList<>();
         }
 
+        /**
+         * Set additional command line flags
+         * @param defaultCommandLineFlags flags that should always be included on running the command line program
+         * @return builder instance
+         */
         public Builder withAddedDefaultCommandLineFlags(final List<String> defaultCommandLineFlags) {
             this.defaultCommandLineFlags.addAll(defaultCommandLineFlags);
             return this;
         }
 
+        /**
+         * Set the input identifiers
+         * @param inputIdentifiers identifiers for input
+         * @return builder instance
+         */
         public Builder withAddedInputIdentifiers(final List<IIdentifierWithBinding> inputIdentifiers) {
             this.inputIdentifier.addAll(inputIdentifiers);
             return this;
         }
 
-        public Builder withAddedInputIdentifier(final IIdentifierWithBinding inputIdentifer) {
-            this.inputIdentifier.add(inputIdentifer);
+        /**
+         * Adds some input identifiers
+         * @param inputIdentifier identifiers for input to add
+         * @return builder instance
+         */
+        public Builder withAddedInputIdentifier(final IIdentifierWithBinding inputIdentifier) {
+            this.inputIdentifier.add(inputIdentifier);
             return this;
         }
 
+        /**
+         * Set the output identifiers
+         * @param outputIdentifiers identifiers for output
+         * @return builder instance
+         */
         public Builder withAddedOutputIdentifiers(final List<IIdentifierWithBinding> outputIdentifiers) {
             this.outputIdentifier.addAll(outputIdentifiers);
             return this;
         }
 
+        /**
+         * Adds some output identifiers
+         * @param outputIdentifier identifiers for output to add
+         * @return builder instance
+         */
         public Builder withAddedOutputIdentifier(final IIdentifierWithBinding outputIdentifier) {
             this.outputIdentifier.add(outputIdentifier);
             return this;
         }
 
+        /**
+         * Sets the stderr handler
+         * @param stderrHandler handler for standard error stream
+         * @return builder instance
+         */
         public Builder withStderrHandler(final IStderrHandler stderrHandler) {
             this.stderrHandler = stderrHandler;
             return this;
         }
 
+        /**
+         * Sets the stdout handler
+         * @param stdoutHandler handler for standard output stream
+         * @return builder instance
+         */
         public Builder withStdoutHandler(final IStdoutHandler stdoutHandler) {
             this.stdoutHandler = stdoutHandler;
             return this;
         }
 
+        /**
+         * Sets the exit value handler
+         * @param exitValueHandler handler for exit value
+         * @return builder instance
+         */
         public Builder withExitValueHandler(final IExitValueHandler exitValueHandler) {
             this.exitValueHandler = exitValueHandler;
             return this;
         }
 
+        /**
+         * Creates the new configuration
+         * @return IConfiguration created by the builder
+         */
         public IConfiguration build() {
             return new ConfigurationImpl(
                     identifier,

@@ -28,7 +28,7 @@ import java.util.Objects;
 public class ExceptionIfStderrIsNotEmptyHandler implements IStderrHandler {
 
     @Override
-    public void handleSterr(String stderr, final ILogger logger) throws NonEmptyStderrException {
+    public void handleStderr(String stderr, final ILogger logger) throws NonEmptyStderrException {
         if(! stderr.trim().isEmpty()) {
             throw new NonEmptyStderrException(stderr);
         }
