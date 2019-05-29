@@ -1,19 +1,21 @@
 # Examples of using the service and algorithms
 
 - [Requirements](#requirements)
-- [Command line](#commandline)
+- [Command line](#command-line)
     - [cURL](#curl)
     - [wget](#wget)
+    - [Async execution](#async-execution)
 - [Python](#python)
+    - [OWSLib](#owslib)
+    - [Other libraries](#other-libraries)
 - [R](#r)
-- [JavaScript](#javascript)
 
-## Requirements <a name="#requirements"></a>
+## Requirements
 
 At first you need to know which process of the WPS you want to query. Therefore you could read the `GetCapabilities` document of the WPS server by querying the service with the `GetCapabilties` parameter:
 
 ```bash
-http://URLtoWPS?service=WPS&request=GetCapabilities
+https://URLtoWPS?service=WPS&request=GetCapabilities
 ```
 
 The section `wps:Contents` contains all available processes which are provided by the WPS.
@@ -31,7 +33,7 @@ This identifier is needed to choose which process should be executed.
 To get information (like input and output data types) about the process you can query the WPS server with the `DescribeProcess` parameter:
 
 ```bash
-http://URLtoWPS?request=DescribeProcess&service=WPS&version=2.0.0&identifier=ShakygroundProcess
+https://URLtoWPS?request=DescribeProcess&service=WPS&version=2.0.0&identifier=ShakygroundProcess
 ```
 
 Which gives something like:
@@ -68,7 +70,7 @@ Which gives something like:
 ```
 
 
-## Command line <a name="#commandline"></a>
+## Command line
 
 For querying a WPS server from the command line you can use `cURL` or `wget`.
 It is best to prepare a XML file with the request to the WPS in it, so for example:
@@ -90,29 +92,127 @@ It is best to prepare a XML file with the request to the WPS in it, so for examp
 </wps:Execute>
 ```
 
-
-### cURL <a name="#curl"></a>
-
+You can then send the XML file with `cURL` or `wget` as described in the following:
 
 
+### cURL
 
-### wget <a name="#wget"></a>
-
-```
-wget "http://URL/to/WPS?param1=123&param2=abc" --post-file="xmlTestFile.xml" --header="Content-Type:text/xml"
-```
-
-or use `post-data` instead of `post-file` to send XML string:
-
-```
---post-data="<eventParameters xmlns="http://quakeml.org/xmlns/bed/1.2">..."
+```bash
+curl -X POST -H "Content-Type: text/xml" -d @myxmlfile.xml "https://URL/to/WPS"
 ```
 
 
-## Python <a name="#python"></a>
+### wget
+
+```bash
+wget "https://URL/to/WPS" --post-file "myxmlfile.xml" --header "Content-Type:text/xml"
+```
 
 
-## R <a name="#r"></a>
+### Async execution
+
+For long execution times it is better to use the `async` execution. Therefore you set the parameter `mode` within `wps:Execute` to `"async"`:
+
+```xml
+<wps:Execute service="WPS" version="2.0.0" ... mode="async">
+...
+```
+
+Now if you post the XML file to the server you get a different response:
+
+```xml
+<wps:StatusInfo xmlns:wps="http://www.opengis.net/wps/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd">
+  <wps:JobID>528cc842-c4ef-40ef-a84f-0642740229b6</wps:JobID>
+  <wps:Status>Accepted</wps:Status>
+</wps:StatusInfo>
+```
+
+With this job ID you can get the results later after execution has finished.
+You can query the status of the job with:
+
+```bash
+https://URLtoWPS?service=WPS&version=2.0.0&request=GetStatus&jobId=YourJobID
+```
+
+Which returns the following if the job has finished:
+
+```xml
+<wps:StatusInfo xsi:schemaLocation="http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd" xmlns:wps="http://www.opengis.net/wps/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <wps:JobID>528cc842-c4ef-40ef-a84f-0642740229b6</wps:JobID>
+  <wps:Status>Succeeded</wps:Status>
+</wps:StatusInfo>
+```
+
+You can then get the results of the job with:
+
+```bash
+https://URLtoWPS?service=WPS&version=2.0.0&request=GetResult&jobId=YourJobId
+```
 
 
-## JavaScript <a name="#javascript"></a>
+## Python
+
+### OWSLib
+
+The library [OWSLib](https://geopython.github.io/OWSLib/) includes a WPS client you can use to communicate with a WPS server.
+Here is an example of how to start a process and get the results:
+
+```python
+from owslib.wps import WebProcessingService
+from owslib.wps import printInputOutput
+from owslib.wps import monitorExecution
+from owslib.wps import BoundingBoxDataInput
+
+processid = 'QuakeledgerProcess'
+
+wps = WebProcessingService('https://URLtoWPS', verbose=True)
+
+print('Available processes:')
+for process in wps.processes:
+    print(process.identifier, process.title)
+
+process = wps.describeprocess(processid)
+
+print('Available inputs:')
+for input in process.dataInputs:
+    printInputOutput(input)
+
+print('Available outputs:')
+for output in process.processOutputs:
+    printInputOutput(output)
+
+bbox = BoundingBoxDataInput([-34.43409789359468, -72.0703125, -32.556073644920275, -70.02685546875], 'EPSG:4326')
+
+inputs = [("input-boundingbox", bbox),
+          ("mmin", "6.6"),
+          ("mmax", "8.5"),
+          ("zmin", "5"),
+          ("zmax", "140"),
+          ("p", "0.1"),
+          ("etype", "deaggregation"),
+          ("tlon", "-71.5730623712764"),
+          ("tlat", "-33.1299174879672")]
+output = [("selectedRows", False, "text/xml")]
+
+execution = wps.execute(processid, inputs, output=output)
+
+monitorExecution(execution, download=True)
+```
+
+The above code snippet needs an OWSLib version of at least 0.17.1 which you can install with `pip3`:
+
+```bash
+pip3 install OWSLib==0.17.1
+```
+
+### Other libraries
+
+You could also use libraries which handle URLs and can send POST requests, for example:
+
+- [urllib](https://docs.python.org/2/library/urllib2.html)
+- [requests](http://python-requests.org)
+
+## R
+
+Currently there are no official libraries which support using WPS services with R. It seems like [ows4R](https://www.r-pkg.org/pkg/ows4R) will implement WPS client support in the future.
+For the moment you can use request libraries like [RCurl](https://www.r-pkg.org/pkg/RCurl) to build your own requests and send them via HTTP POST to the server.
