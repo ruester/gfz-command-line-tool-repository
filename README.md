@@ -52,7 +52,7 @@ assistance folder.
 
 ## Installation
 
-Please read the installation guide [here](docs/Installationguide.md).
+Please read the installation guide [here](doc/Installationguide.md).
 
 ## Configuration
 

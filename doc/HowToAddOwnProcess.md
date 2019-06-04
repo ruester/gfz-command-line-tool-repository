@@ -13,7 +13,7 @@ In this case we will write a simple python script:
 This script takes a feature collection
 and filters them according to a size.
 
-A more careful designed example would care about
+A more carefully designed example would care about
 projections and units.
 '''
 
