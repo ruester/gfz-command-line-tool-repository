@@ -143,9 +143,10 @@ We have to care about the following:
 - geopandas
 
 The last step is to add the script to the docker image.
-In most cases we checkout a repository (see the Dockerfiles for
-quakeledger or shakyground) but here it is enough to just copy the
-script into the image.
+In most cases we checkout a git repository (see the Dockerfiles for
+quakeledger or shakyground - in this 
+dockerfiles we also have to install git) but here it is enough to 
+just copy the script into the image.
 
 ```
 FROM ubuntu:18.04
@@ -177,8 +178,9 @@ between the WPS server and the host system.
 
 ## Write the json configuration
 
-We have to provide a description of how where we can find and execute
-the process and how to handle input and output data.
+We have to provide a description of how the skeleton-process 
+can find and execute the process and how to 
+handle input and output data.
 
 ```javascript
 {
@@ -219,15 +221,24 @@ Lets to through the elements:
   Make sure that you insert a new title which every new process.
 - imageId is the tag or the image id of the docker image that contains
   the code. Here we use the filter_big image we created in the last step.
+  It is possible to refer to the exact image id as well as to the
+  tag that we used creating the docker image.
+  While the docker image id gives you more certainty which exact version
+  of the image is used (because they are unique), it is necessary to
+  change image id if the docker image must be rebuild.
+  Another important aspect is that the docker image id is not
+  stable building the image on different machines. That is why we
+  rely on the tag here.
 - workingDirectory gives the name of the directory that we use to run
   the program. In this case we copied the file to the /usr/share/git/filter_big
-  folder inside of the image. All your paths in the script are relative
-  so this is the directory to use for the process.
+  folder inside of the image. All your paths in the script are relative to
+  the script location so this is the directory to use for the process.
 - exitValueHandler gives us the handler for the exit value.
   Because we may give back a non zero exit value, we want to make sure
   that the wps server realized that there was an error.
 - same for the stderrHandler. We are sure, that we don't have any
-  warning that we want to ignore. So any text on stderr is clearly a
+  warning that we want to ignore (warnings on python are normally given back
+  on stderr). So any text on stderr is clearly a
   sign of an error in our script, that should be propagated to the server.
 - for the input fields we have
   * an input-file that have a geojson format and is always on the path
@@ -244,15 +255,25 @@ script as arguments here.
 If we are not interested in one output the script produces we can
 simply ignore it.
 
-For input files that must always the same it is the best approach to make
-sure they are copied also into the docker image next to the script.
+For input files that must always be the same it is the best 
+approach to make sure they are copied also into the docker 
+image next to the script.
+
+For an overview of the supported input and output formats
+you can look [here](SupportedFormats.md).
 
 ## Copy the json file to the configuration folder
 
 To add the service to the server you just simply have to copy
 the config json file to the folder that the server uses to
 search and parse process configurations.
-You can see the path in the wps server adminstration interface (using
+
+The file must provide a .json ending, because at the moment
+only those configuration files are parsed so that the processes
+can be included.
+
+You can see the path for adding the configuration files
+in the wps server adminstration interface (using
 the wps server in the docker container and running the server locally
 it is
 http://localhost:8080/wps.
@@ -267,8 +288,12 @@ docker-compose.yml for the wps server.
 
 Now the service is running on the server and you can query it using
 python, R, QGIS or others.
+For examples on how to use wps services with R, python or QGIS please
+refer to the [ExampleUsage-Page](ExampleUsage.md).
 
-We can run a test script that runs the xml level:
+Anyway, we will provide a test script here, that will query
+the new process and parse it to a geopandas dataframe.
+Please make sure that the server runs.
 
 ```python
 #!/usr/bin/env python3
@@ -414,3 +439,78 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+You can execute this script with python3. It does not need any
+arguments.
+
+You may also check the output of the WPS-Server logs. In case that there
+is an error on the script, the configuration file or a missing
+dependency in the docker image, reading the logs will be the fastest
+way to identifier an error.
+
+## Optional: Change your process
+
+If you want to change your process you may have to change different files
+and have to do some of the steps mentioned above.
+
+We will care about some scenarios here.
+
+### Change of the dependencies
+
+Maybe the first change that is necessary on a new process is to
+add dependencies to the dockerfile because of an error while running
+the process on the server.
+
+The command line script does not need any update, so we don't have to care
+about this.
+
+The dockerfile is the place where we must must change the content and
+in most cases just have to install some packages.
+
+In case you already build a dockerfile it may be the best to just
+add the additional installation steps on the bottom of the dockerfile, because
+docker needs a caching mechanism to reuse existing images and installation
+steps.
+
+Adding the instructions on the bottom will give docker the possibility to
+reuse your existing image. But don't be afraid if you change the content
+somewhere else. Docker will run the build command anyway. It just may take
+more time and consume more space on the file system.
+
+After building the new docker image, you have to check your json configuration file.
+If you refer to the old image id, than you have to update this field to
+use the new image id. You also have to copy the json configuration to the
+configuration folder (you can just overwrite the file).
+
+In case that you use a docker tag (say: "filter_big:latest") 
+in the json configuration and you
+set this tag on the docker build command (--tag "filter_big"), 
+the configuration already refers, than docker will already refer to
+your new image. No change on the configuration file is necessary
+to the tag. The process will refer to exactly this tag, so no further
+editing of the json configuration is necessary.
+
+### Change of the json configuration
+
+If all you have to change is the configuration - say a change of the
+paths or formats of the input or output data - just edit the file and
+copy it to the configurations folder.
+Changes on the source code or the docker file are not necessary.
+
+### Change of the source code
+
+Any time you change the source code, you also have to rebuild the image.
+You may not have to update the dockerfile but the recreation of the
+image is necessary because the source code is included in the docker image.
+
+After that you have to check if you have to change the json configuration
+because of different formats, paths or other input and output parameters.
+
+## Existing processes as templates
+
+In the basic skeleton some processes are already integrated.
+All this processes have source code, a dockerfile and a configuration
+that you can take as templates for your own processes.
+
+Please refer to the overview of the already included processes 
+[here](IncludedProcesses.md).

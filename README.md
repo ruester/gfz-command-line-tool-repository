@@ -283,74 +283,8 @@ At the moment there is no final decision on running the services in docker or no
 
 ## How to add a service
 
-To add a service the following steps are necessary:
-
-1. Dockerfile
-
-Because the process should run inside of docker you must provide a docker file with the script and
-all of the dependencies.
-
-You may use the Dockerfiles for quakeledger and shakyground as templates. You can find them in the
-assistance/dockerfiles folder.
-
-2. Build the docker image on the server
-
-You must also build the image on the server.
-
-You normally just have to run
-
-```shell
-docker build . --tag newprocess
-```
-in the folder with the new dockerfile. You may change the the tag of the image to match the name of your process.
-
-3. Check that the input and output you need are supported
-
-At the moment the supported input and output types are created to support the IO in the processes for
-quakeledger and shakyground.
-
-You can create an issue on the github page so that we can check how to implement this type.
-
-4. Create a json configuration file
-
-To add a configuration you must provide a json configuration file. You can use the configurations for
-quakeledger and shakyground as templates.
-
-5. Tell the server where to find your configuration file
-
-The configuration module for the gfz riesgos wps repository accepts a configuration string with the path of a folder.
-You can see this on the administration page for the wps server.
-
-You can change this folder name at any time.
-
-If running the wps server itself in docker, you may need to add a volume to the server.
-For example it may be necessary to add the following line to a docker-compose.yml file in the part of the volumes:
-
-```
-- ./json-configs:/usr/share/riesgos/json-configurations
-```
-
-The path after the colon should match the path if the configuration folder you insert in the wps administration page
-for the GFZ RIESGOS Configuration Module.
-
-6. Add your config file in this folder
-
-If you run the wps server inside of docker itself, you can now add your configuration to the json-configs folder.
-If you don't run the wps server in docker, you can add your configuration to the folder you inserted in the text
-field for the GFZ RIESGOS Configuration Module on the wps administration page.
-
-It is important that your file has an .json ending, because those are the files that are recognized for parsing.
-
-Now your process should be included in the repository.
-
-If you have access to the logs you can check if the parsing is successful and
-if there are problems on running your process you can check that too.
-
-7. Change your process (optional)
-
-If you now just want to change your process configuration, you can change the configuration file and it will update on runtime.
-
-If you have to change the dockerfile, than you have to rebuild the image.
+If you want to know how to add your own service, we provide a
+step-by-step guide to add a service [here](doc/HowToAddOwnProcess.md).
 
 ## Notes about quakeml
 
