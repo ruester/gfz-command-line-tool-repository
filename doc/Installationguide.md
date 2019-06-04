@@ -181,7 +181,8 @@ to
 <context:component-scan base-package="org.n52">
 ```
 
-(This is the necessary step as under: https://github.com/riesgos/52north-wps-osmtovector-process).
+(This is the necessary step as under: 
+https://github.com/riesgos/52north-wps-osmtovector-process).
 
 ## Create the docker images for the supported processes
 
