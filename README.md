@@ -54,3 +54,13 @@ processes](doc/FormatConversionProcesses.md) in the repository.
 
 If you want to know how to add your own service, we provide a
 step-by-step guide to add a service [here](doc/HowToAddOwnProcess.md).
+
+## Glossar
+
+| Name | Explanation |
+|------|-------------|
+| Process | The web processing service that is provided by the repository. |
+| Service | same as process |
+| Command line program  | The program that runs on the command line and will be wrapped to a process. |
+| Process skeleton | Template that can be used to instanciate the processes for the command line programs |
+
