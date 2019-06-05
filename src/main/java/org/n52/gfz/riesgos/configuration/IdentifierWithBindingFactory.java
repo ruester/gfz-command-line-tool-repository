@@ -594,6 +594,22 @@ public class IdentifierWithBindingFactory {
             .build();
     }
 
+    /**
+     * Creates a xml file for json on a given path
+     * @param identifier identifier of the data
+     * @param path path of the file to read after process termination
+     * @return output argument containing the json that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutJson(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withPath(path)
+                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToJsonDataBinding()))
+                .build();
+    }
+
+
 
     /**
      * creates a geotiff file (output) on a given path
@@ -749,6 +765,18 @@ public class IdentifierWithBindingFactory {
             final String identifier) {
         return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
                 .withFunctionToHandleStderr(new ConvertBytesToLiteralStringBinding())
+                .build();
+    }
+
+    /**
+     * Creates a json output (via stderr)
+     * @param identifier identifier of the data
+     * @return output argument containing the json that will be read from stderr
+     */
+    public static IIdentifierWithBinding createStderrJson(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToHandleStderr(new ConvertBytesToJsonDataBinding())
                 .build();
     }
 

@@ -68,6 +68,13 @@ public class JsonDataBinding implements IComplexData {
 
 ```
 
+Here we use an JSONObject to store all our data in. We just could have gone
+with a simple string to read and write JSON out, but this way we at least
+have the validation that the data is valid json (but not 
+necessary valid geojson).
+
+If you just want to use an existing binding class you can skip this step.
+
 ## Write a parser
 
 Next step is to write a parser for your new binding class:
@@ -135,6 +142,9 @@ public class JsonParser extends AbstractParser implements IMimeTypeAndSchemaCons
 We added the mime type in the IMimeTypeAndSchemaConstants interface
 with the value "application/json".
 
+If you just want to use an existing binding class and an existiong parser
+you can skip this step.
+
 ## Write a generator
 
 ```java
@@ -187,12 +197,17 @@ public class JsonGenerator extends AbstractGenerator implements IMimeTypeAndSche
 }
 ```
 
+If you just want to use an existing binding class and an existing generator class
+you can skip this step.
+
 ## Register the parser and generator in the GfzRiesgosRepository class
 
 Next step is to add the parser and generator in the repository class.
 
-Just call the constuctors in the lists of the registerGenerators and 
+Just call the constructors in the lists of the registerGenerators and 
 registerParsers methods.
+You only need to add those parsers and generators that you wrote in the
+two steps before.
 
 ## Write an IConvertByteArrayToIData implementation
 
@@ -483,7 +498,56 @@ And we have to add the createStdoutJson method to the IdentifierWithBindingFacto
 
 This is again very similar to adding it to stdout.
 We have to add the line to the FromStderrOption enum in the ParseJsonForOutputImpl
+class:
 
+```
+JSON("json", IdentifierWithBindingFactory::createStderrJson)
+```
+
+and the createStderrJson method in IdentifierWithBindingFactory:
+
+```
+    /**
+     * Creates a json output (via stderr)
+     * @param identifier identifier of the data
+     * @return output argument containing the json that will be read from stderr
+     */
+    public static IIdentifierWithBinding createStderrJson(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToHandleStderr(new ConvertBytesToJsonDataBinding())
+                .build();
+    }
+```
+
+## Add the type as output for files
+
+We have to add the line to the FromFilesOption enum in the ParseJsonForOutputImpl
+class:
+
+```
+JSON("json", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutJson(identifier, path));
+```
+
+Then we have to add the method createFileOutJson method to the
+IdentifierWithBindingFactory class.
+
+```
+    /**
+     * Creates a xml file for json on a given path
+     * @param identifier identifier of the data
+     * @param path path of the file to read after process termination
+     * @return output argument containing the json that will be read from a given file
+     */
+    public static IIdentifierWithBinding createFileOutJson(
+            final String identifier,
+            final String path) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withPath(path)
+                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToJsonDataBinding()))
+                .build();
+    }
+```
 
 
 ## Check dependencies

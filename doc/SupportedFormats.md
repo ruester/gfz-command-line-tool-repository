@@ -42,6 +42,7 @@ supported types. It includes:
 - shapefile
 - file
 - quakeml
+- json
 
 Please note that for the literal values (int, double, string) it is possible
 to provide a default value and a list of allowed values.
@@ -87,13 +88,14 @@ The supported types are:
 - file
 - quakeml
 - shakemap
+- json
 
 All this options are listed in the ToFileInputOption enum
 in the ParseJsonForInputImpl.
 
 ### Stdin
 
-For stdin input at the moment just the string type is supported.
+For stdin input at the moment just the string and json types are supported.
 The text will be piped into the stdin stream of the program.
 
 ## Output
@@ -120,11 +122,13 @@ The supported types for the working with the stdout stream are:
 - xml
 - quakeml
 - shakemap
+- json
 
 ### Stderr
 
 The supported types for the stderr stream are:
 - string
+- json
 
 ### Output files
 
@@ -138,6 +142,7 @@ The following are supported:
 - shapefile
 - quakeml
 - shakemap
+- json
 
 ## Information about specific data formats
 
@@ -178,3 +183,8 @@ coordinate reference systems.
         { "title" : "input-boundingbox", "useAs": "commandLineArgument", "type": "bbox",   "crs": ["EPSG:4326", "EPSG:4328"]},
 [...]
 ```
+
+### json
+
+The json data type was added in order to go through the process
+of writing the documentation of how to add an own format.

@@ -173,7 +173,8 @@ public class ParseJsonForOutputImpl {
     }
 
     private enum FromStderrOption {
-        STRING("string", IdentifierWithBindingFactory::createStderrString);
+        STRING("string", IdentifierWithBindingFactory::createStderrString),
+        JSON("json", IdentifierWithBindingFactory::createStderrJson);
 
         private final String dataType;
         private final IStderrOutputFactory factory;
@@ -229,7 +230,8 @@ public class ParseJsonForOutputImpl {
         GEOTIFF("geotiff", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeotiff(identifier, path)),
         SHP("shapefile", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShapeFile(identifier, path)),
         QUAKEML("quakeml", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutQuakeMLFile(identifier, path)),
-        SHAKEMAP("shakemap", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShakemap(identifier, path));
+        SHAKEMAP("shakemap", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShakemap(identifier, path)),
+        JSON("json", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutJson(identifier, path));
 
         private final String dataType;
         private final IFileOutputFactory factory;
