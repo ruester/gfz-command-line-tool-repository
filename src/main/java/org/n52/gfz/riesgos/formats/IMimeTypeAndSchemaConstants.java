@@ -29,6 +29,11 @@ public interface IMimeTypeAndSchemaConstants {
     String MIME_TYPE_XML = "text/xml";
 
     /**
+     * Mime-Type for json
+     */
+    String MIME_TYPE_JSON = "application/json";
+
+    /**
      * Mime-Type for geojson
      */
     String MIME_TYPE_GEOJSON = "application/vnd.geo+json";

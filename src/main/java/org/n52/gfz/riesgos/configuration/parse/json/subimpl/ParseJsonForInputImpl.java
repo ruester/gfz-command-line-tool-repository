@@ -441,6 +441,29 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentFile(identifier, flag);
     }
 
+    private static IIdentifierWithBinding createCommandLineArgumentJson(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValue,
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for json");
+        }
+        if(listHasValue(allowedValue)) {
+            throw new ParseConfigurationException("allowed values are not supported for json");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for json");
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for json");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentJson(identifier, flag);
+    }
+
+
     private enum ToCommandLineArgumentOption {
         INT("int", ParseJsonForInputImpl::createCommandLineArgumentInt),
         DOUBLE("double", ParseJsonForInputImpl::createCommandLineArgumentDouble),
@@ -453,7 +476,8 @@ public class ParseJsonForInputImpl {
         GEOJSON("geojson", ParseJsonForInputImpl::createCommandLineArgumentGeojsonFile),
         SHAPEFILE("shapefile", ParseJsonForInputImpl::createCommandLineArgumentShapefile),
         GENERIC_FILE("file", ParseJsonForInputImpl::createCommandLineArgumentGenericFile),
-        QUAKEML("quakeml", ParseJsonForInputImpl::createCommandLineArgumentQuakeML);
+        QUAKEML("quakeml", ParseJsonForInputImpl::createCommandLineArgumentQuakeML),
+        JSON("json", ParseJsonForInputImpl::createCommandLineArgumentJson);
 
         private final String dataType;
         private final IAsCommandLineArgumentFactory factory;
@@ -491,8 +515,27 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createStdinString(identifier, defaultValue, allowedValues);
     }
 
+    private static IIdentifierWithBinding createStdinJson(
+            final String identifier,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for json");
+        }
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("defaultValue is not supported for json");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowedValues are not supported for json");
+        }
+        return IdentifierWithBindingFactory.createStdinJson(identifier);
+    }
+
+
     private enum ToStdinInputOption {
-        STRING("string", ParseJsonForInputImpl::createStdinString);
+        STRING("string", ParseJsonForInputImpl::createStdinString),
+        JSON("json", ParseJsonForInputImpl::createStdinJson);
 
         private final String dataType;
         private final IAsStdinInputFactory factory;
@@ -558,7 +601,7 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInShapeFile(identifier, path);
     }
 
-    private static IIdentifierWithBinding createFileInQuakeML(
+    private static IIdentifierWithBinding createFileInputQuakeML(
             final String identifier,
             final String path,
             @SuppressWarnings({"unused"})
@@ -569,7 +612,7 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInQuakeML(identifier, path);
     }
 
-    private static IIdentifierWithBinding createFileInShakemap(
+    private static IIdentifierWithBinding createFileInputShakemap(
             final String identifier,
             final String path,
              @SuppressWarnings({"unused"})
@@ -579,13 +622,25 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInShakemap(identifier, path);
     }
 
+    private static IIdentifierWithBinding createFileInputJson(
+            final String identifier,
+            final String path,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for json");
+        }
+        return IdentifierWithBindingFactory.createFileInJson(identifier, path);
+    }
+
+
     private enum ToFileInputOption {
         GEOTIFF("geotiff", ParseJsonForInputImpl::createFileInputGeotiff),
         GEOJSON("geojson", ParseJsonForInputImpl::createFileInputGeojson),
         SHAPEFILE("shapefile", ParseJsonForInputImpl::createFileInputShapefile),
         GENERIC_FILE("file", ParseJsonForInputImpl::createFileInputGeneric),
-        QUAKEML("quakeml", ParseJsonForInputImpl::createFileInQuakeML),
-        SHAKEMAP("shakemap", ParseJsonForInputImpl::createFileInShakemap);
+        QUAKEML("quakeml", ParseJsonForInputImpl::createFileInputQuakeML),
+        SHAKEMAP("shakemap", ParseJsonForInputImpl::createFileInputShakemap),
+        JSON("json", ParseJsonForInputImpl::createFileInputJson);
 
         private final String dataType;
         private final IAsFileInputFactory factory;

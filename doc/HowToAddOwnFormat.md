@@ -4,4 +4,492 @@ You may want to add your own process but you realize that you want
 to work with a data format that is currently not supported in
 the parsing of the configuration process.
 
-There are the current steps 
+We have to differ between using a predefined binding class (similar
+that we use it for xml, geojson, geotiff and some others) and
+between the case of defining an own binding class.
+
+The tasks for both are mostly the same, but for own binding classes,
+it is necessary to write own parsers and generators as well and
+to register them in the GfzRiesgosRepository class, so we will go
+through the whole process on the example of an alternative
+geojson binding.
+
+The reason we do this is to provide a fallback mode
+for geojson data that use different projections than wgs84.
+Other tools like gdal/ogr and geopandas are able
+to write and read those files, but geotools have some problems
+with this.
+
+To make the stuff as general as we can, we will only care about simple
+json and not about some more extended features of geojson.
+
+## Creating an own binding class
+
+Lets create the JsonBinding class.
+
+```java
+package org.n52.gfz.riesgos.formats.json.binding;
+
+import org.json.simple.JSONObject;
+import org.n52.wps.io.data.IComplexData;
+
+/**
+ * Binding class that contains a simple json object
+ */
+public class JsonDataBinding implements IComplexData {
+
+    private static final long serialVersionUID = 8386437107877117360L;
+
+    private final JSONObject jsonObject;
+
+    /**
+     * Default constructor
+     * @param jsonObject jsonObject to wrap
+     */
+    public JsonDataBinding(final JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
+    }
+
+    @Override
+    public void dispose() {
+        // do nothing
+    }
+
+    @Override
+    public JSONObject getPayload() {
+        return jsonObject;
+    }
+
+    @Override
+    public Class<?> getSupportedClass() {
+        return JSONObject.class;
+    }
+}
+
+```
+
+## Write a parser
+
+Next step is to write a parser for your new binding class:
+
+```java
+package org.n52.gfz.riesgos.formats.json.parsers;
+
+import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.wps.io.data.IData;
+import org.n52.wps.io.datahandler.parser.AbstractParser;
+import org.n52.wps.webapp.api.FormatEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * Parser for json input
+ */
+public class JsonParser extends AbstractParser implements IMimeTypeAndSchemaConstants {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonParser.class);
+
+    /**
+     * default constructor
+     */
+    public JsonParser() {
+        super();
+
+        supportedIDataTypes.add(JsonDataBinding.class);
+        supportedFormats.add(MIME_TYPE_JSON);
+        supportedEncodings.add(DEFAULT_ENCODING);
+        formats.add(new FormatEntry(MIME_TYPE_JSON, null, DEFAULT_ENCODING, true));
+    }
+
+    @Override
+    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+        try {
+            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            IOUtils.copy(stream, byteArrayOutputStream);
+            final String content = new String(byteArrayOutputStream.toByteArray());
+            final JSONParser parser = new JSONParser();
+            final Object parsed = parser.parse(content);
+            if(parsed instanceof  JSONObject) {
+                final JSONObject jsonObject = (JSONObject) parsed;
+                return new JsonDataBinding(jsonObject);
+            }
+            throw new RuntimeException("Can't parse the content to an json object");
+        } catch(final IOException ioException) {
+            throw new RuntimeException(ioException);
+        } catch(final ParseException parseException) {
+            throw new RuntimeException(parseException);
+        }
+    }
+}
+```
+
+We added the mime type in the IMimeTypeAndSchemaConstants interface
+with the value "application/json".
+
+## Write a generator
+
+```java
+package org.n52.gfz.riesgos.formats.json.generators;
+
+import org.json.simple.JSONObject;
+import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.wps.io.data.IData;
+import org.n52.wps.io.datahandler.generator.AbstractGenerator;
+import org.n52.wps.webapp.api.FormatEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * Generator for json data
+ */
+public class JsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonGenerator.class);
+
+    /**
+     * default constructor
+     */
+    public JsonGenerator() {
+        super();
+
+        supportedIDataTypes.add(JsonDataBinding.class);
+        supportedFormats.add(MIME_TYPE_JSON);
+        supportedEncodings.add(DEFAULT_ENCODING);
+        formats.add(new FormatEntry(MIME_TYPE_JSON, null, DEFAULT_ENCODING, true));
+    }
+
+    @Override
+    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
+        if(data instanceof JsonDataBinding) {
+            final JsonDataBinding binding = (JsonDataBinding) data;
+            final JSONObject jsonObject = binding.getPayload();
+            final ByteArrayInputStream inputStream = new ByteArrayInputStream(jsonObject.toJSONString().getBytes());
+            return inputStream;
+        } else {
+            LOGGER.error("Can't convert another data binding as JsonDataBinding");
+        }
+        return null;
+    }
+}
+```
+
+## Register the parser and generator in the GfzRiesgosRepository class
+
+Next step is to add the parser and generator in the repository class.
+
+Just call the constuctors in the lists of the registerGenerators and 
+registerParsers methods.
+
+## Write an IConvertByteArrayToIData implementation
+
+To read the content from docker we need to write an implementation
+of the IConvertByteArrayToIData interface:
+
+```java
+package org.n52.gfz.riesgos.bytetoidataconverter;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
+import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
+import org.n52.wps.io.data.IData;
+
+import java.util.Objects;
+
+/**
+ * Function to convert the content of a byte array to a JsonDataBinding
+ */
+public class ConvertBytesToJsonDataBinding implements IConvertByteArrayToIData {
+
+    @Override
+    public IData convertToIData(final byte[] content) throws ConvertToIDataException {
+        final String text = new String(content);
+        final JSONParser parser = new JSONParser();
+        try {
+            final Object parsed = parser.parse(text);
+            if (parsed instanceof JSONObject) {
+                final JSONObject jsonObject = (JSONObject) parsed;
+                return new JsonDataBinding(jsonObject);
+            }
+        } catch(final ParseException parseException) {
+            throw new ConvertToIDataException(parseException);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
+    }
+
+}
+```
+
+Having this class we will be able to read the content from the container.
+
+## Write an IConvertIDataToByteArray implementation
+
+As we have the function to transform the byte array to an IData,
+we also need the conversion back to a byte array to support the option
+to write our json to the docker container.
+
+```java
+package org.n52.gfz.riesgos.idatatobyteconverter;
+
+import org.json.simple.JSONObject;
+import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
+import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
+import org.n52.wps.io.data.IData;
+
+import java.util.Objects;
+
+/**
+ * Function to convert a json data binding to a byte array
+ */
+public class ConvertJsonDataBindingToBytes implements IConvertIDataToByteArray {
+
+    @Override
+    public byte[] convertToBytes(final IData data) throws ConvertToBytesException {
+        if(data instanceof JsonDataBinding) {
+            final JsonDataBinding binding = (JsonDataBinding) data;
+            final JSONObject jsonObject = binding.getPayload();
+            final String content = jsonObject.toJSONString();
+            return content.getBytes();
+        } else {
+            throw new ConvertToBytesException("Wrong binding class");
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o != null && getClass() == o.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getClass().getName());
+    }
+}
+```
+
+## Add the type as input for stdin
+
+If we want to add json as input type for stdin we must change
+the content of the ParseJsonForInputImpl class.
+
+We will add the following line to the ToStdinInputOption enum:
+
+```
+JSON("json", ParseJsonForInputImpl::createStdinJson),
+```
+
+And we also need to add the method mentioned there:
+
+```
+    private static IIdentifierWithBinding createStdinJson(
+            final String identifier,
+            final String defaultValue,
+            final List<String> allowedValues,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for json");
+        }
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("defaultValue is not supported for json");
+        }
+        if(listHasValue(allowedValues)) {
+            throw new ParseConfigurationException("allowedValues are not supported for json");
+        }
+        return IdentifierWithBindingFactory.createStdinJson(identifier);
+    }
+```
+
+We also want to add the createStdinJson method to the 
+IdentifierWithBindingFactory class:
+
+```
+    /**
+     * creates a stdin input with json
+     * @param identifier identifier of the data
+     * @return object with information about how to use the value as a json stdin input parameter
+     */
+    public static IIdentifierWithBinding createStdinJson(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToWriteToStdin(new ConvertJsonDataBindingToBytes())
+                .build();
+    }
+```
+
+## Add the type as input as commandLineArgument
+
+Similar to the process for adding it as stdin type, we add
+a line on the ToCommandLineArgumentOption enum in the
+ParseJsonForInputImpl class.
+
+```
+JSON("json", ParseJsonforInputImpl::createCommandLineArgumentJson)
+```
+
+And we also add the method createCommandLineArgumentJson in this class:
+
+```
+private static IIdentifierWithBinding createCommandLineArgumentJson(
+            final String identifier,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValue,
+            final List<String> supportedCrs,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(defaultValue)) {
+            throw new ParseConfigurationException("default is not supported for json");
+        }
+        if(listHasValue(allowedValue)) {
+            throw new ParseConfigurationException("allowed values are not supported for json");
+        }
+        if(listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException("crs are not supported for json");
+        }
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for json");
+        }
+        return IdentifierWithBindingFactory.createCommandLineArgumentJson(identifier, flag);
+}
+```
+
+And we add the createCommandLineArgumentJson method to the 
+IdentifierWithBindingFactory class:
+
+```
+    /**
+     * Creates a command line argument (json file) with a file path that will be written down as
+     * a temporary file
+     * @param identifier identifier of the data
+     * @param flag optional command line flag
+     * @return json command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentJson(
+            final String identifier,
+            final String flag) {
+        final String filename = createUUIDFilename(".json");
+
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withPath(filename)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
+                .build();
+    }
+```
+
+## Add the type as file input
+
+This is again similar to adding the type as stdin input.
+First we have to add an entry for the ToFileInputOption enum in ParseJsonForInputImpl
+class:
+
+```
+JSON("json", ParseJsonForInputImpl::createFileInputJson)
+```
+
+Then we add the method in this class:
+
+```
+private static IIdentifierWithBinding createFileInputJson(
+            final String identifier,
+            final String path,
+            final String schema) throws ParseConfigurationException {
+        if(strHasValue(schema)) {
+            throw new ParseConfigurationException("schema is not supported for json");
+        }
+        return IdentifierWithBindingFactory.createFileInJson(identifier, path);
+}
+```
+
+And we add the createFileInJson to the IdentifierWithBindingFactory class:
+
+```
+    /**
+     * Creates an input file argument with json
+     * @param identifier identifier of the data
+     * @param path path of file to write before starting the process
+     * @return json input file
+     */
+    public static IIdentifierWithBinding createFileInJson(
+            final String identifier,
+            final String path) {
+
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withPath(path)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
+                .build();
+    }
+```
+
+## Add the type as output for stdout
+
+To add the type as output type for stdout, we have to add the 
+following line
+to the FromStdoutOption enum in the ParseJsonForOutputImpl class:
+
+```
+JSON("json", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutJson(identifier))
+```
+
+And we have to add the createStdoutJson method to the IdentifierWithBindingFactory class:
+
+```
+    /**
+     * Creates a json output (via stdout)
+     * @param identifier identifier of the data
+     * @return output argument containing json that will be read from stdout
+     */
+    public static IIdentifierWithBinding createStdoutJson(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToHandleStdout(new ConvertBytesToJsonDataBinding())
+                .build();
+    }
+```
+
+## Add the type as output for stderr
+
+This is again very similar to adding it to stdout.
+We have to add the line to the FromStderrOption enum in the ParseJsonForOutputImpl
+
+
+
+## Check dependencies
+
+Because we just use the org.json.simple.JSONObject, we must care about
+the dependencies.
+After a look in the pom.xml we are happy that this is already included
+in the project.
+

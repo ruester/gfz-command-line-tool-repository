@@ -20,6 +20,7 @@ import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGTVectorDataBindin
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericFileDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToJsonDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToQuakeMLXmlBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToShakemapXmlBinding;
@@ -31,6 +32,7 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToSt
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.IdentifierWithBindingImpl;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
@@ -40,6 +42,7 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToB
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertJsonDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
 import org.n52.gfz.riesgos.readidatafromfiles.ReadShapeFileFromPath;
 import org.n52.gfz.riesgos.readidatafromfiles.ReadSingleByteStreamFromPath;
@@ -344,7 +347,26 @@ public class IdentifierWithBindingFactory {
         return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath((new ConvertGenericFileDataBindingToBytes())))
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes()))
+                .build();
+    }
+
+    /**
+     * Creates a command line argument (json file) with a file path that will be written down as
+     * a temporary file
+     * @param identifier identifier of the data
+     * @param flag optional command line flag
+     * @return json command line argument
+     */
+    public static IIdentifierWithBinding createCommandLineArgumentJson(
+            final String identifier,
+            final String flag) {
+        final String filename = createUUIDFilename(".json");
+
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withPath(filename)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
                 .build();
     }
 
@@ -353,7 +375,7 @@ public class IdentifierWithBindingFactory {
      * @param identifier identifier of the data
      * @param defaultValue optional default value of the argument
      * @param allowedValues optional list with allowed values
-     * @return object with information about how to use the value as a string command line argument input parameter
+     * @return object with information about how to use the value as a string stdin input parameter
      */
     public static IIdentifierWithBinding createStdinString(
             final String identifier,
@@ -371,6 +393,18 @@ public class IdentifierWithBindingFactory {
             builder.withValidator(new LiteralStringBindingWithAllowedValues(allowedValues));
         }
         return builder.build();
+    }
+
+    /**
+     * creates a stdin input with json
+     * @param identifier identifier of the data
+     * @return object with information about how to use the value as a json stdin input parameter
+     */
+    public static IIdentifierWithBinding createStdinJson(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToWriteToStdin(new ConvertJsonDataBindingToBytes())
+                .build();
     }
 
     /**
@@ -459,6 +493,23 @@ public class IdentifierWithBindingFactory {
             .withValidator(new XmlBindingWithAllowedSchema(schema))
             .build();
     }
+
+    /**
+     * Creates an input file argument with json
+     * @param identifier identifier of the data
+     * @param path path of file to write before starting the process
+     * @return json input file
+     */
+    public static IIdentifierWithBinding createFileInJson(
+            final String identifier,
+            final String path) {
+
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withPath(path)
+                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
+                .build();
+    }
+
 
     /**
      * Creates a input file argument (generic)
@@ -662,6 +713,18 @@ public class IdentifierWithBindingFactory {
                 .withFunctionToHandleStdout(new ConvertBytesToShakemapXmlBinding())
                 .withSchema(schema)
                 .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .build();
+    }
+
+    /**
+     * Creates a json output (via stdout)
+     * @param identifier identifier of the data
+     * @return output argument containing json that will be read from stdout
+     */
+    public static IIdentifierWithBinding createStdoutJson(
+            final String identifier) {
+        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withFunctionToHandleStdout(new ConvertBytesToJsonDataBinding())
                 .build();
     }
 

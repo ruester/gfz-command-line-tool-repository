@@ -16,6 +16,8 @@ package org.n52.gfz.riesgos.repository;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.formats.json.generators.JsonGenerator;
+import org.n52.gfz.riesgos.formats.json.parsers.JsonParser;
 import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGML3Generator;
 import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGeoJsonGenerator;
 import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLOriginalXmlGenerator;
@@ -83,7 +85,9 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
                 new ShakemapXmlGenerator(),
                 new ShakemapGeoJsonGenerator(),
                 new ShakemapGML3Generator(),
-                new ShakemapGeotiffGenerator()
+                new ShakemapGeotiffGenerator(),
+                // json
+                new JsonGenerator()
         ).forEach(new RegisterGeneratorTask());
     }
 
@@ -95,7 +99,9 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
                 new QuakeMLGeoJsonParser(),
                 new QuakeMLGML3Parser(),
                 // shakemap
-                new ShakemapXmlParser()
+                new ShakemapXmlParser(),
+                // json
+                new JsonParser()
         ).forEach(new RegisterParserTask());
     }
 

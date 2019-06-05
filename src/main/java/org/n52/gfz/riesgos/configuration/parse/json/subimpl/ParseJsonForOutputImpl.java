@@ -147,7 +147,8 @@ public class ParseJsonForOutputImpl {
         STRING("string", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutString(identifier)),
         XML("xml", IdentifierWithBindingFactory::createStdoutXmlWithSchema),
         QUAKEML("quakeml", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutQuakeML(identifier)),
-        SHAKEMAP("shakemap", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutShakemap(identifier));
+        SHAKEMAP("shakemap", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutShakemap(identifier)),
+        JSON("json", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutJson(identifier));
 
         private final String dataType;
         private final IStdoutOutputFactory factory;
