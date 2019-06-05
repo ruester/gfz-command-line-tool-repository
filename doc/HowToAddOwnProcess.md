@@ -200,7 +200,8 @@ handle input and output data.
     { 
         "title": "min-area", 
         "useAs": "commandLineArgument",
-        "type": "double" }
+        "type": "double" 
+    }
   ],
   "output": [
     { 
@@ -219,6 +220,7 @@ Lets to through the elements:
 
 - title is the title under which you can access to the process.
   Make sure that you insert a new title which every new process.
+  
 - imageId is the tag or the image id of the docker image that contains
   the code. Here we use the filter_big image we created in the last step.
   It is possible to refer to the exact image id as well as to the
@@ -229,21 +231,26 @@ Lets to through the elements:
   Another important aspect is that the docker image id is not
   stable building the image on different machines. That is why we
   rely on the tag here.
+  
 - workingDirectory gives the name of the directory that we use to run
   the program. In this case we copied the file to the /usr/share/git/filter_big
   folder inside of the image. All your paths in the script are relative to
   the script location so this is the directory to use for the process.
+  
 - exitValueHandler gives us the handler for the exit value.
   Because we may give back a non zero exit value, we want to make sure
   that the wps server realized that there was an error.
+  
 - same for the stderrHandler. We are sure, that we don't have any
   warning that we want to ignore (warnings on python are normally given back
   on stderr). So any text on stderr is clearly a
   sign of an error in our script, that should be propagated to the server.
+  
 - for the input fields we have
   * an input-file that have a geojson format and is always on the path
     input_file.geojson
   * a command line argument that is a double
+  
 - for the output we just have one geojson file that is always written
   to output_file.geojson. Please notice that the reading process
   of the output data is done after the script ran, so after the script is

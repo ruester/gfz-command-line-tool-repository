@@ -6,7 +6,7 @@ This is the java source code for the wps-repository for the riesgos project.
 
 It aims to be an framework for easy integration of command line programs
 as web processing services and provide a bunch of services within the scope
-of the [RIESGOS project](http://www.riesgos.de/en/). This focus
+of the [RIESGOS project](http://www.riesgos.de/en/). This focus here is
 mainly on those processes provided by the [GFZ](https://www.gfz-potsdam.de/en/home/).
 
 ## How it works
@@ -17,7 +17,8 @@ program can be integrated.
 
 Each process must be wrapped in a docker image to provide fully independent
 execution of the processes (also in case of some hard coded temporary files)
-and to manage the dependencies of the programs.
+and to manage the dependencies (programs, libraries, python packages,
+internal configuration files, ...).
 
 For each processes a json configuration file must be provided, so that
 the basic process skeleton - which is the same for all processes - 
@@ -37,7 +38,7 @@ The json configuration is explained in more detail
 All of the code here runs on top of the WPS Server provided by
 [52° North](https://github.com/52North/WPS).
 
-For all other details please refer to the [installation guide](doc/Installationguide.md).
+For other details please refer to the [installation guide](doc/Installationguide.md).
 
 
 ## Currently implemented processes
@@ -62,5 +63,5 @@ step-by-step guide to add a service [here](doc/HowToAddOwnProcess.md).
 | Process | The web processing service that is provided by the repository. |
 | Service | same as process |
 | Command line program  | The program that runs on the command line and will be wrapped to a process. |
-| Process skeleton | Template that can be used to instanciate the processes for the command line programs |
+| Basic process skeleton | Template that can be used to instantiate the processes for the command line programs |
 

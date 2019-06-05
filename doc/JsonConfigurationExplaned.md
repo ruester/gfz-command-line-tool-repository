@@ -1,44 +1,21 @@
 # JSON configuration files
 
-## Features
+The json configuration files are one core component of the integration
+of command line programs as web processing services.
 
-All the processes are using a generic template for working with command line tools.
-This includes input via
-* stdin
-* command line parameter
-* input files
+It is used to:
+- provide a process description with the name, input and output paramters
+  of the service
+- it provides data on how to run the command line program
+- it defines the strategy on how to propagate errors from the command line
+  program to the server
+- it provides information about how to give the input to the process and
+  how to read the output from the command line program
 
-For output there are the following options:
-* handling of the exit value
-* handling of stdout
-* handling of stderr
-* output files
+## Example configuration
 
-The processes itself run inside of docker containers.
-Example Dockerfiles to create the images necessary for this are included in the
-assistance folder.
+The following is the configuration of the quakeledger process:
 
-## Configuration
-
-The configuration of the processes is done in json files.
-You can take a look at them in the resources/org/n52/gfz/riesgos/configuration
-folder.
-
-The json files provide several information:
-
-| key | Explanation |
-|-----|-------------|
-| title | This provides the title of the process |
-| imageId | ImageID or tag of the docker image to run the script |
-| workingDirectory | Directory that is used to run the script inside the docker container |
-| commandToExecute | The command to execute in the working directory to run the program in the docker container |
-| exitValueHandler | Optional field to add a handler for the exit value |
-| stderrHandler | Optional field to add a handler for the stderr output |
-| stderrHandler | Optional field to add a handler for the stdout output |
-| input | Array of input fields and how they are used |
-| output | Array of output fields and where they get the data from |
-
-Example for the quakeledger process:
 ```javascript
 {
     "title": "QuakeledgerProcess",
@@ -64,148 +41,147 @@ Example for the quakeledger process:
 }
 ```
 
-## Exit Value Handler
+## title
 
-If no exitValueHandler is provided in the json configuration the exit value of the program will be ignored.
-There are the following options for the handler:
-#### logging
+This is the title that is used to identify the process.
+In the example it is called QuakeledgerProcess.
+The name itself is more or less arbitrarily, but it should indicate which
+program will be executed. Here we followed Java naming conventions
+with upper camel case.
 
-The exit value will be added to the log file. This is for development and debugging processes.
+## imageId
 
-#### errorIfNotZero
-
-If the exit value is not zero than the process will be terminated without producing output, because the internal script
-has thrown an error.
-
-## Stderr Handler
-
-Same as for exit value, the stderr output is ignored by default.
-
-However there are some other handlers
-
-#### logging
-
-The stderr output text will be added to the log file. This is for development and debugging processes.
-
-##### errorIfNotEmpty
-
-If the stderr text is not empty than the process will be terminated without producing output, because the internal
-script has thrown an error.
-
-#### pythonTraceback
-
-This stderr handler searches for the text of a python traceback. It will not
-care about warnings on stderr, but recognizes an error in a python script.
-
-## Stdout Handler
-
-There are no stdout handler at the moment. You can read from stdout by providing an output.
-
-## Supported input
-
-The input field in the configuration must provide an array with the data fields and how they should be given to the
-command line program.
-
-Each input must provide a title, and a useAs value.
-
-The following useAs values are possible
-
-#### commandLineArgument
-
-This will be given as a command line argument. The ordering of the elements matters as it is the ordering
-the data is given as command line parameter.
-
-The following types are supported via "type" value:
-* int
-* double
-* boolean
-* string
-* xml
-* xmlWithoutHeader
-* geotiff
-* geojson
-* shapefile
-
-For the following types the "flag" attribute is supported:
-* int
-* double
-* string
-* boolean (it is mandatory here)
-* xml
-* xmlWithoutHeader
-* geotiff
-* geojson
-* shapefile
-
-If there is a "flag" attribute then it is inserted before the command line argument.
-For example with the flag --etype and the value "expert"
-```
-[...] --etype "expert"
-```
-
-For booleans the flag is mandatory, because no value will be given as command line argument but the flag - but this
-only if the value is true.
-
-For the bbox the "crs" attribute must be provided with the list of the supported coordinate reference systems.
-
-For the xml and xmlWithoutHeader types there is an optional "schema" attribute, that is used to validate
-the input of the data.
-
-#### stdin
-
-You also can use the stdin as input. At the moment only string as type is supported.
-
-#### file
-
-If you use file as useAs value, than you must provide a "path" attribute.
-This path is relative to the working directory.
-
-The following file types are supported:
-* geotiff
-* geojson
-* shapfile
-
-## Supported output
-
-The output field in the configuration must provide an array with the data fields and how they can be read from
+This field gives the image id of the docker image that should be used to execute
 the command line program.
 
-Each input must provide a title, and a readFrom value.
+It can contain a tag like in the example or the specific image id.
+This can use either the short version (7e95161d44d6) or the full image id
+(sha256:7e95161d44d6d61b44325243d220a9a06b75579c938faf2066c579eae102e20a).
 
-The following readFrom values are supported:
+Because of the non-transferability of image ids which are build
+on different computers ([see the role of docker](RoleOfDocker.md)),
+we recommend using image tags.
 
-#### stdout
+## workingDirectory
 
-You can convert the text from stdout to provide output.
-The following values for "type" are supported:
+This is the folder that should be used to execute the command line
+program. It is always a path inside of the docker image.
 
-* string
-* xml
-* quakeml
+The command to execute the program and the paths of input and output-files
+are relative to this directory.
 
-The xml type can accept an additional "schema" attribute, that is used to validate the output.
+## commandToExecute
 
-#### stderr
+This is the command that will be executed.
+In most cases it will be the call of a executable itself, like
 
-Same as stdout it is possible to read from stderr.
-Here only the string type is supported.
+```bash
+./my-c-program
+```
 
-#### exitValue
+or a call of a scripting language interpreter with the script name
 
-You can also read from the exit value.
+```bash
+python3 my-script.py
+```
 
-At the moment only the int type is supported.
+## exitValueHandler
 
-#### file
+In this field you can give a mechanism to handle the exit value of the
+program. In this way it is possible to stop the process execution
+after receiving a non zero exit value which often can indicate
+an error on the execution of the command line program.
 
-The file value for the "readFrom" attribute needs to have an additional "path" attribute which the file path
-of the given output file. This is relative to the working directory.
+You have the following possibilities:
 
-The following "type" values are supported:
-* xml
-* geojson
-* geotiff
-* shapefile
-* quakeml
+| value | explanation |
+|-------|-------------|
+| ignore | The exit value will be ignored. This is the default case if no exitValueHandler is given.|
+| logging | The exit value will be logged no matter what the value is. |
+| errorIfNotZero | The exit value will be tested if it is zero. If not the basic process skeleton will take it as an error and will stop the processing of the command line program output.|
 
-The xml type can also accept an "schema" attribute to validate the output.
+## stderrHandler
+
+Similar to the exitValueHandler it is possible to specify an handler for
+the content of the stderr stream.
+
+You can chose from the following options:
+
+| value | explanation |
+|-------|-------------|
+| ignore | The text on stderr will be ignored. This is the default case if no stderrHandler is given.|
+| logging | The text on stderr will be logged if it is not empty. |
+| errorIfNotEmpty | If the text on stderr is not empty, the basic process skeleton will take it as an error and will stop the processing of the other output. |
+| pythonTraceback | Same as errorIfNotEmpty, but it filters first if there is some text which indicates an python traceback. Other text (for example warnings) on stderr will be ignored. This is only conceived for processes that run python scripts. |
+
+## stdoutHandler
+
+At the moment there is no stdoutHandler given in the example json configuration.
+However we provide the option to set it explicit to "ignore", which at
+the moment the only supported type for this field.
+
+Once it will be necessary to search for errors on stdout output stream, we
+will implement some other stdoutHandlers as well.
+
+## input
+
+The input section is one of the most important parts of the json
+configuration files.
+It specifies how the input data is given to the command line program.
+
+You have to provide an array with at least the following fields:
+
+- title
+- useAs
+- type
+
+The title specifies an identifier that will also be used in the
+process description provided by the wps server.
+
+The useAs gives the basic process skeleton the information about
+how to transfer the data to the command line program.
+
+The following values are possible:
+
+| useAs | explanation |
+|-------|-------------|
+| stdin | Take the content of the input and pipe it to the program via the stdin stream. |
+| commandLineArgument | Add the content (or the name of a temporary file) to the command to execute. |
+| file | The content of the input will be written to the file with a given path, so that the file is there when the program gets executed. | 
+
+For input files there must always be a path attribute as well, so that the
+basic process skeleton knows where to create the file.
+
+## output
+
+Same as the iinput section this is also a very important part of the
+json configuration file and here must be provided a array with
+the at least the following fields as well:
+
+- title
+- readFrom
+- type
+
+The term readFrom may be difficult to understand for output parameters,
+but it specifies the moment on which the command line program runs
+and the basic process skeleton reads the output from the running container.
+
+There are the following readFrom values possible:
+
+| readFrom | explanation |
+|----------|-------------|
+| exit value | Read from the exit value. |
+| stderr | Read from stderr stream. |
+| stdout | Read from stdout stream. |
+| file | Read the content from a file that was created inside of the container. |
+
+You may wonder about having an option of reading from the exit value or stderr
+while there are seperate stderrHandler and exitValueHandlers.
+Those handlers are meant to handle situations that indicate errors and
+stop the processing of the basic process skeleton, while
+the readFrom options are for reading data for the overall process output.
+
+## input and output types
+
+For an overview of supported input and output types please refer to
+the [site about supported formats](SupportedFormats.md).

@@ -17,7 +17,8 @@ However, there was some need for improvements:
 - more input parameters for better search capabilities
 - better performance on searching in small areas by using a sqlite
   database instead of an csv file
-- creation of valid quakeml according to the [xsd file](https://quake.ethz.ch/quakeml/docs/xml?action=AttachFile&do=get&target=QuakeML-BED-1.2.xsd).
+- creation of valid quakeml according to the 
+  [xsd file](https://quake.ethz.ch/quakeml/docs/xml?action=AttachFile&do=get&target=QuakeML-BED-1.2.xsd).
 
 Those improvements are included in the following github repository:
  

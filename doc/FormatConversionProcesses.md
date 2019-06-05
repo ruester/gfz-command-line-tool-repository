@@ -1,17 +1,18 @@
 # Processes for format conversion
 
-We also provide services for converting data from one format to an other.
+We provide services for converting data from one format to an other one.
 This mostly focus on having an OGC compliant data format for
 some of the more expert and domain focused file formats that are around
-in risk analysis. This is true for the quakeml file format as well
-as for shakemaps.
+in risk analysis. 
+
+This is true for the quakeml file format as well as for shakemaps.
 
 ## QuakeMLTransformationProcess
 
 The basic format of the quakeledger process is quakeml that is valid according to the
 xsd file at http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd.
 
-We had some affort to improve quakeledger to support this format, because
+We had some afford to improve quakeledger to support this format, because
 the older quakeml format - and so the output of the original quakeledger - 
 was not valid.
 
@@ -37,7 +38,7 @@ For the shakemap the case is a bit different compared to the quakeml
 format.
 
 The shakemap is more structured than the basic table like approach of
-a simple feature collection, so there is just the shakemap format
+a simple feature collection, so there is just the shakemap xml format
 that supports the full range of information.
 
 However we provide a mechanism to transform the data of the shakemap into
@@ -55,9 +56,14 @@ GML, GeoJSON and GeoTiff all of them use WGS84 as coordinate reference system.
 ## How to add your own format conversion process
 
 The format conversion processes only rely on the parser and generator
-principle of the wps server. Additional code is only executed to validate
-the data, to make sure that the input is valid.
+principle of the wps server. 
+Additional code is only executed to validate the data 
+so to make sure that the input is valid.
+
+You can take a look in the src/main/java/formats folder to analyse some
+of the parsers and generators.
 
 Once you have written the parser and generators (and registered them
-in the GfzRiesgosRepository class) you only have to add the ClassTransformationProcess
-to the addAlgorithmsOfFormatTransformations in the GfzRiesgosRepositoryCM class.
+in the GfzRiesgosRepository class) you only have to add the 
+ClassTransformationProcess to the addAlgorithmsOfFormatTransformations
+method in the GfzRiesgosRepositoryCM class.
