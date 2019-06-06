@@ -75,10 +75,8 @@ public class JsonGenerator
         if (data instanceof JsonDataBinding) {
             final JsonDataBinding binding = (JsonDataBinding) data;
             final JSONObject jsonObject = binding.getPayload();
-            final ByteArrayInputStream inputStream =
-                    new ByteArrayInputStream(
-                            jsonObject.toJSONString().getBytes());
-            return inputStream;
+            return new ByteArrayInputStream(
+                    jsonObject.toJSONString().getBytes());
         } else {
             LOGGER.error(
                     "Can't convert another data binding as JsonDataBinding");
