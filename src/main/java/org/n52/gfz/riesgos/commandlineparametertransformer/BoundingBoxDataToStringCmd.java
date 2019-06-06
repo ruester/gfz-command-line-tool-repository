@@ -26,18 +26,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLineParameter {
+/**
+ * Function to convert an BoundingBox to a list of strings.
+ * Used to add it as a command line argument.
+ */
+public class BoundingBoxDataToStringCmd
+        implements IConvertIDataToCommandLineParameter {
+
+    /**
+     * Converts the IData to a list of arguments.
+     * @param iData element to convert
+     * @return list of strings
+     * @throws ConvertToStringCmdException exception if the input can't be
+     * handled by the function
+     */
     @Override
-    public List<String> convertToCommandLineParameter(IData iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(
+            final IData iData)
+            throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
 
-        if(iData instanceof BoundingBoxData) {
+        if (iData instanceof BoundingBoxData) {
             final BoundingBoxData bbox = (BoundingBoxData) iData;
             final double[] lowerCorner = bbox.getLowerCorner();
             final double[] upperCorner = bbox.getUpperCorner();
 
-            if(lowerCorner.length < 2 || upperCorner.length < 2) {
-                throw new ConvertToStringCmdException("Not enough coordinates in the bounding box lower corner");
+            if (lowerCorner.length < 2 || upperCorner.length < 2) {
+                throw new ConvertToStringCmdException(
+                    "Not enough coordinates in the bounding box lower corner");
             }
 
             final double latMin = lowerCorner[0];
@@ -56,14 +72,23 @@ public class BoundingBoxDataToStringCmd implements IConvertIDataToCommandLinePar
         return result;
     }
 
+    /**
+     *
+     * @param o other object
+     * @return true if this object equals the other one
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());
