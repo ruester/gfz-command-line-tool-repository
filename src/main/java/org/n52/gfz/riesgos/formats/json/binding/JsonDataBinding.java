@@ -22,32 +22,46 @@ import org.json.simple.JSONObject;
 import org.n52.wps.io.data.IComplexData;
 
 /**
- * Binding class that contains a simple json object
+ * Binding class that contains a simple json object.
  */
 public class JsonDataBinding implements IComplexData {
 
     private static final long serialVersionUID = 8386437107877117360L;
 
+    /**
+     * Inner json object.
+     */
     private final JSONObject jsonObject;
 
     /**
-     * Default constructor
-     * @param jsonObject jsonObject to wrap
+     * Default constructor for JsonDataBinding.
+     * @param aJsonObject jsonObject to wrap
      */
-    public JsonDataBinding(final JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
+    public JsonDataBinding(final JSONObject aJsonObject) {
+        this.jsonObject = aJsonObject;
     }
 
+    /**
+     * Disposes the data binding.
+     */
     @Override
     public void dispose() {
         // do nothing
     }
 
+    /**
+     *
+     * @return the content of the data binding
+     */
     @Override
     public JSONObject getPayload() {
         return jsonObject;
     }
 
+    /**
+     *
+     * @return supported class for the data binding
+     */
     @Override
     public Class<?> getSupportedClass() {
         return JSONObject.class;
