@@ -35,7 +35,7 @@ public class LiteralDoubleBindingToStringCmd
         implements IConvertIDataToCommandLineParameter {
 
     /**
-     * Internal default flag (for example '--text').
+     * Internal default flag (for example '--value').
      * Can be null.
      */
     private final String defaultFlag;

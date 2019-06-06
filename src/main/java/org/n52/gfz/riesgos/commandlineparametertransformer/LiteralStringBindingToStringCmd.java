@@ -31,32 +31,47 @@ import java.util.Optional;
  * Used to add it as a command line argument.
  * Can also handle default flags.
  */
-public class LiteralStringBindingToStringCmd implements IConvertIDataToCommandLineParameter {
+public class LiteralStringBindingToStringCmd
+        implements IConvertIDataToCommandLineParameter {
 
+    /**
+     * Internal default flag (for example '--text').
+     * Can be null.
+     */
     private final String defaultFlag;
 
     /**
-     * Constructor with a default flag
-     * @param defaultFlag flag that is before the element (for example --etype before an expert type)
+     * Constructor with a default flag.
+     * @param aDefaultFlag flag that is before the element
+     *                     (for example --etype before an expert type)
      */
-    public LiteralStringBindingToStringCmd(final String defaultFlag) {
-        this.defaultFlag = defaultFlag;
+    public LiteralStringBindingToStringCmd(final String aDefaultFlag) {
+        this.defaultFlag = aDefaultFlag;
     }
 
     /**
-     * Constructor without a default flag
+     * Constructor without a default flag.
      */
     public LiteralStringBindingToStringCmd() {
         this(null);
     }
 
+    /**
+     * Converts the IData to a list of arguments.
+     * @param iData element to convert
+     * @return list of strings
+     * @throws ConvertToStringCmdException exception if the input can't be
+     * handled by the function
+     */
     @Override
-    public List<String> convertToCommandLineParameter(final IData iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(
+            final IData iData)
+            throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
 
-        if(iData instanceof LiteralStringBinding) {
+        if (iData instanceof LiteralStringBinding) {
             final LiteralStringBinding binding = (LiteralStringBinding) iData;
             final String value = binding.getPayload();
             result.add(value);
@@ -66,18 +81,28 @@ public class LiteralStringBindingToStringCmd implements IConvertIDataToCommandLi
         return result;
     }
 
+    /**
+     *
+     * @param o other object
+     * @return true if this object equals the other one
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LiteralStringBindingToStringCmd that = (LiteralStringBindingToStringCmd) o;
+        final LiteralStringBindingToStringCmd that =
+                (LiteralStringBindingToStringCmd) o;
         return Objects.equals(defaultFlag, that.defaultFlag);
     }
 
+    /**
+     *
+     * @return hashcode of this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(defaultFlag);
