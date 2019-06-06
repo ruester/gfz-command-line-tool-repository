@@ -32,6 +32,7 @@ import java.util.Optional;
 public class ConfigurationImpl implements IConfiguration {
 
     private final String identifier;
+    private final String optionalAbstract;
     private final String imageId;
     private final String workingDirectory;
     private final List<String> commandToExecute;
@@ -44,6 +45,7 @@ public class ConfigurationImpl implements IConfiguration {
 
     private ConfigurationImpl(
             final String identifier,
+            final String optionalAbstract,
             final String imageId,
             final String workingDirectory,
             final List<String> commandToExecute,
@@ -54,6 +56,7 @@ public class ConfigurationImpl implements IConfiguration {
             final IExitValueHandler exitValueHandler,
             final IStdoutHandler stdoutHandler) {
         this.identifier = identifier;
+        this.optionalAbstract = optionalAbstract;
         this.imageId = imageId;
         this.workingDirectory = workingDirectory;
         this.commandToExecute = commandToExecute;
@@ -68,6 +71,11 @@ public class ConfigurationImpl implements IConfiguration {
     @Override
     public String getIdentifier() {
         return identifier;
+    }
+
+    @Override
+    public Optional<String> getAbstract() {
+        return Optional.ofNullable(optionalAbstract);
     }
 
     @Override
@@ -146,6 +154,7 @@ public class ConfigurationImpl implements IConfiguration {
      */
     public static class Builder {
         private final String identifier;
+        private final String optionalAbstract;
         private final String imageId;
         private final String workingDirectory;
         private final List<String> commandToExecute;
@@ -162,12 +171,18 @@ public class ConfigurationImpl implements IConfiguration {
         /**
          * Constructor
          * @param identifier identifier of the process
+         * @param optionalAbstract optional text with the abstract of the process
          * @param imageId image id for docker
          * @param workingDirectory working directory to run the process in (inside docker)
          * @param commandToExecute command to execute (inside docker)
          */
-        public Builder(final String identifier, final String imageId, final String workingDirectory, final List<String> commandToExecute) {
+        public Builder(final String identifier,
+                       final String optionalAbstract,
+                       final String imageId,
+                       final String workingDirectory,
+                       final List<String> commandToExecute) {
             this.identifier = identifier;
+            this.optionalAbstract = optionalAbstract;
             this.imageId = imageId;
             this.workingDirectory = workingDirectory;
             this.commandToExecute = commandToExecute;
@@ -264,6 +279,7 @@ public class ConfigurationImpl implements IConfiguration {
         public IConfiguration build() {
             return new ConfigurationImpl(
                     identifier,
+                    optionalAbstract,
                     imageId,
                     workingDirectory,
                     commandToExecute,

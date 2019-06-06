@@ -185,6 +185,7 @@ handle input and output data.
 ```javascript
 {
   "title": "FilterBigProcess",
+  "abstract": "Process to filter polygons that have an area equal or bigger than the given value.",
   "imageId": "filter_big:latest",
   "workingDirectory": "/usr/share/git/filter_big",
   "commandToExecute": "python3 filter_big.py",
@@ -220,6 +221,10 @@ Lets to through the elements:
 
 - title is the title under which you can access to the process.
   Make sure that you insert a new title which every new process.
+  
+- abstract is a description that will be shown on the description of
+  the wps service. While this field is optional, please make sure that
+  you provide a meaningful description for the users of your service.
   
 - imageId is the tag or the image id of the docker image that contains
   the code. Here we use the filter_big image we created in the last step.

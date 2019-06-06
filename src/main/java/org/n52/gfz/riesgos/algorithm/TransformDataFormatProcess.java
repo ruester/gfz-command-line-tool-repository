@@ -49,6 +49,7 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
     private final Class<? extends IComplexData> clazz;
     private final Logger logger;
     private final ICheckDataAndGetErrorMessage validator;
+    private final String optionalAbstract;
 
     /**
      * Creates a new process to transform the binding class data
@@ -61,11 +62,13 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
             final String identifier,
             final Class<? extends IComplexData> clazz,
             final Logger logger,
-            final ICheckDataAndGetErrorMessage validator) {
+            final ICheckDataAndGetErrorMessage validator,
+            final String optionalAbstract) {
         this.identifier = identifier;
         this.clazz = clazz;
         this.logger = logger;
         this.validator = validator;
+        this.optionalAbstract = optionalAbstract;
     }
 
     @Override
@@ -121,6 +124,7 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
     public ProcessDescription getDescription() {
         final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorForTransformationImpl(
                 identifier, IConfiguration.PATH_FULL_QUALIFIED + identifier, clazz,
+                optionalAbstract,
                 INPUT_IDENTIFIER, OUTPUT_IDENTIFIER);
         final ProcessDescriptionsDocument description = generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();

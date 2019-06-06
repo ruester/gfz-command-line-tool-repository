@@ -1,5 +1,6 @@
 {
     "title": "QuakeledgerProcess",
+    "abstract": "This is the description of the quakeledger process.",
     "imageId": "quakeledger:latest",
     "workingDirectory": "/usr/share/git/quakeledger",
     "commandToExecute": "python3 eventquery.py",

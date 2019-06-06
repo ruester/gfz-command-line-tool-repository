@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.processdescription.impl;
 
 import net.opengis.ows.x11.AllowedValuesDocument;
 import net.opengis.ows.x11.CodeType;
+import net.opengis.ows.x11.DescriptionType;
 import net.opengis.ows.x11.DomainMetadataType;
 import net.opengis.ows.x11.LanguageStringType;
 import net.opengis.wps.x100.CRSsType;
@@ -99,6 +100,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
         final LanguageStringType processTitle = processDescriptionType.addNewTitle();
         processTitle.setStringValue(configuration.getIdentifier());
+
+        final Optional<String> optionalAbstract = configuration.getAbstract();
+        if(optionalAbstract.isPresent()) {
+            final LanguageStringType abstractType = processDescriptionType.addNewAbstract();
+            abstractType.setStringValue(optionalAbstract.get());
+        }
 
         processDescriptionType.setStatusSupported(true);
         processDescriptionType.setStoreSupported(true);

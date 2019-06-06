@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -50,6 +51,7 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
     private final String identifier;
     private final String fullQualifiedIdentifier;
     private final Class<? extends IComplexData> bindingClass;
+    private final Optional<String> optionalAbstract;
     private final String inputIdentifier;
     private final String outputIdentifier;
 
@@ -68,6 +70,7 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
             final String identifier,
             final String fullQualifiedIdentifier,
             final Class<? extends IComplexData> bindingClass,
+            final String optionalAbstract,
             final String inputIdentifier,
             final String outputIdentifier,
             final Supplier<List<IParser>> parserSupplier,
@@ -75,6 +78,7 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
         this.identifier = identifier;
         this.fullQualifiedIdentifier = fullQualifiedIdentifier;
         this.bindingClass = bindingClass;
+        this.optionalAbstract = Optional.ofNullable(optionalAbstract);
         this.inputIdentifier = inputIdentifier;
         this.outputIdentifier = outputIdentifier;
 
@@ -87,9 +91,11 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
             final String identifier,
             final String fullQualifiedIdentifier,
             final Class<? extends IComplexData> bindingClass,
+            final String optionalAbstract,
             final String inputIdentifier,
             final String outputIdentifier) {
         this(identifier, fullQualifiedIdentifier, bindingClass,
+                optionalAbstract,
                 inputIdentifier, outputIdentifier,
                 () -> ParserFactory.getInstance().getAllParsers(),
                 () -> GeneratorFactory.getInstance().getAllGenerators());
@@ -110,6 +116,11 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
 
         final LanguageStringType processTitle = processDescriptionType.addNewTitle();
         processTitle.setStringValue(identifier);
+
+        if(optionalAbstract.isPresent()) {
+            final LanguageStringType abstractType = processDescriptionType.addNewAbstract();
+            abstractType.setStringValue(optionalAbstract.get());
+        }
 
         processDescriptionType.setStatusSupported(true);
         processDescriptionType.setStoreSupported(true);

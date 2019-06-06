@@ -185,8 +185,16 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
     private void addAlgorithmsOfFormatTransformations(final Consumer<AlgorithmData> adder) {
         for(ClassTransformationProcess transformationProcess : Arrays.asList(
-                new ClassTransformationProcess(QuakeMLXmlDataBinding.class, "QuakeMLTransformationProcess", new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML)),
-                new ClassTransformationProcess(ShakemapXmlDataBinding.class, "ShakemapTransformationProcess", new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP))
+                new ClassTransformationProcess(
+                        QuakeMLXmlDataBinding.class,
+                        "QuakeMLTransformationProcess",
+                        new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML),
+                        "Process to transform quakeml between various formats"),
+                new ClassTransformationProcess(
+                        ShakemapXmlDataBinding.class,
+                        "ShakemapTransformationProcess",
+                        new XmlBindingWithAllowedSchema(IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP),
+                        "Process to transform shakemaps between various formats")
         )) {
             final String processName = transformationProcess.getProcessName();
             final AlgorithmData algorithmData = new AlgorithmData(
@@ -195,7 +203,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                             processName,
                             transformationProcess.getClazz(),
                             LoggerFactory.getLogger(processName),
-                            transformationProcess.getValidator()));
+                            transformationProcess.getValidator(),
+                            transformationProcess.getOptionalAbstract()));
             adder.accept(algorithmData);
         }
     }
@@ -323,14 +332,17 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         private final Class<? extends IComplexData> clazz;
         private final String processName;
         private final ICheckDataAndGetErrorMessage validator;
+        private final String optionalAbstract;
 
         ClassTransformationProcess(
                 final Class<? extends IComplexData> clazz,
                 final String processName,
-                final ICheckDataAndGetErrorMessage validator) {
+                final ICheckDataAndGetErrorMessage validator,
+                final String optionalAbstract) {
             this.clazz = clazz;
             this.processName = processName;
             this.validator = validator;
+            this.optionalAbstract = optionalAbstract;
         }
 
         Class<? extends IComplexData> getClazz() {
@@ -343,6 +355,10 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
 
         ICheckDataAndGetErrorMessage getValidator() {
             return validator;
+        }
+
+        String getOptionalAbstract() {
+            return optionalAbstract;
         }
     }
 }

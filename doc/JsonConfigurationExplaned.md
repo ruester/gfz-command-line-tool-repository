@@ -19,6 +19,7 @@ The following is the configuration of the quakeledger process:
 ```javascript
 {
     "title": "QuakeledgerProcess",
+    "abstract": "The quakeledger process fills the role of a filterable earth quake catalogue.",
     "imageId": "quakeledger:latest",
     "workingDirectory": "/usr/share/git/quakeledger",
     "commandToExecute": "python3 eventquery.py",
@@ -48,6 +49,13 @@ In the example it is called QuakeledgerProcess.
 The name itself is more or less arbitrarily, but it should indicate which
 program will be executed. Here we followed Java naming conventions
 with upper camel case.
+
+## abstract
+
+The abstract is a desccription of the service. This field is optional,
+but as a wps service is a black box for the user it is important to
+provide some informations on what the process will do, how it works
+and what assumptions are made.
 
 ## imageId
 

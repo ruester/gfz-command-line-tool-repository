@@ -108,6 +108,7 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
                 final JSONObject json = (JSONObject) parsed;
 
                 final String identifier = getStringEntry(json, "title");
+                final String optionalAbstract = getOptionalStringEntry(json, "abstract");
                 final String imageId = getStringEntry(json, "imageId");
                 final String workingDirectory = getStringEntry(json, "workingDirectory");
 
@@ -122,7 +123,7 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
                 final IExitValueHandler exitValueHandler = parseExitValueHandler(json);
                 final IStdoutHandler stdoutHandler = parseStdoutHandler(json);
 
-                return new ConfigurationImpl.Builder(identifier, imageId, workingDirectory, commandToExecute)
+                return new ConfigurationImpl.Builder(identifier, optionalAbstract, imageId, workingDirectory, commandToExecute)
                         .withAddedDefaultCommandLineFlags(defaultCommandLineFlags)
                         .withAddedInputIdentifiers(inputData)
                         .withAddedOutputIdentifiers(outputData)
@@ -142,6 +143,17 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
     private String getStringEntry(final JSONObject jsonObject, final String key) throws ParseConfigurationException {
         if(! jsonObject.containsKey(key)) {
             throw new ParseConfigurationException("Missing key '"+ key + "'");
+        }
+        final Object value = jsonObject.get(key);
+        if(! (value instanceof String)) {
+            throw new ParseConfigurationException("Wrong type for key '" + key + "', expected a String");
+        }
+        return (String) value;
+    }
+
+    private String getOptionalStringEntry(final JSONObject jsonObject, final String key) throws ParseConfigurationException {
+        if(! jsonObject.containsKey(key)) {
+            return null;
         }
         final Object value = jsonObject.get(key);
         if(! (value instanceof String)) {

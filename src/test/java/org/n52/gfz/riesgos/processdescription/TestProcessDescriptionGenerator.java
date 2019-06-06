@@ -68,6 +68,7 @@ public class TestProcessDescriptionGenerator {
                 "  <ProcessDescription statusSupported=\"true\" storeSupported=\"true\" wps:processVersion=\"1.0.0\">\n" +
                 "    <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.QuakeledgerTest</ows:Identifier>\n" +
                 "    <ows:Title>QuakeledgerTest</ows:Title>\n" +
+                "    <ows:Abstract>This is the description of the test quakeledger process</ows:Abstract>\n" +
                 "    <DataInputs>\n" +
                 "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
                 "        <ows:Identifier>lonmin</ows:Identifier>\n" +
@@ -218,6 +219,11 @@ public class TestProcessDescriptionGenerator {
         @Override
         public String getIdentifier() {
             return "QuakeledgerTest";
+        }
+
+        @Override
+        public Optional<String> getAbstract() {
+            return Optional.of("This is the description of the test quakeledger process");
         }
 
         @Override

@@ -12,7 +12,7 @@ The tasks for both are mostly the same, but for own binding classes,
 it is necessary to write own parsers and generators as well and
 to register them in the GfzRiesgosRepository class, so we will go
 through the whole process on the example of an alternative
-geojson binding.
+json binding.
 
 The reason we do this is to provide a fallback mode
 for geojson data that use different projections than wgs84.
@@ -557,3 +557,8 @@ the dependencies.
 After a look in the pom.xml we are happy that this is already included
 in the project.
 
+## Contribute to this project
+
+Once you have integrated your format we will be very happy if you
+consider to contribute your format to this project as it allows aother
+people to work with this format too.

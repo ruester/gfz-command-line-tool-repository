@@ -47,6 +47,12 @@ public interface IConfiguration {
 
     /**
      *
+     * @return optional description text for the process of this configuration
+     */
+    Optional<String> getAbstract();
+
+    /**
+     *
      * @return ID of the docker imaged used to create a container for running the process
      */
     String getImageId();
