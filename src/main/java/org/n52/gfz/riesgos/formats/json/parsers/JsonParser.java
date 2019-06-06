@@ -35,14 +35,20 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Parser for json input
+ * Parser for json input.
  */
-public class JsonParser extends AbstractParser implements IMimeTypeAndSchemaConstants {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonParser.class);
+public class JsonParser
+        extends AbstractParser
+        implements IMimeTypeAndSchemaConstants {
 
     /**
-     * default constructor
+     * Logger for this class.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(JsonParser.class);
+
+    /**
+     * This is the default constructor for the JsonParser.
      */
     public JsonParser() {
         super();
@@ -50,25 +56,43 @@ public class JsonParser extends AbstractParser implements IMimeTypeAndSchemaCons
         supportedIDataTypes.add(JsonDataBinding.class);
         supportedFormats.add(MIME_TYPE_JSON);
         supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_JSON, null, DEFAULT_ENCODING, true));
+        formats.add(
+                new FormatEntry(
+                        MIME_TYPE_JSON,
+                        null,
+                        DEFAULT_ENCODING,
+                        true));
     }
 
+    /**
+     * Parses the stream to a JsonDataBinding.
+     * @param stream stream with the content
+     * @param mimeType mimeType of the content
+     * @param schema schema of the content
+     * @return JsonDataBinding
+     */
     @Override
-    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+    public IData parse(
+            final InputStream stream,
+            final String mimeType,
+            final String schema) {
         try {
-            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            final ByteArrayOutputStream byteArrayOutputStream =
+                    new ByteArrayOutputStream();
             IOUtils.copy(stream, byteArrayOutputStream);
-            final String content = new String(byteArrayOutputStream.toByteArray());
+            final String content =
+                    new String(byteArrayOutputStream.toByteArray());
             final JSONParser parser = new JSONParser();
             final Object parsed = parser.parse(content);
-            if(parsed instanceof  JSONObject) {
+            if (parsed instanceof  JSONObject) {
                 final JSONObject jsonObject = (JSONObject) parsed;
                 return new JsonDataBinding(jsonObject);
             }
-            throw new RuntimeException("Can't parse the content to an json object");
-        } catch(final IOException ioException) {
+            throw new RuntimeException(
+                    "Can't parse the content to an json object");
+        } catch (final IOException ioException) {
             throw new RuntimeException(ioException);
-        } catch(final ParseException parseException) {
+        } catch (final ParseException parseException) {
             throw new RuntimeException(parseException);
         }
     }
