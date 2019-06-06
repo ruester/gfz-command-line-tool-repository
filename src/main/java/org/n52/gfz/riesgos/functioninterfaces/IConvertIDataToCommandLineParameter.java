@@ -22,16 +22,20 @@ import org.n52.wps.io.data.IData;
 import java.util.List;
 
 /**
- * Interface to convert in IData to a string for using it as a command line argument
+ * Interface to convert in IData to a string for using it as a
+ * command line argument.
  */
 @FunctionalInterface
 public interface IConvertIDataToCommandLineParameter {
 
     /**
-     * converts the IData to a string
+     * Converts the IData to a list of command line arguments.
      * @param iData element to convert
-     * @return String
-     * @throws ConvertToStringCmdException exception if the input can't be handled by the function
+     * @return list of strings
+     * @throws ConvertToStringCmdException exception if the input can't be
+     * handled by the function
      */
-    List<String> convertToCommandLineParameter(final IData iData) throws ConvertToStringCmdException;
+    List<String> convertToCommandLineParameter(
+            final IData iData)
+            throws ConvertToStringCmdException;
 }

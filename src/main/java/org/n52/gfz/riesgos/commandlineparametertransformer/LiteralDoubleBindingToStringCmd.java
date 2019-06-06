@@ -31,32 +31,47 @@ import java.util.Optional;
  * Used to add it as a command line argument.
  * Can also handle default flags.
  */
-public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLineParameter {
+public class LiteralDoubleBindingToStringCmd
+        implements IConvertIDataToCommandLineParameter {
 
+    /**
+     * Internal default flag (for example '--text').
+     * Can be null.
+     */
     private final String defaultFlag;
 
     /**
-     * Constructor with a default flag
-     * @param defaultFlag flag that is before the element (for example --lat before a latitude)
+     * Constructor with a default flag.
+     * @param aDefaultFlag flag that is before the element
+     *                    (for example --lat before a latitude)
      */
-    public LiteralDoubleBindingToStringCmd(final String defaultFlag) {
-        this.defaultFlag = defaultFlag;
+    public LiteralDoubleBindingToStringCmd(final String aDefaultFlag) {
+        this.defaultFlag = aDefaultFlag;
     }
 
     /**
-     * Constructor without a default flag
+     * Constructor without a default flag.
      */
     public LiteralDoubleBindingToStringCmd() {
         this(null);
     }
 
+    /**
+     * Converts the IData to a list of arguments.
+     * @param iData element to convert
+     * @return list of strings
+     * @throws ConvertToStringCmdException exception if the input can't be
+     * handled by the function
+     */
     @Override
-    public List<String> convertToCommandLineParameter(final IData iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(
+            final IData iData)
+            throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
 
-        if(iData instanceof LiteralDoubleBinding) {
+        if (iData instanceof LiteralDoubleBinding) {
             final LiteralDoubleBinding binding = (LiteralDoubleBinding) iData;
             final Double value = binding.getPayload();
             result.add(String.valueOf(value));
@@ -66,18 +81,28 @@ public class LiteralDoubleBindingToStringCmd implements IConvertIDataToCommandLi
         return result;
     }
 
+    /**
+     *
+     * @param o other object
+     * @return true if this object equals the other one
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LiteralDoubleBindingToStringCmd that = (LiteralDoubleBindingToStringCmd) o;
+        final LiteralDoubleBindingToStringCmd that =
+                (LiteralDoubleBindingToStringCmd) o;
         return Objects.equals(defaultFlag, that.defaultFlag);
     }
 
+    /**
+     *
+     * @return hashcode of this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(defaultFlag);
