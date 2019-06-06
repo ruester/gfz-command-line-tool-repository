@@ -344,7 +344,7 @@ public class ParseJsonForOutputImpl {
         /**
          * This is default constructor for the enum.
          * @param aDataType string with the data type name
-         * @param aFactory factory to crete the identifier with this type
+         * @param aFactory factory to create the identifier with this type
          */
         FromStdoutOption(
                 final String aDataType,
@@ -428,7 +428,7 @@ public class ParseJsonForOutputImpl {
         /**
          * This is default constructor for the enum.
          * @param aDataType string with the data type name
-         * @param aFactory factory to crete the identifier with this type
+         * @param aFactory factory to create the identifier with this type
          */
         FromStderrOption(
                 final String aDataType,
@@ -508,7 +508,7 @@ public class ParseJsonForOutputImpl {
         /**
          * This is default constructor for the enum.
          * @param aDataType string with the data type name
-         * @param aFactory factory to crete the identifier with this type
+         * @param aFactory factory to create the identifier with this type
          */
         FromExitValueOption(
                 final String aDataType,
@@ -643,7 +643,7 @@ public class ParseJsonForOutputImpl {
         /**
          * This is default constructor for the enum.
          * @param aDataType string with the data type name
-         * @param aFactory factory to crete the identifier with this type
+         * @param aFactory factory to create the identifier with this type
          */
         FromFilesOption(
                 final String aDataType,
