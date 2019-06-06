@@ -64,22 +64,26 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Factory for several predefined kinds of input and output data
+ * Factory for several predefined kinds of input and output data.
  */
-public class IdentifierWithBindingFactory {
+public final class IdentifierWithBindingFactory {
 
+    /**
+     * Default constructor is not accessible.
+     */
     private IdentifierWithBindingFactory() {
         // static
     }
 
     /**
-     * Creates a command line int argument
+     * Creates a command line int argument.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the data
      * @param flag optional command line flag (--x for a parameter x)
      * @param defaultValue optional default value of the argument
      * @param allowedValues optional list with allowed values
-     * @return object with information about how to use the value as a int command line argument input parameter
+     * @return object with information about how to use the value as a int
+     * command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentInt(
             final String identifier,
@@ -87,15 +91,18 @@ public class IdentifierWithBindingFactory {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues) {
-        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class);
+        final IdentifierWithBindingImpl.Builder builder =
+                new IdentifierWithBindingImpl.Builder(
+                        identifier, LiteralIntBinding.class);
         builder.withAbstract(optionalAbstract);
-        builder.withFunctionToTransformToCmd(new LiteralIntBindingToStringCmd(flag));
+        builder.withFunctionToTransformToCmd(
+                new LiteralIntBindingToStringCmd(flag));
 
-        if(defaultValue != null) {
+        if (defaultValue != null) {
             builder.withDefaultValue(defaultValue);
         }
 
-        if(allowedValues != null && (! allowedValues.isEmpty())) {
+        if (allowedValues != null && (!allowedValues.isEmpty())) {
             builder.withAllowedValues(allowedValues);
         }
 
@@ -103,13 +110,14 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
-     * Creates a command line double argument
+     * Creates a command line double argument.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag (--x for a parameter x)
      * @param defaultValue optional default value of the argument
      * @param allowedValues optional list with allowed values
-     * @return object with information about how to use the value as a double command line argument input parameter
+     * @return object with information about how to use the value as a double
+     * command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentDouble(
             final String identifier,
@@ -117,15 +125,18 @@ public class IdentifierWithBindingFactory {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues) {
-        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralDoubleBinding.class);
+        final IdentifierWithBindingImpl.Builder builder =
+                new IdentifierWithBindingImpl.Builder(
+                        identifier, LiteralDoubleBinding.class);
         builder.withAbstract(optionalAbstract);
-        builder.withFunctionToTransformToCmd(new LiteralDoubleBindingToStringCmd(flag));
+        builder.withFunctionToTransformToCmd(
+                new LiteralDoubleBindingToStringCmd(flag));
 
-        if(defaultValue != null) {
+        if (defaultValue != null) {
             builder.withDefaultValue(defaultValue);
         }
 
-        if(allowedValues != null && (! allowedValues.isEmpty())) {
+        if (allowedValues != null && (!allowedValues.isEmpty())) {
             builder.withAllowedValues(allowedValues);
         }
 
@@ -133,13 +144,14 @@ public class IdentifierWithBindingFactory {
     }
 
     /**
-     * Creates a command line string argument
+     * Creates a command line string argument.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag (--x for a parameter x)
      * @param defaultValue optional default value of the argument
      * @param allowedValues optional list with allowed values
-     * @return object with information about how to use the value as a string command line argument input parameter
+     * @return object with information about how to use the value as a string
+     * command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentString(
             final String identifier,
@@ -147,38 +159,46 @@ public class IdentifierWithBindingFactory {
             final String flag,
             final String defaultValue,
             final List<String> allowedValues) {
-        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class);
+        final IdentifierWithBindingImpl.Builder builder =
+                new IdentifierWithBindingImpl.Builder(
+                        identifier, LiteralStringBinding.class);
         builder.withAbstract(optionalAbstract);
-        builder.withFunctionToTransformToCmd(new LiteralStringBindingToStringCmd(flag));
+        builder.withFunctionToTransformToCmd(
+                new LiteralStringBindingToStringCmd(flag));
 
-        if(defaultValue != null) {
+        if (defaultValue != null) {
             builder.withDefaultValue(defaultValue);
         }
 
-        if(allowedValues != null && (! allowedValues.isEmpty())) {
+        if (allowedValues != null && (!allowedValues.isEmpty())) {
             builder.withAllowedValues(allowedValues);
-            builder.withValidator(new LiteralStringBindingWithAllowedValues(allowedValues));
+            builder.withValidator(
+                    new LiteralStringBindingWithAllowedValues(allowedValues));
         }
 
         return builder.build();
     }
 
     /**
-     * Creates a command line boolean argument
+     * Creates a command line boolean argument.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag command line flag to insert if the value is true
      * @param defaultValue optional default value
-     * @return object with information about how to use the value as a boolean command line argument input parameter
+     * @return object with information about how to use the value as a
+     * boolean command line argument input parameter
      */
     public static IIdentifierWithBinding createCommandLineArgumentBoolean(
             final String identifier,
             final String optionalAbstract,
             final String flag,
             final String defaultValue) {
-        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralBooleanBinding.class);
+        final IdentifierWithBindingImpl.Builder builder =
+                new IdentifierWithBindingImpl.Builder(
+                        identifier, LiteralBooleanBinding.class);
         builder.withAbstract(optionalAbstract);
-        builder.withFunctionToTransformToCmd(new LiteralBooleanBindingToStringCmd(flag));
+        builder.withFunctionToTransformToCmd(
+                new LiteralBooleanBindingToStringCmd(flag));
 
         if (defaultValue != null) {
             builder.withDefaultValue(defaultValue);
@@ -195,7 +215,8 @@ public class IdentifierWithBindingFactory {
      *
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @param supportedCRSForBBox list with the supported CRS for the bounding box
+     * @param supportedCRSForBBox list with the supported CRS
+     *                            for the bounding box
      * @return bounding box command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentBBox(
@@ -203,22 +224,27 @@ public class IdentifierWithBindingFactory {
             final String optionalAbstract,
             final List<String> supportedCRSForBBox) {
 
-        return new IdentifierWithBindingImpl.Builder(identifier, BoundingBoxData.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, BoundingBoxData.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new BoundingBoxDataToStringCmd())
+                .withFunctionToTransformToCmd(
+                        new BoundingBoxDataToStringCmd())
                 .withSupportedCRSForBBox(supportedCRSForBBox)
                 .build();
     }
 
     /**
-     * Creates a command line argument (xml file) with a file path that will be written down as a temporary file
+     * Creates a command line argument (xml file) with a file path that will
+     * be written down as a temporary file.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param schema schema of the xml
-     * @param defaultFlag default flag for the command line argument (for example --file)
+     * @param defaultFlag default flag for the command line argument
+     *                    (for example --file)
      * @return xml file command line argument
      */
-    public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchema(
+    public static IIdentifierWithBinding
+                createCommandLineArgumentXmlFileWithSchema(
             final String identifier,
             final String optionalAbstract,
             final String schema,
@@ -233,26 +259,32 @@ public class IdentifierWithBindingFactory {
             validator = new XmlBindingWithAllowedSchema(schema);
         }
 
-        return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GenericXMLDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withValidator(validator)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, defaultFlag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, defaultFlag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(schema)
                 .build();
     }
 
     /**
-     * Same as createCommandLineArgumentXmlFileWithSchema, but it removes the xml header before
-     * writing it to a file
+     * Same as createCommandLineArgumentXmlFileWithSchema,
+     * but it removes the xml header before
+     * writing it to a file.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param schema schema of the xml
      * @param flag optional flag for the command line argument
      * @return xml file command line argument
      */
-    public static IIdentifierWithBinding createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
+    public static IIdentifierWithBinding
+                createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
             final String identifier,
             final String optionalAbstract,
             final String schema,
@@ -267,18 +299,22 @@ public class IdentifierWithBindingFactory {
             validator = new XmlBindingWithAllowedSchema(schema);
         }
 
-        return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GenericXMLDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                        new ConvertGenericXMLDataBindingToBytesWithoutHeader()))
                 .withSchema(schema)
                 .withValidator(validator)
                 .build();
     }
 
     /**
-     * Same as  createCommandLineArgumentXmlFileWithSchema but with QuakeML
+     * Same as  createCommandLineArgumentXmlFileWithSchema but with QuakeML.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag optional flag for the command line argument
@@ -292,19 +328,23 @@ public class IdentifierWithBindingFactory {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, QuakeMLXmlDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(schema)
                 .withValidator(new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
     /**
-     * Creates a command line argument (geotiff file) with a file path that will be written down as a
-     * temporary file
+     * Creates a command line argument (geotiff file) with a file path that
+     * will be written down as a temporary file.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
@@ -316,17 +356,21 @@ public class IdentifierWithBindingFactory {
             final String flag) {
         final String filename = createUUIDFilename(".tiff");
 
-        return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GeotiffBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGeotiffBindingToBytes()))
                 .build();
     }
 
     /**
-     * Creates a command line argument (geojson) with a file path that will be written down as a
-     * temporary file
+     * Creates a command line argument (geojson) with a file path that will
+     * be written down as a temporary file.
      * @param identifier identifier of the data
      * @param optionalDescription optional description of the parameter
      * @param flag optional command line flag
@@ -337,19 +381,24 @@ public class IdentifierWithBindingFactory {
             final String optionalDescription,
             final String flag) {
         final String filename = createUUIDFilename(".json");
-        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GTVectorDataBinding.class)
                 .withAbstract(optionalDescription)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(
-                        ConvertGTVectorDataBindingToBytes.Format.JSON
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                            new ConvertGTVectorDataBindingToBytes(
+                                ConvertGTVectorDataBindingToBytes.Format.JSON
                 )))
                 .build();
     }
 
     /**
-     * Creates a command line argument (shapefile) with a file path that will be written down as a temporary file
-     * (or multiple files, because one shapefile contains multiple files)
+     * Creates a command line argument (shapefile) with a file path that will
+     * be written down as a temporary file
+     * (or multiple files, because one shapefile contains multiple files).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
@@ -362,18 +411,21 @@ public class IdentifierWithBindingFactory {
 
         final String filename = createUUIDFilename(".shp");
 
-        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GTVectorDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteShapeFileToPath())
+                .withFunctionToWriteToFiles(
+                        new WriteShapeFileToPath())
                 .build();
     }
 
 
     /**
-     * Creates a command line argument (generic file) with a file path that will be written down as a
-     * temporary file
+     * Creates a command line argument (generic file) with a file path that
+     * will be written down as a temporary file.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
@@ -385,17 +437,21 @@ public class IdentifierWithBindingFactory {
             final String flag) {
         final String filename = createUUIDFilename(".dat");
 
-        return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GenericFileDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGenericFileDataBindingToBytes()))
                 .build();
     }
 
     /**
-     * Creates a command line argument (json file) with a file path that will be written down as
-     * a temporary file
+     * Creates a command line argument (json file) with a file path that will
+     * be written down as a temporary file.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
@@ -407,21 +463,26 @@ public class IdentifierWithBindingFactory {
             final String flag) {
         final String filename = createUUIDFilename(".json");
 
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, JsonDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
+                .withFunctionToTransformToCmd(
+                        new FileToStringCmd(filename, flag))
                 .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertJsonDataBindingToBytes()))
                 .build();
     }
 
     /**
-     * Creates a stdin input with a string
+     * Creates a stdin input with a string.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param defaultValue optional default value of the argument
      * @param allowedValues optional list with allowed values
-     * @return object with information about how to use the value as a string stdin input parameter
+     * @return object with information about how to use the value as
+     * a string stdin input parameter
      */
     public static IIdentifierWithBinding createStdinString(
             final String identifier,
@@ -429,37 +490,45 @@ public class IdentifierWithBindingFactory {
             final String defaultValue,
             final List<String> allowedValues) {
 
-        final IdentifierWithBindingImpl.Builder builder = new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class);
+        final IdentifierWithBindingImpl.Builder builder =
+                new IdentifierWithBindingImpl.Builder(
+                        identifier, LiteralStringBinding.class);
         builder.withAbstract(optionalAbstract);
-        builder.withFunctionToWriteToStdin(new ConvertLiteralStringToBytes());
+        builder.withFunctionToWriteToStdin(
+                new ConvertLiteralStringToBytes());
 
-        if(defaultValue != null) {
+        if (defaultValue != null) {
             builder.withDefaultValue(defaultValue);
         }
-        if(allowedValues != null && (! allowedValues.isEmpty())) {
+        if (allowedValues != null && (!allowedValues.isEmpty())) {
             builder.withAllowedValues(allowedValues);
-            builder.withValidator(new LiteralStringBindingWithAllowedValues(allowedValues));
+            builder.withValidator(
+                    new LiteralStringBindingWithAllowedValues(
+                            allowedValues));
         }
         return builder.build();
     }
 
     /**
-     * creates a stdin input with json
+     * Creates a stdin input with json.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @return object with information about how to use the value as a json stdin input parameter
+     * @return object with information about how to use the value
+     * as a json stdin input parameter
      */
     public static IIdentifierWithBinding createStdinJson(
             final String identifier,
             final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, JsonDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToWriteToStdin(new ConvertJsonDataBindingToBytes())
+                .withFunctionToWriteToStdin(
+                        new ConvertJsonDataBindingToBytes())
                 .build();
     }
 
     /**
-     * Creates a input file argument (geotiff file)
+     * Creates a input file argument (geotiff file).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before starting the process
@@ -469,15 +538,18 @@ public class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GeotiffBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGeotiffBindingToBytes()))
                 .build();
     }
 
     /**
-     * Creates a input file argument (geojson file)
+     * Creates a input file argument (geojson file).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before staring the process
@@ -487,35 +559,42 @@ public class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GTVectorDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(
-                        ConvertGTVectorDataBindingToBytes.Format.JSON
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                            new ConvertGTVectorDataBindingToBytes(
+                                ConvertGTVectorDataBindingToBytes.Format.JSON
                 )))
                 .build();
     }
 
     /**
-     * Creates a input file argument (shapefile - with all the other files to care about)
+     * Creates a input file argument (shapefile - with all the other files to
+     * care about).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @param path path of the file to write before starting the process (just the .shp file)
+     * @param path path of the file to write before starting the process
+     *             (just the .shp file)
      * @return shapefile input file
      */
     public static IIdentifierWithBinding createFileInShapeFile(
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GTVectorDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToWriteToFiles(new WriteShapeFileToPath())
+                .withFunctionToWriteToFiles(
+                        new WriteShapeFileToPath())
                 .build();
     }
 
     /**
-     * Creates an input file argument with quakeml
+     * Creates an input file argument with quakeml.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before starting the process
@@ -528,17 +607,21 @@ public class IdentifierWithBindingFactory {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, QuakeMLXmlDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(schema)
-                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .withValidator(
+                        new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
     /**
-     * Creates an input file argument with shakemap
+     * Creates an input file argument with shakemap.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before starting the process
@@ -551,17 +634,21 @@ public class IdentifierWithBindingFactory {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
-        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, ShakemapXmlDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGenericXMLDataBindingToBytes()))
                 .withSchema(schema)
-                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .withValidator(
+                        new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
     /**
-     * Creates an input file argument with json
+     * Creates an input file argument with json.
      * @param identifier identifier of the data
      * @param optinalAbstract optional description of the parameter
      * @param path path of file to write before starting the process
@@ -572,16 +659,19 @@ public class IdentifierWithBindingFactory {
             final String optinalAbstract,
             final String path) {
 
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, JsonDataBinding.class)
                 .withAbstract(optinalAbstract)
                 .withPath(path)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertJsonDataBindingToBytes()))
                 .build();
     }
 
 
     /**
-     * Creates a input file argument (generic)
+     * Creates a input file argument (generic).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before staring the process
@@ -591,20 +681,24 @@ public class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GenericFileDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes()))
+                .withFunctionToWriteToFiles(
+                        new WriteSingleByteStreamToPath(
+                                new ConvertGenericFileDataBindingToBytes()))
                 .build();
     }
 
     /**
-     * Creates a xml file (output) on a given path with an additional schema
+     * Creates a xml file (output) on a given path with an additional schema.
      * @param identifier identifier of the data
      * @param optionalAbstact optional description of the parameter
      * @param path path of the file to read after process termination
      * @param schema schema of the xml
-     * @return output argument containing xml that will be read from a given file
+     * @return output argument containing xml that will be read from a given
+     * file
      */
     public static IIdentifierWithBinding createFileOutXmlWithSchema(
             final String identifier,
@@ -612,7 +706,7 @@ public class IdentifierWithBindingFactory {
             final String path,
             final String schema) {
 
-        XmlBindingWithAllowedSchema validator;
+       final XmlBindingWithAllowedSchema validator;
 
         if (schema == null || schema.trim().length() == 0) {
             validator = null;
@@ -620,21 +714,26 @@ public class IdentifierWithBindingFactory {
             validator = new XmlBindingWithAllowedSchema(schema);
         }
 
-        return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GenericXMLDataBinding.class)
                 .withAbstract(optionalAbstact)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGenericXMLDataBinding()))
+                .withFunctionToReadFromFiles(
+                        new ReadSingleByteStreamFromPath(
+                                new ConvertBytesToGenericXMLDataBinding()))
                 .withSchema(schema)
                 .withValidator(validator)
                 .build();
     }
 
     /**
-     * Creates a xml file for quakeml on a given path with an additional schema
+     * Creates a xml file for quakeml on a given path with an additional
+     * schema.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
-     * @return output argument containing the quakeml xml that will be read from a given file
+     * @return output argument containing the quakeml xml that will be
+     * read from a given file
      */
     public static IIdentifierWithBinding createFileOutQuakeMLFile(
             final String identifier,
@@ -643,21 +742,27 @@ public class IdentifierWithBindingFactory {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, QuakeMLXmlDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToQuakeMLXmlBinding()))
+                .withFunctionToReadFromFiles(
+                        new ReadSingleByteStreamFromPath(
+                                new ConvertBytesToQuakeMLXmlBinding()))
                 .withSchema(schema)
-                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .withValidator(
+                        new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
     /**
-     * Creates a xml file for shakemap on a given path with an additional schema
+     * Creates a xml file for shakemap on a given path with an additional
+     * schema.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
-     * @return output argument containing the shakemap xml that will be read from a given file
+     * @return output argument containing the shakemap xml that will be
+     * read from a given file
      */
     public static IIdentifierWithBinding createFileOutShakemap(
             final String identifier,
@@ -666,111 +771,134 @@ public class IdentifierWithBindingFactory {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
-        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, ShakemapXmlDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToShakemapXmlBinding()))
+                .withFunctionToReadFromFiles(
+                        new ReadSingleByteStreamFromPath(
+                                new ConvertBytesToShakemapXmlBinding()))
                 .withSchema(schema)
-                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .withValidator(
+                        new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
     /**
-     * Creates a xml file for json on a given path
+     * Creates a xml file for json on a given path.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
-     * @return output argument containing the json that will be read from a given file
+     * @return output argument containing the json that will be
+     * read from a given file
      */
     public static IIdentifierWithBinding createFileOutJson(
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, JsonDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToJsonDataBinding()))
+                .withFunctionToReadFromFiles(
+                        new ReadSingleByteStreamFromPath(
+                                new ConvertBytesToJsonDataBinding()))
                 .build();
     }
 
 
 
     /**
-     * creates a geotiff file (output) on a given path
+     * Creates a geotiff file (output) on a given path.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
-     * @return output argument containing the geotiff data that will be read from a given file
+     * @return output argument containing the geotiff data that will be
+     * read from a given file
      */
     public static IIdentifierWithBinding createFileOutGeotiff(
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GeotiffBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GeotiffBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding()))
+                .withFunctionToReadFromFiles(
+                        new ReadSingleByteStreamFromPath(
+                                new ConvertBytesToGeotiffBinding()))
                 .build();
     }
 
     /**
-     * Creates a geojson file (output) on a given path
+     * Creates a geojson file (output) on a given path.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
-     * @return output argument containing the geojson data that will be read from a given file
+     * @return output argument containing the geojson data that will be read
+     * from a given file
      */
     public static IIdentifierWithBinding createFileOutGeojson(
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GTVectorDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGTVectorDataBinding(
-                        ConvertBytesToGTVectorDataBinding.Format.JSON
+                .withFunctionToReadFromFiles(
+                        new ReadSingleByteStreamFromPath(
+                            new ConvertBytesToGTVectorDataBinding(
+                                ConvertBytesToGTVectorDataBinding.Format.JSON
                 )))
                 .build();
     }
 
     /**
-     * Creates a generic file (output) on a given path
+     * Creates a generic file (output) on a given path.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the data
      * @param path path of the file to read after process termination
-     * @return output argument containing the data that will be read from a given file
+     * @return output argument containing the data that will be read from a
+     * given file
      */
     public static IIdentifierWithBinding createFileOutGeneric(
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GenericFileDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GenericFileDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToGenericFileDataBinding()))
+                .withFunctionToReadFromFiles(
+                        new ReadSingleByteStreamFromPath(
+                                new ConvertBytesToGenericFileDataBinding()))
                 .build();
     }
 
     /**
-     * Creates a shape file (output) on a given path
+     * Creates a shape file (output) on a given path.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param path path of the .shp file to read after process termination
-     * @return output argument containing the data that will be read from the given files
+     * @return output argument containing the data that will be read from the
+     * given files
      */
     public static IIdentifierWithBinding createFileOutShapeFile(
             final String identifier,
             final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, GTVectorDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GTVectorDataBinding.class)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
-                .withFunctionToReadFromFiles(new ReadShapeFileFromPath())
+                .withFunctionToReadFromFiles(
+                        new ReadShapeFileFromPath())
                 .build();
     }
 
     /**
-     * Creates a xml output (via stdout) with an additional schema
+     * Creates a xml output (via stdout) with an additional schema.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @param schema schema of the xml
@@ -789,19 +917,22 @@ public class IdentifierWithBindingFactory {
             validator = new XmlBindingWithAllowedSchema(schema);
         }
 
-        return new IdentifierWithBindingImpl.Builder(identifier, GenericXMLDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, GenericXMLDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleStdout(new ConvertBytesToGenericXMLDataBinding())
+                .withFunctionToHandleStdout(
+                        new ConvertBytesToGenericXMLDataBinding())
                 .withSchema(schema)
                 .withValidator(validator)
                 .build();
     }
 
     /**
-     * Creates a quakeml xml output (via stdout) with an additional schema
+     * Creates a quakeml xml output (via stdout) with an additional schema.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @return output argument containing quakeml xml that will be read from stdout
+     * @return output argument containing quakeml xml that will be read from
+     * stdout
      */
     public static IIdentifierWithBinding createStdoutQuakeML(
             final String identifier,
@@ -809,19 +940,23 @@ public class IdentifierWithBindingFactory {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new IdentifierWithBindingImpl.Builder(identifier, QuakeMLXmlDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, QuakeMLXmlDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleStdout(new ConvertBytesToQuakeMLXmlBinding())
+                .withFunctionToHandleStdout(
+                        new ConvertBytesToQuakeMLXmlBinding())
                 .withSchema(schema)
-                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .withValidator(
+                        new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
     /**
-     * Creates a shakemap xml output (via stdout) with an additional schema
+     * Creates a shakemap xml output (via stdout) with an additional schema.
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the data
-     * @return output argument containing shakemap xml that will be read from stdout
+     * @return output argument containing shakemap xml that will be read from
+     * stdout
      */
     public static IIdentifierWithBinding createStdoutShakemap(
             final String identifier,
@@ -829,16 +964,19 @@ public class IdentifierWithBindingFactory {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
-        return new IdentifierWithBindingImpl.Builder(identifier, ShakemapXmlDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, ShakemapXmlDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleStdout(new ConvertBytesToShakemapXmlBinding())
+                .withFunctionToHandleStdout(
+                        new ConvertBytesToShakemapXmlBinding())
                 .withSchema(schema)
-                .withValidator(new XmlBindingWithAllowedSchema(schema))
+                .withValidator(
+                        new XmlBindingWithAllowedSchema(schema))
                 .build();
     }
 
     /**
-     * Creates a json output (via stdout)
+     * Creates a json output (via stdout).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
      * @return output argument containing json that will be read from stdout
@@ -846,74 +984,90 @@ public class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createStdoutJson(
             final String identifier,
             final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, JsonDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleStdout(new ConvertBytesToJsonDataBinding())
+                .withFunctionToHandleStdout(
+                        new ConvertBytesToJsonDataBinding())
                 .build();
     }
 
     /**
-     * Creates a string output (via stdout)
+     * Creates a string output (via stdout).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @return output argument containing the string that will be read from stdout
+     * @return output argument containing the string that will be read from
+     * stdout
      */
     public static IIdentifierWithBinding createStdoutString(
             final String identifier,
             final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, LiteralStringBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleStdout(new ConvertBytesToLiteralStringBinding())
+                .withFunctionToHandleStdout(
+                        new ConvertBytesToLiteralStringBinding())
                 .build();
     }
 
     /**
-     * Creates a string output (via stderr)
+     * Creates a string output (via stderr).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @return output argument containing the string that will be read from stderr
+     * @return output argument containing the string that will be read from
+     * stderr
      */
     public static IIdentifierWithBinding createStderrString(
             final String identifier,
             final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralStringBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, LiteralStringBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleStderr(new ConvertBytesToLiteralStringBinding())
+                .withFunctionToHandleStderr(
+                        new ConvertBytesToLiteralStringBinding())
                 .build();
     }
 
     /**
-     * Creates a json output (via stderr)
+     * Creates a json output (via stderr).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @return output argument containing the json that will be read from stderr
+     * @return output argument containing the json that will be read from
+     * stderr
      */
     public static IIdentifierWithBinding createStderrJson(
             final String identifier,
             final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, JsonDataBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleStderr(new ConvertBytesToJsonDataBinding())
+                .withFunctionToHandleStderr(
+                        new ConvertBytesToJsonDataBinding())
                 .build();
     }
 
     /**
-     * Creates a int output (via exit value)
+     * Creates a int output (via exit value).
      * @param identifier identifier of the data
      * @param optionalAbstract optional description of the parameter
-     * @return output argument containing the integer that will be read from exit value
+     * @return output argument containing the integer that will be read from
+     * exit value
      */
     public static IIdentifierWithBinding createExitValueInt(
             final String identifier,
             final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, LiteralIntBinding.class)
+        return new IdentifierWithBindingImpl.Builder(
+                    identifier, LiteralIntBinding.class)
                 .withAbstract(optionalAbstract)
-                .withFunctionToHandleExitValue(new ConvertExitValueToLiteralIntBinding())
+                .withFunctionToHandleExitValue(
+                        new ConvertExitValueToLiteralIntBinding())
                 .build();
     }
 
-    /*
-     * creates a unique filename
+    /**
+     *
+     * @param ending file ending
+     * @return a unique file name
      */
     private static String createUUIDFilename(final String ending) {
         final String prefix = "inputfile";
