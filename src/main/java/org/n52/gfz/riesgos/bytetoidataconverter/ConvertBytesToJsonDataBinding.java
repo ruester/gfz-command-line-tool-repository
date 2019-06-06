@@ -29,12 +29,21 @@ import org.n52.wps.io.data.IData;
 import java.util.Objects;
 
 /**
- * Function to convert the content of a byte array to a JsonDataBinding
+ * Function to convert the content of a byte array to a JsonDataBinding.
  */
-public class ConvertBytesToJsonDataBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToJsonDataBinding
+        implements IConvertByteArrayToIData {
 
+    /**
+     * Converts the byte array to an IData element.
+     * @param content byte array to convert
+     * @return IData element
+     * @throws ConvertToIDataException exception if there is an
+     * internal error / exception on conversion
+     */
     @Override
-    public IData convertToIData(final byte[] content) throws ConvertToIDataException {
+    public IData convertToIData(final byte[] content)
+            throws ConvertToIDataException {
         final String text = new String(content);
         final JSONParser parser = new JSONParser();
         try {
@@ -43,20 +52,29 @@ public class ConvertBytesToJsonDataBinding implements IConvertByteArrayToIData {
                 final JSONObject jsonObject = (JSONObject) parsed;
                 return new JsonDataBinding(jsonObject);
             }
-        } catch(final ParseException parseException) {
+        } catch (final ParseException parseException) {
             throw new ConvertToIDataException(parseException);
         }
         return null;
     }
 
+    /**
+     *
+     * @param o other object
+     * @return true if this object equals the other one
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());
