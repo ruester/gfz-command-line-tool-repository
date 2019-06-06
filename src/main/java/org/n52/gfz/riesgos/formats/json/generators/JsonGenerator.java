@@ -28,18 +28,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Generator for json data
+ * Generator for json data.
  */
-public class JsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonGenerator.class);
+public class JsonGenerator
+        extends AbstractGenerator
+        implements IMimeTypeAndSchemaConstants {
 
     /**
-     * default constructor
+     * Logger for this class.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(JsonGenerator.class);
+
+    /**
+     * default constructor.
      */
     public JsonGenerator() {
         super();
@@ -47,18 +52,36 @@ public class JsonGenerator extends AbstractGenerator implements IMimeTypeAndSche
         supportedIDataTypes.add(JsonDataBinding.class);
         supportedFormats.add(MIME_TYPE_JSON);
         supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_JSON, null, DEFAULT_ENCODING, true));
+        formats.add(
+                new FormatEntry(
+                        MIME_TYPE_JSON,
+                        null,
+                        DEFAULT_ENCODING,
+                        true));
     }
 
+    /**
+     * Generates an input stream with the content of the data.
+     * @param data data binding with information to put in the stream
+     * @param mimeType mime type to generate
+     * @param schema schema to generate
+     * @return input stream with the data
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
-        if(data instanceof JsonDataBinding) {
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) {
+        if (data instanceof JsonDataBinding) {
             final JsonDataBinding binding = (JsonDataBinding) data;
             final JSONObject jsonObject = binding.getPayload();
-            final ByteArrayInputStream inputStream = new ByteArrayInputStream(jsonObject.toJSONString().getBytes());
+            final ByteArrayInputStream inputStream =
+                    new ByteArrayInputStream(
+                            jsonObject.toJSONString().getBytes());
             return inputStream;
         } else {
-            LOGGER.error("Can't convert another data binding as JsonDataBinding");
+            LOGGER.error(
+                    "Can't convert another data binding as JsonDataBinding");
         }
         return null;
     }
