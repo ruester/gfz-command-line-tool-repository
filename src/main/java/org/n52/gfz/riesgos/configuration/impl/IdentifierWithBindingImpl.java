@@ -37,6 +37,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
 
     private final String identifier;
     private final Class<? extends IData> bindingClass;
+    private final String optionalAbstract;
     private final ICheckDataAndGetErrorMessage validator;
     private final IConvertIDataToCommandLineParameter functionToTransformToCmd;
     private final String path;
@@ -54,6 +55,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     private IdentifierWithBindingImpl(
             final String identifier,
             final Class<? extends IData> bindingClass,
+            final String optionalAbstract,
             final ICheckDataAndGetErrorMessage validator,
             final IConvertIDataToCommandLineParameter functionToTransformToCmd,
             final String path,
@@ -69,6 +71,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
             final String schema) {
         this.identifier = identifier;
         this.bindingClass = bindingClass;
+        this.optionalAbstract = optionalAbstract;
         this.validator = validator;
         this.functionToTransformToCmd = functionToTransformToCmd;
         this.path = path;
@@ -92,6 +95,11 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     @Override
     public Class<? extends IData> getBindingClass() {
         return bindingClass;
+    }
+
+    @Override
+    public Optional<String> getAbstract() {
+        return Optional.ofNullable(optionalAbstract);
     }
 
     @Override
@@ -170,6 +178,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         IdentifierWithBindingImpl that = (IdentifierWithBindingImpl) o;
         return Objects.equals(identifier, that.identifier) &&
                 Objects.equals(bindingClass, that.bindingClass) &&
+                Objects.equals(optionalAbstract, that.optionalAbstract) &&
                 Objects.equals(validator, that.validator) &&
                 Objects.equals(functionToTransformToCmd, that.functionToTransformToCmd) &&
                 Objects.equals(path, that.path) &&
@@ -187,7 +196,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, bindingClass, validator, functionToTransformToCmd, path, functionToWriteToFiles, functionToWriteToStdin, functionToHandleStderr, functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles, allowedValues, defaultValue, supportedCRSForBBox, schema);
+        return Objects.hash(identifier, bindingClass, optionalAbstract, validator, functionToTransformToCmd, path, functionToWriteToFiles, functionToWriteToStdin, functionToHandleStderr, functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles, allowedValues, defaultValue, supportedCRSForBBox, schema);
     }
 
     /**
@@ -197,6 +206,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         private final String identifier;
         private final Class<? extends IData> bindingClass;
 
+        private String optionalAbstract;
         private ICheckDataAndGetErrorMessage validator;
         private IConvertIDataToCommandLineParameter functionToTransformToCmd;
         private String path;
@@ -219,6 +229,16 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
         public Builder(final String identifier, final Class<? extends IData> bindingClass) {
             this.identifier = identifier;
             this.bindingClass = bindingClass;
+        }
+
+        /**
+         * Set the abstract
+         * @param optionalAbstract abstract to describe the parameter
+         * @return the same builder
+         */
+        public Builder withAbstract(final String optionalAbstract) {
+            this.optionalAbstract = optionalAbstract;
+            return this;
         }
 
         /**
@@ -357,11 +377,13 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
          * @return IdentifierWithBindingImpl
          */
         public IdentifierWithBindingImpl build() {
-            return new IdentifierWithBindingImpl(identifier, bindingClass, validator,
-                    functionToTransformToCmd, path, functionToWriteToFiles,
-                    functionToWriteToStdin, functionToHandleStderr, functionToHandleExitValue,
-                    functionToHandleStdout, functionToReadFromFiles, allowedValues,
-                    defaultValue, supportedCRSForBBox, schema);
+            return new IdentifierWithBindingImpl(
+                    identifier, bindingClass, optionalAbstract,
+                    validator, functionToTransformToCmd, path,
+                    functionToWriteToFiles, functionToWriteToStdin, functionToHandleStderr,
+                    functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles,
+                    allowedValues, defaultValue, supportedCRSForBBox,
+                    schema);
         }
     }
 }

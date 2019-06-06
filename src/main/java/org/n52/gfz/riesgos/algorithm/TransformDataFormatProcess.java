@@ -43,7 +43,9 @@ import java.util.Optional;
 public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm {
 
     private static final String INPUT_IDENTIFIER = "input";
+    private static final String INPUT_ABSTRACT = "This is the input parameter to transform to other formats";
     private static final String OUTPUT_IDENTIFIER = "output";
+    private static final String OUTPUT_ABSTRACT = "This is the output parameter to transform to other formats";
 
     private final String identifier;
     private final Class<? extends IComplexData> clazz;
@@ -125,7 +127,8 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
         final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorForTransformationImpl(
                 identifier, IConfiguration.PATH_FULL_QUALIFIED + identifier, clazz,
                 optionalAbstract,
-                INPUT_IDENTIFIER, OUTPUT_IDENTIFIER);
+                INPUT_IDENTIFIER, INPUT_ABSTRACT,
+                OUTPUT_IDENTIFIER, OUTPUT_ABSTRACT);
         final ProcessDescriptionsDocument description = generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
         processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");

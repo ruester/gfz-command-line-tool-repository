@@ -36,7 +36,6 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -51,9 +50,11 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
     private final String identifier;
     private final String fullQualifiedIdentifier;
     private final Class<? extends IComplexData> bindingClass;
-    private final Optional<String> optionalAbstract;
+    private final String optionalAbstract;
     private final String inputIdentifier;
+    private final String optionalInputAbstract;
     private final String outputIdentifier;
+    private final String optionalOutputAbstract;
 
     private final Supplier<List<IParser>> parserSupplier;
     private final Supplier<List<IGenerator>> generatorSupplier;
@@ -63,6 +64,11 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
      * @param identifier the identifier (title) of the process
      * @param fullQualifiedIdentifier the full qualified identifier of the data (to simulate a package path)
      * @param bindingClass the class to use for the binding
+     * @param optionalAbstract optional description of the process
+     * @param inputIdentifier identifier for the input value
+     * @param optionalInputAbstract optional description for the input parameter
+     * @param outputIdentifier identifier for the output value
+     * @param optionalOutputAbstract optional description for the output parameter
      * @param parserSupplier supplier for getting all the parsers
      * @param generatorSupplier supplier for getting all the generators
      */
@@ -72,31 +78,48 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
             final Class<? extends IComplexData> bindingClass,
             final String optionalAbstract,
             final String inputIdentifier,
+            final String optionalInputAbstract,
             final String outputIdentifier,
+            final String optionalOutputAbstract,
             final Supplier<List<IParser>> parserSupplier,
             final Supplier<List<IGenerator>> generatorSupplier) {
         this.identifier = identifier;
         this.fullQualifiedIdentifier = fullQualifiedIdentifier;
         this.bindingClass = bindingClass;
-        this.optionalAbstract = Optional.ofNullable(optionalAbstract);
+        this.optionalAbstract = optionalAbstract;
         this.inputIdentifier = inputIdentifier;
+        this.optionalInputAbstract = optionalInputAbstract;
         this.outputIdentifier = outputIdentifier;
+        this.optionalOutputAbstract = optionalOutputAbstract;
 
         this.parserSupplier = parserSupplier;
         this.generatorSupplier = generatorSupplier;
     }
 
-
+    /**
+     *
+     * @param identifier the identifier (title) of the process
+     * @param fullQualifiedIdentifier the full qualified identifier of the data (to simulate a package path)
+     * @param bindingClass the class to use for the binding
+     * @param optionalAbstract optional description of the process
+     * @param inputIdentifier identifier for the input value
+     * @param optionalInputIdentifier optional description for the input parameter
+     * @param outputIdentifier identifier for the output value
+     * @param optionalOutputIdentifier optional description for the output parameter
+     */
     public ProcessDescriptionGeneratorForTransformationImpl(
             final String identifier,
             final String fullQualifiedIdentifier,
             final Class<? extends IComplexData> bindingClass,
             final String optionalAbstract,
             final String inputIdentifier,
-            final String outputIdentifier) {
+            final String optionalInputIdentifier,
+            final String outputIdentifier,
+            final String optionalOutputIdentifier) {
         this(identifier, fullQualifiedIdentifier, bindingClass,
                 optionalAbstract,
-                inputIdentifier, outputIdentifier,
+                inputIdentifier, optionalInputIdentifier,
+                outputIdentifier, optionalOutputIdentifier,
                 () -> ParserFactory.getInstance().getAllParsers(),
                 () -> GeneratorFactory.getInstance().getAllGenerators());
     }
@@ -117,9 +140,9 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
         final LanguageStringType processTitle = processDescriptionType.addNewTitle();
         processTitle.setStringValue(identifier);
 
-        if(optionalAbstract.isPresent()) {
+        if(optionalAbstract != null) {
             final LanguageStringType abstractType = processDescriptionType.addNewAbstract();
-            abstractType.setStringValue(optionalAbstract.get());
+            abstractType.setStringValue(optionalAbstract);
         }
 
         processDescriptionType.setStatusSupported(true);
@@ -139,6 +162,11 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
         final LanguageStringType inputTitle = inputDescriptionType.addNewTitle();
         inputTitle.setStringValue(this.inputIdentifier);
 
+        if(optionalInputAbstract != null) {
+            final LanguageStringType inputAbstract = inputDescriptionType.addNewAbstract();
+            inputAbstract.setStringValue(optionalInputAbstract);
+        }
+
         final SupportedComplexDataInputType complexDataInputData = inputDescriptionType.addNewComplexData();
         final List<IParser> parsers = parserSupplier.get();
         final List<IParser> foundParsers = findParser(parsers, bindingClass);
@@ -154,6 +182,10 @@ public class ProcessDescriptionGeneratorForTransformationImpl extends AbstractPr
         final LanguageStringType outputTitle = outputDescriptionType.addNewTitle();
         outputTitle.setStringValue(this.outputIdentifier);
 
+        if(optionalOutputAbstract != null) {
+            final LanguageStringType outputAbstract = outputDescriptionType.addNewAbstract();
+            outputAbstract.setStringValue(optionalOutputAbstract);
+        }
 
         final SupportedComplexDataType complexDataOutputData = outputDescriptionType.addNewComplexOutput();
         final List<IGenerator> generators = generatorSupplier.get();

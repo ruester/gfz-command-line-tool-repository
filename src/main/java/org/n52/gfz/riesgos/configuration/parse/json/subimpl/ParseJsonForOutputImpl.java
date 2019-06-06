@@ -73,27 +73,31 @@ public class ParseJsonForOutputImpl {
 
     public IIdentifierWithBinding parseOutput(final JSONObject json) throws ParseConfigurationException {
         final String identifier = getString(json, "title");
+        final Optional<String> optionalAbstract = getOptionalString(json, "abstract");
         final String readFrom = getString(json, "readFrom");
         final String type = getString(json, "type");
 
-        final Optional<String> optionalSchema = getOptionalSchemaString(json);
+        final Optional<String> optionalSchema = getOptionalString(json, "schema");
 
         if("stdout".equals(readFrom)) {
             if (optionsToReadFromStdout.containsKey(type)) {
-                return optionsToReadFromStdout.get(type).getFactory().create(identifier, optionalSchema.orElse(null));
+                return optionsToReadFromStdout.get(type).getFactory().create(
+                        identifier,
+                        optionalAbstract.orElse(null),
+                        optionalSchema.orElse(null));
 
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
         } else if("stderr".equals(readFrom)) {
             if (optionsToReadFromStderr.containsKey(type)) {
-                return optionsToReadFromStderr.get(type).getFactory().create(identifier);
+                return optionsToReadFromStderr.get(type).getFactory().create(identifier, optionalAbstract.orElse(null));
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
         } else if("exitValue".equals(readFrom)) {
             if(optionsToReadFromExitValue.containsKey(type)) {
-                return optionsToReadFromExitValue.get(type).getFactory().create(identifier);
+                return optionsToReadFromExitValue.get(type).getFactory().create(identifier, optionalAbstract.orElse(null));
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
@@ -102,7 +106,7 @@ public class ParseJsonForOutputImpl {
             final String path = getString(json, "path");
 
             if(optionsToReadFromFiles.containsKey(type)) {
-                return optionsToReadFromFiles.get(type).getFactory().create(identifier, path, optionalSchema.orElse(null));
+                return optionsToReadFromFiles.get(type).getFactory().create(identifier, optionalAbstract.orElse(null), path, optionalSchema.orElse(null));
             } else {
                 throw new ParseConfigurationException("Not supported type value");
             }
@@ -122,8 +126,7 @@ public class ParseJsonForOutputImpl {
         return (String) rawValue;
     }
 
-    private Optional<String> getOptionalSchemaString(final JSONObject json) throws ParseConfigurationException {
-        final String key = "schema";
+    private Optional<String> getOptionalString(final JSONObject json, final String key) throws ParseConfigurationException {
         final Optional<String> result;
         if(json.containsKey(key)) {
             final Object rawValue = json.get(key);
@@ -140,15 +143,15 @@ public class ParseJsonForOutputImpl {
 
     @FunctionalInterface
     private interface IStdoutOutputFactory {
-        IIdentifierWithBinding create(final String identifier, final String schema);
+        IIdentifierWithBinding create(final String identifier, final String optionalAbstract, final String schema);
     }
 
     private enum FromStdoutOption {
-        STRING("string", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutString(identifier)),
+        STRING("string", (identifier, optionalAbstract, schema) -> IdentifierWithBindingFactory.createStdoutString(identifier, optionalAbstract)),
         XML("xml", IdentifierWithBindingFactory::createStdoutXmlWithSchema),
-        QUAKEML("quakeml", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutQuakeML(identifier)),
-        SHAKEMAP("shakemap", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutShakemap(identifier)),
-        JSON("json", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutJson(identifier));
+        QUAKEML("quakeml", (identifier, optionalAbstract, schema) -> IdentifierWithBindingFactory.createStdoutQuakeML(identifier, optionalAbstract)),
+        SHAKEMAP("shakemap", (identifier, optionalAbstrat, schema) -> IdentifierWithBindingFactory.createStdoutShakemap(identifier, optionalAbstrat)),
+        JSON("json", (identifier, optionalAbstract, schema) -> IdentifierWithBindingFactory.createStdoutJson(identifier, optionalAbstract));
 
         private final String dataType;
         private final IStdoutOutputFactory factory;
@@ -169,7 +172,7 @@ public class ParseJsonForOutputImpl {
 
     @FunctionalInterface
     private interface IStderrOutputFactory {
-        IIdentifierWithBinding create(final String identifier);
+        IIdentifierWithBinding create(final String identifier, final String optionalAbstract);
     }
 
     private enum FromStderrOption {
@@ -195,7 +198,7 @@ public class ParseJsonForOutputImpl {
 
     @FunctionalInterface
     private interface IExitValueOutputFactory {
-        IIdentifierWithBinding create(final String identifier);
+        IIdentifierWithBinding create(final String identifier, final String optionalAbstract);
     }
 
     private enum FromExitValueOption {
@@ -220,18 +223,18 @@ public class ParseJsonForOutputImpl {
 
     @FunctionalInterface
     private interface IFileOutputFactory {
-        IIdentifierWithBinding create(final String identifier, final String path, final String schema);
+        IIdentifierWithBinding create(final String identifier, final String optionalAbstrat, final String path, final String schema);
     }
 
     private enum FromFilesOption {
         XML("xml", IdentifierWithBindingFactory::createFileOutXmlWithSchema),
-        FILE("file", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeneric(identifier, path)),
-        GEOJSON("geojson", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeojson(identifier, path)),
-        GEOTIFF("geotiff", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutGeotiff(identifier, path)),
-        SHP("shapefile", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShapeFile(identifier, path)),
-        QUAKEML("quakeml", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutQuakeMLFile(identifier, path)),
-        SHAKEMAP("shakemap", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutShakemap(identifier, path)),
-        JSON("json", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutJson(identifier, path));
+        FILE("file", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutGeneric(identifier, optionalAbstract, path)),
+        GEOJSON("geojson", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutGeojson(identifier, optionalAbstract, path)),
+        GEOTIFF("geotiff", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutGeotiff(identifier, optionalAbstract, path)),
+        SHP("shapefile", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutShapeFile(identifier, optionalAbstract, path)),
+        QUAKEML("quakeml", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutQuakeMLFile(identifier, optionalAbstract, path)),
+        SHAKEMAP("shakemap", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutShakemap(identifier, optionalAbstract, path)),
+        JSON("json", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutJson(identifier, optionalAbstract, path));
 
         private final String dataType;
         private final IFileOutputFactory factory;

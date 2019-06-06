@@ -164,7 +164,7 @@ We also include a xsd file for faster validation of this data.
 
 ### shakemap
 
-Same as quakeml shakemap is also xml.
+Same as quakeml shakemap is also pure xml.
 You can find the schema in the src/main/resources/org/n52/gfz/riesgos/validators/xml folder.
 
 ### boolean

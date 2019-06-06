@@ -331,6 +331,7 @@ And we also need to add the method mentioned there:
 ```
     private static IIdentifierWithBinding createStdinJson(
             final String identifier,
+            final String optionalAbstract,
             final String defaultValue,
             final List<String> allowedValues,
             final String schema) throws ParseConfigurationException {
@@ -343,7 +344,7 @@ And we also need to add the method mentioned there:
         if(listHasValue(allowedValues)) {
             throw new ParseConfigurationException("allowedValues are not supported for json");
         }
-        return IdentifierWithBindingFactory.createStdinJson(identifier);
+        return IdentifierWithBindingFactory.createStdinJson(identifier, optionalAbstract);
     }
 ```
 
@@ -354,11 +355,14 @@ IdentifierWithBindingFactory class:
     /**
      * creates a stdin input with json
      * @param identifier identifier of the data
+     * @param optionalAbstract optional description of the parameter
      * @return object with information about how to use the value as a json stdin input parameter
      */
     public static IIdentifierWithBinding createStdinJson(
-            final String identifier) {
+            final String identifier,
+            final String optionalAbstract) {
         return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withAbstract(optionalAbstract)
                 .withFunctionToWriteToStdin(new ConvertJsonDataBindingToBytes())
                 .build();
     }
@@ -379,6 +383,7 @@ And we also add the method createCommandLineArgumentJson in this class:
 ```
 private static IIdentifierWithBinding createCommandLineArgumentJson(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValue,
@@ -396,7 +401,7 @@ private static IIdentifierWithBinding createCommandLineArgumentJson(
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentJson(identifier, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentJson(identifier, optionalAbstract, flag);
 }
 ```
 
@@ -408,15 +413,18 @@ IdentifierWithBindingFactory class:
      * Creates a command line argument (json file) with a file path that will be written down as
      * a temporary file
      * @param identifier identifier of the data
+     * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
      * @return json command line argument
      */
     public static IIdentifierWithBinding createCommandLineArgumentJson(
             final String identifier,
+            final String optionalAbstract,
             final String flag) {
         final String filename = createUUIDFilename(".json");
 
         return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
                 .withPath(filename)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
@@ -439,12 +447,14 @@ Then we add the method in this class:
 ```
 private static IIdentifierWithBinding createFileInputJson(
             final String identifier,
+            final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createFileInJson(identifier, path);
+        return IdentifierWithBindingFactory.createFileInJson(
+            identifier, optionalAbstract, path);
 }
 ```
 
@@ -454,14 +464,17 @@ And we add the createFileInJson to the IdentifierWithBindingFactory class:
     /**
      * Creates an input file argument with json
      * @param identifier identifier of the data
+     * @param optionalAbstract optional description of the parameter
      * @param path path of file to write before starting the process
      * @return json input file
      */
     public static IIdentifierWithBinding createFileInJson(
             final String identifier,
+            final String optionalAbstract,
             final String path) {
 
         return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
                 .build();
@@ -475,7 +488,7 @@ following line
 to the FromStdoutOption enum in the ParseJsonForOutputImpl class:
 
 ```
-JSON("json", (identifier, schema) -> IdentifierWithBindingFactory.createStdoutJson(identifier))
+JSON("json", (identifier, optionalAbstract, schema) -> IdentifierWithBindingFactory.createStdoutJson(identifier, optionalAbstract))
 ```
 
 And we have to add the createStdoutJson method to the IdentifierWithBindingFactory class:
@@ -484,11 +497,14 @@ And we have to add the createStdoutJson method to the IdentifierWithBindingFacto
     /**
      * Creates a json output (via stdout)
      * @param identifier identifier of the data
+     * @param optionalAbstract optional description of the parameter
      * @return output argument containing json that will be read from stdout
      */
     public static IIdentifierWithBinding createStdoutJson(
-            final String identifier) {
+            final String identifier,
+            final String optionalAbstract) {
         return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withAbstract(optionalAbstract)
                 .withFunctionToHandleStdout(new ConvertBytesToJsonDataBinding())
                 .build();
     }
@@ -510,11 +526,14 @@ and the createStderrJson method in IdentifierWithBindingFactory:
     /**
      * Creates a json output (via stderr)
      * @param identifier identifier of the data
+     * @param optionalAbstract optional description of the parameter
      * @return output argument containing the json that will be read from stderr
      */
     public static IIdentifierWithBinding createStderrJson(
-            final String identifier) {
+            final String identifier,
+            final String optionalAbstract) {
         return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withAbstract(optionalAbstract)
                 .withFunctionToHandleStderr(new ConvertBytesToJsonDataBinding())
                 .build();
     }
@@ -526,7 +545,7 @@ We have to add the line to the FromFilesOption enum in the ParseJsonForOutputImp
 class:
 
 ```
-JSON("json", (identifier, path, schema) -> IdentifierWithBindingFactory.createFileOutJson(identifier, path));
+JSON("json", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutJson(identifier, optionalAbstract, path));
 ```
 
 Then we have to add the method createFileOutJson method to the
@@ -536,13 +555,16 @@ IdentifierWithBindingFactory class.
     /**
      * Creates a xml file for json on a given path
      * @param identifier identifier of the data
+     * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
      * @return output argument containing the json that will be read from a given file
      */
     public static IIdentifierWithBinding createFileOutJson(
             final String identifier,
+            final Stirng optionalAbstract,
             final String path) {
         return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
+                .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToJsonDataBinding()))
                 .build();

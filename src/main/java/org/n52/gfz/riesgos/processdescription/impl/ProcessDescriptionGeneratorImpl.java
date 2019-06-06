@@ -18,7 +18,6 @@ package org.n52.gfz.riesgos.processdescription.impl;
 
 import net.opengis.ows.x11.AllowedValuesDocument;
 import net.opengis.ows.x11.CodeType;
-import net.opengis.ows.x11.DescriptionType;
 import net.opengis.ows.x11.DomainMetadataType;
 import net.opengis.ows.x11.LanguageStringType;
 import net.opengis.wps.x100.CRSsType;
@@ -126,6 +125,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
                 final LanguageStringType inputTitle = inputDescriptionType.addNewTitle();
                 inputTitle.setStringValue(input.getIdentifier());
 
+                final Optional<String> inputAbstract = input.getAbstract();
+                if(inputAbstract.isPresent()) {
+                    final LanguageStringType inputAbstractType = inputDescriptionType.addNewAbstract();
+                    inputAbstractType.setStringValue(inputAbstract.get());
+                }
+
                 final Class<? extends IData> inputDataTypeClass = input.getBindingClass();
                 final List<Class<?>> interfaces = findInterfaces(inputDataTypeClass);
 
@@ -189,6 +194,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
             final LanguageStringType outputTitle = outputDescriptionType.addNewTitle();
             outputTitle.setStringValue(output.getIdentifier());
+
+            final Optional<String> outputAbstract = output.getAbstract();
+            if(outputAbstract.isPresent()) {
+                final LanguageStringType abstractType = outputDescriptionType.addNewAbstract();
+                abstractType.setStringValue(outputAbstract.get());
+            }
 
             final Class<?> outputDataTypeClass = output.getBindingClass();
             final List<Class<?>> interfaces = findInterfaces(outputDataTypeClass);

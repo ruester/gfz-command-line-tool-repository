@@ -52,6 +52,12 @@ public interface IIdentifierWithBinding {
 
     /**
      *
+     * @return optional abstract of the input/output identifier
+     */
+    Optional<String> getAbstract();
+
+    /**
+     *
      * @return optional Validator to prove that input and output values have the right data
      */
     Optional<ICheckDataAndGetErrorMessage> getValidator();

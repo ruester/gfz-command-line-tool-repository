@@ -67,6 +67,7 @@ public class ParseJsonForInputImpl {
 
     public IIdentifierWithBinding parseInput(final JSONObject json) throws ParseConfigurationException {
         final String identifier = getString(json, "title");
+        final Optional<String> optionalAbstract = getOptionalString(json, "abstract");
         final String useAs = getString(json, "useAs");
         final String type = getString(json, "type");
 
@@ -80,6 +81,7 @@ public class ParseJsonForInputImpl {
             if (optionsToUseAsCommandLineArgument.containsKey(type)) {
                 return optionsToUseAsCommandLineArgument.get(type).getFactory().create(
                         identifier,
+                        optionalAbstract.orElse(null),
                         optionalDefaultCommandLineFlag.orElse(null),
                         optionalDefaultValue.orElse(null),
                         optionalAllowedValues.orElse(null),
@@ -92,6 +94,7 @@ public class ParseJsonForInputImpl {
             if (optionsToUseAsStdinInput.containsKey(type)) {
                 return optionsToUseAsStdinInput.get(type).getFactory().create(
                         identifier,
+                        optionalAbstract.orElse(null),
                         optionalDefaultValue.orElse(null),
                         optionalAllowedValues.orElse(null),
                         optionalSchema.orElse(null)
@@ -107,6 +110,7 @@ public class ParseJsonForInputImpl {
 
                 return optionsToUseAsFileInput.get(type).getFactory().create(
                         identifier,
+                        optionalAbstract.orElse(null),
                         path,
                         optionalSchema.orElse(null)
                 );
@@ -169,6 +173,7 @@ public class ParseJsonForInputImpl {
     @FunctionalInterface
     private interface IAsCommandLineArgumentFactory {
         IIdentifierWithBinding create(final String identifier,
+                                      final String optionalAbstract,
                                       final String defaultCommandLineFlag,
                                       final String defaultValue,
                                       final List<String> allowedValues,
@@ -194,6 +199,7 @@ public class ParseJsonForInputImpl {
 
     private static IIdentifierWithBinding createCommandLineArgumentInt(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -205,11 +211,13 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for int types");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentInt(identifier, flag, defaultValue, allowedValues);
+        return IdentifierWithBindingFactory.createCommandLineArgumentInt(
+                identifier, optionalAbstract, flag, defaultValue, allowedValues);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentDouble(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -221,11 +229,13 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for double types");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentDouble(identifier, flag, defaultValue, allowedValues);
+        return IdentifierWithBindingFactory.createCommandLineArgumentDouble(
+                identifier, optionalAbstract, flag, defaultValue, allowedValues);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentString(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -237,11 +247,13 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for string types");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentString(identifier, flag, defaultValue, allowedValues);
+        return IdentifierWithBindingFactory.createCommandLineArgumentString(
+                identifier, optionalAbstract, flag, defaultValue, allowedValues);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentBoolean(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -259,11 +271,13 @@ public class ParseJsonForInputImpl {
         if(strHasNoValue(flag)) {
             throw new ParseConfigurationException("flag is necessary for boolean type");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentBoolean(identifier, flag, defaultValue);
+        return IdentifierWithBindingFactory.createCommandLineArgumentBoolean(
+                identifier, optionalAbstract, flag, defaultValue);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentBBox(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -290,11 +304,13 @@ public class ParseJsonForInputImpl {
             throw new ParseConfigurationException("schema is not supported for bbox");
         }
 
-        return IdentifierWithBindingFactory.createCommandLineArgumentBBox(identifier, supportedCrs);
+        return IdentifierWithBindingFactory.createCommandLineArgumentBBox(
+                identifier, optionalAbstract, supportedCrs);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentXmlFile(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -309,11 +325,13 @@ public class ParseJsonForInputImpl {
         if(listHasValue(supportedCrs)) {
             throw new ParseConfigurationException("crs are not supported for xml");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchema(identifier, schema, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchema(
+                identifier, optionalAbstract, schema, flag);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentXmlFileWithoutHeader(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -328,11 +346,13 @@ public class ParseJsonForInputImpl {
         if(listHasValue(supportedCrs)) {
             throw new ParseConfigurationException("crs are not supported for xml");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchemaWithoutHeader(identifier, schema, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
+                identifier, optionalAbstract, schema, flag);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentQuakeML(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -349,12 +369,14 @@ public class ParseJsonForInputImpl {
             throw new ParseConfigurationException("crs are not supported for quakeml");
         }
         // ignore schema
-        return IdentifierWithBindingFactory.createCommandLineArgumentQuakeML(identifier, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentQuakeML(
+                identifier, optionalAbstract, flag);
     }
 
 
     private static IIdentifierWithBinding createCommandLineArgumentGeotiffFile(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -372,11 +394,13 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for geotiff");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentGeotiff(identifier, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentGeotiff(
+                identifier, optionalAbstract, flag);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentGeojsonFile(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -394,11 +418,13 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for geojson");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentGeojson(identifier, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentGeojson(
+                identifier, optionalAbstract, flag);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentShapefile(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -416,11 +442,13 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for shapefile");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentShapeFile(identifier, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentShapeFile(
+                identifier, optionalAbstract, flag);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentGenericFile(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -438,11 +466,13 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for file");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentFile(identifier, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentFile(
+                identifier, optionalAbstract, flag);
     }
 
     private static IIdentifierWithBinding createCommandLineArgumentJson(
             final String identifier,
+            final String optionalAbstract,
             final String flag,
             final String defaultValue,
             final List<String> allowedValue,
@@ -460,7 +490,8 @@ public class ParseJsonForInputImpl {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentJson(identifier, flag);
+        return IdentifierWithBindingFactory.createCommandLineArgumentJson(
+                identifier, optionalAbstract, flag);
     }
 
 
@@ -499,6 +530,7 @@ public class ParseJsonForInputImpl {
     @FunctionalInterface
     private interface IAsStdinInputFactory {
         IIdentifierWithBinding create(final String identifier,
+                                      final String optionalAbstract,
                                       final String defaultValue,
                                       final List<String> allowedValues,
                                       final String schema) throws ParseConfigurationException;
@@ -506,17 +538,20 @@ public class ParseJsonForInputImpl {
 
     private static IIdentifierWithBinding createStdinString(
             final String identifier,
+            final String optionalAbstract,
             final String defaultValue,
             final List<String> allowedValues,
             final String schema) throws ParseConfigurationException {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for string");
         }
-        return IdentifierWithBindingFactory.createStdinString(identifier, defaultValue, allowedValues);
+        return IdentifierWithBindingFactory.createStdinString(
+                identifier, optionalAbstract, defaultValue, allowedValues);
     }
 
     private static IIdentifierWithBinding createStdinJson(
             final String identifier,
+            final String optionalAbstract,
             final String defaultValue,
             final List<String> allowedValues,
             final String schema) throws ParseConfigurationException {
@@ -529,7 +564,7 @@ public class ParseJsonForInputImpl {
         if(listHasValue(allowedValues)) {
             throw new ParseConfigurationException("allowedValues are not supported for json");
         }
-        return IdentifierWithBindingFactory.createStdinJson(identifier);
+        return IdentifierWithBindingFactory.createStdinJson(identifier, optionalAbstract);
     }
 
 
@@ -557,79 +592,87 @@ public class ParseJsonForInputImpl {
     @FunctionalInterface
     private interface IAsFileInputFactory {
         IIdentifierWithBinding create(final String identifier,
+                                      final String optionalAbstract,
                                       final String path,
                                       final String schema) throws ParseConfigurationException;
     }
 
     private static IIdentifierWithBinding createFileInputGeotiff(
             final String identifier,
+            final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
         if (strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for geotiff");
         }
-        return IdentifierWithBindingFactory.createFileInGeotiff(identifier, path);
+        return IdentifierWithBindingFactory.createFileInGeotiff(identifier, optionalAbstract, path);
     }
 
     private static IIdentifierWithBinding createFileInputGeojson(
             final String identifier,
+            final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for geojson");
         }
-        return IdentifierWithBindingFactory.createFileInGeojson(identifier, path);
+        return IdentifierWithBindingFactory.createFileInGeojson(identifier, optionalAbstract, path);
     }
 
     private static IIdentifierWithBinding createFileInputGeneric(
             final String identifier,
+            final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for file");
         }
-        return IdentifierWithBindingFactory.createFileInGeneric(identifier, path);
+        return IdentifierWithBindingFactory.createFileInGeneric(identifier, optionalAbstract, path);
     }
 
     private static IIdentifierWithBinding createFileInputShapefile(
             final String identifier,
+            final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for shapefile");
         }
-        return IdentifierWithBindingFactory.createFileInShapeFile(identifier, path);
+        return IdentifierWithBindingFactory.createFileInShapeFile(identifier, optionalAbstract, path);
     }
 
     private static IIdentifierWithBinding createFileInputQuakeML(
             final String identifier,
+            final String optionalAbstract,
             final String path,
             @SuppressWarnings({"unused"})
             final String schema) {
 
         // schema is ignored here
         // takes the schema for quakeml
-        return IdentifierWithBindingFactory.createFileInQuakeML(identifier, path);
+        return IdentifierWithBindingFactory.createFileInQuakeML(identifier, optionalAbstract, path);
     }
 
     private static IIdentifierWithBinding createFileInputShakemap(
             final String identifier,
+            final String optionalAbstract,
             final String path,
              @SuppressWarnings({"unused"})
             final String schema) {
         // schema is ignored here
         // takes the schema for shakemap
-        return IdentifierWithBindingFactory.createFileInShakemap(identifier, path);
+        return IdentifierWithBindingFactory.createFileInShakemap(identifier, optionalAbstract, path);
     }
 
     private static IIdentifierWithBinding createFileInputJson(
             final String identifier,
+            final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
         if(strHasValue(schema)) {
             throw new ParseConfigurationException("schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createFileInJson(identifier, path);
+        return IdentifierWithBindingFactory.createFileInJson(identifier, optionalAbstract, path);
     }
 
 
@@ -658,7 +701,4 @@ public class ParseJsonForInputImpl {
             return factory;
         }
     }
-
-
-
 }

@@ -52,9 +52,9 @@ with upper camel case.
 
 ## abstract
 
-The abstract is a desccription of the service. This field is optional,
+The abstract is a description of the service. This field is optional,
 but as a wps service is a black box for the user it is important to
-provide some informations on what the process will do, how it works
+provide some information on what the process will do, how it works
 and what assumptions are made.
 
 ## imageId
@@ -146,6 +146,11 @@ You have to provide an array with at least the following fields:
 The title specifies an identifier that will also be used in the
 process description provided by the wps server.
 
+As the same as with the overall process it is also possible to 
+include a field "abstract" and to provide a string with the
+description of the input parameter here. Please notice that this field
+is optional.
+
 The useAs gives the basic process skeleton the information about
 how to transfer the data to the command line program.
 
@@ -169,6 +174,10 @@ the at least the following fields as well:
 - title
 - readFrom
 - type
+
+Same as for input parameters it is possible here too to provide
+a "abstract" field with a string, so the user get a description
+of the output parameter. As for inputs this field is optional here too.
 
 The term readFrom may be difficult to understand for output parameters,
 but it specifies the moment on which the command line program runs

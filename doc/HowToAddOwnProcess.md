@@ -193,20 +193,23 @@ handle input and output data.
   "stderrHandler": "errorIfNotEmpty",
   "input": [
     { 
-        "title" : "input-file",
+        "title": "input-file",
+        "abstract": "geojson feature collection to filter",
         "useAs": "file",
         "path": "input_file.geojson",
         "type": "geojson"
     },
     { 
-        "title": "min-area", 
+        "title": "min-area",
+        "abstract": "double value to filter give back all elements that are equal or greater than this area (in square km)",
         "useAs": "commandLineArgument",
         "type": "double" 
     }
   ],
   "output": [
     { 
-        "title": "output-file", 
+        "title": "output-file",
+        "abstract": "remaining features in wgs84 geojson",
         "readFrom": "file", 
         "path": "output_file.geojson", 
         "type": "geojson"
@@ -530,6 +533,12 @@ that you can take as templates for your own processes.
 Please refer to the overview of the already included processes 
 [here](IncludedProcesses.md).
 
+At the moment you can replace the existing processes by giving
+json configurations that take the same process title as the existing ones.
+The idea is to give you the possibility to improve the processes
+without the necessity of changing the java code and recompiling and
+deploying the jar file.
+
 ## Optional: Add the configuration to the core of the repository
 
 If you want to include the configuration to the core of the respository
@@ -549,3 +558,6 @@ similar to quakeledger and shakyground, than you must follow some of steps:
 
 5. Call this factory method in the createPredefinedConfigurations method of the 
    GfzRiesgosRepositoryCM class and insert the configuration in the list
+
+6. Recreate the package and deploy it in the same way as it is mentioned
+   in the [installation guide](Installationguide.md).
