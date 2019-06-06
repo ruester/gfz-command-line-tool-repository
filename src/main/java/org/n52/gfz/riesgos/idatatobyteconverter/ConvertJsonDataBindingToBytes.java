@@ -27,13 +27,22 @@ import org.n52.wps.io.data.IData;
 import java.util.Objects;
 
 /**
- * Function to convert a json data binding to a byte array
+ * Function to convert a json data binding to a byte array.
  */
-public class ConvertJsonDataBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertJsonDataBindingToBytes
+        implements IConvertIDataToByteArray {
 
+    /**
+     * Converts the IData to a byte array.
+     * @param data element to convert
+     * @return byte array
+     * @throws ConvertToBytesException exception that indicates that the
+     * element could not converted to byte array
+     */
     @Override
-    public byte[] convertToBytes(final IData data) throws ConvertToBytesException {
-        if(data instanceof JsonDataBinding) {
+    public byte[] convertToBytes(final IData data)
+            throws ConvertToBytesException {
+        if (data instanceof JsonDataBinding) {
             final JsonDataBinding binding = (JsonDataBinding) data;
             final JSONObject jsonObject = binding.getPayload();
             final String content = jsonObject.toJSONString();
@@ -43,14 +52,23 @@ public class ConvertJsonDataBindingToBytes implements IConvertIDataToByteArray {
         }
     }
 
+    /**
+     *
+     * @param o other object
+     * @return true if this object equals the other one
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());
