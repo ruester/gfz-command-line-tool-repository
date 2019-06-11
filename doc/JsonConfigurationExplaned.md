@@ -121,6 +121,11 @@ You can chose from the following options:
 | logging | The text on stderr will be logged if it is not empty. |
 | errorIfNotEmpty | If the text on stderr is not empty, the basic process skeleton will take it as an error and will stop the processing of the other output. |
 | pythonTraceback | Same as errorIfNotEmpty, but it filters first if there is some text which indicates an python traceback. Other text (for example warnings) on stderr will be ignored. This is only conceived for processes that run python scripts. |
+| rError | Scan the text for a error massage for the R programming language. Warnings will be ignored. |
+
+If you realize that your command line program shows an behaviour that must
+that must be supported please refer to 
+[our guide to add your own error handler.](HowToAddOwnErrorHandler.md)
 
 ## stdoutHandler
 
