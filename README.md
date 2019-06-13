@@ -1,5 +1,3 @@
-[![pipeline status](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/badges/master/pipeline.svg)](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/commits/master)
-
 # gfz-riesgos-wps-repository
 
 ## Description
