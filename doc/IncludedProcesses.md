@@ -49,7 +49,7 @@ It is a tool to calculate the ground motion field for an event in a quakeml
 file. The output of the process is a shakemap.
 Similar to Quakeledger Shakyground is a python3 script.
 
-THe main version of Shakyground you can find here:
+The main version of Shakyground you can find here:
 https://github.com/GFZ-Centre-for-Early-Warning/shakyground
 
 We included the following improvements:
@@ -66,6 +66,25 @@ You can find the dockerfile in the
 [assistance folder](../assistance/dockerfiles/shakyground/Dockerfile)
 and the json configuration in the 
 [resources folder](../src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json). 
+
+## Flooddamage
+
+Flooddamage is a process to compute damage on the manzanas river
+in ecuador.
+The code is provided in the gfz gitlab:
+https://git.gfz-potsdam.de/fbrill/riesgos_flooddamage
+
+You can find the dockerfile in the
+[assistance folder](../assistance/dockerfiles/flooddamage/Dockerfile)
+and the json configuration in the
+[resource folder](../src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json).
+
+This configuration uses json as output instead of geojson because of an
+issue on reading geojson files created by geopandas in java.
+
+Also at the moment there are no input parameter which will change with
+the next versions. 
+
 
 ## Format conversion processes
 

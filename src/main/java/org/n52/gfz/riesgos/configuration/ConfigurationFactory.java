@@ -28,48 +28,84 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Factory class for providing predefined configurations
+ * Factory class for providing predefined configurations.
  */
-public class ConfigurationFactory {
+public final class ConfigurationFactory {
 
+    /**
+     * This is a private constructor.
+     * We don't want to have an instance
+     * of this for accessing the static methods.
+     */
     private ConfigurationFactory() {
         // static
     }
 
     /**
-     * Creates the configuration for Quakeledger
+     * Creates the configuration for Quakeledger.
      * It uses a predefined docker image (quakeledger:latest)
      * @return IConfiguration
      */
     public static IConfiguration createQuakeledger() {
         try {
-            final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/quakeledger.json");
-            if(inputStream == null) {
+            final InputStream inputStream = ConfigurationFactory
+                    .class
+                    .getClassLoader()
+                    .getResourceAsStream(
+                        "org/n52/gfz/riesgos/configuration/quakeledger.json");
+            if (inputStream == null) {
                 throw new IOException("Input stream is null");
             }
             final String content = new String(IOUtils.toByteArray(inputStream));
             final IParseConfiguration parser = new ParseJsonConfigurationImpl();
             return parser.parse(content);
-        } catch(final IOException | ParseConfigurationException exception) {
+        } catch (final IOException | ParseConfigurationException exception) {
             throw new RuntimeException(exception);
         }
     }
 
     /**
-     * Creates the configuration for shakyground
+     * Creates the configuration for shakyground.
      * It uses a predefined docker image (shakyground:latest)
      * @return IConfiguration
      */
     public static IConfiguration createShakyground() {
         try {
-            final InputStream inputStream = ConfigurationFactory.class.getClassLoader().getResourceAsStream("org/n52/gfz/riesgos/configuration/shakyground.json");
-            if(inputStream == null) {
+            final InputStream inputStream = ConfigurationFactory
+                    .class
+                    .getClassLoader()
+                    .getResourceAsStream(
+                        "org/n52/gfz/riesgos/configuration/shakyground.json");
+            if (inputStream == null) {
                 throw new IOException("Input stream is null");
             }
             final String content = new String(IOUtils.toByteArray(inputStream));
             final IParseConfiguration parser = new ParseJsonConfigurationImpl();
             return parser.parse(content);
-        } catch(final IOException | ParseConfigurationException exception) {
+        } catch (final IOException | ParseConfigurationException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    /**
+     * Creates the configuration for flooddmage.
+     * It uses a predefined docker image (flooddamage:latest)
+     * @return IConfiguration
+     */
+    public static IConfiguration createFlooddamage() {
+        try {
+            final InputStream inputStream = ConfigurationFactory
+                    .class
+                    .getClassLoader()
+                    .getResourceAsStream(
+                        "org/n52/gfz/riesgos/configuration/flooddamage.json");
+            if (inputStream == null) {
+                throw new IOException("Input stream is null");
+            }
+            final String content = new String(IOUtils.toByteArray(inputStream));
+            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+            return parser.parse(content);
+        } catch (final IOException | ParseConfigurationException exception) {
             throw new RuntimeException(exception);
         }
     }
