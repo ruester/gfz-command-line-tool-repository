@@ -1,5 +1,3 @@
-# I have to recreate the dockerfile from the
-# 
 FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
