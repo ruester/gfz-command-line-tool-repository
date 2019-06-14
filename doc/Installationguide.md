@@ -213,6 +213,21 @@ docker build . --tag shakyground
 ```
 Especially downloading some grid data here may take a lot of time.
 
+Same work have to be done for assetmaster and modelprop.
+Go into the specific folders and run the commands (be sure that you
+are in the right folder for each command)
+
+```
+# in the assetmaster folder
+docker build . --tag assetmaster
+# in the modelprop folder
+docker build . --tag modelprop
+```
+
+You can also install the image for the flooddamage process.
+There is a special howto in 
+[here](../assistance/dockerfiles/flooddamage/howto_create_the_dockerfile,md).
+
 At the moment there is a 1:1 mapping of the processes and the docker images.
 This is mostly for handling the dependencies seperate for each process.
 Nothing will stop you in using one docker image for multiple processes.
