@@ -207,3 +207,13 @@ the readFrom options are for reading data for the overall process output.
 
 For an overview of supported input and output types please refer to
 the [site about supported formats](SupportedFormats.md).
+
+If you have an xml input or output format you can add a schema field.
+This field it used to validate the data. If you don't need the
+validation - or you know that the data will not be valid according to
+the schema but still can be processed by the program - you should
+remove the schema field, so that the system does not try to validate it.
+
+Please also note, that you need different titles per input and output
+element. The data is identified by this names, so please make sure
+there are unique to the process.

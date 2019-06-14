@@ -109,4 +109,27 @@ public final class ConfigurationFactory {
             throw new RuntimeException(exception);
         }
     }
+
+    /**
+     * Creates the configuration for shakyground.
+     * It uses a predefined docker image (assetmaster:latest)
+     * @return IConfiguration
+     */
+    public static IConfiguration createAssetmaster() {
+        try {
+            final InputStream inputStream = ConfigurationFactory
+                    .class
+                    .getClassLoader()
+                    .getResourceAsStream(
+                            "org/n52/gfz/riesgos/configuration/assetmaster.json");
+            if (inputStream == null) {
+                throw new IOException("Input stream is null");
+            }
+            final String content = new String(IOUtils.toByteArray(inputStream));
+            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
+            return parser.parse(content);
+        } catch (final IOException | ParseConfigurationException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 }
