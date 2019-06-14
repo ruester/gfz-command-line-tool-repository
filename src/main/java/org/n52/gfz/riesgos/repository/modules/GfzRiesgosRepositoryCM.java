@@ -298,7 +298,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         )) {
             final String processName = transformationProcess.getProcessName();
             final AlgorithmData algorithmData = new AlgorithmData(
-                    processName,
+                    IConfiguration.PATH_FULL_QUALIFIED + processName,
                     new TransformDataFormatProcess(
                             processName,
                             transformationProcess.getClazz(),
@@ -317,7 +317,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
      */
     private AlgorithmData configurationToAlgorithm(
             final IConfiguration configuration) {
-        return new AlgorithmData(configuration.getIdentifier(),
+        return new AlgorithmData(configuration.getFullQualifiedIdentifier(),
                 new BaseGfzRiesgosService(configuration,
                         LoggerFactory.getLogger(
                                 configuration.getFullQualifiedIdentifier())));
