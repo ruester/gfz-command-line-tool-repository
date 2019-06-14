@@ -24,8 +24,8 @@ The identifier of the process is within the `ows:Identifier` tag, for example:
 ```xml
 <wps:ProcessSummary processVersion="1.0.0" jobControlOptions="sync-execute async-execute" outputTransmission="value reference">
   <ows:Title>ShakygroundProcess</ows:Title>
-  <ows:Identifier>ShakygroundProcess</ows:Identifier>
-  <ows:Metadata xlin:role="Process description" xlin:href="https://localhost:8080/wps/WebProcessingService?service=WPS&request=DescribeProcess&version=2.0.0&identifier=ShakygroundProcess"/>
+  <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess</ows:Identifier>
+  <ows:Metadata xlin:role="Process description" xlin:href="https://localhost:8080/wps/WebProcessingService?service=WPS&request=DescribeProcess&version=2.0.0&identifier=org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess"/>
 </wps:ProcessSummary>
 ```
 
@@ -33,7 +33,7 @@ This identifier is needed to choose which process should be executed.
 To get information (like input and output data types) about the process you can query the WPS server with the `DescribeProcess` parameter:
 
 ```bash
-https://URLtoWPS?request=DescribeProcess&service=WPS&version=2.0.0&identifier=ShakygroundProcess
+https://URLtoWPS?request=DescribeProcess&service=WPS&version=2.0.0&identifier=org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess
 ```
 
 Which gives something like:
@@ -77,7 +77,7 @@ It is best to prepare a XML file with the request to the WPS in it, so for examp
 
 ```xml
 <wps:Execute service="WPS" version="2.0.0" xmlns:wps="http://www.opengis.net/wps/2.0" xmlns:ows="http://www.opengis.net/ows/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd" response="document" mode="sync">
-  <ows:Identifier>ShakygroundProcess</ows:Identifier>
+  <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess</ows:Identifier>
   <wps:Input id="quakeMLFile">
     <wps:Data mimeType="text/xml">
       <eventParameters xmlns="http://quakeml.org/xmlns/bed/1.2" publicID="smi:org.globalcmt/origin/12345">
@@ -163,7 +163,7 @@ from owslib.wps import printInputOutput
 from owslib.wps import monitorExecution
 from owslib.wps import BoundingBoxDataInput
 
-processid = 'QuakeledgerProcess'
+processid = 'org.n52.gfz.riesgos.algorithm.impl.QuakeledgerProcess'
 
 wps = WebProcessingService('https://URLtoWPS', verbose=True)
 
