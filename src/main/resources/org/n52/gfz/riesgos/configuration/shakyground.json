@@ -7,7 +7,7 @@
   "exitValueHandler": "logging",
   "stderrHandler": "pythonTraceback",
   "input": [
-    { "title" : "quakeMLFile", "abstract": "quakeML to use for computing the shakemap", "useAs": "commandLineArgument", "type": "xmlWithoutHeader", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
+    { "title" : "quakeMLFile", "abstract": "quakeML to use for computing the shakemap", "useAs": "commandLineArgument", "type": "quakeml", "schema": "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"}
   ],
   "output": [
     { "title": "shakeMapFile", "abstract": "resulting shakemap", "readFrom": "stdout", "type": "shakemap", "schema": "http://earthquake.usgs.gov/eqcenter/shakemap"}
