@@ -102,8 +102,17 @@ error handler.
 You can find the fine in the 
 [resource folder](../src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json).
 
+## modelprop
 
+Modelprop is a program to 
+serve a fragility / vulnerability model according to a given schema.
 
+The code you can see at
+https://github.com/GFZ-Centre-for-Early-Warning/modelprop
+
+according to the other services you can take a look at the
+dockerfile in the assistance folder and to the json configuration
+in the assistance folder.
 
 ## Format conversion processes
 
