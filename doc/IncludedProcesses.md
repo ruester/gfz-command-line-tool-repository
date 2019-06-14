@@ -83,7 +83,26 @@ This configuration uses json as output instead of geojson because of an
 issue on reading geojson files created by geopandas in java.
 
 Also at the moment there are no input parameter which will change with
-the next versions. 
+the next versions.
+
+## assetmaster
+
+Assetmaster is a process to provide exposure models in the riesgos
+project.
+
+The code is provided here:
+https://github.com/GFZ-Centre-for-Early-Warning/assetmaster
+
+The dockerfile is in the 
+[assistance folder](../assistance/dockerfiles/assetmaster/Dockerfile).
+The json configuration is based on the metadata/assetmaster.json
+file you can find in the https://github.com/GFZ-Centre-for-Early-Warning/assetmaster
+github repository, but uses a no xml schema but a different stderr
+error handler.
+You can find the fine in the 
+[resource folder](../src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json).
+
+
 
 
 ## Format conversion processes

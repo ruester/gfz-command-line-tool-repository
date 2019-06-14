@@ -280,6 +280,7 @@ you can look [here](SupportedFormats.md).
 If you realize that you need to add your own format you can take
 a look [here](HowToAddOwnFormat.md).
 
+
 ## Copy the json file to the configuration folder
 
 To add the service to the server you just simply have to copy
