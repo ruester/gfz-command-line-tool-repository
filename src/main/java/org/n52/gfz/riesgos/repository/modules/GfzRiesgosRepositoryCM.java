@@ -227,7 +227,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 ConfigurationFactory.createQuakeledger(),
                 ConfigurationFactory.createShakyground(),
                 ConfigurationFactory.createFlooddamage(),
-                ConfigurationFactory.createAssetmaster()
+                ConfigurationFactory.createAssetmaster(),
+                ConfigurationFactory.createModelprop()
         );
     }
 

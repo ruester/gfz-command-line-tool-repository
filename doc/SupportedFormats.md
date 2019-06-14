@@ -45,7 +45,8 @@ supported types. It includes:
 - json
 
 Please note that for the literal values (int, double, string) it is possible
-to provide a default value and a list of allowed values.
+to provide a default value and a list of allowed values. Please note
+that the server does not recognize an empty string as a default value.
 
 For boolean a default value is possible to, but a list of allowed values would
 make no sense for a data type that can have only two different states.
