@@ -27,9 +27,8 @@ import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericFileDataBin
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
-import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
-import org.n52.gfz.riesgos.configuration.parse.json.subimpl.ParseJsonForOutputImpl;
+import org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl.ParseJsonForOutputImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;

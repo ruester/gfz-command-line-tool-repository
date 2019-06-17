@@ -25,7 +25,7 @@ import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.OutputParameterFactory;
-import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
+import org.n52.gfz.riesgos.configuration.parse.formats.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.exitvaluehandler.LogExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;

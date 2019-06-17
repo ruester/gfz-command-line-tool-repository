@@ -21,7 +21,7 @@ package org.n52.gfz.riesgos.configuration;
 
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
-import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
+import org.n52.gfz.riesgos.configuration.parse.formats.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
 import java.io.IOException;

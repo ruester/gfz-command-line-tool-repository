@@ -29,7 +29,7 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingT
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
-import org.n52.gfz.riesgos.configuration.parse.json.subimpl.ParseJsonForInputImpl;
+import org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl.ParseJsonForInputImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
