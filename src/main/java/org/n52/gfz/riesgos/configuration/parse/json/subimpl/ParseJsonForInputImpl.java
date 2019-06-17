@@ -275,11 +275,11 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentInt(
                 identifier,
-                optionalAbstract,
+                isOptional, optionalAbstract,
                 flag,
                 defaultValue,
-                allowedValues,
-                isOptional);
+                allowedValues
+        );
     }
 
     /**
@@ -315,11 +315,11 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentDouble(
                 identifier,
-                optionalAbstract,
+                isOptional, optionalAbstract,
                 flag,
                 defaultValue,
-                allowedValues,
-                isOptional);
+                allowedValues
+        );
     }
 
     /**
@@ -355,11 +355,11 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentString(
                 identifier,
-                optionalAbstract,
+                isOptional, optionalAbstract,
                 flag,
                 defaultValue,
-                allowedValues,
-                isOptional);
+                allowedValues
+        );
     }
 
     /**
@@ -403,10 +403,10 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentBoolean(
                 identifier,
-                optionalAbstract,
+                isOptional, optionalAbstract,
                 flag,
-                defaultValue,
-                isOptional);
+                defaultValue
+        );
     }
 
     /**
@@ -460,9 +460,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
 
         return InputParameterFactory.INSTANCE.createCommandLineArgumentBBox(
                 identifier,
-                optionalAbstract,
-                supportedCrs,
-                isOptional);
+                isOptional, optionalAbstract,
+                supportedCrs
+        );
     }
 
     /**
@@ -504,58 +504,12 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
                 .INSTANCE
                 .createCommandLineArgumentXmlFileWithSchema(
                         identifier,
-                        optionalAbstract,
+                        isOptional, optionalAbstract,
                         schema,
-                        flag,
-                        isOptional);
+                        flag
+                );
     }
 
-    /**
-     * Function to create a command line argument with a xml file
-     * without a header.
-     * Checks some attributes and delegates the creation.
-     * @param identifier identifier of the data
-     * @param optionalAbstract optional description of the parameter
-     * @param flag optional flag
-     * @param defaultValue optional default value
-     * @param allowedValues optional allowed values
-     * @param supportedCrs optional list with supported crs
-     * @param schema optional schema
-     * @return IIdentifierWithBinding
-     * @throws ParseConfigurationException exception that may be thrown
-     * if a argument is used that is not supported for this type.
-     */
-    private static IInputParameter
-                createCommandLineArgumentXmlFileWithoutHeader(
-            final String identifier,
-            final boolean isOptional,
-            final String optionalAbstract,
-            final String flag,
-            final String defaultValue,
-            final List<String> allowedValues,
-            final List<String> supportedCrs,
-            final String schema) throws ParseConfigurationException {
-        if (strHasValue(defaultValue)) {
-            throw new ParseConfigurationException(
-                    "default is not supported for xml");
-        }
-        if (listHasValue(allowedValues)) {
-            throw new ParseConfigurationException(
-                    "allowed values are not supported for xml");
-        }
-        if (listHasValue(supportedCrs)) {
-            throw new ParseConfigurationException(
-                    "crs are not supported for xml");
-        }
-        return InputParameterFactory
-                .INSTANCE
-                .createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
-                        identifier,
-                        optionalAbstract,
-                        schema,
-                        flag,
-                        isOptional);
-    }
 
     /**
      * Function to create a command line argument with a quakeml file.
@@ -596,9 +550,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         // ignore schema
         return InputParameterFactory.INSTANCE.createCommandLineArgumentQuakeML(
                 identifier,
-                optionalAbstract,
-                flag,
-                isOptional);
+                isOptional, optionalAbstract,
+                flag
+        );
     }
 
     /**
@@ -642,9 +596,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentGeotiff(
                 identifier,
-                optionalAbstract,
-                flag,
-                isOptional);
+                isOptional, optionalAbstract,
+                flag
+        );
     }
 
     /**
@@ -688,9 +642,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentGeojson(
                 identifier,
-                optionalAbstract,
-                flag,
-                isOptional);
+                isOptional, optionalAbstract,
+                flag
+        );
     }
 
     /**
@@ -734,9 +688,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentShapeFile(
                 identifier,
-                optionalAbstract,
-                flag,
-                isOptional);
+                isOptional, optionalAbstract,
+                flag
+        );
     }
 
     /**
@@ -780,9 +734,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentFile(
                 identifier,
-                optionalAbstract,
-                flag,
-                isOptional);
+                isOptional, optionalAbstract,
+                flag
+        );
     }
 
     /**
@@ -826,9 +780,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentJson(
                 identifier,
-                optionalAbstract,
-                flag,
-                isOptional);
+                isOptional, optionalAbstract,
+                flag
+        );
     }
 
     /**
@@ -865,13 +819,6 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
          */
         XML("xml",
                 ParseJsonForInputImpl::createCommandLineArgumentXmlFile),
-        /**
-         * This is the enum to use an xml file without header as command line
-         * argument.
-         */
-        XML_WITHOUT_HEADER(
-          "xmlWithoutHeader",
-          ParseJsonForInputImpl::createCommandLineArgumentXmlFileWithoutHeader),
         /**
          * This is the enum to use a geotiff file as command line argument.
          */
@@ -1010,10 +957,10 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createStdinString(
                 identifier,
-                optionalAbstract,
+                isOptional, optionalAbstract,
                 defaultValue,
-                allowedValues,
-                isOptional);
+                allowedValues
+        );
     }
 
     /**
@@ -1049,8 +996,8 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createStdinJson(
                 identifier,
-                optionalAbstract,
-                isOptional);
+                isOptional, optionalAbstract
+        );
     }
 
 
@@ -1171,9 +1118,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createFileInGeotiff(
                 identifier,
-                optionalAbstract,
-                path,
-                isOptional);
+                isOptional, optionalAbstract,
+                path
+        );
     }
 
     /**
@@ -1199,9 +1146,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createFileInGeojson(
                 identifier,
-                optionalAbstract,
-                path,
-                isOptional);
+                isOptional, optionalAbstract,
+                path
+        );
     }
 
     /**
@@ -1227,9 +1174,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createFileInGeneric(
                 identifier,
-                optionalAbstract,
-                path,
-                isOptional);
+                isOptional, optionalAbstract,
+                path
+        );
     }
 
     /**
@@ -1255,9 +1202,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createFileInShapeFile(
                 identifier,
-                optionalAbstract,
-                path,
-                isOptional);
+                isOptional, optionalAbstract,
+                path
+        );
     }
 
     /**
@@ -1281,9 +1228,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         // takes the schema for quakeml
         return InputParameterFactory.INSTANCE.createFileInQuakeML(
                 identifier,
-                optionalAbstract,
-                path,
-                isOptional);
+                isOptional, optionalAbstract,
+                path
+        );
     }
 
     /**
@@ -1306,9 +1253,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         // takes the schema for shakemap
         return InputParameterFactory.INSTANCE.createFileInShakemap(
                 identifier,
-                optionalAbstract,
-                path,
-                isOptional);
+                isOptional, optionalAbstract,
+                path
+        );
     }
 
     /**
@@ -1335,9 +1282,9 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
         }
         return InputParameterFactory.INSTANCE.createFileInJson(
                 identifier,
-                optionalAbstract,
-                path,
-                isOptional);
+                isOptional, optionalAbstract,
+                path
+        );
     }
 
     /**

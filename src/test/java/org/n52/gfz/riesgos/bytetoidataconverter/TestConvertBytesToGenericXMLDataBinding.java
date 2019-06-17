@@ -23,7 +23,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -47,14 +46,11 @@ public class TestConvertBytesToGenericXMLDataBinding {
 
         final byte[] content = xmlStrInput.getBytes();
 
-        final IConvertByteArrayToIData converter = new ConvertBytesToGenericXMLDataBinding();
+        final IConvertByteArrayToIData<GenericXMLDataBinding> converter = new ConvertBytesToGenericXMLDataBinding();
 
         try {
-            final IData result = converter.convertToIData(content);
-            if(! (result instanceof GenericXMLDataBinding)) {
-                fail("Wrong IData type");
-            }
-            final GenericXMLDataBinding xmlBindingResult = (GenericXMLDataBinding) result;
+            final GenericXMLDataBinding xmlBindingResult = converter.convertToIData(content);
+
             final XmlObject xmlResult = xmlBindingResult.getPayload();
             final String xmlStrResult = xmlResult.xmlText();
             assertEquals("The strings are equal", xmlStrInput, xmlStrResult);
@@ -72,7 +68,7 @@ public class TestConvertBytesToGenericXMLDataBinding {
 
         final byte[] content = xmlStrInput.getBytes();
 
-        final IConvertByteArrayToIData converter = new ConvertBytesToGenericXMLDataBinding();
+        final IConvertByteArrayToIData<GenericXMLDataBinding> converter = new ConvertBytesToGenericXMLDataBinding();
 
         try {
             converter.convertToIData(content);
@@ -103,7 +99,7 @@ public class TestConvertBytesToGenericXMLDataBinding {
         byteStream.write(9997);
 
         final byte[] content = byteStream.toByteArray();
-        final IConvertByteArrayToIData converter = new ConvertBytesToGenericXMLDataBinding();
+        final IConvertByteArrayToIData<GenericXMLDataBinding> converter = new ConvertBytesToGenericXMLDataBinding();
 
         try {
             converter.convertToIData(content);
@@ -119,8 +115,8 @@ public class TestConvertBytesToGenericXMLDataBinding {
      */
     @Test
     public void testEquals() {
-        final IConvertByteArrayToIData converter1 = new ConvertBytesToGenericXMLDataBinding();
-        final IConvertByteArrayToIData converter2 = new ConvertBytesToGenericXMLDataBinding();
+        final IConvertByteArrayToIData<GenericXMLDataBinding> converter1 = new ConvertBytesToGenericXMLDataBinding();
+        final IConvertByteArrayToIData<GenericXMLDataBinding> converter2 = new ConvertBytesToGenericXMLDataBinding();
 
         assertEquals("Both are the same", converter1, converter2);
     }

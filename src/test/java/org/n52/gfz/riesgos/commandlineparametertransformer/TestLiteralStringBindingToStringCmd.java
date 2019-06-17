@@ -21,14 +21,11 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertNotEquals;
 
@@ -42,9 +39,9 @@ public class TestLiteralStringBindingToStringCmd {
      */
     @Test
     public void testValid() {
-        final IData iData = new LiteralStringBinding("expert");
+        final LiteralStringBinding iData = new LiteralStringBinding("expert");
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralStringBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralStringBinding> converter = new LiteralStringBindingToStringCmd();
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -59,30 +56,13 @@ public class TestLiteralStringBindingToStringCmd {
     }
 
     /**
-     * Test with non valid input
-     */
-    @Test
-    public void testNonValid() {
-        final IData iData = new LiteralBooleanBinding(true);
-
-        final IConvertIDataToCommandLineParameter converter = new LiteralStringBindingToStringCmd();
-
-        try {
-            converter.convertToCommandLineParameter(iData);
-            fail("There mus be an exception");
-        } catch(final ConvertToStringCmdException exception) {
-            assertNotNull("There must be an exception", exception);
-        }
-    }
-
-    /**
      * Test with a default flag
      */
     @Test
     public void testWithDefaultFlag() {
-        final IData iData = new LiteralStringBinding("expert");
+        final LiteralStringBinding iData = new LiteralStringBinding("expert");
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralStringBindingToStringCmd("--mode");
+        final IConvertIDataToCommandLineParameter<LiteralStringBinding> converter = new LiteralStringBindingToStringCmd("--mode");
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -102,8 +82,8 @@ public class TestLiteralStringBindingToStringCmd {
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToCommandLineParameter converter1 = new LiteralStringBindingToStringCmd();
-        final IConvertIDataToCommandLineParameter converter2 = new LiteralStringBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralStringBinding> converter1 = new LiteralStringBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralStringBinding> converter2 = new LiteralStringBindingToStringCmd();
 
         assertEquals("The converter are the same", converter1, converter2);
 

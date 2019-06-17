@@ -46,9 +46,9 @@ public class TestLiteralStringBindingWithAllowedValues {
     public void testValid() {
         final List<String> allowedValues = Arrays.asList("expert", "simulation", "random");
 
-        final ICheckDataAndGetErrorMessage validator = new LiteralStringBindingWithAllowedValues(allowedValues);
+        final ICheckDataAndGetErrorMessage<LiteralStringBinding> validator = new LiteralStringBindingWithAllowedValues(allowedValues);
 
-        final IData value = new LiteralStringBinding("expert");
+        final LiteralStringBinding value = new LiteralStringBinding("expert");
 
         final Optional<String> errorMessage = validator.check(value);
 
@@ -62,46 +62,31 @@ public class TestLiteralStringBindingWithAllowedValues {
     public void testNonAllowedValue() {
         final List<String> allowedValues = Arrays.asList("expert", "simulation", "random");
 
-        final ICheckDataAndGetErrorMessage validator = new LiteralStringBindingWithAllowedValues(allowedValues);
+        final ICheckDataAndGetErrorMessage<LiteralStringBinding> validator = new LiteralStringBindingWithAllowedValues(allowedValues);
 
-        final IData value = new LiteralStringBinding("unexpected");
-
-        final Optional<String> errorMessage = validator.check(value);
-
-        assertTrue("There is a message indicating that there is a problem with the data", errorMessage.isPresent());
-    }
-
-    /**
-     * The value has the wrong type, so there must be a message
-     */
-    @Test
-    public void testWrongType() {
-        final List<String> allowedValues = Arrays.asList("1", "2", "3");
-
-        final ICheckDataAndGetErrorMessage validator = new LiteralStringBindingWithAllowedValues(allowedValues);
-
-        final IData value = new LiteralIntBinding(1);
+        final LiteralStringBinding value = new LiteralStringBinding("unexpected");
 
         final Optional<String> errorMessage = validator.check(value);
 
         assertTrue("There is a message indicating that there is a problem with the data", errorMessage.isPresent());
     }
+
 
     /**
      * Tests equality
      */
     @Test
     public void testEquals() {
-        final ICheckDataAndGetErrorMessage validator1 = new LiteralStringBindingWithAllowedValues(Arrays.asList("1", "2", "3"));
-        final ICheckDataAndGetErrorMessage validator2 = new LiteralStringBindingWithAllowedValues(Arrays.asList("1", "2", "3"));
+        final ICheckDataAndGetErrorMessage<LiteralStringBinding> validator1 = new LiteralStringBindingWithAllowedValues(Arrays.asList("1", "2", "3"));
+        final ICheckDataAndGetErrorMessage<LiteralStringBinding> validator2 = new LiteralStringBindingWithAllowedValues(Arrays.asList("1", "2", "3"));
 
         assertEquals("Both are the same", validator1, validator2);
 
-        final ICheckDataAndGetErrorMessage validator3 = new LiteralStringBindingWithAllowedValues(Arrays.asList("3", "2", "1"));
+        final ICheckDataAndGetErrorMessage<LiteralStringBinding> validator3 = new LiteralStringBindingWithAllowedValues(Arrays.asList("3", "2", "1"));
 
         assertEquals("There should be the same no matter of the values", validator1, validator3);
 
-        final ICheckDataAndGetErrorMessage validator4 = new LiteralStringBindingWithAllowedValues(Arrays.asList("6", "7"));
+        final ICheckDataAndGetErrorMessage<LiteralStringBinding> validator4 = new LiteralStringBindingWithAllowedValues(Arrays.asList("6", "7"));
 
         assertNotEquals("The fourth one is different", validator1, validator4);
     }

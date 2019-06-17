@@ -27,10 +27,10 @@ import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
+import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
-import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertJsonDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
@@ -51,13 +51,22 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Factory for creating the input parameters.
+ * All the input parameters should be created using this
+ * interface.
+ */
 public enum InputParameterFactory {
 
+    /**
+     * In order to avoid static methods this is a singleton.
+     */
     INSTANCE;
 
     /**
      * Creates a command line int argument.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the data
      * @param flag optional command line flag (--x for a parameter x)
      * @param defaultValue optional default value of the argument
@@ -67,16 +76,19 @@ public enum InputParameterFactory {
      */
     public IInputParameter createCommandLineArgumentInt(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
-            final List<String> allowedValues,
-            final boolean isOptional) {
-        final InputParameterImpl.Builder builder =
-                new InputParameterImpl.Builder(
-                        identifier, LiteralIntBinding.class, isOptional, optionalAbstract)
-                        .withFunctionToTransformToCmd(
-                                new LiteralIntBindingToStringCmd(flag));
+            final List<String> allowedValues) {
+        final InputParameterImpl.Builder<LiteralIntBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        LiteralIntBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new LiteralIntBindingToStringCmd(flag));
 
         if (defaultValue != null) {
             builder.withDefaultValue(defaultValue);
@@ -92,6 +104,7 @@ public enum InputParameterFactory {
     /**
      * Creates a command line double argument.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag (--x for a parameter x)
      * @param defaultValue optional default value of the argument
@@ -101,14 +114,17 @@ public enum InputParameterFactory {
      */
     public IInputParameter createCommandLineArgumentDouble(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
-            final List<String> allowedValues,
-            final boolean isOptional) {
-        final InputParameterImpl.Builder builder =
-                new InputParameterImpl.Builder(
-                        identifier, LiteralDoubleBinding.class, isOptional, optionalAbstract);
+            final List<String> allowedValues) {
+        final InputParameterImpl.Builder<LiteralDoubleBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        LiteralDoubleBinding.class,
+                        isOptional,
+                        optionalAbstract);
         builder.withFunctionToTransformToCmd(
                 new LiteralDoubleBindingToStringCmd(flag));
 
@@ -126,6 +142,7 @@ public enum InputParameterFactory {
     /**
      * Creates a command line string argument.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag (--x for a parameter x)
      * @param defaultValue optional default value of the argument
@@ -135,14 +152,17 @@ public enum InputParameterFactory {
      */
     public IInputParameter createCommandLineArgumentString(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
-            final List<String> allowedValues,
-            final boolean isOptional) {
-        final InputParameterImpl.Builder builder =
-                new InputParameterImpl.Builder(
-                        identifier, LiteralStringBinding.class, isOptional, optionalAbstract);
+            final List<String> allowedValues) {
+        final InputParameterImpl.Builder<LiteralStringBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        LiteralStringBinding.class,
+                        isOptional,
+                        optionalAbstract);
         builder.withFunctionToTransformToCmd(
                 new LiteralStringBindingToStringCmd(flag));
 
@@ -162,6 +182,7 @@ public enum InputParameterFactory {
     /**
      * Creates a command line boolean argument.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag command line flag to insert if the value is true
      * @param defaultValue optional default value
@@ -170,13 +191,16 @@ public enum InputParameterFactory {
      */
     public IInputParameter createCommandLineArgumentBoolean(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
-            final String defaultValue,
-            final boolean isOptional) {
-        final InputParameterImpl.Builder builder =
-                new InputParameterImpl.Builder(
-                        identifier, LiteralBooleanBinding.class, isOptional, optionalAbstract);
+            final String defaultValue) {
+        final InputParameterImpl.Builder<LiteralBooleanBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        LiteralBooleanBinding.class,
+                        isOptional,
+                        optionalAbstract);
         builder.withFunctionToTransformToCmd(
                 new LiteralBooleanBindingToStringCmd(flag));
 
@@ -194,6 +218,7 @@ public enum InputParameterFactory {
      *  lonmin, lonmax, latmin, latmax)
      *
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param supportedCRSForBBox list with the supported CRS
      *                            for the bounding box
@@ -201,11 +226,11 @@ public enum InputParameterFactory {
      */
     public IInputParameter createCommandLineArgumentBBox(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final List<String> supportedCRSForBBox,
-            final boolean isOptional) {
+            final List<String> supportedCRSForBBox) {
 
-        return new InputParameterImpl.Builder(
+        return new InputParameterImpl.Builder<>(
                 identifier, BoundingBoxData.class, isOptional, optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new BoundingBoxDataToStringCmd())
@@ -217,6 +242,7 @@ public enum InputParameterFactory {
      * Creates a command line argument (xml file) with a file path that will
      * be written down as a temporary file.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param schema schema of the xml
      * @param defaultFlag default flag for the command line argument
@@ -226,153 +252,135 @@ public enum InputParameterFactory {
     public IInputParameter
     createCommandLineArgumentXmlFileWithSchema(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String schema,
-            final String defaultFlag,
-            final boolean isOptional) {
+            final String defaultFlag) {
 
         final String filename = createUUIDFilename(".xml");
-        final XmlBindingWithAllowedSchema validator;
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator;
 
         if (schema == null || schema.trim().length() == 0) {
             validator = null;
         } else {
-            validator = new XmlBindingWithAllowedSchema(schema);
+            validator = new XmlBindingWithAllowedSchema<>(schema);
         }
 
-        return new InputParameterImpl.Builder(
-                identifier, GenericXMLDataBinding.class, isOptional, optionalAbstract)
-                .withValidator(validator)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, defaultFlag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGenericXMLDataBindingToBytes()))
-                .withSchema(schema)
-                .build();
-    }
+        final InputParameterImpl.Builder<GenericXMLDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GenericXMLDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withValidator(validator);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, defaultFlag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericXMLDataBindingToBytes<>()));
+        builder.withSchema(schema);
 
-    /**
-     * Same as createCommandLineArgumentXmlFileWithSchema,
-     * but it removes the xml header before
-     * writing it to a file.
-     * @param identifier identifier of the data
-     * @param optionalAbstract optional description of the parameter
-     * @param schema schema of the xml
-     * @param flag optional flag for the command line argument
-     * @return xml file command line argument
-     */
-    public IInputParameter
-    createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
-            final String identifier,
-            final String optionalAbstract,
-            final String schema,
-            final String flag,
-            final boolean isOptional) {
-
-        final String filename = createUUIDFilename(".xml");
-        final XmlBindingWithAllowedSchema validator;
-
-        if (schema == null || schema.trim().length() == 0) {
-            validator = null;
-        } else {
-            validator = new XmlBindingWithAllowedSchema(schema);
-        }
-
-        return new InputParameterImpl.Builder(
-                identifier, GenericXMLDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGenericXMLDataBindingToBytesWithoutHeader()))
-                .withSchema(schema)
-                .withValidator(validator)
-                .build();
+        return builder.build();
     }
 
     /**
      * Same as  createCommandLineArgumentXmlFileWithSchema but with QuakeML.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional flag for the command line argument
      * @return quakeml xml file command line argument
      */
     public IInputParameter createCommandLineArgumentQuakeML(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String flag,
-            final boolean isOptional) {
+            final String flag) {
         final String filename = createUUIDFilename(".xml");
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new InputParameterImpl.Builder(
-                identifier, QuakeMLXmlDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGenericXMLDataBindingToBytes()))
-                .withSchema(schema)
-                .withValidator(new XmlBindingWithAllowedSchema(schema))
-                .build();
+        final InputParameterImpl.Builder<QuakeMLXmlDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        QuakeMLXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, flag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericXMLDataBindingToBytes<>()));
+        builder.withSchema(schema);
+        builder.withValidator(
+                new XmlBindingWithAllowedSchema<>(schema));
+
+        return builder.build();
     }
 
     /**
      * Creates a command line argument (geotiff file) with a file path that
      * will be written down as a temporary file.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
      * @return geotiff file command line argument
      */
     public IInputParameter createCommandLineArgumentGeotiff(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String flag,
-            final boolean isOptional) {
+            final String flag) {
         final String filename = createUUIDFilename(".tiff");
 
-        return new InputParameterImpl.Builder(
-                identifier, GeotiffBinding.class, isOptional, optionalAbstract)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGeotiffBindingToBytes()))
-                .build();
+        final InputParameterImpl.Builder<GeotiffBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GeotiffBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, flag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGeotiffBindingToBytes()));
+
+        return builder.build();
     }
 
     /**
      * Creates a command line argument (geojson) with a file path that will
      * be written down as a temporary file.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalDescription optional description of the parameter
      * @param flag optional command line flag
      * @return geojson file command line argument
      */
     public IInputParameter createCommandLineArgumentGeojson(
             final String identifier,
+            final boolean isOptional,
             final String optionalDescription,
-            final String flag,
-            final boolean isOptional) {
+            final String flag) {
         final String filename = createUUIDFilename(".json");
-        return new InputParameterImpl.Builder(
-                identifier, GTVectorDataBinding.class, isOptional, optionalDescription)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGTVectorDataBindingToBytes(
-                                        ConvertGTVectorDataBindingToBytes.Format.JSON
-                                )))
-                .build();
+        final InputParameterImpl.Builder<GTVectorDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GTVectorDataBinding.class,
+                        isOptional,
+                        optionalDescription);
+        builder.withFunctionToTransformToCmd(
+                        new FileToStringCmd<>(filename, flag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGTVectorDataBindingToBytes(
+                            ConvertGTVectorDataBindingToBytes.Format.JSON)));
+        return builder.build();
     }
 
     /**
@@ -380,26 +388,31 @@ public enum InputParameterFactory {
      * be written down as a temporary file
      * (or multiple files, because one shapefile contains multiple files).
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
      * @return shapefile command line argument
      */
     public IInputParameter createCommandLineArgumentShapeFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String flag,
-            final boolean isOptional) {
+            final String flag) {
 
         final String filename = createUUIDFilename(".shp");
 
-        return new InputParameterImpl.Builder(
-                identifier, GTVectorDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteShapeFileToPath())
-                .build();
+        final InputParameterImpl.Builder<GTVectorDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GTVectorDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, flag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteShapeFileToPath());
+        return builder.build();
     }
 
 
@@ -407,57 +420,68 @@ public enum InputParameterFactory {
      * Creates a command line argument (generic file) with a file path that
      * will be written down as a temporary file.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
      * @return file command line argument
      */
     public IInputParameter createCommandLineArgumentFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String flag,
-            final boolean isOptional) {
+            final String flag) {
         final String filename = createUUIDFilename(".dat");
 
-        return new InputParameterImpl.Builder(
-                identifier, GenericFileDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGenericFileDataBindingToBytes()))
-                .build();
+        final InputParameterImpl.Builder<GenericFileDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GenericFileDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, flag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericFileDataBindingToBytes()));
+        return builder.build();
     }
 
     /**
      * Creates a command line argument (json file) with a file path that will
      * be written down as a temporary file.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
      * @return json command line argument
      */
     public IInputParameter createCommandLineArgumentJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String flag,
-            final boolean isOptional) {
+            final String flag) {
         final String filename = createUUIDFilename(".json");
 
-        return new InputParameterImpl.Builder(
-                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToTransformToCmd(
-                        new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertJsonDataBindingToBytes()))
-                .build();
+        final InputParameterImpl.Builder<JsonDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        JsonDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, flag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertJsonDataBindingToBytes()));
+        return builder.build();
     }
 
     /**
      * Creates a stdin input with a string.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param defaultValue optional default value of the argument
      * @param allowedValues optional list with allowed values
@@ -466,14 +490,17 @@ public enum InputParameterFactory {
      */
     public IInputParameter createStdinString(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String defaultValue,
-            final List<String> allowedValues,
-            final boolean isOptional) {
+            final List<String> allowedValues) {
 
-        final InputParameterImpl.Builder builder =
-                new InputParameterImpl.Builder(
-                        identifier, LiteralStringBinding.class, isOptional, optionalAbstract);
+        final InputParameterImpl.Builder<LiteralStringBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        LiteralStringBinding.class,
+                        isOptional,
+                        optionalAbstract);
         builder.withFunctionToWriteToStdin(
                 new ConvertLiteralStringToBytes());
 
@@ -492,15 +519,16 @@ public enum InputParameterFactory {
     /**
      * Creates a stdin input with json.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @return object with information about how to use the value
      * as a json stdin input parameter
      */
     public IInputParameter createStdinJson(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
-        return new InputParameterImpl.Builder(
+            final boolean isOptional,
+            final String optionalAbstract) {
+        return new InputParameterImpl.Builder<>(
                 identifier, JsonDataBinding.class, isOptional, optionalAbstract)
                 .withFunctionToWriteToStdin(
                         new ConvertJsonDataBindingToBytes())
@@ -510,51 +538,62 @@ public enum InputParameterFactory {
     /**
      * Creates a input file argument (geotiff file).
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before starting the process
      * @return geotiff input file
      */
     public IInputParameter createFileInGeotiff(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new InputParameterImpl.Builder(
-                identifier, GeotiffBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGeotiffBindingToBytes()))
-                .build();
+            final String path) {
+        final InputParameterImpl.Builder<GeotiffBinding> builder
+                = new InputParameterImpl.Builder<>(
+                        identifier,
+                GeotiffBinding.class,
+                isOptional,
+                optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGeotiffBindingToBytes()));
+        return builder.build();
     }
 
     /**
      * Creates a input file argument (geojson file).
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before staring the process
      * @return geojson input file
      */
     public IInputParameter createFileInGeojson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new InputParameterImpl.Builder(
-                identifier, GTVectorDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGTVectorDataBindingToBytes(
-                                        ConvertGTVectorDataBindingToBytes.Format.JSON
-                                )))
-                .build();
+            final String path) {
+
+        final InputParameterImpl.Builder<GTVectorDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GTVectorDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGTVectorDataBindingToBytes(
+                            ConvertGTVectorDataBindingToBytes.Format.JSON)));
+        return builder.build();
     }
 
     /**
      * Creates a input file argument (shapefile - with all the other files to
      * care about).
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before starting the process
      *             (just the .shp file)
@@ -562,113 +601,138 @@ public enum InputParameterFactory {
      */
     public IInputParameter createFileInShapeFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new InputParameterImpl.Builder(
-                identifier, GTVectorDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(
-                        new WriteShapeFileToPath())
-                .build();
+            final String path) {
+
+        final InputParameterImpl.Builder<GTVectorDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GTVectorDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteShapeFileToPath());
+        return builder.build();
     }
 
     /**
      * Creates an input file argument with quakeml.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before starting the process
      * @return quakeml input file
      */
     public IInputParameter createFileInQuakeML(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
+            final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new InputParameterImpl.Builder(
-                identifier, QuakeMLXmlDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGenericXMLDataBindingToBytes()))
-                .withSchema(schema)
-                .withValidator(
-                        new XmlBindingWithAllowedSchema(schema))
-                .build();
+        final InputParameterImpl.Builder<QuakeMLXmlDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        QuakeMLXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericXMLDataBindingToBytes<>()));
+        builder.withSchema(schema);
+        builder.withValidator(
+                new XmlBindingWithAllowedSchema<>(schema));
+        return builder.build();
     }
 
     /**
      * Creates an input file argument with shakemap.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before starting the process
      * @return shakemap input file
      */
     public IInputParameter createFileInShakemap(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
+            final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
-        return new InputParameterImpl.Builder(
-                identifier, ShakemapXmlDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGenericXMLDataBindingToBytes()))
-                .withSchema(schema)
-                .withValidator(
-                        new XmlBindingWithAllowedSchema(schema))
-                .build();
+        final InputParameterImpl.Builder<ShakemapXmlDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        ShakemapXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericXMLDataBindingToBytes<>()));
+        builder.withSchema(schema);
+        builder.withValidator(
+                new XmlBindingWithAllowedSchema<>(schema));
+        return builder.build();
     }
 
     /**
      * Creates an input file argument with json.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of file to write before starting the process
      * @return json input file
      */
     public IInputParameter createFileInJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
+            final String path) {
 
-        return new InputParameterImpl.Builder(
-                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertJsonDataBindingToBytes()))
-                .build();
+        final InputParameterImpl.Builder<JsonDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        JsonDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertJsonDataBindingToBytes()));
+        return builder.build();
     }
 
 
     /**
      * Creates a input file argument (generic).
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to write before staring the process
      * @return generic input file
      */
     public IInputParameter createFileInGeneric(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new InputParameterImpl.Builder(
-                identifier, GenericFileDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(
-                        new WriteSingleByteStreamToPath(
-                                new ConvertGenericFileDataBindingToBytes()))
-                .build();
+            final String path) {
+        final InputParameterImpl.Builder<GenericFileDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GenericFileDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericFileDataBindingToBytes()));
+        return builder.build();
     }
 
     /**

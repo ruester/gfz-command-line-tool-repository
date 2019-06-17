@@ -234,20 +234,20 @@ public class TestProcessDescriptionGenerator {
         @Override
         public List<IInputParameter> getInputIdentifiers() {
             return Arrays.asList(
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("lonmin", "the minimum longitude to search for", null, "288.0", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("lonmax", "the maximum longitude to search for", null,  "292.0", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("latmin", null, null, "-70.0", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("latmax", null, null,  "-10.0", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmin",  null, null, "6.6", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmax",  null, null, "8.5", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmin", null, null,  "5.0", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmax", null, null,  "140.0", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("p",  null, null, "0.1", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("lonmin", false, "the minimum longitude to search for", null, "288.0", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("lonmax", false, "the maximum longitude to search for", null,  "292.0", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("latmin", false, null, null, "-70.0", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("latmax", false, null, null,  "-10.0", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmin", false, null, null, "6.6", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmax", false, null, null, "8.5", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmin", false, null, null,  "5.0", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmax", false, null, null,  "140.0", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("p", false, null, null, "0.1", null),
                     InputParameterFactory.INSTANCE.createCommandLineArgumentString(
-                            "etype", null,null,  "deaggregation",
-                            Arrays.asList("observed", "deaggregation", "stochastic", "expert"), false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlon",  null, null, "-71.5730623712764", null, false),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlat",  null ,null, "-33.1299174879672", null, false)
+                            "etype", false, null,null,  "deaggregation",
+                            Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlon", false, null, null, "-71.5730623712764", null),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlat", false, null ,null, "-33.1299174879672", null)
             );
         }
 
@@ -255,7 +255,7 @@ public class TestProcessDescriptionGenerator {
         public List<IOutputParameter> getOutputIdentifiers() {
             return Collections.singletonList(
                     OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema(
-                            "selectedRows","the resulting quakeml", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", false)
+                            "selectedRows", false, "the resulting quakeml", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
             );
         }
 

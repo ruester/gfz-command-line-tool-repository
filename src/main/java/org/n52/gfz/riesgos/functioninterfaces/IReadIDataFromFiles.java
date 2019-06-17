@@ -28,7 +28,7 @@ import java.io.IOException;
  * Interface to read the idata from one or moore files
  * (maybe on a container)
  */
-public interface IReadIDataFromFiles {
+public interface IReadIDataFromFiles<T extends IData> {
 
     /**
      * Reads the idata from the filesystem (maybe multiple files, maybe from a container)
@@ -39,5 +39,5 @@ public interface IReadIDataFromFiles {
      * @throws ConvertToIDataException if the conversion is not possible this exception will be thrown
      * @throws IOException will be thrown if there is problem on the IO mechanism on java
      */
-    IData readFromFiles(final IExecutionContext context, final String workingDirectory, final String path) throws ConvertToIDataException, IOException;
+    T readFromFiles(final IExecutionContext context, final String workingDirectory, final String path) throws ConvertToIDataException, IOException;
 }

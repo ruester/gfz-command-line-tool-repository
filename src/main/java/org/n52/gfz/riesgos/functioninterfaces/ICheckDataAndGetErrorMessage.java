@@ -24,12 +24,12 @@ import java.util.Optional;
  * Interface to check an idata element
  */
 @FunctionalInterface
-public interface ICheckDataAndGetErrorMessage {
+public interface ICheckDataAndGetErrorMessage<T extends IData> {
 
     /**
      * Checks a IData and (maybe) gives back the text of the problem
      * @param data element to check
      * @return empty if there is no problem with the value; else the text of the problem description
      */
-    Optional<String> check(final IData data);
+    Optional<String> check(final T data);
 }

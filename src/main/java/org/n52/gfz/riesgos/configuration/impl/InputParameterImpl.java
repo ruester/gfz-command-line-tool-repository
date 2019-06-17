@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 GFZ German Research Centre for Geosciences
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the Licence is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the Licence for the specific language governing permissions and
+ *  limitations under the Licence.
+ *
+ *
+ */
+
+
 package org.n52.gfz.riesgos.configuration.impl;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
@@ -11,23 +30,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class InputParameterImpl implements IInputParameter {
+public class InputParameterImpl<T extends IData> implements IInputParameter {
 
     private final String identifier;
-    private final Class<? extends IData> bindingClass;
+    private final Class<T> bindingClass;
     private final boolean isOptional;
     private final String optionalAbstract;
-    private final ICheckDataAndGetErrorMessage validator;
-    private final IConvertIDataToCommandLineParameter functionToTransformToCmd;
+    private final ICheckDataAndGetErrorMessage<T> validator;
+    private final IConvertIDataToCommandLineParameter<T> functionToTransformToCmd;
     private final String path;
-    private final IWriteIDataToFiles functionToWriteToFiles;
-    private final IConvertIDataToByteArray functionToWriteToStdin;
+    private final IWriteIDataToFiles<T> functionToWriteToFiles;
+    private final IConvertIDataToByteArray<T> functionToWriteToStdin;
     private final List<String> allowedValues;
     private final String defaultValue;
     private final List<String> supportedCRSForBBox;
     private final String schema;
 
-    private InputParameterImpl(final Builder builder) {
+    private InputParameterImpl(final Builder<T> builder) {
         this.identifier = builder.identifier;
         this.bindingClass = builder.bindingClass;
         this.isOptional = builder.isOptional;
@@ -138,17 +157,17 @@ public class InputParameterImpl implements IInputParameter {
         return Objects.hash(identifier, bindingClass, isOptional, optionalAbstract, validator, functionToTransformToCmd, path, functionToWriteToFiles, functionToWriteToStdin, allowedValues, defaultValue, supportedCRSForBBox, schema);
     }
 
-    public static class Builder {
+    public static class Builder<T extends IData> {
         private final String identifier;
-        private final Class<? extends IData> bindingClass;
+        private final Class<T> bindingClass;
         private final boolean isOptional;
         private final String optionalAbstract;
 
-        private ICheckDataAndGetErrorMessage validator;
-        private IConvertIDataToCommandLineParameter functionToTransformToCmd;
+        private ICheckDataAndGetErrorMessage<T> validator;
+        private IConvertIDataToCommandLineParameter<T> functionToTransformToCmd;
         private String path;
-        private IWriteIDataToFiles functionToWriteToFiles;
-        private IConvertIDataToByteArray functionToWriteToStdin;
+        private IWriteIDataToFiles<T> functionToWriteToFiles;
+        private IConvertIDataToByteArray<T> functionToWriteToStdin;
 
         private List<String> allowedValues;
         private String defaultValue;
@@ -157,7 +176,7 @@ public class InputParameterImpl implements IInputParameter {
 
         public Builder(
                 final String aIdentifier,
-                final Class<? extends IData> aBindingClass,
+                final Class<T> aBindingClass,
                 final boolean aIsOptional,
                 final String aOptionalAbstract
         ) {
@@ -167,12 +186,12 @@ public class InputParameterImpl implements IInputParameter {
             this.optionalAbstract = aOptionalAbstract;
         }
 
-        public Builder withValidator(final ICheckDataAndGetErrorMessage aValidator) {
+        public Builder withValidator(final ICheckDataAndGetErrorMessage<T> aValidator) {
             this.validator = aValidator;
             return this;
         }
 
-        public Builder withFunctionToTransformToCmd(final IConvertIDataToCommandLineParameter aFunctionToTransformToCmd) {
+        public Builder withFunctionToTransformToCmd(final IConvertIDataToCommandLineParameter<T> aFunctionToTransformToCmd) {
             this.functionToTransformToCmd = aFunctionToTransformToCmd;
             return this;
         }
@@ -182,12 +201,12 @@ public class InputParameterImpl implements IInputParameter {
             return this;
         }
 
-        public Builder withFunctionToWriteToFiles(final IWriteIDataToFiles aFunctionToWriteToFiles) {
+        public Builder withFunctionToWriteToFiles(final IWriteIDataToFiles<T> aFunctionToWriteToFiles) {
             this.functionToWriteToFiles = aFunctionToWriteToFiles;
             return this;
         }
 
-        public Builder withFunctionToWriteToStdin(final IConvertIDataToByteArray aFunctionToWriteToStdin) {
+        public Builder withFunctionToWriteToStdin(final IConvertIDataToByteArray<T> aFunctionToWriteToStdin) {
             this.functionToWriteToStdin = aFunctionToWriteToStdin;
             return this;
         }
@@ -213,7 +232,7 @@ public class InputParameterImpl implements IInputParameter {
         }
 
         public IInputParameter build() {
-            return new InputParameterImpl(this);
+            return new InputParameterImpl<T>(this);
         }
     }
 }

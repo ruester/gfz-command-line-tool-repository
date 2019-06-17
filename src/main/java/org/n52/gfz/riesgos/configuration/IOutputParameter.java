@@ -13,19 +13,23 @@ public interface IOutputParameter extends IIOParameter {
 
     /**
      *
-     * @return function to convert a byte array to the value; used to convert from stderr
+     * @return function to convert a byte array to the value; used to
+     * convert from stderr
      */
     Optional<IConvertByteArrayToIData> getFunctionToHandleStderr();
 
     /**
      *
-     * @return function to convert a integer exit value to the value used to value; u
+     * @return function to convert a integer exit value to a idata
+     * value; used for the handling of the exit value of the overall
+     * program
      */
     Optional<IConvertExitValueToIData> getFunctionToHandleExitValue();
 
     /**
      *
-     * @return function to convert a byte array to the value; used to convert from stdout
+     * @return function to convert a byte array to the value;
+     * used to convert from stdout
      */
     Optional<IConvertByteArrayToIData> getFunctionToHandleStdout();
 

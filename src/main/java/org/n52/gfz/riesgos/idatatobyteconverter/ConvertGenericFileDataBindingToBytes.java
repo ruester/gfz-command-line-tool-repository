@@ -32,22 +32,19 @@ import java.util.Objects;
 /**
  * Implementation to convert a file binding to a byte array
  */
-public class ConvertGenericFileDataBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertGenericFileDataBindingToBytes implements IConvertIDataToByteArray<GenericFileDataBinding>{
 
     @Override
-    public byte[] convertToBytes(IData iData) throws ConvertToBytesException {
-        if(iData instanceof GenericFileDataBinding) {
-            final GenericFileDataBinding binding = (GenericFileDataBinding) iData;
-            final File file = binding.getPayload().getBaseFile(false);
+    public byte[] convertToBytes(final GenericFileDataBinding binding) throws ConvertToBytesException {
 
-            try(final FileInputStream inputStream = new FileInputStream(file)) {
-                return IOUtils.toByteArray(inputStream);
-            } catch(final IOException exception) {
-                throw new ConvertToBytesException(exception);
-            }
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
+        final File file = binding.getPayload().getBaseFile(false);
+
+        try(final FileInputStream inputStream = new FileInputStream(file)) {
+            return IOUtils.toByteArray(inputStream);
+        } catch(final IOException exception) {
+            throw new ConvertToBytesException(exception);
         }
+
     }
 
     @Override

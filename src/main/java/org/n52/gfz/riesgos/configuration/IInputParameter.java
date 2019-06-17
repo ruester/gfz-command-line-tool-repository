@@ -15,8 +15,8 @@ public interface IInputParameter extends IIOParameter {
 
     /**
      *
-     * @return Function to transform the value of the parameter to a command line argument (string, boolean flag,
-     * file, ...)
+     * @return Function to transform the value of the parameter to a command
+     * line argument (string, boolean flag, file, ...)
      */
     Optional<IConvertIDataToCommandLineParameter> getFunctionToTransformToCmd();
 
@@ -34,13 +34,15 @@ public interface IInputParameter extends IIOParameter {
     Optional<IConvertIDataToByteArray> getFunctionToWriteToStdin();
 
     /**
-     * Only used if the type is a literal type (for example LiteralStringBinding)
+     * Only used if the type is a literal type (for example
+     * LiteralStringBinding).
      * @return optional list with allowed values.
      */
     Optional<List<String>> getAllowedValues();
 
     /**
-     * Only used if the type is a literal type (for example LiteralStringBinding)
+     * Only used if the type is a literal type (for example
+     * LiteralStringBinding).
      * @return optional default value
      */
     Optional<String> getDefaultValue();

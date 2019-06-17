@@ -32,22 +32,17 @@ import java.util.Objects;
 /**
  * Implementation to convert a GeotiffBinding to a byte array
  */
-public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray<GeotiffBinding> {
 
     @Override
-    public byte[] convertToBytes(final IData iData) throws ConvertToBytesException {
+    public byte[] convertToBytes(final GeotiffBinding binding) throws ConvertToBytesException {
 
-        if(iData instanceof GeotiffBinding) {
-            final GeotiffBinding binding = (GeotiffBinding) iData;
-            final File file = binding.getPayload();
+        final File file = binding.getPayload();
 
-            try(final FileReader fileReader = new FileReader(file)) {
-                return IOUtils.toByteArray(fileReader);
-            } catch(final IOException exception) {
-                throw new ConvertToBytesException(exception);
-            }
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
+        try(final FileReader fileReader = new FileReader(file)) {
+            return IOUtils.toByteArray(fileReader);
+        } catch(final IOException exception) {
+            throw new ConvertToBytesException(exception);
         }
     }
 

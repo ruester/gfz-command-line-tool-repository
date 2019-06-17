@@ -36,16 +36,16 @@ public class TestInputParameterFactory {
      */
     @Test
     public void testEquals() {
-        final IInputParameter identifier1 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", null, null, null, null, false);
-        final IInputParameter identifier2 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", null, null, null, null, false);
+        final IInputParameter identifier1 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", false, null, null, null, null);
+        final IInputParameter identifier2 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", false, null, null, null, null);
 
         assertEquals("Both are the same", identifier1, identifier2);
 
-        final IInputParameter identifier3 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", null, null, "0", null, false);
+        final IInputParameter identifier3 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", false, null, null, "0", null);
         assertNotEquals("The third one is different", identifier1, identifier3);
 
-        final IInputParameter identifier4 = InputParameterFactory.INSTANCE.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"), false);
-        final IInputParameter identifier5 = InputParameterFactory.INSTANCE.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"), false);
+        final IInputParameter identifier4 = InputParameterFactory.INSTANCE.createCommandLineArgumentString("val2", false, null, null, "x", Arrays.asList("x", "y"));
+        final IInputParameter identifier5 = InputParameterFactory.INSTANCE.createCommandLineArgumentString("val2", false, null, null, "x", Arrays.asList("x", "y"));
 
         assertEquals("4 and 5 are equal", identifier4, identifier5);
     }

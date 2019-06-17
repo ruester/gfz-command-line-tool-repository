@@ -28,17 +28,12 @@ import java.util.Objects;
 /**
  * Function to convert a literal string to a byte array
  */
-public class ConvertLiteralStringToBytes implements IConvertIDataToByteArray {
+public class ConvertLiteralStringToBytes implements IConvertIDataToByteArray<LiteralStringBinding> {
 
     @Override
-    public byte[] convertToBytes(IData iData) throws ConvertToBytesException {
-        if(iData instanceof LiteralStringBinding) {
-            final LiteralStringBinding binding = (LiteralStringBinding) iData;
-            final String strContent = binding.getPayload();
-            return strContent.getBytes();
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
-        }
+    public byte[] convertToBytes(LiteralStringBinding binding) throws ConvertToBytesException {
+       final String strContent = binding.getPayload();
+       return strContent.getBytes();
     }
 
     @Override

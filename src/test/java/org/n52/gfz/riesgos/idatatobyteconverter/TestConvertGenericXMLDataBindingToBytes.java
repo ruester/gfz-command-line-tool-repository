@@ -45,9 +45,9 @@ public class TestConvertGenericXMLDataBindingToBytes {
 
             final String input = "<a><b>test</b></a>";
 
-            final IData xmlBinding = new GenericXMLDataBinding(XmlObject.Factory.parse(input));
+            final GenericXMLDataBinding xmlBinding = new GenericXMLDataBinding(XmlObject.Factory.parse(input));
 
-            final IConvertIDataToByteArray converter = new ConvertGenericXMLDataBindingToBytes();
+            final IConvertIDataToByteArray<GenericXMLDataBinding> converter = new ConvertGenericXMLDataBindingToBytes();
 
             try {
                 final byte[] content = converter.convertToBytes(xmlBinding);
@@ -71,17 +71,21 @@ public class TestConvertGenericXMLDataBindingToBytes {
      */
     @Test
     public void testNonValid() {
-        final String input = "<a><b>test</b></a>";
-
-        final IData stringBinding = new LiteralStringBinding(input);
-
-        final IConvertIDataToByteArray converter = new ConvertGenericXMLDataBindingToBytes();
-
         try {
-            converter.convertToBytes(stringBinding);
-            fail("An exception must be thrown");
-        } catch(final ConvertToBytesException convertToBytesException) {
-            assertNotNull("There must be an exception", convertToBytesException);
+            final String input = "<a><b>test</b></c></a>";
+
+            final GenericXMLDataBinding xmlBinding = new GenericXMLDataBinding(XmlObject.Factory.parse(input));
+
+            final IConvertIDataToByteArray<GenericXMLDataBinding> converter = new ConvertGenericXMLDataBindingToBytes();
+
+            try {
+                converter.convertToBytes(xmlBinding);
+                fail("An exception must be thrown");
+            } catch (final ConvertToBytesException convertToBytesException) {
+                fail("There is already an xml exception");
+            }
+        } catch(final XmlException xmlException) {
+            assertNotNull("There is a xml exception");
         }
 
     }

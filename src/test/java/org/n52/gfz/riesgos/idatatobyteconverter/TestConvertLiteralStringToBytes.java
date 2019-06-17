@@ -21,6 +21,7 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -31,8 +32,8 @@ public class TestConvertLiteralStringToBytes {
 
     @Test
     public void testEquals() {
-        final IConvertIDataToByteArray converter1 = new ConvertLiteralStringToBytes();
-        final IConvertIDataToByteArray converter2 = new ConvertLiteralStringToBytes();
+        final IConvertIDataToByteArray<LiteralStringBinding> converter1 = new ConvertLiteralStringToBytes();
+        final IConvertIDataToByteArray<LiteralStringBinding> converter2 = new ConvertLiteralStringToBytes();
 
         assertEquals("Both are equal", converter1, converter2);
     }

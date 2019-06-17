@@ -289,35 +289,35 @@ public class TestParseJsonConfigurationImpl {
             assertEquals("There are 9 input elements", 9, input.size());
             assertEquals("There is one output element", 1, output.size());
             assertEquals("The first input element is a bounding box",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentBBox("input-boundingbox", null, Arrays.asList("EPSG:4326", "EPSG:4328"), false), input.get(0));
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentBBox("input-boundingbox", false, null, Arrays.asList("EPSG:4326", "EPSG:4328")), input.get(0));
             assertEquals("The second one is the mmin double",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmin", null, null, "6.6", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmin", false, null, null, "6.6", null),
                     input.get(1));
             assertEquals("The third one is the mmax double",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmax", null, null, "8.5", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmax", false, null, null, "8.5", null),
                     input.get(2));
             assertEquals("The fourth one is the zmin double",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmin", null, null, "5", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmin", false, null, null, "5", null),
                     input.get(3));
             assertEquals("The fifth one is the zmax double",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmax", null,  null,"140", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmax", false, null,  null,"140", null),
                     input.get(4));
             assertEquals("The sixt one is the p double",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("p",  null,null, "0.1", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("p", false, null,null, "0.1", null),
                     input.get(5));
             assertEquals("The seventh one is the etype string",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentString("etype",  null,null, "deaggregation", Arrays.asList("observed", "deaggregation", "stochastic", "expert"), false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentString("etype", false, null,null, "deaggregation", Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
                     input.get(6));
             assertEquals("The eighth one is the tlon double",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlon",  null,null, "-71.5730623712764", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlon", false, null,null, "-71.5730623712764", null),
                     input.get(7));
             assertEquals("The ninth one is the tlat double",
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlat",  null,null, "-33.1299174879672", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlat", false, null,null, "-33.1299174879672", null),
                     input.get(8));
 
             assertEquals(
                 "The output is xml",
-                OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema("selectedRows",  null,"test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", false),
+                OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema("selectedRows", false, null,"test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"),
                 output.get(0)
             );
 

@@ -11,22 +11,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class OutputParameterImpl implements IOutputParameter {
+public class OutputParameterImpl<T extends IData> implements IOutputParameter {
 
     private final String identifier;
-    private final Class<? extends IData> bindingClass;
+    private final Class<T> bindingClass;
     private final boolean isOptional;
     private final String optionalAbstract;
-    private final ICheckDataAndGetErrorMessage validator;
+    private final ICheckDataAndGetErrorMessage<T> validator;
     private final String path;
-    private final IConvertByteArrayToIData functionToHandleStderr;
-    private final IConvertExitValueToIData functionToHandleExitValue;
-    private final IConvertByteArrayToIData functionToHandleStdout;
-    private final IReadIDataFromFiles functionToReadFromFiles;
+    private final IConvertByteArrayToIData<T> functionToHandleStderr;
+    private final IConvertExitValueToIData<T> functionToHandleExitValue;
+    private final IConvertByteArrayToIData<T> functionToHandleStdout;
+    private final IReadIDataFromFiles<T> functionToReadFromFiles;
     private final List<String> supportedCRSForBBox;
     private final String schema;
 
-    private OutputParameterImpl(final Builder builder) {
+    private OutputParameterImpl(final Builder<T> builder) {
         this.identifier = builder.identifier;
         this.bindingClass = builder.bindingClass;
         this.isOptional = builder.isOptional;
@@ -129,24 +129,24 @@ public class OutputParameterImpl implements IOutputParameter {
         return Objects.hash(identifier, bindingClass, isOptional, optionalAbstract, validator, path, functionToHandleStderr, functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles, supportedCRSForBBox, schema);
     }
 
-    public static class Builder {
+    public static class Builder<T extends IData> {
         private final String identifier;
-        private final Class<? extends IData> bindingClass;
+        private final Class<T> bindingClass;
         private final boolean isOptional;
         private final String optionalAbstract;
 
-        private ICheckDataAndGetErrorMessage validator;
+        private ICheckDataAndGetErrorMessage<T> validator;
         private String path;
-        private IConvertByteArrayToIData functionToHandleStderr;
-        private IConvertExitValueToIData functionToHandleExitValue;
-        private IConvertByteArrayToIData functionToHandleStdout;
-        private IReadIDataFromFiles functionToReadFromFiles;
+        private IConvertByteArrayToIData<T> functionToHandleStderr;
+        private IConvertExitValueToIData<T> functionToHandleExitValue;
+        private IConvertByteArrayToIData<T> functionToHandleStdout;
+        private IReadIDataFromFiles<T> functionToReadFromFiles;
         private List<String> supportedCRSForBBox;
         private String schema;
 
         public Builder(
                 final String aIdentifier,
-                final Class<? extends IData> aBindingClass,
+                final Class<T> aBindingClass,
                 final boolean aIsOptional,
                 final String aOptionalAbstract
         ) {
@@ -156,7 +156,7 @@ public class OutputParameterImpl implements IOutputParameter {
             this.optionalAbstract = aOptionalAbstract;
         }
 
-        public Builder withValidator(final ICheckDataAndGetErrorMessage aValidator) {
+        public Builder withValidator(final ICheckDataAndGetErrorMessage<T> aValidator) {
             this.validator = aValidator;
             return this;
         }
@@ -166,22 +166,22 @@ public class OutputParameterImpl implements IOutputParameter {
             return this;
         }
 
-        public Builder withFunctionToHandleStderr(final IConvertByteArrayToIData aFunctionToHandleStderr) {
+        public Builder withFunctionToHandleStderr(final IConvertByteArrayToIData<T> aFunctionToHandleStderr) {
             this.functionToHandleStderr = aFunctionToHandleStderr;
             return this;
         }
 
-        public Builder withFunctionToHandleExitValue(final IConvertExitValueToIData aFunctionToHandleExitValue) {
+        public Builder withFunctionToHandleExitValue(final IConvertExitValueToIData<T> aFunctionToHandleExitValue) {
             this.functionToHandleExitValue = aFunctionToHandleExitValue;
             return this;
         }
 
-        public Builder withFunctionToHandleStdout(final IConvertByteArrayToIData aFunctionToHandleStdout) {
+        public Builder withFunctionToHandleStdout(final IConvertByteArrayToIData<T> aFunctionToHandleStdout) {
             this.functionToHandleStdout = aFunctionToHandleStdout;
             return this;
         }
 
-        public Builder withFunctionToReadFromFiles(final IReadIDataFromFiles aFunctionToReadFromFiles) {
+        public Builder withFunctionToReadFromFiles(final IReadIDataFromFiles<T> aFunctionToReadFromFiles) {
             this.functionToReadFromFiles = aFunctionToReadFromFiles;
             return this;
         }
@@ -197,7 +197,7 @@ public class OutputParameterImpl implements IOutputParameter {
         }
 
         public IOutputParameter build() {
-            return new OutputParameterImpl(this);
+            return new OutputParameterImpl<T>(this);
         }
 
 

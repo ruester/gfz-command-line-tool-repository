@@ -42,9 +42,9 @@ public class TestLiteralIntBindingToStringCmd {
      */
     @Test
     public void testValid() {
-        final IData iData = new LiteralIntBinding(1);
+        final LiteralIntBinding iData = new LiteralIntBinding(1);
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralIntBinding> converter = new LiteralIntBindingToStringCmd();
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -58,30 +58,13 @@ public class TestLiteralIntBindingToStringCmd {
     }
 
     /**
-     * Test with non valid input
-     */
-    @Test
-    public void testNonValid() {
-        final IData iData = new LiteralDoubleBinding(1.0);
-
-        final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd();
-
-        try {
-            converter.convertToCommandLineParameter(iData);
-            fail("There must be an exception");
-        } catch(final ConvertToStringCmdException exception) {
-            assertNotNull("There must be an exception", exception);
-        }
-    }
-
-    /**
      * test with a default flag
      */
     @Test
     public void testWithDefaultFlat() {
-        final IData iData = new LiteralIntBinding(1);
+        final LiteralIntBinding iData = new LiteralIntBinding(1);
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd("--level");
+        final IConvertIDataToCommandLineParameter<LiteralIntBinding> converter = new LiteralIntBindingToStringCmd("--level");
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -100,8 +83,8 @@ public class TestLiteralIntBindingToStringCmd {
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToCommandLineParameter converter1 = new LiteralIntBindingToStringCmd();
-        final IConvertIDataToCommandLineParameter converter2 = new LiteralIntBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralIntBinding> converter1 = new LiteralIntBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralIntBinding> converter2 = new LiteralIntBindingToStringCmd();
 
         assertEquals("The converter are equal", converter1, converter2);
 

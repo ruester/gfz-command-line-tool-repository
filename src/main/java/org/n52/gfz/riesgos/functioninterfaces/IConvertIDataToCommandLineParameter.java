@@ -26,7 +26,7 @@ import java.util.List;
  * command line argument.
  */
 @FunctionalInterface
-public interface IConvertIDataToCommandLineParameter {
+public interface IConvertIDataToCommandLineParameter<T extends IData> {
 
     /**
      * Converts the IData to a list of command line arguments.
@@ -36,6 +36,6 @@ public interface IConvertIDataToCommandLineParameter {
      * handled by the function
      */
     List<String> convertToCommandLineParameter(
-            final IData iData)
+            final T iData)
             throws ConvertToStringCmdException;
 }

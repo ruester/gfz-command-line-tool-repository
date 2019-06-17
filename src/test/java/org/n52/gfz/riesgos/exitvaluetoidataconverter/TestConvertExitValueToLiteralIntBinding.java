@@ -22,7 +22,6 @@ package org.n52.gfz.riesgos.exitvaluetoidataconverter;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import static junit.framework.TestCase.assertEquals;
@@ -38,8 +37,8 @@ public class TestConvertExitValueToLiteralIntBinding {
      */
     @Test
     public void testEquals() {
-        final IConvertExitValueToIData converter1 = new ConvertExitValueToLiteralIntBinding();
-        final IConvertExitValueToIData converter2 = new ConvertExitValueToLiteralIntBinding();
+        final IConvertExitValueToIData<LiteralIntBinding> converter1 = new ConvertExitValueToLiteralIntBinding();
+        final IConvertExitValueToIData<LiteralIntBinding> converter2 = new ConvertExitValueToLiteralIntBinding();
 
         assertEquals("Both are equal", converter1, converter2);
     }
@@ -49,15 +48,12 @@ public class TestConvertExitValueToLiteralIntBinding {
      */
     @Test
     public void testConvert() {
-        final IConvertExitValueToIData converter = new ConvertExitValueToLiteralIntBinding();
+        final IConvertExitValueToIData<LiteralIntBinding> converter = new ConvertExitValueToLiteralIntBinding();
         try {
-            final IData result = converter.convertToIData(0);
-            if(result instanceof LiteralIntBinding) {
-                final LiteralIntBinding intBinding = (LiteralIntBinding) result;
-                assertEquals("The value is the right one", 0, intBinding.getPayload().intValue());
-            } else {
-                fail("There should be a literal int binding");
-            }
+            final LiteralIntBinding intBinding = converter.convertToIData(0);
+
+            assertEquals("The value is the right one", 0, intBinding.getPayload().intValue());
+
         } catch(final ConvertToIDataException exception) {
             fail("There should be no exception");
         }
@@ -68,15 +64,10 @@ public class TestConvertExitValueToLiteralIntBinding {
      */
     @Test
     public void testConvert2() {
-        final IConvertExitValueToIData converter = new ConvertExitValueToLiteralIntBinding();
+        final IConvertExitValueToIData<LiteralIntBinding> converter = new ConvertExitValueToLiteralIntBinding();
         try {
-            final IData result = converter.convertToIData(2);
-            if(result instanceof LiteralIntBinding) {
-                final LiteralIntBinding intBinding = (LiteralIntBinding) result;
-                assertEquals("The value is the right one", 2, intBinding.getPayload().intValue());
-            } else {
-                fail("There should be a literal int binding");
-            }
+            final LiteralIntBinding intBinding = converter.convertToIData(2);
+            assertEquals("The value is the right one", 2, intBinding.getPayload().intValue());
         } catch(final ConvertToIDataException exception) {
             fail("There should be no exception");
         }

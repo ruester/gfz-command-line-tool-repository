@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
+import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -33,8 +34,8 @@ public class TestConvertGeotiffBindingToBytes {
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToByteArray converter1 = new ConvertGeotiffBindingToBytes();
-        final IConvertIDataToByteArray converter2 = new ConvertGeotiffBindingToBytes();
+        final IConvertIDataToByteArray<GeotiffBinding> converter1 = new ConvertGeotiffBindingToBytes();
+        final IConvertIDataToByteArray<GeotiffBinding> converter2 = new ConvertGeotiffBindingToBytes();
 
         assertEquals("Both are equal", converter1, converter2);
     }

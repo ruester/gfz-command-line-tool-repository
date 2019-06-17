@@ -12,7 +12,8 @@ import java.util.Optional;
  *
  * This is a very general interface.
  * Depending on that values are provided via the Optionals
- * the data can be written to files, read from files, converted to command line parameter,
+ * the data can be written to files, read from files, converted to
+ * command line parameter,
  * written to stdin, or read from stdout / stderr or from the exit value.
  */
 public interface IIOParameter {
@@ -37,25 +38,28 @@ public interface IIOParameter {
 
     /**
      *
-     * @return optional Validator to prove that input and output values have the right data
+     * @return optional Validator to prove that input and output values
+     * have the right data
      */
     Optional<ICheckDataAndGetErrorMessage> getValidator();
 
     /**
      *
-     * @return Path to read or write a file (relative to the working directory)
+     * @return Path to read or write a file (relative to the
+     * working directory)
      */
     Optional<String> getPathToWriteToOrReadFromFile();
 
     /**
-     * Only used if the type is a GenericXMLDataBinding to provide a more specific schema,
+     * Only used if the type is a GenericXMLDataBinding to provide a
+     * more specific schema,
      * but for still using the parser and generator for the generic case.
      * @return schema for xml data
      */
     Optional<String> getSchema();
 
     /**
-     * Only used if the type is a bbox type
+     * Only used if the type is a bbox type.
      * @return list with supported CRSs
      */
     Optional<List<String>> getSupportedCRSForBBox();

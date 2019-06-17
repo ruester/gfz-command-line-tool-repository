@@ -228,32 +228,34 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         STRING("string",
                 (identifier, optionalAbstract, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createStdoutString(
-                                identifier, optionalAbstract, isOptional)),
+                                identifier, isOptional, optionalAbstract)),
         /**
          * This is the enum to read generic xml from stdout.
          */
-        XML("xml", OutputParameterFactory.INSTANCE::createStdoutXmlWithSchema),
+        XML("xml", (identifier, optionalAbstract, schema, isOptional) -> {
+            return OutputParameterFactory.INSTANCE.createStdoutXmlWithSchema(identifier, isOptional, optionalAbstract, schema);
+        }),
         /**
          * This is the enum to read xml quakeml from stdout.
          */
         QUAKEML("quakeml",
                 (identifier, optionalAbstract, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createStdoutQuakeML(
-                                identifier, optionalAbstract, isOptional)),
+                                identifier, isOptional, optionalAbstract)),
         /**
          * This is the enum to read xml shakemaps from stdout.
          */
         SHAKEMAP("shakemap",
                 (identifier, optionalAbstract, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createStdoutShakemap(
-                                identifier, optionalAbstract, isOptional)),
+                                identifier, isOptional, optionalAbstract)),
         /**
          * This is the enum to read json from stdout.
          */
         JSON("json",
                 (identifier, optionalAbstract, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createStdoutJson(
-                                identifier, optionalAbstract, isOptional));
+                                identifier, isOptional, optionalAbstract));
 
         /**
          * This is the constant of the readFrom value
@@ -334,11 +336,15 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         /**
          * This is the enum to read a string from stderr.
          */
-        STRING("string", OutputParameterFactory.INSTANCE::createStderrString),
+        STRING("string", (identifier, optionalAbstract, isOptional) -> {
+            return OutputParameterFactory.INSTANCE.createStderrString(identifier, isOptional, optionalAbstract);
+        }),
         /**
          * This is the enum to read json from stderr.
          */
-        JSON("json", OutputParameterFactory.INSTANCE::createStderrJson);
+        JSON("json", (identifier, optionalAbstract, isOptional) -> {
+            return OutputParameterFactory.INSTANCE.createStderrJson(identifier, isOptional, optionalAbstract);
+        });
 
         /**
          * This is the constant of the readFrom value
@@ -419,7 +425,9 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         /**
          * This is the enum to read ints from the exit value.
          */
-        INT("int", OutputParameterFactory.INSTANCE::createExitValueInt);
+        INT("int", (identifier, optionalAbstract, isOptional) -> {
+            return OutputParameterFactory.INSTANCE.createExitValueInt(identifier, isOptional, optionalAbstract);
+        });
 
         /**
          * This is the constant of the readFrom value
@@ -505,7 +513,9 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         /**
          * This is the enum to read xml from files.
          */
-        XML("xml", OutputParameterFactory.INSTANCE::createFileOutXmlWithSchema),
+        XML("xml", (identifier, optionalAbstact, path, schema, isOptional) -> {
+            return OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema(identifier, isOptional, optionalAbstact, path, schema);
+        }),
 
         /**
          * This is the enum to read generic files.
@@ -513,49 +523,49 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         FILE("file",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createFileOutGeneric(
-                                identifier, optionalAbstract, path, isOptional)),
+                                identifier, isOptional, optionalAbstract, path)),
         /**
          * This is the enum to read geojson from files.
          */
         GEOJSON("geojson",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createFileOutGeojson(
-                                identifier, optionalAbstract, path, isOptional)),
+                                identifier, isOptional, optionalAbstract, path)),
         /**
          * This is the enum to read geotiff rasters from files.
          */
         GEOTIFF("geotiff",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createFileOutGeotiff(
-                                identifier, optionalAbstract, path, isOptional)),
+                                identifier, isOptional, optionalAbstract, path)),
         /**
          * This is the enum to read shapefiles from files.
          */
         SHP("shapefile",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createFileOutShapeFile(
-                                identifier, optionalAbstract, path, isOptional)),
+                                identifier, isOptional, optionalAbstract, path)),
         /**
          * This is the enum to read xml quakeml from files.
          */
         QUAKEML("quakeml",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createFileOutQuakeMLFile(
-                                identifier, optionalAbstract, path, isOptional)),
+                                identifier, isOptional, optionalAbstract, path)),
         /**
          * This is the enum to read xml shakemap from files.
          */
         SHAKEMAP("shakemap",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createFileOutShakemap(
-                                identifier, optionalAbstract, path, isOptional)),
+                                identifier, isOptional, optionalAbstract, path)),
         /**
          * This is the enum to read json from files.
          */
         JSON("json",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
                         OutputParameterFactory.INSTANCE.createFileOutJson(
-                                identifier, optionalAbstract, path, isOptional));
+                                identifier, isOptional, optionalAbstract, path));
 
         /**
          * This is the constant of the readFrom value

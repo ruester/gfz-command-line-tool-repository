@@ -18,9 +18,7 @@
 
 package org.n52.gfz.riesgos.commandlineparametertransformer;
 
-import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ import java.util.Optional;
  * Used to add a command line argument.
  * Can also handle default flags.
  */
-public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineParameter {
+public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineParameter<LiteralIntBinding> {
 
     private final String defaultFlag;
 
@@ -50,18 +48,14 @@ public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineP
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(final IData iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(final LiteralIntBinding binding) {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
 
-        if(iData instanceof LiteralIntBinding) {
-            final LiteralIntBinding binding = (LiteralIntBinding) iData;
-            final Integer value = binding.getPayload();
-            result.add(String.valueOf(value));
-        } else {
-            throw new ConvertToStringCmdException("Wrong binding class");
-        }
+        final Integer value = binding.getPayload();
+        result.add(String.valueOf(value));
+
 
         return result;
     }

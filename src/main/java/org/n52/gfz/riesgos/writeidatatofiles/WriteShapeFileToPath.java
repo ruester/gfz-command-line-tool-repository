@@ -20,10 +20,8 @@ package org.n52.gfz.riesgos.writeidatatofiles;
 
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
-import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.util.FileEndingReplacer;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import java.io.File;
@@ -34,24 +32,19 @@ import java.util.Objects;
 /**
  * Implementation to write all the files of a shapefile to files
  */
-public class WriteShapeFileToPath implements IWriteIDataToFiles {
+public class WriteShapeFileToPath implements IWriteIDataToFiles<GTVectorDataBinding> {
 
     @Override
-    public void writeToFiles(IData iData, IExecutionContext context, String workingDirectory, String path) throws ConvertToBytesException, IOException {
-        if(iData instanceof GTVectorDataBinding) {
-            final GTVectorDataBinding bindingClass = (GTVectorDataBinding) iData;
+    public void writeToFiles(GTVectorDataBinding bindingClass, IExecutionContext context, String workingDirectory, String path) throws IOException {
 
-            final File shpFile = bindingClass.getPayloadAsShpFile();
+        final File shpFile = bindingClass.getPayloadAsShpFile();
 
-            for(final SingleFile singleFile : SingleFile.values()) {
-                final File specificFile = singleFile.getSpecificFileByShapeFile(shpFile);
-                final byte[] content = readFile(specificFile);
-                final String outPath = singleFile.getSpecificPathByShapeFilePath(path);
+        for(final SingleFile singleFile : SingleFile.values()) {
+            final File specificFile = singleFile.getSpecificFileByShapeFile(shpFile);
+            final byte[] content = readFile(specificFile);
+            final String outPath = singleFile.getSpecificPathByShapeFilePath(path);
 
-                context.writeToFile(content, workingDirectory, outPath);
-            }
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
+            context.writeToFile(content, workingDirectory, outPath);
         }
     }
 

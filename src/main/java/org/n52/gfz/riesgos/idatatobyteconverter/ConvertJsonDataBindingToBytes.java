@@ -30,26 +30,21 @@ import java.util.Objects;
  * Function to convert a json data binding to a byte array.
  */
 public class ConvertJsonDataBindingToBytes
-        implements IConvertIDataToByteArray {
+        implements IConvertIDataToByteArray<JsonDataBinding> {
 
     /**
      * Converts the IData to a byte array.
-     * @param data element to convert
+     * @param binding element to convert
      * @return byte array
      * @throws ConvertToBytesException exception that indicates that the
      * element could not converted to byte array
      */
     @Override
-    public byte[] convertToBytes(final IData data)
+    public byte[] convertToBytes(final JsonDataBinding binding)
             throws ConvertToBytesException {
-        if (data instanceof JsonDataBinding) {
-            final JsonDataBinding binding = (JsonDataBinding) data;
-            final JSONObject jsonObject = binding.getPayload();
-            final String content = jsonObject.toJSONString();
-            return content.getBytes();
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
-        }
+        final JSONObject jsonObject = binding.getPayload();
+        final String content = jsonObject.toJSONString();
+        return content.getBytes();
     }
 
     /**

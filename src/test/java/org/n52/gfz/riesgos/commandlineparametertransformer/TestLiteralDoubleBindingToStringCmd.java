@@ -42,9 +42,9 @@ public class TestLiteralDoubleBindingToStringCmd {
      */
     @Test
     public void testValid() {
-        final IData iData = new LiteralDoubleBinding(1.0);
+        final LiteralDoubleBinding iData = new LiteralDoubleBinding(1.0);
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralDoubleBinding> converter = new LiteralDoubleBindingToStringCmd();
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -58,31 +58,15 @@ public class TestLiteralDoubleBindingToStringCmd {
         }
     }
 
-    /**
-     * test with non valid input
-     */
-    @Test
-    public void testNonValid() {
-        final IData iData = new LiteralStringBinding("Dummy");
-
-        final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd();
-
-        try {
-            converter.convertToCommandLineParameter(iData);
-            fail("There must be an exception");
-        } catch(final ConvertToStringCmdException exception) {
-            assertNotNull("There must be an exception", exception);
-        }
-    }
 
     /**
      * Test with a default flag
      */
     @Test
     public void testWithDefaultFlag() {
-        final IData iData = new LiteralDoubleBinding(1.0);
+        final LiteralDoubleBinding iData = new LiteralDoubleBinding(1.0);
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd("--lat");
+        final IConvertIDataToCommandLineParameter<LiteralDoubleBinding> converter = new LiteralDoubleBindingToStringCmd("--lat");
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -102,8 +86,8 @@ public class TestLiteralDoubleBindingToStringCmd {
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToCommandLineParameter converter1 = new LiteralDoubleBindingToStringCmd();
-        final IConvertIDataToCommandLineParameter converter2 = new LiteralDoubleBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralDoubleBinding> converter1 = new LiteralDoubleBindingToStringCmd();
+        final IConvertIDataToCommandLineParameter<LiteralDoubleBinding> converter2 = new LiteralDoubleBindingToStringCmd();
 
         assertEquals("Both are the same", converter1, converter2);
 

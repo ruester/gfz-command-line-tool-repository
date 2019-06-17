@@ -34,20 +34,20 @@ import java.util.Objects;
  *
  * Can be used in all situations where the iData just produces one file.
  */
-public class WriteSingleByteStreamToPath implements IWriteIDataToFiles {
+public class WriteSingleByteStreamToPath<T extends IData> implements IWriteIDataToFiles<T> {
 
-    public final IConvertIDataToByteArray converter;
+    public final IConvertIDataToByteArray<T> converter;
 
     /**
      *
      * @param converter Function to convert the iData to byte[]
      */
-    public WriteSingleByteStreamToPath(final IConvertIDataToByteArray converter) {
+    public WriteSingleByteStreamToPath(final IConvertIDataToByteArray<T> converter) {
         this.converter = converter;
     }
 
     @Override
-    public void writeToFiles(IData iData, IExecutionContext context, String workingDirectory, String path) throws ConvertToBytesException, IOException {
+    public void writeToFiles(T iData, IExecutionContext context, String workingDirectory, String path) throws ConvertToBytesException, IOException {
         final byte[] content = converter.convertToBytes(iData);
         context.writeToFile(content, workingDirectory, path);
     }

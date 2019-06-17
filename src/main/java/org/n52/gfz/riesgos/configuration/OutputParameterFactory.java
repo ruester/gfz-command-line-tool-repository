@@ -41,13 +41,22 @@ import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
+/**
+ * Factory for creating the output parameters.
+ * All the output parameters should be created using this
+ * interface.
+ */
 public enum OutputParameterFactory {
 
+    /**
+     * In order to avoid static methods this is a singleton.
+     */
     INSTANCE;
 
     /**
      * Creates a xml file (output) on a given path with an additional schema.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstact optional description of the parameter
      * @param path path of the file to read after process termination
      * @param schema schema of the xml
@@ -56,34 +65,39 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutXmlWithSchema(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstact,
             final String path,
-            final String schema,
-            final boolean isOptional) {
+            final String schema) {
 
-        final XmlBindingWithAllowedSchema validator;
+        final XmlBindingWithAllowedSchema<GenericXMLDataBinding> validator;
 
         if (schema == null || schema.trim().length() == 0) {
             validator = null;
         } else {
-            validator = new XmlBindingWithAllowedSchema(schema);
+            validator = new XmlBindingWithAllowedSchema<>(schema);
         }
 
-        return new OutputParameterImpl.Builder(
-                identifier, GenericXMLDataBinding.class, isOptional, optionalAbstact)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadSingleByteStreamFromPath(
-                                new ConvertBytesToGenericXMLDataBinding()))
-                .withSchema(schema)
-                .withValidator(validator)
-                .build();
+        final OutputParameterImpl.Builder<GenericXMLDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        GenericXMLDataBinding.class,
+                        isOptional,
+                        optionalAbstact);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToGenericXMLDataBinding()));
+        builder.withSchema(schema);
+        builder.withValidator(validator);
+        return builder.build();
     }
 
     /**
      * Creates a xml file for quakeml on a given path with an additional
      * schema.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
      * @return output argument containing the quakeml xml that will be
@@ -91,28 +105,33 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutQuakeMLFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
+            final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new OutputParameterImpl.Builder(
-                identifier, QuakeMLXmlDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadSingleByteStreamFromPath(
-                                new ConvertBytesToQuakeMLXmlBinding()))
-                .withSchema(schema)
-                .withValidator(
-                        new XmlBindingWithAllowedSchema(schema))
-                .build();
+        final OutputParameterImpl.Builder<QuakeMLXmlDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        QuakeMLXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToQuakeMLXmlBinding()));
+        builder.withSchema(schema);
+        builder.withValidator(new XmlBindingWithAllowedSchema<>(schema));
+
+        return builder.build();
     }
 
     /**
      * Creates a xml file for shakemap on a given path with an additional
      * schema.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
      * @return output argument containing the shakemap xml that will be
@@ -120,27 +139,32 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutShakemap(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
+            final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
-        return new OutputParameterImpl.Builder(
-                identifier, ShakemapXmlDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadSingleByteStreamFromPath(
-                                new ConvertBytesToShakemapXmlBinding()))
-                .withSchema(schema)
-                .withValidator(
-                        new XmlBindingWithAllowedSchema(schema))
-                .build();
+        final OutputParameterImpl.Builder<ShakemapXmlDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        ShakemapXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToShakemapXmlBinding()));
+        builder.withSchema(schema);
+        builder.withValidator(
+                new XmlBindingWithAllowedSchema<>(schema));
+        return builder.build();
     }
 
     /**
      * Creates a xml file for json on a given path.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
      * @return output argument containing the json that will be
@@ -148,16 +172,20 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadSingleByteStreamFromPath(
-                                new ConvertBytesToJsonDataBinding()))
-                .build();
+            final String path) {
+        final OutputParameterImpl.Builder<JsonDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        JsonDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToJsonDataBinding()));
+        return builder.build();
     }
 
 
@@ -165,6 +193,7 @@ public enum OutputParameterFactory {
     /**
      * Creates a geotiff file (output) on a given path.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
      * @return output argument containing the geotiff data that will be
@@ -172,21 +201,26 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutGeotiff(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, GeotiffBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadSingleByteStreamFromPath(
-                                new ConvertBytesToGeotiffBinding()))
-                .build();
+            final String path) {
+        final OutputParameterImpl.Builder<GeotiffBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        GeotiffBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToGeotiffBinding()));
+        return builder.build();
     }
 
     /**
      * Creates a geojson file (output) on a given path.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
      * @return output argument containing the geojson data that will be read
@@ -194,23 +228,27 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutGeojson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, GTVectorDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadSingleByteStreamFromPath(
-                                new ConvertBytesToGTVectorDataBinding(
-                                        ConvertBytesToGTVectorDataBinding.Format.JSON
-                                )))
-                .build();
+            final String path) {
+        final OutputParameterImpl.Builder<GTVectorDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        GTVectorDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToGTVectorDataBinding(
+                            ConvertBytesToGTVectorDataBinding.Format.JSON)));
+        return builder.build();
     }
 
     /**
      * Creates a generic file (output) on a given path.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the data
      * @param path path of the file to read after process termination
      * @return output argument containing the data that will be read from a
@@ -218,21 +256,26 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutGeneric(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, GenericFileDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadSingleByteStreamFromPath(
-                                new ConvertBytesToGenericFileDataBinding()))
-                .build();
+            final String path) {
+        final OutputParameterImpl.Builder<GenericFileDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        GenericFileDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToGenericFileDataBinding()));
+        return builder.build();
     }
 
     /**
      * Creates a shape file (output) on a given path.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the .shp file to read after process termination
      * @return output argument containing the data that will be read from the
@@ -240,106 +283,125 @@ public enum OutputParameterFactory {
      */
     public IOutputParameter createFileOutShapeFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String path,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, GTVectorDataBinding.class, isOptional, optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(
-                        new ReadShapeFileFromPath())
-                .build();
+            final String path) {
+        final OutputParameterImpl.Builder<GTVectorDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        GTVectorDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadShapeFileFromPath());
+        return builder.build();
     }
 
     /**
      * Creates a xml output (via stdout) with an additional schema.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param schema schema of the xml
      * @return output argument containing xml that will be read from stdout
      */
     public IOutputParameter createStdoutXmlWithSchema(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String schema,
-            final boolean isOptional) {
+            final String schema) {
 
-        final ICheckDataAndGetErrorMessage validator;
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator;
 
         if (schema == null || schema.trim().length() == 0) {
             validator = null;
         } else {
-            validator = new XmlBindingWithAllowedSchema(schema);
+            validator = new XmlBindingWithAllowedSchema<>(schema);
         }
 
-        return new OutputParameterImpl.Builder(
-                identifier, GenericXMLDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToHandleStdout(
-                        new ConvertBytesToGenericXMLDataBinding())
-                .withSchema(schema)
-                .withValidator(validator)
-                .build();
+        final OutputParameterImpl.Builder<GenericXMLDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        GenericXMLDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToHandleStdout(
+                new ConvertBytesToGenericXMLDataBinding());
+        builder.withSchema(schema);
+        builder.withValidator(validator);
+        return builder.build();
     }
 
     /**
      * Creates a quakeml xml output (via stdout) with an additional schema.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @return output argument containing quakeml xml that will be read from
      * stdout
      */
     public IOutputParameter createStdoutQuakeML(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
+            final boolean isOptional,
+            final String optionalAbstract) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
-        return new OutputParameterImpl.Builder(
-                identifier, QuakeMLXmlDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToHandleStdout(
-                        new ConvertBytesToQuakeMLXmlBinding())
-                .withSchema(schema)
-                .withValidator(
-                        new XmlBindingWithAllowedSchema(schema))
-                .build();
+        final OutputParameterImpl.Builder<QuakeMLXmlDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        QuakeMLXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToHandleStdout(
+                new ConvertBytesToQuakeMLXmlBinding());
+        builder.withSchema(schema);
+        builder.withValidator(
+                new XmlBindingWithAllowedSchema<>(schema));
+        return builder.build();
     }
 
     /**
      * Creates a shakemap xml output (via stdout) with an additional schema.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the data
      * @return output argument containing shakemap xml that will be read from
      * stdout
      */
     public IOutputParameter createStdoutShakemap(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
+            final boolean isOptional,
+            final String optionalAbstract) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
-        return new OutputParameterImpl.Builder(
-                identifier, ShakemapXmlDataBinding.class, isOptional, optionalAbstract)
-                .withFunctionToHandleStdout(
-                        new ConvertBytesToShakemapXmlBinding())
-                .withSchema(schema)
-                .withValidator(
-                        new XmlBindingWithAllowedSchema(schema))
-                .build();
+        final OutputParameterImpl.Builder<ShakemapXmlDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        ShakemapXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToHandleStdout(
+                new ConvertBytesToShakemapXmlBinding());
+        builder.withSchema(schema);
+        builder.withValidator(new XmlBindingWithAllowedSchema<>(schema));
+        return builder.build();
     }
 
     /**
      * Creates a json output (via stdout).
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @return output argument containing json that will be read from stdout
      */
     public IOutputParameter createStdoutJson(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
+            final boolean isOptional,
+            final String optionalAbstract) {
+        return new OutputParameterImpl.Builder<>(
                 identifier, JsonDataBinding.class, isOptional, optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToJsonDataBinding())
@@ -349,16 +411,20 @@ public enum OutputParameterFactory {
     /**
      * Creates a string output (via stdout).
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @return output argument containing the string that will be read from
      * stdout
      */
     public IOutputParameter createStdoutString(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, LiteralStringBinding.class, isOptional, optionalAbstract)
+            final boolean isOptional,
+            final String optionalAbstract) {
+        return new OutputParameterImpl.Builder<>(
+                identifier,
+                LiteralStringBinding.class,
+                isOptional,
+                optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToLiteralStringBinding())
                 .build();
@@ -367,16 +433,20 @@ public enum OutputParameterFactory {
     /**
      * Creates a string output (via stderr).
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @return output argument containing the string that will be read from
      * stderr
      */
     public IOutputParameter createStderrString(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, LiteralStringBinding.class, isOptional, optionalAbstract)
+            final boolean isOptional,
+            final String optionalAbstract) {
+        return new OutputParameterImpl.Builder<>(
+                identifier,
+                LiteralStringBinding.class,
+                isOptional,
+                optionalAbstract)
                 .withFunctionToHandleStderr(
                         new ConvertBytesToLiteralStringBinding())
                 .build();
@@ -385,15 +455,16 @@ public enum OutputParameterFactory {
     /**
      * Creates a json output (via stderr).
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @return output argument containing the json that will be read from
      * stderr
      */
     public IOutputParameter createStderrJson(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
+            final boolean isOptional,
+            final String optionalAbstract) {
+        return new OutputParameterImpl.Builder<>(
                 identifier, JsonDataBinding.class, isOptional, optionalAbstract)
                 .withFunctionToHandleStderr(
                         new ConvertBytesToJsonDataBinding())
@@ -403,16 +474,20 @@ public enum OutputParameterFactory {
     /**
      * Creates a int output (via exit value).
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @return output argument containing the integer that will be read from
      * exit value
      */
     public IOutputParameter createExitValueInt(
             final String identifier,
-            final String optionalAbstract,
-            final boolean isOptional) {
-        return new OutputParameterImpl.Builder(
-                identifier, LiteralIntBinding.class, isOptional, optionalAbstract)
+            final boolean isOptional,
+            final String optionalAbstract) {
+        return new OutputParameterImpl.Builder<>(
+                identifier,
+                LiteralIntBinding.class,
+                isOptional,
+                optionalAbstract)
                 .withFunctionToHandleExitValue(
                         new ConvertExitValueToLiteralIntBinding())
                 .build();

@@ -30,7 +30,7 @@ import java.util.Set;
  * Validator, that checks that a value is one of some given
  * String values
  */
-public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetErrorMessage {
+public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetErrorMessage<LiteralStringBinding> {
 
     private final Set<String> allowedValues;
 
@@ -44,19 +44,16 @@ public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetEr
     }
 
     @Override
-    public Optional<String> check(final IData iData) {
+    public Optional<String> check(final LiteralStringBinding wrappedStr) {
         final Optional<String> error;
-        if(iData instanceof LiteralStringBinding) {
-            final LiteralStringBinding wrappedStr = (LiteralStringBinding) iData;
-            final String str = wrappedStr.getPayload();
-            if(allowedValues.contains(str)) {
-                error = Optional.empty();
-            } else {
-                error = Optional.of("Input is non of the allowed values");
-            }
+
+        final String str = wrappedStr.getPayload();
+        if(allowedValues.contains(str)) {
+            error = Optional.empty();
         } else {
-            error = Optional.of("Unexpected input type");
+            error = Optional.of("Input is non of the allowed values");
         }
+
 
         return error;
     }

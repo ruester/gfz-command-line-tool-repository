@@ -54,10 +54,10 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testValidQuakeml() throws XmlException, IOException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
         final String filecontent = new String(Files.readAllBytes(quakemlfile));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
-        final IData value = new GenericXMLDataBinding(content);
+        final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
         if (errorMessage.isPresent()) {
@@ -72,9 +72,9 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testInvalidQuakeml() throws XmlException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
         final XmlObject content = XmlObject.Factory.parse("<test></test>");
-        final IData value = new GenericXMLDataBinding(content);
+        final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
         assertTrue("There is a message indicating that there is a problem with the data", errorMessage.isPresent());
@@ -86,10 +86,10 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testValidShakemap() throws XmlException, IOException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaShakemap);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaShakemap);
         final String filecontent = new String(Files.readAllBytes(shakemapfile));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
-        final IData value = new GenericXMLDataBinding(content);
+        final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
         if (errorMessage.isPresent()) {
@@ -119,10 +119,10 @@ public class TestXmlBindingWithAllowedSchema {
         // skip test if no internet connection available or URL broken
         assumeTrue(connected);
 
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(externalSchema);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(externalSchema);
         final String filecontent = new String(Files.readAllBytes(quakemlfile));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
-        final IData value = new GenericXMLDataBinding(content);
+        final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
         if (errorMessage.isPresent()) {
@@ -152,10 +152,10 @@ public class TestXmlBindingWithAllowedSchema {
         // skip test if no internet connection available or URL broken
         assumeTrue(connected);
 
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(externalSchema);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(externalSchema);
         final String filecontent = new String(Files.readAllBytes(shakemapfilegithub));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
-        final IData value = new GenericXMLDataBinding(content);
+        final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
         if (errorMessage.isPresent()) {
@@ -170,23 +170,12 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testInvalidShakemap() throws XmlException {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaShakemap);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaShakemap);
         final XmlObject content = XmlObject.Factory.parse("<test></test>");
-        final IData value = new GenericXMLDataBinding(content);
+        final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
         assertTrue("There is a message indicating that there is a problem with the data", errorMessage.isPresent());
     }
 
-    /**
-     * The value has the wrong type, so there must be a message
-     */
-    @Test
-    public void testWrongType() {
-        final ICheckDataAndGetErrorMessage validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
-        final IData value = new LiteralIntBinding(1);
-        final Optional<String> errorMessage = validator.check(value);
-
-        assertTrue("There is a message indicating that there is a problem with the data", errorMessage.isPresent());
-    }
 }

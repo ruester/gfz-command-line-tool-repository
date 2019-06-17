@@ -29,7 +29,7 @@ import java.io.IOException;
  * (maybe on a container)
  */
 @FunctionalInterface
-public interface IWriteIDataToFiles {
+public interface IWriteIDataToFiles<T extends IData> {
 
     /**
      * Writes the content of the idata to the filesystem (maybe multiple files)
@@ -42,7 +42,7 @@ public interface IWriteIDataToFiles {
      * @throws IOException a normal IOException that may happen on writing the files
      */
     void writeToFiles(
-            final IData iData,
+            final T iData,
             final IExecutionContext context,
             final String workingDirectory,
             final String path) throws ConvertToBytesException, IOException;

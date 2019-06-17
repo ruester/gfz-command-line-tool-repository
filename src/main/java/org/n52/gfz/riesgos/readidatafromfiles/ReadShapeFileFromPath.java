@@ -39,10 +39,10 @@ import java.util.Objects;
 /**
  * Implementation to read multiple files for a shapefile
  */
-public class ReadShapeFileFromPath implements IReadIDataFromFiles {
+public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBinding> {
 
     @Override
-    public IData readFromFiles(
+    public GTVectorDataBinding readFromFiles(
             final IExecutionContext context,
             final String workingDirectory,
             final String path) throws IOException {

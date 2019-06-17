@@ -21,6 +21,7 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
+import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -31,8 +32,8 @@ public class TestConvertGenericFileDataBindingToBytes {
 
     @Test
     public void testEquals() {
-        final IConvertIDataToByteArray converter1 = new ConvertGenericFileDataBindingToBytes();
-        final IConvertIDataToByteArray converter2 = new ConvertGenericFileDataBindingToBytes();
+        final IConvertIDataToByteArray<GenericFileDataBinding> converter1 = new ConvertGenericFileDataBindingToBytes();
+        final IConvertIDataToByteArray<GenericFileDataBinding> converter2 = new ConvertGenericFileDataBindingToBytes();
 
         assertEquals("Both are the same", converter1, converter2);
     }

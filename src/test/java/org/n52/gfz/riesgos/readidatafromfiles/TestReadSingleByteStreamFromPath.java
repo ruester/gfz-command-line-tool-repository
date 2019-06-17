@@ -23,6 +23,8 @@ import org.junit.Test;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
+import org.n52.wps.io.data.binding.complex.GeotiffBinding;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -37,12 +39,12 @@ public class TestReadSingleByteStreamFromPath {
      */
     @Test
     public void testEquals() {
-        final IReadIDataFromFiles reader1 = new ReadSingleByteStreamFromPath(new ConvertBytesToLiteralStringBinding());
-        final IReadIDataFromFiles reader2 = new ReadSingleByteStreamFromPath(new ConvertBytesToLiteralStringBinding());
+        final IReadIDataFromFiles<LiteralStringBinding> reader1 = new ReadSingleByteStreamFromPath(new ConvertBytesToLiteralStringBinding());
+        final IReadIDataFromFiles<LiteralStringBinding> reader2 = new ReadSingleByteStreamFromPath(new ConvertBytesToLiteralStringBinding());
 
         assertEquals("Both are equal", reader1, reader2);
 
-        final IReadIDataFromFiles reader3 = new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding());
+        final IReadIDataFromFiles<GeotiffBinding> reader3 = new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding());
 
         assertNotEquals("The third one is different", reader1, reader3);
     }

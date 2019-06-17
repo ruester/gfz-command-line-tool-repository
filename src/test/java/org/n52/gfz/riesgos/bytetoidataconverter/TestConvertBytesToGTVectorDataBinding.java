@@ -40,8 +40,8 @@ public class TestConvertBytesToGTVectorDataBinding {
      */
     @Test
     public void testEquals() {
-        final IConvertByteArrayToIData converter1 = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
-        final IConvertByteArrayToIData converter2 = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
+        final IConvertByteArrayToIData<GTVectorDataBinding> converter1 = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
+        final IConvertByteArrayToIData<GTVectorDataBinding> converter2 = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
 
         assertEquals("Both converter are the same", converter1, converter2);
     }
@@ -60,14 +60,11 @@ public class TestConvertBytesToGTVectorDataBinding {
 
         final byte[] geojsonBytes = geojsonStr.getBytes();
 
-        final IConvertByteArrayToIData converter = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
+        final IConvertByteArrayToIData<GTVectorDataBinding> converter = new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON);
 
         try {
-            final IData result = converter.convertToIData(geojsonBytes);
+            final GTVectorDataBinding binding = converter.convertToIData(geojsonBytes);
 
-            assertTrue("It is a GTVectorDataBinding", result instanceof GTVectorDataBinding);
-
-            final GTVectorDataBinding binding = (GTVectorDataBinding) result;
             final FeatureCollection<?, ?> featureCollection = binding.getPayload();
 
             assertEquals("There is one feature", 1, featureCollection.size());

@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArray<GTVectorDataBinding> {
 
     private final Format format;
 
@@ -43,19 +43,16 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
     }
 
     @Override
-    public byte[] convertToBytes(IData iData) throws ConvertToBytesException {
-        if(iData instanceof GTVectorDataBinding) {
-            final GTVectorDataBinding binding = (GTVectorDataBinding) iData;
-            final FeatureCollection<?, ?> featureCollection = binding.getPayload();
-            try(final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-                format.writeFeatures(featureCollection, out);
-                return out.toByteArray();
-            } catch(final IOException ioException) {
-                throw new ConvertToBytesException(ioException);
-            }
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
+    public byte[] convertToBytes(GTVectorDataBinding binding) throws ConvertToBytesException {
+
+        final FeatureCollection<?, ?> featureCollection = binding.getPayload();
+        try(final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            format.writeFeatures(featureCollection, out);
+            return out.toByteArray();
+        } catch(final IOException ioException) {
+            throw new ConvertToBytesException(ioException);
         }
+
     }
 
     @Override
