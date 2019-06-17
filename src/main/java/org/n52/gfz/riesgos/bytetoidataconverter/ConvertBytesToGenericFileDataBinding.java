@@ -33,7 +33,7 @@ import java.util.Objects;
 /**
  * Function to create a GenericFileDataBinding from a byte array
  */
-public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayToIData<GenericFileDataBinding> {
 
     private static final String MOST_GENERIC_MIME_TYPE = "application/octet-stream";
 
@@ -55,7 +55,7 @@ public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayTo
     }
 
     @Override
-    public IData convertToIData(final byte[] content) throws ConvertToIDataException {
+    public GenericFileDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
 
         try {
             final File tempFile = File.createTempFile("convertBytesToIData", ".dat");

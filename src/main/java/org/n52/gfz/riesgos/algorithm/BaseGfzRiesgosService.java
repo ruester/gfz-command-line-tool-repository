@@ -24,7 +24,8 @@ import org.n52.gfz.riesgos.cmdexecution.IExecutionRun;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRunResult;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
@@ -68,8 +69,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
     private final IConfiguration configuration;
     private final Logger logger;
-    private final List<IIdentifierWithBinding> inputIdentifiers;
-    private final List<IIdentifierWithBinding> outputIdentifiers;
+    private final List<IInputParameter> inputIdentifiers;
+    private final List<IOutputParameter> outputIdentifiers;
     private final Map<String, Class<?>> mapInputDataTypes;
     private final Map<String, Class<?>> mapOutputDataTypes;
 
@@ -96,7 +97,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         return configuration
                 .getInputIdentifiers()
                 .stream()
-                .collect(Collectors.toMap(IIdentifierWithBinding::getIdentifier, IIdentifierWithBinding::getBindingClass));
+                .collect(Collectors.toMap(IInputParameter::getIdentifier, IInputParameter::getBindingClass));
     }
 
     /*
@@ -106,7 +107,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         return configuration
                 .getOutputIdentifiers()
                 .stream()
-                .collect(Collectors.toMap(IIdentifierWithBinding::getIdentifier, IIdentifierWithBinding::getBindingClass));
+                .collect(Collectors.toMap(IOutputParameter::getIdentifier, IOutputParameter::getBindingClass));
     }
 
     /**
@@ -115,7 +116,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      */
     @Override
     public List<String> getInputIdentifiers() {
-        return inputIdentifiers.stream().map(IIdentifierWithBinding::getIdentifier).collect(Collectors.toList());
+        return inputIdentifiers.stream().map(IInputParameter::getIdentifier).collect(Collectors.toList());
     }
 
     /**
@@ -124,7 +125,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      */
     @Override
     public List<String> getOutputIdentifiers() {
-        return outputIdentifiers.stream().map(IIdentifierWithBinding::getIdentifier).collect(Collectors.toList());
+        return outputIdentifiers.stream().map(IOutputParameter::getIdentifier).collect(Collectors.toList());
     }
 
     /**
@@ -221,7 +222,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             logger.debug("Start getInputFields");
             final Map<String, IData> result = new HashMap<>();
 
-            for(final IIdentifierWithBinding inputValue : inputIdentifiers) {
+            for(final IInputParameter inputValue : inputIdentifiers) {
                 final String identifier = inputValue.getIdentifier();
                 if(! originalInputData.containsKey(identifier)) {
                     if(inputValue.isOptional()) {
@@ -291,7 +292,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             result.addAll(configuration.getDefaultCommandLineFlags());
 
             try {
-                for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
+                for (final IInputParameter inputValue : inputIdentifiers) {
                     final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd = inputValue.getFunctionToTransformToCmd();
                     if (functionToTransformToCmd.isPresent() && inputData.containsKey(inputValue.getIdentifier())) {
                         final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifier()));
@@ -349,7 +350,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         private void copyInput(final IExecutionContext context) throws ExceptionReport {
 
             try {
-                for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
+                for (final IInputParameter inputValue : inputIdentifiers) {
                     // if there is no data for that identifier it was optional
                     // so no need to copy the input
                     if(inputData.containsKey(inputValue.getIdentifier())) {
@@ -376,7 +377,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
          */
         private void writeToStdin(final PrintStream stdin) throws ExceptionReport {
             try {
-                for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
+                for (final IInputParameter inputValue : inputIdentifiers) {
                     if(inputData.containsKey(inputValue.getIdentifier())) {
                         final Optional<IConvertIDataToByteArray> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
                         if (optionalFunctionToWriteToStdin.isPresent()) {
@@ -407,7 +408,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 }
             }
             try {
-                for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
+                for (final IOutputParameter outputValue : outputIdentifiers) {
                     final Optional<IConvertByteArrayToIData> stderrHandler = outputValue.getFunctionToHandleStderr();
 
                     try {
@@ -434,7 +435,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
          * insert the data into the output map
          * if there is an validator, then it is used here
          */
-        private void putIntoOutput(final IIdentifierWithBinding outputValue, final IData iData) throws ExceptionReport {
+        private void putIntoOutput(final IOutputParameter outputValue, final IData iData) throws ExceptionReport {
             final Optional<ICheckDataAndGetErrorMessage> optionalValidator = outputValue.getValidator();
             if(optionalValidator.isPresent()) {
                 final ICheckDataAndGetErrorMessage validator = optionalValidator.get();
@@ -461,7 +462,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 }
             }
             try {
-                for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
+                for (final IOutputParameter outputValue : outputIdentifiers) {
                     try {
                         final Optional<IConvertExitValueToIData> exitValueHandler = outputValue.getFunctionToHandleExitValue();
                         if (exitValueHandler.isPresent()) {
@@ -491,7 +492,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             mainStdoutHandler.ifPresent(handler -> handler.handleStdout(stdout));
 
             try {
-                for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
+                for (final IOutputParameter outputValue : outputIdentifiers) {
                     try {
                         final Optional<IConvertByteArrayToIData> stdoutHandler = outputValue.getFunctionToHandleStdout();
                         if (stdoutHandler.isPresent()) {
@@ -518,7 +519,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         private void readFromOutputFiles(final IExecutionContext context) throws ExceptionReport {
 
             try {
-                for(final IIdentifierWithBinding outputValue : outputIdentifiers) {
+                for(final IOutputParameter outputValue : outputIdentifiers) {
                     try {
                         final Optional<String> optionalPath = outputValue.getPathToWriteToOrReadFromFile();
                         final Optional<IReadIDataFromFiles> optionalFunctionToReadFromFiles = outputValue.getFunctionToReadIDataFromFiles();

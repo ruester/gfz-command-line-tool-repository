@@ -19,8 +19,8 @@ package org.n52.gfz.riesgos.configuration.parse.json.subimpl;
  */
 
 import org.json.simple.JSONObject;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
 import java.util.List;
@@ -131,7 +131,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException if a field is missing that is
      * necessary a ParseConfigurationException will be thrown
      */
-    public IIdentifierWithBinding parseInput(
+    public IInputParameter parseInput(
             final JSONObject json)
             throws ParseConfigurationException {
         final String identifier = getString(json, TITLE);
@@ -229,7 +229,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
          * @throws ParseConfigurationException exception that will be thrown
          * if an unsupported argument is given to the implementation.
          */
-        IIdentifierWithBinding create(
+        IInputParameter create(
                 String identifier,
                 final boolean isOptional,
                 String optionalAbstract,
@@ -256,7 +256,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentInt(
+    private static IInputParameter createCommandLineArgumentInt(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -273,7 +273,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for int types");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentInt(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentInt(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -296,7 +296,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentDouble(
+    private static IInputParameter createCommandLineArgumentDouble(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -313,7 +313,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for double types");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentDouble(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentDouble(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -336,7 +336,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentString(
+    private static IInputParameter createCommandLineArgumentString(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -353,7 +353,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for string types");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentString(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentString(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -376,7 +376,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentBoolean(
+    private static IInputParameter createCommandLineArgumentBoolean(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -401,7 +401,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "flag is necessary for boolean type");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentBoolean(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentBoolean(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -423,7 +423,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentBBox(
+    private static IInputParameter createCommandLineArgumentBBox(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -458,7 +458,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
                     "schema is not supported for bbox");
         }
 
-        return IdentifierWithBindingFactory.createCommandLineArgumentBBox(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentBBox(
                 identifier,
                 optionalAbstract,
                 supportedCrs,
@@ -479,7 +479,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentXmlFile(
+    private static IInputParameter createCommandLineArgumentXmlFile(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -500,7 +500,8 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "crs are not supported for xml");
         }
-        return IdentifierWithBindingFactory
+        return InputParameterFactory
+                .INSTANCE
                 .createCommandLineArgumentXmlFileWithSchema(
                         identifier,
                         optionalAbstract,
@@ -524,7 +525,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding
+    private static IInputParameter
                 createCommandLineArgumentXmlFileWithoutHeader(
             final String identifier,
             final boolean isOptional,
@@ -546,7 +547,8 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "crs are not supported for xml");
         }
-        return IdentifierWithBindingFactory
+        return InputParameterFactory
+                .INSTANCE
                 .createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
                         identifier,
                         optionalAbstract,
@@ -569,7 +571,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentQuakeML(
+    private static IInputParameter createCommandLineArgumentQuakeML(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -592,7 +594,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
                     "crs are not supported for quakeml");
         }
         // ignore schema
-        return IdentifierWithBindingFactory.createCommandLineArgumentQuakeML(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentQuakeML(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -613,7 +615,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentGeotiffFile(
+    private static IInputParameter createCommandLineArgumentGeotiffFile(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -638,7 +640,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for geotiff");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentGeotiff(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentGeotiff(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -659,7 +661,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentGeojsonFile(
+    private static IInputParameter createCommandLineArgumentGeojsonFile(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -684,7 +686,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for geojson");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentGeojson(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentGeojson(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -705,7 +707,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentShapefile(
+    private static IInputParameter createCommandLineArgumentShapefile(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -730,7 +732,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for shapefile");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentShapeFile(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentShapeFile(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -751,7 +753,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentGenericFile(
+    private static IInputParameter createCommandLineArgumentGenericFile(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -776,7 +778,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for file");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentFile(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentFile(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -797,7 +799,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createCommandLineArgumentJson(
+    private static IInputParameter createCommandLineArgumentJson(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -822,7 +824,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentJson(
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentJson(
                 identifier,
                 optionalAbstract,
                 flag,
@@ -973,7 +975,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
          * @throws ParseConfigurationException exception that will be thrown
          * if an unsupported argument is given to the implementation.
          */
-        IIdentifierWithBinding create(
+        IInputParameter create(
                 String identifier,
                 boolean isOptional,
                 String optionalAbstract,
@@ -995,7 +997,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createStdinString(
+    private static IInputParameter createStdinString(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1006,7 +1008,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for string");
         }
-        return IdentifierWithBindingFactory.createStdinString(
+        return InputParameterFactory.INSTANCE.createStdinString(
                 identifier,
                 optionalAbstract,
                 defaultValue,
@@ -1026,7 +1028,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createStdinJson(
+    private static IInputParameter createStdinJson(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1045,7 +1047,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "allowedValues are not supported for json");
         }
-        return IdentifierWithBindingFactory.createStdinJson(
+        return InputParameterFactory.INSTANCE.createStdinJson(
                 identifier,
                 optionalAbstract,
                 isOptional);
@@ -1137,7 +1139,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
          * @throws ParseConfigurationException exception that will be thrown
          * if an unsupported argument is given to the implementation.
          */
-        IIdentifierWithBinding create(
+        IInputParameter create(
                 String identifier,
                 boolean isOptional,
                 String optionalAbstract,
@@ -1157,7 +1159,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createFileInputGeotiff(
+    private static IInputParameter createFileInputGeotiff(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1167,7 +1169,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for geotiff");
         }
-        return IdentifierWithBindingFactory.createFileInGeotiff(
+        return InputParameterFactory.INSTANCE.createFileInGeotiff(
                 identifier,
                 optionalAbstract,
                 path,
@@ -1185,7 +1187,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createFileInputGeojson(
+    private static IInputParameter createFileInputGeojson(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1195,7 +1197,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for geojson");
         }
-        return IdentifierWithBindingFactory.createFileInGeojson(
+        return InputParameterFactory.INSTANCE.createFileInGeojson(
                 identifier,
                 optionalAbstract,
                 path,
@@ -1213,7 +1215,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createFileInputGeneric(
+    private static IInputParameter createFileInputGeneric(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1223,7 +1225,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for file");
         }
-        return IdentifierWithBindingFactory.createFileInGeneric(
+        return InputParameterFactory.INSTANCE.createFileInGeneric(
                 identifier,
                 optionalAbstract,
                 path,
@@ -1241,7 +1243,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createFileInputShapefile(
+    private static IInputParameter createFileInputShapefile(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1251,7 +1253,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for shapefile");
         }
-        return IdentifierWithBindingFactory.createFileInShapeFile(
+        return InputParameterFactory.INSTANCE.createFileInShapeFile(
                 identifier,
                 optionalAbstract,
                 path,
@@ -1267,7 +1269,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @param schema optional schema
      * @return IIdentifierWithBinding
      */
-    private static IIdentifierWithBinding createFileInputQuakeML(
+    private static IInputParameter createFileInputQuakeML(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1277,7 +1279,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
 
         // schema is ignored here
         // takes the schema for quakeml
-        return IdentifierWithBindingFactory.createFileInQuakeML(
+        return InputParameterFactory.INSTANCE.createFileInQuakeML(
                 identifier,
                 optionalAbstract,
                 path,
@@ -1293,7 +1295,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @param schema optional schema
      * @return IIdentifierWithBinding
      */
-    private static IIdentifierWithBinding createFileInputShakemap(
+    private static IInputParameter createFileInputShakemap(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1302,7 +1304,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             final String schema) {
         // schema is ignored here
         // takes the schema for shakemap
-        return IdentifierWithBindingFactory.createFileInShakemap(
+        return InputParameterFactory.INSTANCE.createFileInShakemap(
                 identifier,
                 optionalAbstract,
                 path,
@@ -1320,7 +1322,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException exception that may be thrown
      * if a argument is used that is not supported for this type.
      */
-    private static IIdentifierWithBinding createFileInputJson(
+    private static IInputParameter createFileInputJson(
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
@@ -1331,7 +1333,7 @@ public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
             throw new ParseConfigurationException(
                     "schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createFileInJson(
+        return InputParameterFactory.INSTANCE.createFileInJson(
                 identifier,
                 optionalAbstract,
                 path,

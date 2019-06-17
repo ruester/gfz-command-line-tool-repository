@@ -19,8 +19,8 @@ package org.n52.gfz.riesgos.configuration.parse.json.subimpl;
  */
 
 import org.json.simple.JSONObject;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.configuration.OutputParameterFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
 import java.util.Map;
@@ -118,7 +118,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
      * @throws ParseConfigurationException if a field is missing that is
      * necessary a ParseConfigurationException will be thrown
      */
-    public IIdentifierWithBinding parseOutput(
+    public IOutputParameter parseOutput(
             final JSONObject json)
             throws ParseConfigurationException {
         final String identifier = getString(json, TITLE);
@@ -211,7 +211,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
          * @param schema optional schema (for xml)
          * @return IIdentifierWithBinding
          */
-        IIdentifierWithBinding create(
+        IOutputParameter create(
                 String identifier,
                 String optionalAbstract,
                 String schema,
@@ -227,32 +227,32 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
          */
         STRING("string",
                 (identifier, optionalAbstract, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createStdoutString(
+                        OutputParameterFactory.INSTANCE.createStdoutString(
                                 identifier, optionalAbstract, isOptional)),
         /**
          * This is the enum to read generic xml from stdout.
          */
-        XML("xml", IdentifierWithBindingFactory::createStdoutXmlWithSchema),
+        XML("xml", OutputParameterFactory.INSTANCE::createStdoutXmlWithSchema),
         /**
          * This is the enum to read xml quakeml from stdout.
          */
         QUAKEML("quakeml",
                 (identifier, optionalAbstract, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createStdoutQuakeML(
+                        OutputParameterFactory.INSTANCE.createStdoutQuakeML(
                                 identifier, optionalAbstract, isOptional)),
         /**
          * This is the enum to read xml shakemaps from stdout.
          */
         SHAKEMAP("shakemap",
                 (identifier, optionalAbstract, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createStdoutShakemap(
+                        OutputParameterFactory.INSTANCE.createStdoutShakemap(
                                 identifier, optionalAbstract, isOptional)),
         /**
          * This is the enum to read json from stdout.
          */
         JSON("json",
                 (identifier, optionalAbstract, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createStdoutJson(
+                        OutputParameterFactory.INSTANCE.createStdoutJson(
                                 identifier, optionalAbstract, isOptional));
 
         /**
@@ -321,7 +321,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
          * @param optionalAbstract optional description of the parameter
          * @return IIdentifierWithBinding
          */
-        IIdentifierWithBinding create(
+        IOutputParameter create(
                 String identifier,
                 String optionalAbstract,
                 boolean isOptional);
@@ -334,11 +334,11 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         /**
          * This is the enum to read a string from stderr.
          */
-        STRING("string", IdentifierWithBindingFactory::createStderrString),
+        STRING("string", OutputParameterFactory.INSTANCE::createStderrString),
         /**
          * This is the enum to read json from stderr.
          */
-        JSON("json", IdentifierWithBindingFactory::createStderrJson);
+        JSON("json", OutputParameterFactory.INSTANCE::createStderrJson);
 
         /**
          * This is the constant of the readFrom value
@@ -406,7 +406,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
          * @param optionalAbstract optional description of the parameter
          * @return IIdentifierWithBinding
          */
-        IIdentifierWithBinding create(
+        IOutputParameter create(
                 String identifier,
                 String optionalAbstract,
                 boolean isOptional);
@@ -419,7 +419,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         /**
          * This is the enum to read ints from the exit value.
          */
-        INT("int", IdentifierWithBindingFactory::createExitValueInt);
+        INT("int", OutputParameterFactory.INSTANCE::createExitValueInt);
 
         /**
          * This is the constant of the readFrom value
@@ -489,7 +489,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
          * @param schema optional schema
          * @return IIdentifierWithBinding
          */
-        IIdentifierWithBinding create(
+        IOutputParameter create(
                 String identifier,
                 String optionalAbstract,
                 String path,
@@ -505,56 +505,56 @@ public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
         /**
          * This is the enum to read xml from files.
          */
-        XML("xml", IdentifierWithBindingFactory::createFileOutXmlWithSchema),
+        XML("xml", OutputParameterFactory.INSTANCE::createFileOutXmlWithSchema),
 
         /**
          * This is the enum to read generic files.
          */
         FILE("file",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createFileOutGeneric(
+                        OutputParameterFactory.INSTANCE.createFileOutGeneric(
                                 identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read geojson from files.
          */
         GEOJSON("geojson",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createFileOutGeojson(
+                        OutputParameterFactory.INSTANCE.createFileOutGeojson(
                                 identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read geotiff rasters from files.
          */
         GEOTIFF("geotiff",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createFileOutGeotiff(
+                        OutputParameterFactory.INSTANCE.createFileOutGeotiff(
                                 identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read shapefiles from files.
          */
         SHP("shapefile",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createFileOutShapeFile(
+                        OutputParameterFactory.INSTANCE.createFileOutShapeFile(
                                 identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read xml quakeml from files.
          */
         QUAKEML("quakeml",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createFileOutQuakeMLFile(
+                        OutputParameterFactory.INSTANCE.createFileOutQuakeMLFile(
                                 identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read xml shakemap from files.
          */
         SHAKEMAP("shakemap",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createFileOutShakemap(
+                        OutputParameterFactory.INSTANCE.createFileOutShakemap(
                                 identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read json from files.
          */
         JSON("json",
                 (identifier, optionalAbstract, path, schema, isOptional) ->
-                        IdentifierWithBindingFactory.createFileOutJson(
+                        OutputParameterFactory.INSTANCE.createFileOutJson(
                                 identifier, optionalAbstract, path, isOptional));
 
         /**

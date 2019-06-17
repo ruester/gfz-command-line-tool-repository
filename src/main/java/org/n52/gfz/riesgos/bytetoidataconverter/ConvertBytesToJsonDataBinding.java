@@ -32,7 +32,7 @@ import java.util.Objects;
  * Function to convert the content of a byte array to a JsonDataBinding.
  */
 public class ConvertBytesToJsonDataBinding
-        implements IConvertByteArrayToIData {
+        implements IConvertByteArrayToIData<JsonDataBinding> {
 
     /**
      * Converts the byte array to an IData element.
@@ -42,7 +42,7 @@ public class ConvertBytesToJsonDataBinding
      * internal error / exception on conversion
      */
     @Override
-    public IData convertToIData(final byte[] content)
+    public JsonDataBinding convertToIData(final byte[] content)
             throws ConvertToIDataException {
         final String text = new String(content);
         final JSONParser parser = new JSONParser();

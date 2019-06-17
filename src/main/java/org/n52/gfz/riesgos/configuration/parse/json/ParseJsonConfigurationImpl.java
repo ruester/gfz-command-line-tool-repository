@@ -24,7 +24,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.gfz.riesgos.configuration.impl.ConfigurationImpl;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.json.subimpl.ParseJsonForInputImpl;
@@ -117,8 +118,8 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
 
                 final List<String> defaultCommandLineFlags = getDefaultCommandLineFlags(json);
 
-                final List<IIdentifierWithBinding> inputData = parseInputs(json);
-                final List<IIdentifierWithBinding> outputData = parseOutputs(json);
+                final List<IInputParameter> inputData = parseInputs(json);
+                final List<IOutputParameter> outputData = parseOutputs(json);
 
                 final IStderrHandler stderrHandler = parseStderrHandler(json);
                 final IExitValueHandler exitValueHandler = parseExitValueHandler(json);
@@ -170,16 +171,35 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
         return Arrays.asList(Commandline.translateCommandline(getStringEntry(jsonObject, "commandToExecute")));
     }
 
-    private List<IIdentifierWithBinding> parseInputs(final JSONObject jsonObject) throws ParseConfigurationException {
-        return parseIdentifier(jsonObject, "input", inputElementParser::parseInput);
+    private List<IInputParameter> parseInputs(final JSONObject jsonObject) throws ParseConfigurationException {
+        return parseInputIdentifier(jsonObject, "input", inputElementParser::parseInput);
     }
 
-    private List<IIdentifierWithBinding> parseOutputs(final JSONObject jsonObject) throws ParseConfigurationException {
-        return parseIdentifier(jsonObject, "output", outputElementParser::parseOutput);
+    private List<IOutputParameter> parseOutputs(final JSONObject jsonObject) throws ParseConfigurationException {
+        return parseOutputIdentifier(jsonObject, "output", outputElementParser::parseOutput);
     }
 
-    private List<IIdentifierWithBinding> parseIdentifier(final JSONObject jsonObject, final String key, final IParseIdentifier parser) throws ParseConfigurationException {
-        final List<IIdentifierWithBinding> result = new ArrayList<>();
+    private List<IInputParameter> parseInputIdentifier(final JSONObject jsonObject, final String key, final IParseInputParameter parser) throws ParseConfigurationException {
+        final List<IInputParameter> result = new ArrayList<>();
+        if(jsonObject.containsKey(key)) {
+            final Object rawList = jsonObject.get(key);
+            if(! (rawList instanceof JSONArray)) {
+                throw new ParseConfigurationException("Wrong type for key '" + key + "', expected an Array");
+            }
+            final JSONArray list = (JSONArray) rawList;
+            for(final Object element : list) {
+                if(! (element instanceof JSONObject)) {
+                    throw new ParseConfigurationException("Wrong type for element in " + key + ", expected an JSONObject");
+                }
+                final JSONObject jsonIdentifierObject = (JSONObject) element;
+                result.add(parser.parse(jsonIdentifierObject));
+            }
+        }
+        return result;
+    }
+
+    private List<IOutputParameter> parseOutputIdentifier(final JSONObject jsonObject, final String key, final IParseOutputParameter parser) throws ParseConfigurationException {
+        final List<IOutputParameter> result = new ArrayList<>();
         if(jsonObject.containsKey(key)) {
             final Object rawList = jsonObject.get(key);
             if(! (rawList instanceof JSONArray)) {
@@ -198,8 +218,13 @@ public class ParseJsonConfigurationImpl implements IParseConfiguration {
     }
 
     @FunctionalInterface
-    private interface IParseIdentifier {
-        IIdentifierWithBinding parse(final JSONObject json) throws ParseConfigurationException;
+    private interface IParseInputParameter {
+        IInputParameter parse(final JSONObject json) throws ParseConfigurationException;
+    }
+
+    @FunctionalInterface
+    private interface IParseOutputParameter {
+        IOutputParameter parse(final JSONObject json) throws ParseConfigurationException;
     }
 
     private List<String> getDefaultCommandLineFlags(final JSONObject json) throws ParseConfigurationException {

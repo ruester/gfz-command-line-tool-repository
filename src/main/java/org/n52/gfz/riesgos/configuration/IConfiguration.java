@@ -79,13 +79,13 @@ public interface IConfiguration {
      *
      * @return list with the configuration of all the input parameters
      */
-    List<IIdentifierWithBinding> getInputIdentifiers();
+    List<IInputParameter> getInputIdentifiers();
 
     /**
      *
      * @return list with the configuration of all the output parameters
      */
-    List<IIdentifierWithBinding> getOutputIdentifiers();
+    List<IOutputParameter> getOutputIdentifiers();
 
     /**
      *

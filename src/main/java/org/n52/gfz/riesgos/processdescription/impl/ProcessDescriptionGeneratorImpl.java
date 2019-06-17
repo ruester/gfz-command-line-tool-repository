@@ -31,7 +31,8 @@ import net.opengis.wps.x100.SupportedCRSsType;
 import net.opengis.wps.x100.SupportedComplexDataInputType;
 import net.opengis.wps.x100.SupportedComplexDataType;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.wps.io.GeneratorFactory;
 import org.n52.wps.io.IGenerator;
 import org.n52.wps.io.IParser;
@@ -110,11 +111,11 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         processDescriptionType.setStoreSupported(true);
         processDescriptionType.setProcessVersion("1.0.0");
 
-        final List<IIdentifierWithBinding> inputIdentifiers = configuration.getInputIdentifiers();
+        final List<IInputParameter> inputIdentifiers = configuration.getInputIdentifiers();
         if(! inputIdentifiers.isEmpty()) {
             final ProcessDescriptionType.DataInputs dataInputs = processDescriptionType.addNewDataInputs();
 
-            for (final IIdentifierWithBinding input : configuration.getInputIdentifiers()) {
+            for (final IInputParameter input : configuration.getInputIdentifiers()) {
                 final InputDescriptionType inputDescriptionType = dataInputs.addNewInput();
                 if(input.isOptional()) {
                     inputDescriptionType.setMinOccurs(BigInteger.ZERO);
@@ -191,7 +192,7 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         }
 
         final ProcessDescriptionType.ProcessOutputs processOutputs = processDescriptionType.addNewProcessOutputs();
-        for(final IIdentifierWithBinding output : configuration.getOutputIdentifiers()) {
+        for(final IOutputParameter output : configuration.getOutputIdentifiers()) {
             final OutputDescriptionType outputDescriptionType = processOutputs.addNewOutput();
 
             final CodeType outputIdentifier = outputDescriptionType.addNewIdentifier();

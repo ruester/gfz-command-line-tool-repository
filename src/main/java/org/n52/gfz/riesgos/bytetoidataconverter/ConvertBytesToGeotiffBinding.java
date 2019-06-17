@@ -33,10 +33,10 @@ import java.util.Objects;
 /**
  * Function to create a GeotiffBinding from a byte array
  */
-public class ConvertBytesToGeotiffBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToGeotiffBinding implements IConvertByteArrayToIData<GeotiffBinding> {
 
     @Override
-    public IData convertToIData(final byte[] content) throws ConvertToIDataException {
+    public GeotiffBinding convertToIData(final byte[] content) throws ConvertToIDataException {
 
         try {
             final File tempFile = File.createTempFile("convertBytesToIData", ".tiff");

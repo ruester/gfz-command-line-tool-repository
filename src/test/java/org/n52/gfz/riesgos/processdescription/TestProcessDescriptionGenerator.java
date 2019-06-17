@@ -22,8 +22,10 @@ import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.junit.Test;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.configuration.InputParameterFactory;
+import org.n52.gfz.riesgos.configuration.OutputParameterFactory;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
@@ -230,29 +232,29 @@ public class TestProcessDescriptionGenerator {
         }
 
         @Override
-        public List<IIdentifierWithBinding> getInputIdentifiers() {
+        public List<IInputParameter> getInputIdentifiers() {
             return Arrays.asList(
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmin", "the minimum longitude to search for", null, "288.0", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmax", "the maximum longitude to search for", null,  "292.0", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmin", null, null, "-70.0", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmax", null, null,  "-10.0", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmin",  null, null, "6.6", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmax",  null, null, "8.5", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmin", null, null,  "5.0", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmax", null, null,  "140.0", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("p",  null, null, "0.1", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentString(
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("lonmin", "the minimum longitude to search for", null, "288.0", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("lonmax", "the maximum longitude to search for", null,  "292.0", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("latmin", null, null, "-70.0", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("latmax", null, null,  "-10.0", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmin",  null, null, "6.6", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("mmax",  null, null, "8.5", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmin", null, null,  "5.0", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("zmax", null, null,  "140.0", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("p",  null, null, "0.1", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentString(
                             "etype", null,null,  "deaggregation",
                             Arrays.asList("observed", "deaggregation", "stochastic", "expert"), false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlon",  null, null, "-71.5730623712764", null, false),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlat",  null ,null, "-33.1299174879672", null, false)
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlon",  null, null, "-71.5730623712764", null, false),
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlat",  null ,null, "-33.1299174879672", null, false)
             );
         }
 
         @Override
-        public List<IIdentifierWithBinding> getOutputIdentifiers() {
+        public List<IOutputParameter> getOutputIdentifiers() {
             return Collections.singletonList(
-                    IdentifierWithBindingFactory.createFileOutXmlWithSchema(
+                    OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema(
                             "selectedRows","the resulting quakeml", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", false)
             );
         }

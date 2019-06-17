@@ -1,0 +1,219 @@
+package org.n52.gfz.riesgos.configuration.impl;
+
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
+import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
+import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
+import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
+import org.n52.wps.io.data.IData;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+public class InputParameterImpl implements IInputParameter {
+
+    private final String identifier;
+    private final Class<? extends IData> bindingClass;
+    private final boolean isOptional;
+    private final String optionalAbstract;
+    private final ICheckDataAndGetErrorMessage validator;
+    private final IConvertIDataToCommandLineParameter functionToTransformToCmd;
+    private final String path;
+    private final IWriteIDataToFiles functionToWriteToFiles;
+    private final IConvertIDataToByteArray functionToWriteToStdin;
+    private final List<String> allowedValues;
+    private final String defaultValue;
+    private final List<String> supportedCRSForBBox;
+    private final String schema;
+
+    private InputParameterImpl(final Builder builder) {
+        this.identifier = builder.identifier;
+        this.bindingClass = builder.bindingClass;
+        this.isOptional = builder.isOptional;
+        this.optionalAbstract = builder.optionalAbstract;
+        this.validator = builder.validator;
+        this.functionToTransformToCmd = builder.functionToTransformToCmd;
+        this.path = builder.path;
+        this.functionToWriteToFiles = builder.functionToWriteToFiles;
+        this.functionToWriteToStdin = builder.functionToWriteToStdin;
+        this.allowedValues = builder.allowedValues;
+        this.defaultValue = builder.defaultValue;
+        this.supportedCRSForBBox = builder.supportedCRSForBBox;
+        this.schema = builder.schema;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    @Override
+    public Class<? extends IData> getBindingClass() {
+        return bindingClass;
+    }
+
+    @Override
+    public boolean isOptional() {
+        return isOptional;
+    }
+
+    @Override
+    public Optional<String> getAbstract() {
+        return Optional.ofNullable(optionalAbstract);
+    }
+
+    @Override
+    public Optional<ICheckDataAndGetErrorMessage> getValidator() {
+        return Optional.ofNullable(validator);
+    }
+
+    @Override
+    public Optional<IConvertIDataToCommandLineParameter> getFunctionToTransformToCmd() {
+        return Optional.ofNullable(functionToTransformToCmd);
+    }
+
+
+    @Override
+    public Optional<String> getPathToWriteToOrReadFromFile() {
+        return Optional.ofNullable(path);
+    }
+
+    @Override
+    public Optional<IWriteIDataToFiles> getFunctionToWriteIDataToFiles() {
+        return Optional.ofNullable(functionToWriteToFiles);
+    }
+
+    @Override
+    public Optional<IConvertIDataToByteArray> getFunctionToWriteToStdin() {
+        return Optional.ofNullable(functionToWriteToStdin);
+    }
+
+    @Override
+    public Optional<List<String>> getAllowedValues() {
+        return Optional.ofNullable(allowedValues);
+    }
+
+    @Override
+    public Optional<String> getDefaultValue() {
+        return Optional.ofNullable(defaultValue);
+    }
+
+    @Override
+    public Optional<List<String>> getSupportedCRSForBBox() {
+        return Optional.ofNullable(supportedCRSForBBox);
+    }
+
+    @Override
+    public Optional<String> getSchema() {
+        return Optional.ofNullable(schema);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        InputParameterImpl that = (InputParameterImpl) o;
+        return isOptional == that.isOptional &&
+                Objects.equals(identifier, that.identifier) &&
+                Objects.equals(bindingClass, that.bindingClass) &&
+                Objects.equals(optionalAbstract, that.optionalAbstract) &&
+                Objects.equals(validator, that.validator) &&
+                Objects.equals(functionToTransformToCmd, that.functionToTransformToCmd) &&
+                Objects.equals(path, that.path) &&
+                Objects.equals(functionToWriteToFiles, that.functionToWriteToFiles) &&
+                Objects.equals(functionToWriteToStdin, that.functionToWriteToStdin) &&
+                Objects.equals(allowedValues, that.allowedValues) &&
+                Objects.equals(defaultValue, that.defaultValue) &&
+                Objects.equals(supportedCRSForBBox, that.supportedCRSForBBox) &&
+                Objects.equals(schema, that.schema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, bindingClass, isOptional, optionalAbstract, validator, functionToTransformToCmd, path, functionToWriteToFiles, functionToWriteToStdin, allowedValues, defaultValue, supportedCRSForBBox, schema);
+    }
+
+    public static class Builder {
+        private final String identifier;
+        private final Class<? extends IData> bindingClass;
+        private final boolean isOptional;
+        private final String optionalAbstract;
+
+        private ICheckDataAndGetErrorMessage validator;
+        private IConvertIDataToCommandLineParameter functionToTransformToCmd;
+        private String path;
+        private IWriteIDataToFiles functionToWriteToFiles;
+        private IConvertIDataToByteArray functionToWriteToStdin;
+
+        private List<String> allowedValues;
+        private String defaultValue;
+        private List<String> supportedCRSForBBox;
+        private String schema;
+
+        public Builder(
+                final String aIdentifier,
+                final Class<? extends IData> aBindingClass,
+                final boolean aIsOptional,
+                final String aOptionalAbstract
+        ) {
+            this.identifier = aIdentifier;
+            this.bindingClass = aBindingClass;
+            this.isOptional = aIsOptional;
+            this.optionalAbstract = aOptionalAbstract;
+        }
+
+        public Builder withValidator(final ICheckDataAndGetErrorMessage aValidator) {
+            this.validator = aValidator;
+            return this;
+        }
+
+        public Builder withFunctionToTransformToCmd(final IConvertIDataToCommandLineParameter aFunctionToTransformToCmd) {
+            this.functionToTransformToCmd = aFunctionToTransformToCmd;
+            return this;
+        }
+
+        public Builder withPath(final String aPath) {
+            this.path = aPath;
+            return this;
+        }
+
+        public Builder withFunctionToWriteToFiles(final IWriteIDataToFiles aFunctionToWriteToFiles) {
+            this.functionToWriteToFiles = aFunctionToWriteToFiles;
+            return this;
+        }
+
+        public Builder withFunctionToWriteToStdin(final IConvertIDataToByteArray aFunctionToWriteToStdin) {
+            this.functionToWriteToStdin = aFunctionToWriteToStdin;
+            return this;
+        }
+
+        public Builder withAllowedValues(final List<String> aAllowedValues) {
+            this.allowedValues = aAllowedValues;
+            return this;
+        }
+
+        public Builder withDefaultValue(final String aDefaultValue) {
+            this.defaultValue = aDefaultValue;
+            return this;
+        }
+
+        public Builder withSupportedCRSForBBox(final List<String> aSupportedCRSForBBox) {
+            this.supportedCRSForBBox = aSupportedCRSForBBox;
+            return this;
+        }
+
+        public Builder withSchema(final String aSchema) {
+            this.schema = aSchema;
+            return this;
+        }
+
+        public IInputParameter build() {
+            return new InputParameterImpl(this);
+        }
+    }
+}

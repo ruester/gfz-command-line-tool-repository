@@ -33,10 +33,10 @@ import java.util.Objects;
  * This class works as ConvertBytesToGenericXMLDataBinding but it returns a QuakeMLXmlDataBinding
  * It reads the bytes to an xml object and wraps it with a QuakeMLXmlDataBinding
  */
-public class ConvertBytesToQuakeMLXmlBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToQuakeMLXmlBinding implements IConvertByteArrayToIData<QuakeMLXmlDataBinding> {
 
     @Override
-    public IData convertToIData(final byte[] content) throws ConvertToIDataException {
+    public QuakeMLXmlDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
             return QuakeMLXmlDataBinding.fromValidatedXml(XmlObject.Factory.parse(byteArrayInputStream));
         } catch(final XmlException | IOException exception) {
