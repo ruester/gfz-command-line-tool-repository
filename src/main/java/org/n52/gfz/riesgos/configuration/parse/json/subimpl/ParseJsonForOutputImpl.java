@@ -32,32 +32,12 @@ import java.util.stream.Stream;
 /**
  * Sub implementation for parsing a single input input.
  */
-public class ParseJsonForOutputImpl {
+public class ParseJsonForOutputImpl extends AbstractParseJsonForInAndOutput {
 
-    /**
-     * Constant with the field attribute for title.
-     */
-    private static final String TITLE = "title";
-    /**
-     * Constant with the field attribute for abstract.
-     */
-    private static final String ABSTRACT = "abstract";
     /**
      * Constant with the field attribute for readFrom.
      */
     private static final String READ_FROM = "readFrom";
-    /**
-     * Constant with the field attribute for type.
-     */
-    private static final String TYPE = "type";
-    /**
-     * Constant with the field attribute for schema.
-     */
-    private static final String SCHEMA = "schema";
-    /**
-     * Constant with the field attribute for path.
-     */
-    private static final String PATH = "path";
 
     /**
      *
@@ -150,6 +130,8 @@ public class ParseJsonForOutputImpl {
         final Optional<String> optionalSchema =
                 getOptionalString(json, SCHEMA);
 
+        final boolean isOptional = getOptionalBoolean(json, OPTIONAL, false);
+
         if (FromStdoutOption.readFrom().equals(readFrom)) {
             if (optionsToReadFromStdout.containsKey(type)) {
                 return optionsToReadFromStdout
@@ -158,7 +140,8 @@ public class ParseJsonForOutputImpl {
                         .create(
                             identifier,
                             optionalAbstract.orElse(null),
-                            optionalSchema.orElse(null));
+                            optionalSchema.orElse(null),
+                            isOptional);
 
             } else {
                 throw new ParseConfigurationException(
@@ -170,8 +153,9 @@ public class ParseJsonForOutputImpl {
                         .get(type)
                         .getFactory()
                         .create(
-                            identifier,
-                                optionalAbstract.orElse(null));
+                                identifier,
+                                optionalAbstract.orElse(null),
+                                isOptional);
             } else {
                 throw new ParseConfigurationException(
                         "Not supported type value");
@@ -182,8 +166,9 @@ public class ParseJsonForOutputImpl {
                         .get(type)
                         .getFactory()
                         .create(
-                            identifier,
-                                optionalAbstract.orElse(null));
+                                identifier,
+                                optionalAbstract.orElse(null),
+                                isOptional);
             } else {
                 throw new ParseConfigurationException(
                         "Not supported type value");
@@ -197,10 +182,11 @@ public class ParseJsonForOutputImpl {
                         .get(type)
                         .getFactory()
                         .create(
-                            identifier,
+                                identifier,
                                 optionalAbstract.orElse(null),
                                 path,
-                                optionalSchema.orElse(null));
+                                optionalSchema.orElse(null),
+                                isOptional);
             } else {
                 throw new ParseConfigurationException(
                         "Not supported type value");
@@ -209,63 +195,6 @@ public class ParseJsonForOutputImpl {
             throw new ParseConfigurationException(
                     "Not supported readFrom value");
         }
-    }
-
-    /**
-     * Searches in the json object for a string.
-     * @param json json object to search in
-     * @param key key to search for
-     * @return value of the key if it is of type string
-     * @throws ParseConfigurationException exception that is thrown
-     * if the key is not in the json object or the value of the key is not
-     * a string
-     */
-    private String getString(
-            final JSONObject json,
-            final String key)
-            throws ParseConfigurationException {
-        if (!json.containsKey(key)) {
-            throw new ParseConfigurationException(
-                    "Missing element '" + key + "'");
-        }
-        final Object rawValue = json.get(key);
-        if (!(rawValue instanceof String)) {
-            throw new ParseConfigurationException(
-                    "Wrong type for element '" + key + "', expected a String");
-        }
-        return (String) rawValue;
-    }
-
-    /**
-     * Searches for the key in the json object.
-     * If the key is not there it returns an empty optional.
-     * If the key is there but no string, than it throws an exception.
-     * If the key is there and a string it returns the filled optional with the
-     * value.
-     * @param json json object that may contain the key
-     * @param key field to search for
-     * @return Optional with the string value
-     * @throws ParseConfigurationException exception that is thrown if the key
-     * is there but the value is not of type string
-     */
-    private Optional<String> getOptionalString(
-            final JSONObject json,
-            final String key)
-            throws ParseConfigurationException {
-        final Optional<String> result;
-        if (json.containsKey(key)) {
-            final Object rawValue = json.get(key);
-            if (!(rawValue instanceof String)) {
-                throw new ParseConfigurationException(
-                        "Wrong type for element '"
-                                + key
-                                + "', expected a String");
-            }
-            result = Optional.of((String) rawValue);
-        } else {
-            result = Optional.empty();
-        }
-        return result;
     }
 
 
@@ -285,7 +214,8 @@ public class ParseJsonForOutputImpl {
         IIdentifierWithBinding create(
                 String identifier,
                 String optionalAbstract,
-                String schema);
+                String schema,
+                boolean isOptional);
     }
 
     /**
@@ -296,9 +226,9 @@ public class ParseJsonForOutputImpl {
          * This is the enum to read a string from stdout.
          */
         STRING("string",
-                (identifier, optionalAbstract, schema) ->
+                (identifier, optionalAbstract, schema, isOptional) ->
                         IdentifierWithBindingFactory.createStdoutString(
-                                identifier, optionalAbstract)),
+                                identifier, optionalAbstract, isOptional)),
         /**
          * This is the enum to read generic xml from stdout.
          */
@@ -307,23 +237,23 @@ public class ParseJsonForOutputImpl {
          * This is the enum to read xml quakeml from stdout.
          */
         QUAKEML("quakeml",
-                (identifier, optionalAbstract, schema) ->
+                (identifier, optionalAbstract, schema, isOptional) ->
                         IdentifierWithBindingFactory.createStdoutQuakeML(
-                                identifier, optionalAbstract)),
+                                identifier, optionalAbstract, isOptional)),
         /**
          * This is the enum to read xml shakemaps from stdout.
          */
         SHAKEMAP("shakemap",
-                (identifier, optionalAbstrat, schema) ->
+                (identifier, optionalAbstract, schema, isOptional) ->
                         IdentifierWithBindingFactory.createStdoutShakemap(
-                                identifier, optionalAbstrat)),
+                                identifier, optionalAbstract, isOptional)),
         /**
          * This is the enum to read json from stdout.
          */
         JSON("json",
-                (identifier, optionalAbstract, schema) ->
+                (identifier, optionalAbstract, schema, isOptional) ->
                         IdentifierWithBindingFactory.createStdoutJson(
-                                identifier, optionalAbstract));
+                                identifier, optionalAbstract, isOptional));
 
         /**
          * This is the constant of the readFrom value
@@ -393,7 +323,8 @@ public class ParseJsonForOutputImpl {
          */
         IIdentifierWithBinding create(
                 String identifier,
-                String optionalAbstract);
+                String optionalAbstract,
+                boolean isOptional);
     }
 
     /**
@@ -477,7 +408,8 @@ public class ParseJsonForOutputImpl {
          */
         IIdentifierWithBinding create(
                 String identifier,
-                String optionalAbstract);
+                String optionalAbstract,
+                boolean isOptional);
     }
 
     /**
@@ -561,7 +493,8 @@ public class ParseJsonForOutputImpl {
                 String identifier,
                 String optionalAbstract,
                 String path,
-                String schema);
+                String schema,
+                boolean isOptional);
     }
 
     /**
@@ -578,51 +511,51 @@ public class ParseJsonForOutputImpl {
          * This is the enum to read generic files.
          */
         FILE("file",
-                (identifier, optionalAbstract, path, schema) ->
+                (identifier, optionalAbstract, path, schema, isOptional) ->
                         IdentifierWithBindingFactory.createFileOutGeneric(
-                                identifier, optionalAbstract, path)),
+                                identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read geojson from files.
          */
         GEOJSON("geojson",
-                (identifier, optionalAbstract, path, schema) ->
+                (identifier, optionalAbstract, path, schema, isOptional) ->
                         IdentifierWithBindingFactory.createFileOutGeojson(
-                                identifier, optionalAbstract, path)),
+                                identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read geotiff rasters from files.
          */
         GEOTIFF("geotiff",
-                (identifier, optionalAbstract, path, schema) ->
+                (identifier, optionalAbstract, path, schema, isOptional) ->
                         IdentifierWithBindingFactory.createFileOutGeotiff(
-                                identifier, optionalAbstract, path)),
+                                identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read shapefiles from files.
          */
         SHP("shapefile",
-                (identifier, optionalAbstract, path, schema) ->
+                (identifier, optionalAbstract, path, schema, isOptional) ->
                         IdentifierWithBindingFactory.createFileOutShapeFile(
-                                identifier, optionalAbstract, path)),
+                                identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read xml quakeml from files.
          */
         QUAKEML("quakeml",
-                (identifier, optionalAbstract, path, schema) ->
+                (identifier, optionalAbstract, path, schema, isOptional) ->
                         IdentifierWithBindingFactory.createFileOutQuakeMLFile(
-                                identifier, optionalAbstract, path)),
+                                identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read xml shakemap from files.
          */
         SHAKEMAP("shakemap",
-                (identifier, optionalAbstract, path, schema) ->
+                (identifier, optionalAbstract, path, schema, isOptional) ->
                         IdentifierWithBindingFactory.createFileOutShakemap(
-                                identifier, optionalAbstract, path)),
+                                identifier, optionalAbstract, path, isOptional)),
         /**
          * This is the enum to read json from files.
          */
         JSON("json",
-                (identifier, optionalAbstract, path, schema) ->
+                (identifier, optionalAbstract, path, schema, isOptional) ->
                         IdentifierWithBindingFactory.createFileOutJson(
-                                identifier, optionalAbstract, path));
+                                identifier, optionalAbstract, path, isOptional));
 
         /**
          * This is the constant of the readFrom value

@@ -37,6 +37,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
 
     private final String identifier;
     private final Class<? extends IData> bindingClass;
+    private final boolean isOptional;
     private final String optionalAbstract;
     private final ICheckDataAndGetErrorMessage validator;
     private final IConvertIDataToCommandLineParameter functionToTransformToCmd;
@@ -55,6 +56,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     private IdentifierWithBindingImpl(
             final String identifier,
             final Class<? extends IData> bindingClass,
+            final boolean isOptional,
             final String optionalAbstract,
             final ICheckDataAndGetErrorMessage validator,
             final IConvertIDataToCommandLineParameter functionToTransformToCmd,
@@ -71,6 +73,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
             final String schema) {
         this.identifier = identifier;
         this.bindingClass = bindingClass;
+        this.isOptional = isOptional;
         this.optionalAbstract = optionalAbstract;
         this.validator = validator;
         this.functionToTransformToCmd = functionToTransformToCmd;
@@ -95,6 +98,11 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     @Override
     public Class<? extends IData> getBindingClass() {
         return bindingClass;
+    }
+
+    @Override
+    public boolean isOptional() {
+        return isOptional;
     }
 
     @Override
@@ -205,6 +213,7 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
     public static class Builder {
         private final String identifier;
         private final Class<? extends IData> bindingClass;
+        private final boolean isOptional;
 
         private String optionalAbstract;
         private ICheckDataAndGetErrorMessage validator;
@@ -225,10 +234,12 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
          * Constructor
          * @param identifier identifier of the value
          * @param bindingClass binding class of the value
+         * @param isOptional defines if the parameter is optional or not
          */
-        public Builder(final String identifier, final Class<? extends IData> bindingClass) {
+        public Builder(final String identifier, final Class<? extends IData> bindingClass, final boolean isOptional) {
             this.identifier = identifier;
             this.bindingClass = bindingClass;
+            this.isOptional = isOptional;
         }
 
         /**
@@ -378,11 +389,22 @@ public class IdentifierWithBindingImpl implements IIdentifierWithBinding {
          */
         public IdentifierWithBindingImpl build() {
             return new IdentifierWithBindingImpl(
-                    identifier, bindingClass, optionalAbstract,
-                    validator, functionToTransformToCmd, path,
-                    functionToWriteToFiles, functionToWriteToStdin, functionToHandleStderr,
-                    functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles,
-                    allowedValues, defaultValue, supportedCRSForBBox,
+                    identifier,
+                    bindingClass,
+                    isOptional,
+                    optionalAbstract,
+                    validator,
+                    functionToTransformToCmd,
+                    path,
+                    functionToWriteToFiles,
+                    functionToWriteToStdin,
+                    functionToHandleStderr,
+                    functionToHandleExitValue,
+                    functionToHandleStdout,
+                    functionToReadFromFiles,
+                    allowedValues,
+                    defaultValue,
+                    supportedCRSForBBox,
                     schema);
         }
     }

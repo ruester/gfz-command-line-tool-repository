@@ -136,4 +136,12 @@ public interface IIdentifierWithBinding {
      * @return schema for xml data
      */
     Optional<String> getSchema();
+
+    /**
+     * Specifies if the parameter is optional or not.
+     * At the moment only meaningful for input parameters.
+     *
+     * @return true if the parameter is optional
+     */
+    boolean isOptional();
 }

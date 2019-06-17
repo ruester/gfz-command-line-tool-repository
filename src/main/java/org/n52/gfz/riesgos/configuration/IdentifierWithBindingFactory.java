@@ -90,10 +90,11 @@ public final class IdentifierWithBindingFactory {
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
-            final List<String> allowedValues) {
+            final List<String> allowedValues,
+            final boolean isOptional) {
         final IdentifierWithBindingImpl.Builder builder =
                 new IdentifierWithBindingImpl.Builder(
-                        identifier, LiteralIntBinding.class);
+                        identifier, LiteralIntBinding.class, isOptional);
         builder.withAbstract(optionalAbstract);
         builder.withFunctionToTransformToCmd(
                 new LiteralIntBindingToStringCmd(flag));
@@ -124,10 +125,11 @@ public final class IdentifierWithBindingFactory {
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
-            final List<String> allowedValues) {
+            final List<String> allowedValues,
+            final boolean isOptional) {
         final IdentifierWithBindingImpl.Builder builder =
                 new IdentifierWithBindingImpl.Builder(
-                        identifier, LiteralDoubleBinding.class);
+                        identifier, LiteralDoubleBinding.class, isOptional);
         builder.withAbstract(optionalAbstract);
         builder.withFunctionToTransformToCmd(
                 new LiteralDoubleBindingToStringCmd(flag));
@@ -158,10 +160,11 @@ public final class IdentifierWithBindingFactory {
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
-            final List<String> allowedValues) {
+            final List<String> allowedValues,
+            final boolean isOptional) {
         final IdentifierWithBindingImpl.Builder builder =
                 new IdentifierWithBindingImpl.Builder(
-                        identifier, LiteralStringBinding.class);
+                        identifier, LiteralStringBinding.class, isOptional);
         builder.withAbstract(optionalAbstract);
         builder.withFunctionToTransformToCmd(
                 new LiteralStringBindingToStringCmd(flag));
@@ -192,10 +195,11 @@ public final class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstract,
             final String flag,
-            final String defaultValue) {
+            final String defaultValue,
+            final boolean isOptional) {
         final IdentifierWithBindingImpl.Builder builder =
                 new IdentifierWithBindingImpl.Builder(
-                        identifier, LiteralBooleanBinding.class);
+                        identifier, LiteralBooleanBinding.class, isOptional);
         builder.withAbstract(optionalAbstract);
         builder.withFunctionToTransformToCmd(
                 new LiteralBooleanBindingToStringCmd(flag));
@@ -222,10 +226,11 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentBBox(
             final String identifier,
             final String optionalAbstract,
-            final List<String> supportedCRSForBBox) {
+            final List<String> supportedCRSForBBox,
+            final boolean isOptional) {
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, BoundingBoxData.class)
+                    identifier, BoundingBoxData.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new BoundingBoxDataToStringCmd())
@@ -248,7 +253,8 @@ public final class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstract,
             final String schema,
-            final String defaultFlag) {
+            final String defaultFlag,
+            final boolean isOptional) {
 
         final String filename = createUUIDFilename(".xml");
         final XmlBindingWithAllowedSchema validator;
@@ -260,7 +266,7 @@ public final class IdentifierWithBindingFactory {
         }
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GenericXMLDataBinding.class)
+                    identifier, GenericXMLDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withValidator(validator)
                 .withFunctionToTransformToCmd(
@@ -288,7 +294,8 @@ public final class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstract,
             final String schema,
-            final String flag) {
+            final String flag,
+            final boolean isOptional) {
 
         final String filename = createUUIDFilename(".xml");
         final XmlBindingWithAllowedSchema validator;
@@ -300,7 +307,7 @@ public final class IdentifierWithBindingFactory {
         }
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GenericXMLDataBinding.class)
+                    identifier, GenericXMLDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new FileToStringCmd(filename, flag))
@@ -323,13 +330,14 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentQuakeML(
             final String identifier,
             final String optionalAbstract,
-            final String flag) {
+            final String flag,
+            final boolean isOptional) {
         final String filename = createUUIDFilename(".xml");
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, QuakeMLXmlDataBinding.class)
+                    identifier, QuakeMLXmlDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new FileToStringCmd(filename, flag))
@@ -353,11 +361,12 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentGeotiff(
             final String identifier,
             final String optionalAbstract,
-            final String flag) {
+            final String flag,
+            final boolean isOptional) {
         final String filename = createUUIDFilename(".tiff");
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GeotiffBinding.class)
+                    identifier, GeotiffBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new FileToStringCmd(filename, flag))
@@ -379,10 +388,11 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentGeojson(
             final String identifier,
             final String optionalDescription,
-            final String flag) {
+            final String flag,
+            final boolean isOptional) {
         final String filename = createUUIDFilename(".json");
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GTVectorDataBinding.class)
+                    identifier, GTVectorDataBinding.class, isOptional)
                 .withAbstract(optionalDescription)
                 .withFunctionToTransformToCmd(
                         new FileToStringCmd(filename, flag))
@@ -407,12 +417,13 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentShapeFile(
             final String identifier,
             final String optionalAbstract,
-            final String flag) {
+            final String flag,
+            final boolean isOptional) {
 
         final String filename = createUUIDFilename(".shp");
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GTVectorDataBinding.class)
+                    identifier, GTVectorDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new FileToStringCmd(filename, flag))
@@ -434,11 +445,12 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentFile(
             final String identifier,
             final String optionalAbstract,
-            final String flag) {
+            final String flag,
+            final boolean isOptional) {
         final String filename = createUUIDFilename(".dat");
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GenericFileDataBinding.class)
+                    identifier, GenericFileDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new FileToStringCmd(filename, flag))
@@ -460,11 +472,12 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createCommandLineArgumentJson(
             final String identifier,
             final String optionalAbstract,
-            final String flag) {
+            final String flag,
+            final boolean isOptional) {
         final String filename = createUUIDFilename(".json");
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, JsonDataBinding.class)
+                    identifier, JsonDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToTransformToCmd(
                         new FileToStringCmd(filename, flag))
@@ -488,11 +501,12 @@ public final class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstract,
             final String defaultValue,
-            final List<String> allowedValues) {
+            final List<String> allowedValues,
+            final boolean isOptional) {
 
         final IdentifierWithBindingImpl.Builder builder =
                 new IdentifierWithBindingImpl.Builder(
-                        identifier, LiteralStringBinding.class);
+                        identifier, LiteralStringBinding.class, isOptional);
         builder.withAbstract(optionalAbstract);
         builder.withFunctionToWriteToStdin(
                 new ConvertLiteralStringToBytes());
@@ -518,9 +532,10 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStdinJson(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, JsonDataBinding.class)
+                    identifier, JsonDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToWriteToStdin(
                         new ConvertJsonDataBindingToBytes())
@@ -537,9 +552,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInGeotiff(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GeotiffBinding.class)
+                    identifier, GeotiffBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(
@@ -558,9 +574,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInGeojson(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GTVectorDataBinding.class)
+                    identifier, GTVectorDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(
@@ -583,9 +600,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInShapeFile(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GTVectorDataBinding.class)
+                    identifier, GTVectorDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(
@@ -603,12 +621,13 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInQuakeML(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, QuakeMLXmlDataBinding.class)
+                    identifier, QuakeMLXmlDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(
@@ -630,12 +649,13 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInShakemap(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, ShakemapXmlDataBinding.class)
+                    identifier, ShakemapXmlDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(
@@ -650,18 +670,19 @@ public final class IdentifierWithBindingFactory {
     /**
      * Creates an input file argument with json.
      * @param identifier identifier of the data
-     * @param optinalAbstract optional description of the parameter
+     * @param optionalAbstract optional description of the parameter
      * @param path path of file to write before starting the process
      * @return json input file
      */
     public static IIdentifierWithBinding createFileInJson(
             final String identifier,
-            final String optinalAbstract,
-            final String path) {
+            final String optionalAbstract,
+            final String path,
+            final boolean isOptional) {
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, JsonDataBinding.class)
-                .withAbstract(optinalAbstract)
+                    identifier, JsonDataBinding.class, isOptional)
+                .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(
                         new WriteSingleByteStreamToPath(
@@ -680,9 +701,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileInGeneric(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GenericFileDataBinding.class)
+                    identifier, GenericFileDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToWriteToFiles(
@@ -704,7 +726,8 @@ public final class IdentifierWithBindingFactory {
             final String identifier,
             final String optionalAbstact,
             final String path,
-            final String schema) {
+            final String schema,
+            final boolean isOptional) {
 
        final XmlBindingWithAllowedSchema validator;
 
@@ -715,7 +738,7 @@ public final class IdentifierWithBindingFactory {
         }
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GenericXMLDataBinding.class)
+                    identifier, GenericXMLDataBinding.class, isOptional)
                 .withAbstract(optionalAbstact)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -738,12 +761,13 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutQuakeMLFile(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, QuakeMLXmlDataBinding.class)
+                    identifier, QuakeMLXmlDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -767,12 +791,13 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutShakemap(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, ShakemapXmlDataBinding.class)
+                    identifier, ShakemapXmlDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -795,9 +820,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutJson(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, JsonDataBinding.class)
+                    identifier, JsonDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -819,9 +845,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutGeotiff(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GeotiffBinding.class)
+                    identifier, GeotiffBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -841,9 +868,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutGeojson(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GTVectorDataBinding.class)
+                    identifier, GTVectorDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -865,9 +893,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutGeneric(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GenericFileDataBinding.class)
+                    identifier, GenericFileDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -887,9 +916,10 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createFileOutShapeFile(
             final String identifier,
             final String optionalAbstract,
-            final String path) {
+            final String path,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GTVectorDataBinding.class)
+                    identifier, GTVectorDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withPath(path)
                 .withFunctionToReadFromFiles(
@@ -907,7 +937,8 @@ public final class IdentifierWithBindingFactory {
     public static IIdentifierWithBinding createStdoutXmlWithSchema(
             final String identifier,
             final String optionalAbstract,
-            final String schema) {
+            final String schema,
+            final boolean isOptional) {
 
         final ICheckDataAndGetErrorMessage validator;
 
@@ -918,7 +949,7 @@ public final class IdentifierWithBindingFactory {
         }
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, GenericXMLDataBinding.class)
+                    identifier, GenericXMLDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToGenericXMLDataBinding())
@@ -936,12 +967,13 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStdoutQuakeML(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, QuakeMLXmlDataBinding.class)
+                    identifier, QuakeMLXmlDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToQuakeMLXmlBinding())
@@ -960,12 +992,13 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStdoutShakemap(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, ShakemapXmlDataBinding.class)
+                    identifier, ShakemapXmlDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToShakemapXmlBinding())
@@ -983,9 +1016,10 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStdoutJson(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, JsonDataBinding.class)
+                    identifier, JsonDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToJsonDataBinding())
@@ -1001,9 +1035,10 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStdoutString(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, LiteralStringBinding.class)
+                    identifier, LiteralStringBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToLiteralStringBinding())
@@ -1019,9 +1054,10 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStderrString(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, LiteralStringBinding.class)
+                    identifier, LiteralStringBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleStderr(
                         new ConvertBytesToLiteralStringBinding())
@@ -1037,9 +1073,10 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createStderrJson(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, JsonDataBinding.class)
+                    identifier, JsonDataBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleStderr(
                         new ConvertBytesToJsonDataBinding())
@@ -1055,9 +1092,10 @@ public final class IdentifierWithBindingFactory {
      */
     public static IIdentifierWithBinding createExitValueInt(
             final String identifier,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final boolean isOptional) {
         return new IdentifierWithBindingImpl.Builder(
-                    identifier, LiteralIntBinding.class)
+                    identifier, LiteralIntBinding.class, isOptional)
                 .withAbstract(optionalAbstract)
                 .withFunctionToHandleExitValue(
                         new ConvertExitValueToLiteralIntBinding())

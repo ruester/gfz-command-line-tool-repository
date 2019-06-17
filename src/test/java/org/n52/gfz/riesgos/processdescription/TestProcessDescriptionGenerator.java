@@ -232,20 +232,20 @@ public class TestProcessDescriptionGenerator {
         @Override
         public List<IIdentifierWithBinding> getInputIdentifiers() {
             return Arrays.asList(
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmin", "the minimum longitude to search for", null, "288.0", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmax", "the maximum longitude to search for", null,  "292.0", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmin", null, null, "-70.0", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmax", null, null,  "-10.0", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmin",  null, null, "6.6", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmax",  null, null, "8.5", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmin", null, null,  "5.0", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmax", null, null,  "140.0", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("p",  null, null, "0.1", null),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmin", "the minimum longitude to search for", null, "288.0", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("lonmax", "the maximum longitude to search for", null,  "292.0", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmin", null, null, "-70.0", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("latmax", null, null,  "-10.0", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmin",  null, null, "6.6", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("mmax",  null, null, "8.5", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmin", null, null,  "5.0", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("zmax", null, null,  "140.0", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("p",  null, null, "0.1", null, false),
                     IdentifierWithBindingFactory.createCommandLineArgumentString(
                             "etype", null,null,  "deaggregation",
-                            Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlon",  null, null, "-71.5730623712764", null),
-                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlat",  null ,null, "-33.1299174879672", null)
+                            Arrays.asList("observed", "deaggregation", "stochastic", "expert"), false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlon",  null, null, "-71.5730623712764", null, false),
+                    IdentifierWithBindingFactory.createCommandLineArgumentDouble("tlat",  null ,null, "-33.1299174879672", null, false)
             );
         }
 
@@ -253,7 +253,7 @@ public class TestProcessDescriptionGenerator {
         public List<IIdentifierWithBinding> getOutputIdentifiers() {
             return Collections.singletonList(
                     IdentifierWithBindingFactory.createFileOutXmlWithSchema(
-                            "selectedRows","the resulting quakeml", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
+                            "selectedRows","the resulting quakeml", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", false)
             );
         }
 

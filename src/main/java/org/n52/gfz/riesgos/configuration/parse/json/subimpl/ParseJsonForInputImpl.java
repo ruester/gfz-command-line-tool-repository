@@ -18,13 +18,11 @@ package org.n52.gfz.riesgos.configuration.parse.json.subimpl;
  *
  */
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
 import org.n52.gfz.riesgos.configuration.IdentifierWithBindingFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,27 +33,14 @@ import java.util.stream.Stream;
 /**
  * Sub implementation for parsing a single input input.
  */
-public class ParseJsonForInputImpl {
+public class ParseJsonForInputImpl extends AbstractParseJsonForInAndOutput {
 
-    /**
-     * Constant with the field attribute for title.
-     */
-    private static final String TITLE = "title";
 
-    /**
-     * Constant with the field attribute for abstract.
-     */
-    private static final String ABSTRACT = "abstract";
 
     /**
      * Constant with the field attribute for useAs.
      */
     private static final String USE_AS = "useAs";
-
-    /**
-     * Constant with the field attribute for type.
-     */
-    private static final String TYPE = "type";
 
     /**
      * Constant with the field attribute for comamndLineFlag.
@@ -76,16 +61,6 @@ public class ParseJsonForInputImpl {
      * Constant with the field attribute for crs.
      */
     private static final String CRS = "crs";
-
-    /**
-     * Constant with the field attribute for schema.
-     */
-    private static final String SCHEMA = "schema";
-
-    /**
-     * Constant with the field attribute for path.
-     */
-    private static final String PATH = "path";
 
     /**
      * Map with ToCommandLineArgumentOption by data type name.
@@ -164,6 +139,7 @@ public class ParseJsonForInputImpl {
                 getOptionalString(json, ABSTRACT);
         final String useAs = getString(json, USE_AS);
         final String type = getString(json, TYPE);
+        final boolean isOptional = getOptionalBoolean(json, OPTIONAL, false);
 
         final Optional<String> optionalDefaultCommandLineFlag =
                 getOptionalString(json, COMMNAD_LINE_FLAG);
@@ -182,6 +158,7 @@ public class ParseJsonForInputImpl {
                         .getFactory()
                         .create(
                             identifier,
+                            isOptional,
                             optionalAbstract.orElse(null),
                             optionalDefaultCommandLineFlag.orElse(null),
                             optionalDefaultValue.orElse(null),
@@ -199,6 +176,7 @@ public class ParseJsonForInputImpl {
                         .getFactory()
                         .create(
                             identifier,
+                            isOptional,
                             optionalAbstract.orElse(null),
                             optionalDefaultValue.orElse(null),
                             optionalAllowedValues.orElse(null),
@@ -214,6 +192,7 @@ public class ParseJsonForInputImpl {
 
                 return optionsToUseAsFileInput.get(type).getFactory().create(
                         identifier,
+                        isOptional,
                         optionalAbstract.orElse(null),
                         path,
                         optionalSchema.orElse(null)
@@ -228,105 +207,6 @@ public class ParseJsonForInputImpl {
         }
     }
 
-    /**
-     * Searches in the json object for a string.
-     * @param json json object to search in
-     * @param key key to search for
-     * @return value of the key if it is of type string
-     * @throws ParseConfigurationException exception that is thrown
-     * if the key is not in the json object or the value of the key is not
-     * a string
-     */
-    private String getString(
-            final JSONObject json,
-            final String key)
-            throws ParseConfigurationException {
-        if (!json.containsKey(key)) {
-            throw new ParseConfigurationException(
-                    "Missing element '" + key + "'");
-        }
-        final Object rawValue = json.get(key);
-        if (!(rawValue instanceof String)) {
-            throw new ParseConfigurationException(
-                    "Wrong type for element '" + key + "', expected a String");
-        }
-        return (String) rawValue;
-    }
-
-    /**
-     * Searches for the key in the json object.
-     * If the key is not there it returns an empty optional.
-     * If the key is there but no string, than it throws an exception.
-     * If the key is there and a string it returns the filled optional with the
-     * value.
-     * @param json json object that may contain the key
-     * @param key field to search for
-     * @return Optional with the string value
-     * @throws ParseConfigurationException exception that is thrown if the key
-     * is there but the value is not of type string
-     */
-    private Optional<String> getOptionalString(
-            final JSONObject json,
-            final String key)
-            throws ParseConfigurationException {
-        final Optional<String> result;
-        if (json.containsKey(key)) {
-            final Object rawValue = json.get(key);
-            if (!(rawValue instanceof String)) {
-                throw new ParseConfigurationException(
-                        "Wrong type for element '"
-                                + key
-                                + "', expected a String");
-            }
-            result = Optional.of((String) rawValue);
-        } else {
-            result = Optional.empty();
-        }
-        return result;
-    }
-
-    /**
-     * Searches for an optional list of strings in the given json object.
-     * @param json json object that may contain the key
-     * @param key field to search for
-     * @return optional value of the list for the given key
-     * @throws ParseConfigurationException exception that is thrown if the
-     * key is there but the value is not a list of strings.
-     */
-    private Optional<List<String>> getOptionalListOfStrings(
-            final JSONObject json,
-            final String key)
-            throws ParseConfigurationException {
-        final Optional<List<String>> result;
-        if (json.containsKey(key)) {
-            final Object rawValue = json.get(key);
-            if (!(rawValue instanceof JSONArray)) {
-                throw new ParseConfigurationException(
-                        "Wrong type for element '"
-                                + key
-                                + "', expected a JSON array");
-            }
-            final List<String> list = new ArrayList<>();
-            for (final Object element : (JSONArray) rawValue) {
-                if (element instanceof String) {
-                    list.add((String) element);
-                } else if (
-                           element instanceof Double
-                        || element instanceof Integer) {
-                    list.add(String.valueOf(element));
-                } else {
-                    throw new ParseConfigurationException(
-                            "Wrong type for element in '"
-                                    + key
-                                    + "', expected a String");
-                }
-            }
-            result = Optional.of(list);
-        } else {
-            result = Optional.empty();
-        }
-        return result;
-    }
 
     /**
      * Interface for a factory to create the identifiers for
@@ -351,6 +231,7 @@ public class ParseJsonForInputImpl {
          */
         IIdentifierWithBinding create(
                 String identifier,
+                final boolean isOptional,
                 String optionalAbstract,
                 String defaultCommandLineFlag,
                 String defaultValue,
@@ -360,42 +241,6 @@ public class ParseJsonForInputImpl {
                 throws ParseConfigurationException;
     }
 
-    /**
-     * Function to check if a string has a value and is not empty.
-     * @param str string to check
-     * @return true if there is text inside of the string
-     */
-    private static boolean strHasValue(final String str) {
-        return str != null && (!str.isEmpty());
-    }
-
-    /**
-     * Function to check if a string is null or is empty.
-     * @param str string to check
-     * @return true if there is no text inside of the string
-     * (or it is null)
-     */
-    private static boolean strHasNoValue(final String str) {
-        return !strHasValue(str);
-    }
-
-    /**
-     * Function to check if a list has entries.
-     * @param list list to check
-     * @return true if there is a value inside of the list
-     */
-    private static boolean listHasValue(final List<String> list) {
-        return list != null && (!list.isEmpty());
-    }
-
-    /**
-     * Function to check if a list is null or empty.
-     * @param list list to check
-     * @return true if the list is null or empty
-     */
-    private static boolean listHasNoValues(final List<String> list) {
-        return !listHasValue(list);
-    }
 
     /**
      * Function to create a command line argument with an int.
@@ -413,6 +258,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentInt(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -432,7 +278,8 @@ public class ParseJsonForInputImpl {
                 optionalAbstract,
                 flag,
                 defaultValue,
-                allowedValues);
+                allowedValues,
+                isOptional);
     }
 
     /**
@@ -451,6 +298,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentDouble(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -470,7 +318,8 @@ public class ParseJsonForInputImpl {
                 optionalAbstract,
                 flag,
                 defaultValue,
-                allowedValues);
+                allowedValues,
+                isOptional);
     }
 
     /**
@@ -489,6 +338,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentString(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -508,7 +358,8 @@ public class ParseJsonForInputImpl {
                 optionalAbstract,
                 flag,
                 defaultValue,
-                allowedValues);
+                allowedValues,
+                isOptional);
     }
 
     /**
@@ -527,6 +378,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentBoolean(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -553,7 +405,8 @@ public class ParseJsonForInputImpl {
                 identifier,
                 optionalAbstract,
                 flag,
-                defaultValue);
+                defaultValue,
+                isOptional);
     }
 
     /**
@@ -572,6 +425,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentBBox(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -607,7 +461,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentBBox(
                 identifier,
                 optionalAbstract,
-                supportedCrs);
+                supportedCrs,
+                isOptional);
     }
 
     /**
@@ -626,6 +481,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentXmlFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -646,10 +502,11 @@ public class ParseJsonForInputImpl {
         }
         return IdentifierWithBindingFactory
                 .createCommandLineArgumentXmlFileWithSchema(
-                    identifier,
-                    optionalAbstract,
-                    schema,
-                    flag);
+                        identifier,
+                        optionalAbstract,
+                        schema,
+                        flag,
+                        isOptional);
     }
 
     /**
@@ -670,6 +527,7 @@ public class ParseJsonForInputImpl {
     private static IIdentifierWithBinding
                 createCommandLineArgumentXmlFileWithoutHeader(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -690,10 +548,11 @@ public class ParseJsonForInputImpl {
         }
         return IdentifierWithBindingFactory
                 .createCommandLineArgumentXmlFileWithSchemaWithoutHeader(
-                    identifier,
-                    optionalAbstract,
-                    schema,
-                    flag);
+                        identifier,
+                        optionalAbstract,
+                        schema,
+                        flag,
+                        isOptional);
     }
 
     /**
@@ -712,6 +571,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentQuakeML(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -735,7 +595,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentQuakeML(
                 identifier,
                 optionalAbstract,
-                flag);
+                flag,
+                isOptional);
     }
 
     /**
@@ -754,6 +615,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentGeotiffFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -779,7 +641,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentGeotiff(
                 identifier,
                 optionalAbstract,
-                flag);
+                flag,
+                isOptional);
     }
 
     /**
@@ -798,6 +661,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentGeojsonFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -823,7 +687,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentGeojson(
                 identifier,
                 optionalAbstract,
-                flag);
+                flag,
+                isOptional);
     }
 
     /**
@@ -842,6 +707,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentShapefile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -867,7 +733,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentShapeFile(
                 identifier,
                 optionalAbstract,
-                flag);
+                flag,
+                isOptional);
     }
 
     /**
@@ -886,6 +753,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentGenericFile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -911,7 +779,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentFile(
                 identifier,
                 optionalAbstract,
-                flag);
+                flag,
+                isOptional);
     }
 
     /**
@@ -930,6 +799,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createCommandLineArgumentJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag,
             final String defaultValue,
@@ -955,7 +825,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createCommandLineArgumentJson(
                 identifier,
                 optionalAbstract,
-                flag);
+                flag,
+                isOptional);
     }
 
     /**
@@ -1104,6 +975,7 @@ public class ParseJsonForInputImpl {
          */
         IIdentifierWithBinding create(
                 String identifier,
+                boolean isOptional,
                 String optionalAbstract,
                 String defaultValue,
                 List<String> allowedValues,
@@ -1125,6 +997,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createStdinString(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String defaultValue,
             final List<String> allowedValues,
@@ -1137,7 +1010,8 @@ public class ParseJsonForInputImpl {
                 identifier,
                 optionalAbstract,
                 defaultValue,
-                allowedValues);
+                allowedValues,
+                isOptional);
     }
 
     /**
@@ -1154,6 +1028,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createStdinJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String defaultValue,
             final List<String> allowedValues,
@@ -1172,7 +1047,8 @@ public class ParseJsonForInputImpl {
         }
         return IdentifierWithBindingFactory.createStdinJson(
                 identifier,
-                optionalAbstract);
+                optionalAbstract,
+                isOptional);
     }
 
 
@@ -1263,6 +1139,7 @@ public class ParseJsonForInputImpl {
          */
         IIdentifierWithBinding create(
                 String identifier,
+                boolean isOptional,
                 String optionalAbstract,
                 String path,
                 String schema)
@@ -1282,6 +1159,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createFileInputGeotiff(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
@@ -1292,7 +1170,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInGeotiff(
                 identifier,
                 optionalAbstract,
-                path);
+                path,
+                isOptional);
     }
 
     /**
@@ -1308,6 +1187,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createFileInputGeojson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
@@ -1318,7 +1198,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInGeojson(
                 identifier,
                 optionalAbstract,
-                path);
+                path,
+                isOptional);
     }
 
     /**
@@ -1334,6 +1215,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createFileInputGeneric(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
@@ -1344,7 +1226,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInGeneric(
                 identifier,
                 optionalAbstract,
-                path);
+                path,
+                isOptional);
     }
 
     /**
@@ -1360,6 +1243,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createFileInputShapefile(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
             final String schema) throws ParseConfigurationException {
@@ -1370,7 +1254,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInShapeFile(
                 identifier,
                 optionalAbstract,
-                path);
+                path,
+                isOptional);
     }
 
     /**
@@ -1384,6 +1269,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createFileInputQuakeML(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
             @SuppressWarnings({"unused"})
@@ -1394,7 +1280,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInQuakeML(
                 identifier,
                 optionalAbstract,
-                path);
+                path,
+                isOptional);
     }
 
     /**
@@ -1408,6 +1295,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createFileInputShakemap(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
              @SuppressWarnings({"unused"})
@@ -1417,7 +1305,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInShakemap(
                 identifier,
                 optionalAbstract,
-                path);
+                path,
+                isOptional);
     }
 
     /**
@@ -1433,6 +1322,7 @@ public class ParseJsonForInputImpl {
      */
     private static IIdentifierWithBinding createFileInputJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
             final String schema)
@@ -1444,7 +1334,8 @@ public class ParseJsonForInputImpl {
         return IdentifierWithBindingFactory.createFileInJson(
                 identifier,
                 optionalAbstract,
-                path);
+                path,
+                isOptional);
     }
 
     /**

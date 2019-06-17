@@ -224,11 +224,20 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             for(final IIdentifierWithBinding inputValue : inputIdentifiers) {
                 final String identifier = inputValue.getIdentifier();
                 if(! originalInputData.containsKey(identifier)) {
-                    throw new ExceptionReport("There is no data for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
+                    if(inputValue.isOptional()) {
+                        continue;
+                    } else {
+                        throw new ExceptionReport("There is no data for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
+                    }
                 }
                 final List<IData> list = originalInputData.get(inputValue.getIdentifier());
                 if(list.isEmpty()) {
-                    throw new ExceptionReport("There is just an empty list for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
+                    if(inputValue.isOptional()) {
+                        // if the value is optional it is fine if there is none
+                        continue;
+                    } else {
+                        throw new ExceptionReport("There is just an empty list for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
+                    }
                 }
                 final IData firstElement = list.get(0);
 
@@ -284,7 +293,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             try {
                 for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
                     final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd = inputValue.getFunctionToTransformToCmd();
-                    if (functionToTransformToCmd.isPresent()) {
+                    if (functionToTransformToCmd.isPresent() && inputData.containsKey(inputValue.getIdentifier())) {
                         final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifier()));
                         result.addAll(args);
                     }
@@ -341,14 +350,18 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
             try {
                 for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
-                    final Optional<String> optionalPath = inputValue.getPathToWriteToOrReadFromFile();
-                    final Optional<IWriteIDataToFiles> optionalWriteIDataToFiles = inputValue.getFunctionToWriteIDataToFiles();
+                    // if there is no data for that identifier it was optional
+                    // so no need to copy the input
+                    if(inputData.containsKey(inputValue.getIdentifier())) {
+                        final Optional<String> optionalPath = inputValue.getPathToWriteToOrReadFromFile();
+                        final Optional<IWriteIDataToFiles> optionalWriteIDataToFiles = inputValue.getFunctionToWriteIDataToFiles();
 
-                    if (optionalPath.isPresent() && optionalWriteIDataToFiles.isPresent()) {
-                        final String path = optionalPath.get();
-                        final IWriteIDataToFiles writeIDataToFiles = optionalWriteIDataToFiles.get();
-                        writeIDataToFiles.writeToFiles(inputData.get(inputValue.getIdentifier()), context,
-                                configuration.getWorkingDirectory(), path);
+                        if (optionalPath.isPresent() && optionalWriteIDataToFiles.isPresent()) {
+                            final String path = optionalPath.get();
+                            final IWriteIDataToFiles writeIDataToFiles = optionalWriteIDataToFiles.get();
+                            writeIDataToFiles.writeToFiles(inputData.get(inputValue.getIdentifier()), context,
+                                    configuration.getWorkingDirectory(), path);
+                        }
                     }
                 }
             } catch(final IOException ioException) {
@@ -364,11 +377,13 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         private void writeToStdin(final PrintStream stdin) throws ExceptionReport {
             try {
                 for (final IIdentifierWithBinding inputValue : inputIdentifiers) {
-                    final Optional<IConvertIDataToByteArray> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
-                    if (optionalFunctionToWriteToStdin.isPresent()) {
-                        final IConvertIDataToByteArray functionToWriteToStdin = optionalFunctionToWriteToStdin.get();
-                        final byte[] content = functionToWriteToStdin.convertToBytes(inputData.get(inputValue.getIdentifier()));
-                        IOUtils.write(content, stdin);
+                    if(inputData.containsKey(inputValue.getIdentifier())) {
+                        final Optional<IConvertIDataToByteArray> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
+                        if (optionalFunctionToWriteToStdin.isPresent()) {
+                            final IConvertIDataToByteArray functionToWriteToStdin = optionalFunctionToWriteToStdin.get();
+                            final byte[] content = functionToWriteToStdin.convertToBytes(inputData.get(inputValue.getIdentifier()));
+                            IOUtils.write(content, stdin);
+                        }
                     }
                 }
             } catch(final IOException exception) {
@@ -384,7 +399,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         private void handleStderr(final String stderr) throws ExceptionReport {
 
             final Optional<IStderrHandler> mainStderrHandler = configuration.getStderrHandler();
-            if(mainStderrHandler.isPresent()) {
+            if (mainStderrHandler.isPresent()) {
                 try {
                     mainStderrHandler.get().handleStderr(stderr, logger::debug);
                 } catch (final NonEmptyStderrException exception) {
@@ -394,12 +409,22 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             try {
                 for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
                     final Optional<IConvertByteArrayToIData> stderrHandler = outputValue.getFunctionToHandleStderr();
-                    if (stderrHandler.isPresent()) {
-                        final IData iData = stderrHandler.get().convertToIData(stderr.getBytes());
-                        putIntoOutput(outputValue, iData);
+
+                    try {
+                        if (stderrHandler.isPresent()) {
+                            final IData iData = stderrHandler.get().convertToIData(stderr.getBytes());
+                            putIntoOutput(outputValue, iData);
+                        }
+                    } catch (final ConvertToIDataException convertException) {
+                        if(outputValue.isOptional()) {
+                            logger.info("Can't read from stderr.");
+                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                        } else {
+                            throw convertException;
+                        }
                     }
                 }
-            } catch(final ConvertToIDataException convertException) {
+            } catch (final ConvertToIDataException convertException) {
                 throw new ExceptionReport("Can't read from stderr", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertException);
             }
 
@@ -437,11 +462,21 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             }
             try {
                 for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
-                    final Optional<IConvertExitValueToIData> exitValueHandler = outputValue.getFunctionToHandleExitValue();
-                    if (exitValueHandler.isPresent()) {
-                        final IData iData = exitValueHandler.get().convertToIData(exitValue);
-                        putIntoOutput(outputValue, iData);
+                    try {
+                        final Optional<IConvertExitValueToIData> exitValueHandler = outputValue.getFunctionToHandleExitValue();
+                        if (exitValueHandler.isPresent()) {
+                            final IData iData = exitValueHandler.get().convertToIData(exitValue);
+                            putIntoOutput(outputValue, iData);
+                        }
+                    } catch (final ConvertToIDataException convertException) {
+                        if(outputValue.isOptional()) {
+                            logger.info("Can't read from exit value.");
+                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                        } else {
+                            throw convertException;
+                        }
                     }
+
                 }
             } catch(final ConvertToIDataException convertException) {
                 throw new ExceptionReport("Can't read from exit value", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertException);
@@ -457,10 +492,19 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
             try {
                 for (final IIdentifierWithBinding outputValue : outputIdentifiers) {
-                    final Optional<IConvertByteArrayToIData> stdoutHandler = outputValue.getFunctionToHandleStdout();
-                    if (stdoutHandler.isPresent()) {
-                        final IData iData = stdoutHandler.get().convertToIData(stdout.getBytes());
-                        putIntoOutput(outputValue, iData);
+                    try {
+                        final Optional<IConvertByteArrayToIData> stdoutHandler = outputValue.getFunctionToHandleStdout();
+                        if (stdoutHandler.isPresent()) {
+                            final IData iData = stdoutHandler.get().convertToIData(stdout.getBytes());
+                            putIntoOutput(outputValue, iData);
+                        }
+                    } catch(final ConvertToIDataException convertException) {
+                        if(outputValue.isOptional()) {
+                            logger.info("Can't read from stdout.");
+                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                        } else {
+                            throw convertException;
+                        }
                     }
                 }
             } catch(final ConvertToIDataException convertException) {
@@ -475,14 +519,24 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
             try {
                 for(final IIdentifierWithBinding outputValue : outputIdentifiers) {
-                    final Optional<String> optionalPath = outputValue.getPathToWriteToOrReadFromFile();
-                    final Optional<IReadIDataFromFiles> optionalFunctionToReadFromFiles = outputValue.getFunctionToReadIDataFromFiles();
-                    if(optionalPath.isPresent() && optionalFunctionToReadFromFiles.isPresent()) {
-                        final String path = optionalPath.get();
-                        final IReadIDataFromFiles functionToReadFromFiles = optionalFunctionToReadFromFiles.get();
-                        final IData iData = functionToReadFromFiles.readFromFiles(context, configuration.getWorkingDirectory(), path);
-                        putIntoOutput(outputValue, iData);
+                    try {
+                        final Optional<String> optionalPath = outputValue.getPathToWriteToOrReadFromFile();
+                        final Optional<IReadIDataFromFiles> optionalFunctionToReadFromFiles = outputValue.getFunctionToReadIDataFromFiles();
+                        if(optionalPath.isPresent() && optionalFunctionToReadFromFiles.isPresent()) {
+                            final String path = optionalPath.get();
+                            final IReadIDataFromFiles functionToReadFromFiles = optionalFunctionToReadFromFiles.get();
+                            final IData iData = functionToReadFromFiles.readFromFiles(context, configuration.getWorkingDirectory(), path);
+                            putIntoOutput(outputValue, iData);
+                        }
+                    } catch(final IOException | ConvertToIDataException exception) {
+                        if(outputValue.isOptional()) {
+                            logger.info("Can't read from output file.");
+                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                        } else {
+                            throw exception;
+                        }
                     }
+
                 }
             } catch(final IOException ioException) {
                 throw new ExceptionReport("Files could not be read", ExceptionReport.REMOTE_COMPUTATION_ERROR, ioException);

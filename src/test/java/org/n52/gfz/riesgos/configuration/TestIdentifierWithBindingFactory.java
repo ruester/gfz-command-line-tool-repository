@@ -36,16 +36,16 @@ public class TestIdentifierWithBindingFactory {
      */
     @Test
     public void testEquals() {
-        final IIdentifierWithBinding identifier1 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null, null);
-        final IIdentifierWithBinding identifier2 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null, null);
+        final IIdentifierWithBinding identifier1 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null, null, false);
+        final IIdentifierWithBinding identifier2 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null, null, false);
 
         assertEquals("Both are the same", identifier1, identifier2);
 
-        final IIdentifierWithBinding identifier3 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, "0", null);
+        final IIdentifierWithBinding identifier3 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, "0", null, false);
         assertNotEquals("The third one is different", identifier1, identifier3);
 
-        final IIdentifierWithBinding identifier4 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"));
-        final IIdentifierWithBinding identifier5 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"));
+        final IIdentifierWithBinding identifier4 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"), false);
+        final IIdentifierWithBinding identifier5 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"), false);
 
         assertEquals("4 and 5 are equal", identifier4, identifier5);
     }

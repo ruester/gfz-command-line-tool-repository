@@ -116,7 +116,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
             for (final IIdentifierWithBinding input : configuration.getInputIdentifiers()) {
                 final InputDescriptionType inputDescriptionType = dataInputs.addNewInput();
-                inputDescriptionType.setMinOccurs(BigInteger.ONE);
+                if(input.isOptional()) {
+                    inputDescriptionType.setMinOccurs(BigInteger.ZERO);
+                } else {
+                    inputDescriptionType.setMinOccurs(BigInteger.ONE);
+                }
+
                 inputDescriptionType.setMaxOccurs(BigInteger.ONE);
 
                 final CodeType inputIdentifier = inputDescriptionType.addNewIdentifier();
