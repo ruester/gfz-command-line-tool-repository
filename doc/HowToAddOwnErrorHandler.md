@@ -322,7 +322,7 @@ The next step is to let the parser know about this option on
 parsing the json configuration files.
 
 Just add the following line to the StderrHandlerOption enum in
-the ParseJsonConfigurationImpl class:
+the org.n52.gfz.riesgos.configuration.parse.stderrhandler package:
 
 ```
 R_ERROR("rError", RErrorMessageStderrHandler::new)
