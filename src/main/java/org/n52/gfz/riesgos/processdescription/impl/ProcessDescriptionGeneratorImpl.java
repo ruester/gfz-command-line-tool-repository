@@ -137,57 +137,8 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
                     inputAbstractType.setStringValue(inputAbstract.get());
                 }
 
-                final Class<? extends IData> inputDataTypeClass = input.getBindingClass();
-                final List<Class<?>> interfaces = findInterfaces(inputDataTypeClass);
-
-                if(interfaces.stream().anyMatch(ILiteralData.class::equals)) {
-                    final LiteralInputType literalData = inputDescriptionType.addNewLiteralData();
-                    final Constructor<?>[] constructors = inputDataTypeClass.getConstructors();
-
-                    final Optional<String> inputClassType = findSimpleNameOfFirstConstructorParameter(constructors);
-
-                    if(inputClassType.isPresent()) {
-                        final DomainMetadataType datatype = literalData.addNewDataType();
-                        datatype.setReference("xs:" + inputClassType.get().toLowerCase());
-
-                        final Optional<List<String>> optionalAllowedValues = input.getAllowedValues();
-                        if(optionalAllowedValues.isPresent()) {
-                            final AllowedValuesDocument.AllowedValues allowedValues = literalData.addNewAllowedValues();
-                            for(final String allowedValue : optionalAllowedValues.get()) {
-                                allowedValues.addNewValue().setStringValue(allowedValue);
-                            }
-                        } else {
-                            literalData.addNewAnyValue();
-                        }
-
-                        final Optional<String> optionalDefaultValue = input.getDefaultValue();
-                        optionalDefaultValue.ifPresent(literalData::setDefaultValue);
-
-                    }
-                } else if(interfaces.stream().anyMatch(IBBOXData.class::equals)) {
-                    final SupportedCRSsType bboxData = inputDescriptionType.addNewBoundingBoxData();
-                    final Optional<List<String>> optionalSupportedCrsList = input.getSupportedCRSForBBox();
-                    if(optionalSupportedCrsList.isPresent()) {
-                        final List<String> supportedCrsList = optionalSupportedCrsList.get();
-                        for(int i = 0; i < supportedCrsList.size(); i++) {
-                            final String supportedCrs = supportedCrsList.get(i);
-                            if (i == 0) {
-                                final SupportedCRSsType.Default defaultCRS = bboxData.addNewDefault();
-                                defaultCRS.setCRS(supportedCrs);
-                            } else if(i == 1) {
-                                final CRSsType supportedCRS = bboxData.addNewSupported();
-                                supportedCRS.addCRS(supportedCrs);
-                            } else {
-                                bboxData.getSupported().addCRS(supportedCrs);
-                            }
-                        }
-                    }
-                } else if(interfaces.stream().anyMatch(IComplexData.class::equals)) {
-                    final SupportedComplexDataInputType complexData = inputDescriptionType.addNewComplexData();
-                    final List<IParser> parsers = parserSupplier.get();
-                    final List<IParser> foundParsers = findParser(parsers, inputDataTypeClass);
-                    addInputFormats(complexData, foundParsers);
-                }
+                final IAddTypeDataForInput addTypeDataForInput = dispatchAddInputType(input);
+                addTypeDataForInput.addTypeData(inputDescriptionType);
             }
         }
 
@@ -207,43 +158,236 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
                 abstractType.setStringValue(outputAbstract.get());
             }
 
-            final Class<?> outputDataTypeClass = output.getBindingClass();
-            final List<Class<?>> interfaces = findInterfaces(outputDataTypeClass);
-
-            if(interfaces.stream().anyMatch(ILiteralData.class::equals)) {
-                final LiteralOutputType literalOutputType = outputDescriptionType.addNewLiteralOutput();
-                final Constructor<?>[] constructors = outputDataTypeClass.getConstructors();
-
-                final Optional<String> outputClassType = findSimpleNameOfFirstConstructorParameter(constructors);
-                outputClassType.ifPresent(
-                        classType -> literalOutputType.addNewDataType().setReference("xs:" + classType.toLowerCase()));
-
-            } else if(interfaces.stream().anyMatch(IBBOXData.class::equals)) {
-                final SupportedCRSsType bboxData = outputDescriptionType.addNewBoundingBoxOutput();
-                final Optional<List<String>> optionalSupportedCrsList = output.getSupportedCRSForBBox();
-                boolean isFirst = true;
-                if(optionalSupportedCrsList.isPresent()) {
-                    for (final String supportedCrs : optionalSupportedCrsList.get()) {
-                        if (isFirst) {
-                            final SupportedCRSsType.Default defaultCRS = bboxData.addNewDefault();
-                            defaultCRS.setCRS(supportedCrs);
-                            final CRSsType supportedCRS = bboxData.addNewSupported();
-                            supportedCRS.addCRS(supportedCrs);
-                            isFirst = false;
-                        } else {
-                            bboxData.getSupported().addCRS(supportedCrs);
-                        }
-                    }
-                }
-            } else if(interfaces.stream().anyMatch(IComplexData.class::equals)) {
-                final SupportedComplexDataType complexData = outputDescriptionType.addNewComplexOutput();
-                final List<IGenerator> generators = generatorSupplier.get();
-                final List<IGenerator> foundGenerators = findGenerators(generators, outputDataTypeClass);
-                addOutputFormats(complexData, foundGenerators);
-            }
+            final IAddTypeDataForOutput addTypeDataForOutput = dispatchAddOutputType(output);
+            addTypeDataForOutput.addTypeData(outputDescriptionType);
         }
         return result;
     }
 
 
+
+    private interface IAddTypeDataForInput {
+        void addTypeData(final InputDescriptionType inputDescriptionType);
+    }
+
+    private class AddTypeForInputLiteralImpl implements IAddTypeDataForInput {
+
+        private IInputParameter inputParameter;
+
+        AddTypeForInputLiteralImpl(
+                final IInputParameter aInputParameter
+        ) {
+            this.inputParameter = aInputParameter;
+        }
+        @Override
+        public void addTypeData(final InputDescriptionType inputDescriptionType) {
+            final LiteralInputType literalData = inputDescriptionType.addNewLiteralData();
+            final Constructor<?>[] constructors = inputParameter.getBindingClass().getConstructors();
+
+            final Optional<String> inputClassType = findSimpleNameOfFirstConstructorParameter(constructors);
+
+            if(inputClassType.isPresent()) {
+                final DomainMetadataType datatype = literalData.addNewDataType();
+                datatype.setReference("xs:" + inputClassType.get().toLowerCase());
+
+                final Optional<List<String>> optionalAllowedValues = inputParameter.getAllowedValues();
+                if(optionalAllowedValues.isPresent()) {
+                    final AllowedValuesDocument.AllowedValues allowedValues = literalData.addNewAllowedValues();
+                    for(final String allowedValue : optionalAllowedValues.get()) {
+                        allowedValues.addNewValue().setStringValue(allowedValue);
+                    }
+                } else {
+                    literalData.addNewAnyValue();
+                }
+
+                final Optional<String> optionalDefaultValue = inputParameter.getDefaultValue();
+                optionalDefaultValue.ifPresent(literalData::setDefaultValue);
+
+            }
+        }
+    }
+
+    private class AddTypeForInputBBoxImpl implements IAddTypeDataForInput {
+        private final IInputParameter inputParameter;
+
+        AddTypeForInputBBoxImpl(
+                final IInputParameter aInputParameter
+        ) {
+            this.inputParameter = aInputParameter;
+        }
+
+        @Override
+        public void addTypeData(final InputDescriptionType inputDescriptionType) {
+            final SupportedCRSsType bboxData = inputDescriptionType.addNewBoundingBoxData();
+            final Optional<List<String>> optionalSupportedCrsList = inputParameter.getSupportedCRSForBBox();
+            if(optionalSupportedCrsList.isPresent()) {
+                final List<String> supportedCrsList = optionalSupportedCrsList.get();
+                for(int i = 0; i < supportedCrsList.size(); i++) {
+                    final String supportedCrs = supportedCrsList.get(i);
+                    if (i == 0) {
+                        final SupportedCRSsType.Default defaultCRS = bboxData.addNewDefault();
+                        defaultCRS.setCRS(supportedCrs);
+                    } else if(i == 1) {
+                        final CRSsType supportedCRS = bboxData.addNewSupported();
+                        supportedCRS.addCRS(supportedCrs);
+                    } else {
+                        bboxData.getSupported().addCRS(supportedCrs);
+                    }
+                }
+            }
+        }
+    }
+
+    private class AddTypeForInputComplexImpl implements IAddTypeDataForInput {
+        private final IInputParameter inputParameter;
+
+        AddTypeForInputComplexImpl(
+                final IInputParameter aInputParameter
+        ) {
+            this.inputParameter = aInputParameter;
+        }
+
+        @Override
+        public void addTypeData(final InputDescriptionType inputDescriptionType) {
+            final SupportedComplexDataInputType complexData = inputDescriptionType.addNewComplexData();
+            final List<IParser> parsers = parserSupplier.get();
+            final List<IParser> foundParsers = findParser(parsers, inputParameter.getBindingClass());
+            addInputFormats(complexData, foundParsers);
+        }
+    }
+
+    private class AddTypeForInputUnknownImpl implements IAddTypeDataForInput {
+
+        private IInputParameter inputParameter;
+
+        AddTypeForInputUnknownImpl(
+                final IInputParameter aInputParameter
+        ) {
+            this.inputParameter = aInputParameter;
+        }
+
+        @Override
+        public void addTypeData(final InputDescriptionType inputDescriptionType) {
+            LOGGER.debug("Don't know how to add the the type data for " + inputParameter.getBindingClass());
+        }
+    }
+
+    private IAddTypeDataForInput dispatchAddInputType(final IInputParameter inputParameter) {
+        final Class<? extends IData> inputDataTypeClass = inputParameter.getBindingClass();
+        final List<Class<?>> interfaces = findInterfaces(inputDataTypeClass);
+
+        if (interfaces.stream().anyMatch(ILiteralData.class::equals)) {
+            return new AddTypeForInputLiteralImpl(inputParameter);
+        } else if (interfaces.stream().anyMatch(IBBOXData.class::equals)) {
+            return new AddTypeForInputBBoxImpl(inputParameter);
+        } else if(interfaces.stream().anyMatch(IComplexData.class::equals)) {
+            return new AddTypeForInputComplexImpl(inputParameter);
+        } else {
+            return new AddTypeForInputUnknownImpl(inputParameter);
+        }
+    }
+
+    private IAddTypeDataForOutput dispatchAddOutputType(final IOutputParameter outputParameter) {
+        final Class<?> outputDataTypeClass = outputParameter.getBindingClass();
+        final List<Class<?>> interfaces = findInterfaces(outputDataTypeClass);
+
+        if (interfaces.stream().anyMatch(ILiteralData.class::equals)) {
+            return new AddTypeForOutputLiteralImpl(outputParameter);
+        } else if (interfaces.stream().anyMatch(IBBOXData.class::equals)) {
+            return new AddTypeForOutputBBoxImpl(outputParameter);
+        } else if (interfaces.stream().anyMatch(IComplexData.class::equals)) {
+            return new AddTypeForOutputComplexImpl(outputParameter);
+        } else {
+            return new AddTypeForOutputUnknownImpl(outputParameter);
+        }
+    }
+
+    private interface IAddTypeDataForOutput {
+        void addTypeData(final OutputDescriptionType outputDescriptionType);
+    }
+
+    private class AddTypeForOutputLiteralImpl implements IAddTypeDataForOutput {
+
+        private final IOutputParameter outputParameter;
+
+        AddTypeForOutputLiteralImpl(
+                final IOutputParameter aOutputParameter
+        ) {
+            this.outputParameter = aOutputParameter;
+        }
+
+        @Override
+        public void addTypeData(OutputDescriptionType outputDescriptionType) {
+            final LiteralOutputType literalOutputType = outputDescriptionType.addNewLiteralOutput();
+            final Constructor<?>[] constructors = outputParameter.getBindingClass().getConstructors();
+
+            final Optional<String> outputClassType = findSimpleNameOfFirstConstructorParameter(constructors);
+            outputClassType.ifPresent(
+                    classType -> literalOutputType.addNewDataType().setReference("xs:" + classType.toLowerCase()));
+        }
+    }
+
+    private class AddTypeForOutputBBoxImpl implements IAddTypeDataForOutput {
+
+        private final IOutputParameter outputParameter;
+
+        AddTypeForOutputBBoxImpl(
+                final IOutputParameter aOutputParameter
+        ) {
+            this.outputParameter = aOutputParameter;
+        }
+        @Override
+        public void addTypeData(OutputDescriptionType outputDescriptionType) {
+            final SupportedCRSsType bboxData = outputDescriptionType.addNewBoundingBoxOutput();
+            final Optional<List<String>> optionalSupportedCrsList = outputParameter.getSupportedCRSForBBox();
+            boolean isFirst = true;
+            if(optionalSupportedCrsList.isPresent()) {
+                for (final String supportedCrs : optionalSupportedCrsList.get()) {
+                    if (isFirst) {
+                        final SupportedCRSsType.Default defaultCRS = bboxData.addNewDefault();
+                        defaultCRS.setCRS(supportedCrs);
+                        final CRSsType supportedCRS = bboxData.addNewSupported();
+                        supportedCRS.addCRS(supportedCrs);
+                        isFirst = false;
+                    } else {
+                        bboxData.getSupported().addCRS(supportedCrs);
+                    }
+                }
+            }
+
+        }
+    }
+
+    private class AddTypeForOutputComplexImpl implements IAddTypeDataForOutput {
+        private final IOutputParameter outputParameter;
+
+        AddTypeForOutputComplexImpl(
+                final IOutputParameter aOutputParameter
+        ) {
+            this.outputParameter = aOutputParameter;
+        }
+        @Override
+        public void addTypeData(OutputDescriptionType outputDescriptionType) {
+            final SupportedComplexDataType complexData = outputDescriptionType.addNewComplexOutput();
+            final List<IGenerator> generators = generatorSupplier.get();
+            final List<IGenerator> foundGenerators = findGenerators(generators, outputParameter.getBindingClass());
+            addOutputFormats(complexData, foundGenerators);
+        }
+    }
+
+    private static class AddTypeForOutputUnknownImpl implements IAddTypeDataForOutput {
+
+        private final IOutputParameter outputParameter;
+
+        AddTypeForOutputUnknownImpl(
+                final IOutputParameter aOutputParameter
+        ) {
+            this.outputParameter = aOutputParameter;
+        }
+
+        @Override
+        public void addTypeData(OutputDescriptionType outputDescriptionType) {
+            LOGGER.debug("Don't know how to add the the type data for " + outputParameter.getBindingClass());
+        }
+    }
 }

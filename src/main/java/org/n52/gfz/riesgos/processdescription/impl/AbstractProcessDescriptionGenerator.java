@@ -96,39 +96,15 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
      * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
      */
     protected void addInputFormats(final SupportedComplexDataInputType complexData, final List<IParser> foundParsers) {
-        final ComplexDataCombinationsType supportedInputFormat = complexData.addNewSupported();
 
-        for(final IParser parser : foundParsers) {
-            final List<FormatEntry> supportedFullFormats = parser.getSupportedFullFormats();
-            if (complexData.getDefault() == null) {
-                ComplexDataCombinationType defaultInputFormat = complexData.addNewDefault();
-                final FormatEntry format = supportedFullFormats.get(0);
-                final ComplexDataDescriptionType supportedFormat = defaultInputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                String encoding = format.getEncoding();
-                if (encoding != null && !encoding.equals("")) {
-                    supportedFormat.setEncoding(encoding);
-                }
+        final List<FormatEntry> supportedFullFormats = foundParsers.stream()
+                .map(IParser::getSupportedFullFormats)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
 
-                String schema = format.getSchema();
-                if (schema != null && !schema.equals("")) {
-                    supportedFormat.setSchema(schema);
-                }
-            }
-
-            for(final FormatEntry format : supportedFullFormats) {
-                final ComplexDataDescriptionType supportedFormat = supportedInputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                if (format.getEncoding() != null) {
-                    supportedFormat.setEncoding(format.getEncoding());
-                }
-
-                if (format.getSchema() != null) {
-                    supportedFormat.setSchema(format.getSchema());
-                }
-            }
-        }
+        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
     }
+
 
     /*
      * adds a complex output format to the description of the process outputs
@@ -137,38 +113,52 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
      * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
      */
     protected void addOutputFormats(SupportedComplexDataType complexData, List<IGenerator> foundGenerators) {
-        final ComplexDataCombinationsType supportedOutputFormat = complexData.addNewSupported();
+        final List<FormatEntry> supportedFullFormats = foundGenerators.stream()
+                .map(IGenerator::getSupportedFullFormats)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
 
-        for(final IGenerator generator : foundGenerators) {
-            final List<FormatEntry> supportedFullFormats = generator.getSupportedFullFormats();
-            if (complexData.getDefault() == null) {
-                ComplexDataCombinationType defaultInputFormat = complexData.addNewDefault();
-                final FormatEntry format = supportedFullFormats.get(0);
-                final ComplexDataDescriptionType supportedFormat = defaultInputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                String encoding = format.getEncoding();
-                if (encoding != null && !encoding.equals("")) {
-                    supportedFormat.setEncoding(encoding);
-                }
+        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
+    }
 
-                String schema = format.getSchema();
-                if (schema != null && !schema.equals("")) {
-                    supportedFormat.setSchema(schema);
-                }
+    /**
+     * Adds the complex output formats from the given defaultFormat and the format entries.
+     * @param complexData supported complex data type to add the formats
+     * @param defaultFormat default format (must also be included in the the list with format entries
+     * @param formatEntries iterable with formats
+     */
+    protected void addFormats(final SupportedComplexDataType complexData, final FormatEntry defaultFormat, final Iterable<FormatEntry> formatEntries) {
+        final ComplexDataCombinationsType complexDataCombinationsType = complexData.addNewSupported();
+
+        if (complexData.getDefault() == null) {
+            final ComplexDataCombinationType defaultInputFormat = complexData.addNewDefault();
+            final ComplexDataDescriptionType supportedFormat = defaultInputFormat.addNewFormat();
+            supportedFormat.setMimeType(defaultFormat.getMimeType());
+            final String encoding = defaultFormat.getEncoding();
+            if (encoding != null && !encoding.equals("")) {
+                supportedFormat.setEncoding(encoding);
             }
 
-            for(final FormatEntry format : supportedFullFormats) {
-                final ComplexDataDescriptionType supportedFormat = supportedOutputFormat.addNewFormat();
-                supportedFormat.setMimeType(format.getMimeType());
-                if (format.getEncoding() != null) {
-                    supportedFormat.setEncoding(format.getEncoding());
-                }
-
-                if (format.getSchema() != null) {
-                    supportedFormat.setSchema(format.getSchema());
-                }
+            final String schema = defaultFormat.getSchema();
+            if (schema != null && !schema.equals("")) {
+                supportedFormat.setSchema(schema);
             }
         }
+
+        for(final FormatEntry formatEntry : formatEntries) {
+
+            final ComplexDataDescriptionType supportedFormat = complexDataCombinationsType.addNewFormat();
+            supportedFormat.setMimeType(formatEntry.getMimeType());
+            final String encoding = formatEntry.getEncoding();
+            if (encoding != null && !encoding.equals("")) {
+                supportedFormat.setEncoding(encoding);
+            }
+            final String schema = formatEntry.getSchema();
+            if (schema != null && !schema.equals("")) {
+                supportedFormat.setSchema(schema);
+            }
+        }
+
     }
 
     /*
