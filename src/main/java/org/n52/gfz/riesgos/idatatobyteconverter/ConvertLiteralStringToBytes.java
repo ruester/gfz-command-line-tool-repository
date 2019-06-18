@@ -20,7 +20,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.Objects;
@@ -28,17 +27,12 @@ import java.util.Objects;
 /**
  * Function to convert a literal string to a byte array
  */
-public class ConvertLiteralStringToBytes implements IConvertIDataToByteArray {
+public class ConvertLiteralStringToBytes implements IConvertIDataToByteArray<LiteralStringBinding> {
 
     @Override
-    public byte[] convertToBytes(IData iData) throws ConvertToBytesException {
-        if(iData instanceof LiteralStringBinding) {
-            final LiteralStringBinding binding = (LiteralStringBinding) iData;
-            final String strContent = binding.getPayload();
-            return strContent.getBytes();
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
-        }
+    public byte[] convertToBytes(LiteralStringBinding binding) throws ConvertToBytesException {
+       final String strContent = binding.getPayload();
+       return strContent.getBytes();
     }
 
     @Override

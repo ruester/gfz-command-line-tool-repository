@@ -22,7 +22,7 @@ import org.n52.gfz.riesgos.algorithm.TransformDataFormatProcess;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
-import org.n52.gfz.riesgos.configuration.parse.json.ParseJsonConfigurationImpl;
+import org.n52.gfz.riesgos.configuration.parse.formats.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;

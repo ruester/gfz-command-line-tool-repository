@@ -29,23 +29,23 @@ import static org.junit.Assert.assertNotEquals;
 /**
  * test class for the identifierWithBindingFactory
  */
-public class TestIdentifierWithBindingFactory {
+public class TestInputParameterFactory {
 
     /**
      * Tests equality
      */
     @Test
     public void testEquals() {
-        final IIdentifierWithBinding identifier1 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null, null);
-        final IIdentifierWithBinding identifier2 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, null, null);
+        final IInputParameter identifier1 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", false, null, null, null, null);
+        final IInputParameter identifier2 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", false, null, null, null, null);
 
         assertEquals("Both are the same", identifier1, identifier2);
 
-        final IIdentifierWithBinding identifier3 = IdentifierWithBindingFactory.createCommandLineArgumentDouble("val1", null, null, "0", null);
+        final IInputParameter identifier3 = InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("val1", false, null, null, "0", null);
         assertNotEquals("The third one is different", identifier1, identifier3);
 
-        final IIdentifierWithBinding identifier4 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"));
-        final IIdentifierWithBinding identifier5 = IdentifierWithBindingFactory.createCommandLineArgumentString("val2", null, null, "x", Arrays.asList("x", "y"));
+        final IInputParameter identifier4 = InputParameterFactory.INSTANCE.createCommandLineArgumentString("val2", false, null, null, "x", Arrays.asList("x", "y"));
+        final IInputParameter identifier5 = InputParameterFactory.INSTANCE.createCommandLineArgumentString("val2", false, null, null, "x", Arrays.asList("x", "y"));
 
         assertEquals("4 and 5 are equal", identifier4, identifier5);
     }

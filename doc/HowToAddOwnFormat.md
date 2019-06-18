@@ -130,10 +130,8 @@ public class JsonParser extends AbstractParser implements IMimeTypeAndSchemaCons
                 return new JsonDataBinding(jsonObject);
             }
             throw new RuntimeException("Can't parse the content to an json object");
-        } catch(final IOException ioException) {
-            throw new RuntimeException(ioException);
-        } catch(final ParseException parseException) {
-            throw new RuntimeException(parseException);
+        } catch(final IOException | ParseException exception) {
+            throw new RuntimeException(exception);
         }
     }
 }
@@ -187,8 +185,7 @@ public class JsonGenerator extends AbstractGenerator implements IMimeTypeAndSche
         if(data instanceof JsonDataBinding) {
             final JsonDataBinding binding = (JsonDataBinding) data;
             final JSONObject jsonObject = binding.getPayload();
-            final ByteArrayInputStream inputStream = new ByteArrayInputStream(jsonObject.toJSONString().getBytes());
-            return inputStream;
+            return new ByteArrayInputStream(jsonObject.toJSONString().getBytes());
         } else {
             LOGGER.error("Can't convert another data binding as JsonDataBinding");
         }
@@ -230,10 +227,10 @@ import java.util.Objects;
 /**
  * Function to convert the content of a byte array to a JsonDataBinding
  */
-public class ConvertBytesToJsonDataBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToJsonDataBinding implements IConvertByteArrayToIData<JsonDataBinding> {
 
     @Override
-    public IData convertToIData(final byte[] content) throws ConvertToIDataException {
+    public JsonDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
         final String text = new String(content);
         final JSONParser parser = new JSONParser();
         try {
@@ -279,25 +276,20 @@ import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 
 import java.util.Objects;
 
 /**
  * Function to convert a json data binding to a byte array
  */
-public class ConvertJsonDataBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertJsonDataBindingToBytes implements IConvertIDataToByteArray<JsonDataBinding> {
 
     @Override
-    public byte[] convertToBytes(final IData data) throws ConvertToBytesException {
-        if(data instanceof JsonDataBinding) {
-            final JsonDataBinding binding = (JsonDataBinding) data;
-            final JSONObject jsonObject = binding.getPayload();
-            final String content = jsonObject.toJSONString();
-            return content.getBytes();
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
-        }
+    public byte[] convertToBytes(final JsonDataBinding binding) throws ConvertToBytesException {
+       final JSONObject jsonObject = binding.getPayload();
+       final String content = jsonObject.toJSONString();
+       return content.getBytes();
+       
     }
 
     @Override
@@ -317,167 +309,296 @@ public class ConvertJsonDataBindingToBytes implements IConvertIDataToByteArray {
 
 ## Add the type as input for stdin
 
-If we want to add json as input type for stdin we must change
-the content of the ParseJsonForInputImpl class.
+If we want to add json as input type for stdin we must register this
+option in the org.n52.gfz.riesgos.configuration.parse packages.
 
 We will add the following line to the ToStdinInputOption enum:
 
 ```
-JSON("json", ParseJsonForInputImpl::createStdinJson),
+JSON("json", new StdinJsonFactory()),
 ```
 
-And we also need to add the method mentioned there:
+And we also need to add the a factory class mentioned there:
 
 ```
-    private static IIdentifierWithBinding createStdinJson(
+package org.n52.gfz.riesgos.configuration.parse.input.stdin;
+
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.InputParameterFactory;
+import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+
+import java.util.List;
+
+/**
+ * Implementation to create a stdin input with json.
+ */
+public class StdinJsonFactory implements  IAsStdinInputFactory {
+    /**
+     *  Checks some attributes and deligates the creation.
+     * @param identifier identifier of the data
+     * @param isOptional true if the parameter is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultValue optional default value
+     * @param allowedValues optional list with allowed values
+     * @param schema optional schema
+     * @return input parameter
+     * @throws ParseConfigurationException exception that may be thrown if there
+     * are values given that can't be used in this implementation.
+     */
+    @Override
+    public IInputParameter create(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String defaultValue,
             final List<String> allowedValues,
             final String schema) throws ParseConfigurationException {
-        if(strHasValue(schema)) {
-            throw new ParseConfigurationException("schema is not supported for json");
+        if (ParseUtils.strHasValue(schema)) {
+            throw new ParseConfigurationException(
+                    "schema is not supported for json");
         }
-        if(strHasValue(defaultValue)) {
-            throw new ParseConfigurationException("defaultValue is not supported for json");
+        if (ParseUtils.strHasValue(defaultValue)) {
+            throw new ParseConfigurationException(
+                    "defaultValue is not supported for json");
         }
-        if(listHasValue(allowedValues)) {
-            throw new ParseConfigurationException("allowedValues are not supported for json");
+        if (ParseUtils.listHasValue(allowedValues)) {
+            throw new ParseConfigurationException(
+                    "allowedValues are not supported for json");
         }
-        return IdentifierWithBindingFactory.createStdinJson(identifier, optionalAbstract);
+        return InputParameterFactory.INSTANCE.createStdinJson(
+                identifier,
+                isOptional, optionalAbstract
+        );
     }
+}
 ```
 
 We also want to add the createStdinJson method to the 
-IdentifierWithBindingFactory class:
+InputParameterFactory.INSTANCE:
 
 ```
-    /**
-     * creates a stdin input with json
-     * @param identifier identifier of the data
-     * @param optionalAbstract optional description of the parameter
-     * @return object with information about how to use the value as a json stdin input parameter
-     */
-    public static IIdentifierWithBinding createStdinJson(
-            final String identifier,
-            final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
-                .withAbstract(optionalAbstract)
-                .withFunctionToWriteToStdin(new ConvertJsonDataBindingToBytes())
-                .build();
-    }
+        /**
+         * Creates a stdin input with json.
+         * @param identifier identifier of the data
+         * @param isOptional true if the value is optional
+         * @param optionalAbstract optional description of the parameter
+         * @return object with information about how to use the value
+         * as a json stdin input parameter
+         */
+        public IInputParameter createStdinJson(
+                final String identifier,
+                final boolean isOptional,
+                final String optionalAbstract) {
+            return new InputParameterImpl.Builder<>(
+                    identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                    .withFunctionToWriteToStdin(
+                            new ConvertJsonDataBindingToBytes())
+                    .build();
+        }
 ```
 
 ## Add the type as input as commandLineArgument
 
 Similar to the process for adding it as stdin type, we add
-a line on the ToCommandLineArgumentOption enum in the
-ParseJsonForInputImpl class.
+a line on the ToCommandLineArgumentOption enum.
 
 ```
-JSON("json", ParseJsonforInputImpl::createCommandLineArgumentJson)
+JSON("json",
+            new CommandLineArgumentJsonFileFactory()),
 ```
 
-And we also add the method createCommandLineArgumentJson in this class:
+And we also add the factory class:
 
 ```
-private static IIdentifierWithBinding createCommandLineArgumentJson(
+package org.n52.gfz.riesgos.configuration.parse.input.commandlineargument;
+
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.InputParameterFactory;
+import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+
+import java.util.List;
+
+/**
+ * Implementation to create a command line argument with a json file.
+ */
+public class CommandLineArgumentJsonFileFactory
+        implements IAsCommandLineArgumentFactory {
+
+    /**
+     * Checks some attributes and delegates the creation.
+     * @param identifier identifier of the data
+     * @param isOptional true if the input is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultCommandLineFlag optional default command line flag
+     * @param defaultValue optional default value
+     * @param allowedValues optional list with allowed values
+     * @param supportedCrs optional list with supported crs
+     * @param schema optional schema
+     * @return input parameter
+     * @throws ParseConfigurationException exception that may be thrown
+     * if a argument is used that is not supported for this type.
+     */
+    @Override
+    public IInputParameter create(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
-            final String flag,
+            final String defaultCommandLineFlag,
             final String defaultValue,
-            final List<String> allowedValue,
+            final List<String> allowedValues,
             final List<String> supportedCrs,
             final String schema) throws ParseConfigurationException {
-        if(strHasValue(defaultValue)) {
-            throw new ParseConfigurationException("default is not supported for json");
+        if (ParseUtils.strHasValue(defaultValue)) {
+            throw new ParseConfigurationException(
+                    "default is not supported for json");
         }
-        if(listHasValue(allowedValue)) {
-            throw new ParseConfigurationException("allowed values are not supported for json");
+        if (ParseUtils.listHasValue(allowedValues)) {
+            throw new ParseConfigurationException(
+                    "allowed values are not supported for json");
         }
-        if(listHasValue(supportedCrs)) {
-            throw new ParseConfigurationException("crs are not supported for json");
+        if (ParseUtils.listHasValue(supportedCrs)) {
+            throw new ParseConfigurationException(
+                    "crs are not supported for json");
         }
-        if(strHasValue(schema)) {
-            throw new ParseConfigurationException("schema is not supported for json");
+        if (ParseUtils.strHasValue(schema)) {
+            throw new ParseConfigurationException(
+                    "schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createCommandLineArgumentJson(identifier, optionalAbstract, flag);
+        return InputParameterFactory.INSTANCE.createCommandLineArgumentJson(
+                identifier,
+                isOptional, optionalAbstract,
+                defaultCommandLineFlag
+        );
+    }
 }
 ```
 
 And we add the createCommandLineArgumentJson method to the 
-IdentifierWithBindingFactory class:
+InputParameterFactory.INSTANCE:
 
 ```
     /**
-     * Creates a command line argument (json file) with a file path that will be written down as
-     * a temporary file
+     * Creates a command line argument (json file) with a file path that will
+     * be written down as a temporary file.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param flag optional command line flag
      * @return json command line argument
      */
-    public static IIdentifierWithBinding createCommandLineArgumentJson(
+    public IInputParameter createCommandLineArgumentJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String flag) {
         final String filename = createUUIDFilename(".json");
 
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
-                .withAbstract(optionalAbstract)
-                .withFunctionToTransformToCmd(new FileToStringCmd(filename, flag))
-                .withPath(filename)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
-                .build();
+        final InputParameterImpl.Builder<JsonDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        JsonDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, flag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertJsonDataBindingToBytes()));
+        return builder.build();
     }
 ```
 
 ## Add the type as file input
 
 This is again similar to adding the type as stdin input.
-First we have to add an entry for the ToFileInputOption enum in ParseJsonForInputImpl
-class:
+First we have to add an entry for the ToFileInputOption enum:
 
 ```
-JSON("json", ParseJsonForInputImpl::createFileInputJson)
+JSON("json", new InputFileJsonFactory())
 ```
 
-Then we add the method in this class:
+Then we add the factory class:
 
 ```
-private static IIdentifierWithBinding createFileInputJson(
+package org.n52.gfz.riesgos.configuration.parse.input.file;
+
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.InputParameterFactory;
+import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+
+/**
+ * Implementation to create a file input with json.
+ */
+public class InputFileJsonFactory implements IAsFileInputFactory {
+
+    /**
+     * Factory method to create the input parameter with the given data.
+     * Not all implementations support all of this arguments.
+     *
+     * @param identifier       identifier of the data
+     * @param isOptional       true if the input is optional
+     * @param optionalAbstract optional abstract (description) of the data
+     * @param path             path to the file
+     * @param schema           optional schema
+     * @return input parameter
+     * @throws ParseConfigurationException exception that will be thrown
+     * if an unsupported argument is given to the implementation.
+     */
+    @Override
+    public IInputParameter create(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path,
-            final String schema) throws ParseConfigurationException {
-        if(strHasValue(schema)) {
-            throw new ParseConfigurationException("schema is not supported for json");
+            final String schema)
+
+            throws ParseConfigurationException {
+
+        if (ParseUtils.strHasValue(schema)) {
+            throw new ParseConfigurationException(
+                    "schema is not supported for json");
         }
-        return IdentifierWithBindingFactory.createFileInJson(
-            identifier, optionalAbstract, path);
+        return InputParameterFactory.INSTANCE.createFileInJson(
+                identifier,
+                isOptional, optionalAbstract,
+                path
+        );
+    }
 }
 ```
 
-And we add the createFileInJson to the IdentifierWithBindingFactory class:
+And we add the createFileInJson to the InputParameterFactory.INSTANCE:
 
 ```
     /**
-     * Creates an input file argument with json
+     * Creates an input file argument with json.
      * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of file to write before starting the process
      * @return json input file
      */
-    public static IIdentifierWithBinding createFileInJson(
+    public IInputParameter createFileInJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract,
             final String path) {
 
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
-                .withAbstract(optionalAbstract)
-                .withPath(path)
-                .withFunctionToWriteToFiles(new WriteSingleByteStreamToPath(new ConvertJsonDataBindingToBytes()))
-                .build();
+        final InputParameterImpl.Builder<JsonDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        JsonDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertJsonDataBindingToBytes()));
+        return builder.build();
     }
 ```
 
@@ -485,89 +606,112 @@ And we add the createFileInJson to the IdentifierWithBindingFactory class:
 
 To add the type as output type for stdout, we have to add the 
 following line
-to the FromStdoutOption enum in the ParseJsonForOutputImpl class:
-
-```
-JSON("json", (identifier, optionalAbstract, schema) -> IdentifierWithBindingFactory.createStdoutJson(identifier, optionalAbstract))
-```
-
-And we have to add the createStdoutJson method to the IdentifierWithBindingFactory class:
+to the FromStdoutOption enum:
 
 ```
     /**
-     * Creates a json output (via stdout)
-     * @param identifier identifier of the data
-     * @param optionalAbstract optional description of the parameter
-     * @return output argument containing json that will be read from stdout
+     * This is the enum to read json from stdout.
      */
-    public static IIdentifierWithBinding createStdoutJson(
-            final String identifier,
-            final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
-                .withAbstract(optionalAbstract)
-                .withFunctionToHandleStdout(new ConvertBytesToJsonDataBinding())
-                .build();
-    }
+    JSON("json",
+            (identifier, isOptional, optionalAbstract, schema) ->
+                    OutputParameterFactory.INSTANCE.createStdoutJson(
+                            identifier, isOptional, optionalAbstract))
+```
+
+And we have to add the createStdoutJson method to the OutputParameterFactory.INSTANCE:
+
+```
+        /**
+         * Creates a json output (via stdout).
+         * @param identifier identifier of the data
+         * @param isOptional true if the output is optional
+         * @param optionalAbstract optional description of the parameter
+         * @return output argument containing json that will be read from stdout
+         */
+        public IOutputParameter createStdoutJson(
+                final String identifier,
+                final boolean isOptional,
+                final String optionalAbstract) {
+            return new OutputParameterImpl.Builder<>(
+                    identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                    .withFunctionToHandleStdout(
+                            new ConvertBytesToJsonDataBinding())
+                    .build();
+        }
 ```
 
 ## Add the type as output for stderr
 
 This is again very similar to adding it to stdout.
-We have to add the line to the FromStderrOption enum in the ParseJsonForOutputImpl
-class:
+We have to add the line to the FromStderrOption enum:
 
 ```
-JSON("json", IdentifierWithBindingFactory::createStderrJson)
+JSON("json", OutputParameterFactory.INSTANCE::createStderrJson)
 ```
 
-and the createStderrJson method in IdentifierWithBindingFactory:
+and the createStderrJson method in OutputParameterFactory.INSTANCE:
 
 ```
     /**
-     * Creates a json output (via stderr)
+     * Creates a json output (via stderr).
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
-     * @return output argument containing the json that will be read from stderr
+     * @return output argument containing the json that will be read from
+     * stderr
      */
-    public static IIdentifierWithBinding createStderrJson(
+    public IOutputParameter createStderrJson(
             final String identifier,
+            final boolean isOptional,
             final String optionalAbstract) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
-                .withAbstract(optionalAbstract)
-                .withFunctionToHandleStderr(new ConvertBytesToJsonDataBinding())
+        return new OutputParameterImpl.Builder<>(
+                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                .withFunctionToHandleStderr(
+                        new ConvertBytesToJsonDataBinding())
                 .build();
     }
 ```
 
 ## Add the type as output for files
 
-We have to add the line to the FromFilesOption enum in the ParseJsonForOutputImpl
-class:
+We have to add the line to the FromFilesOption enum:
 
 ```
-JSON("json", (identifier, optionalAbstract, path, schema) -> IdentifierWithBindingFactory.createFileOutJson(identifier, optionalAbstract, path));
+JSON("json",
+            (identifier, isOptional, optionalAbstract, path, schema) ->
+                    OutputParameterFactory.INSTANCE.createFileOutJson(
+                            identifier, isOptional, optionalAbstract, path))
 ```
 
 Then we have to add the method createFileOutJson method to the
-IdentifierWithBindingFactory class.
+OutputParameterFactory.INSTANCE.
 
 ```
     /**
-     * Creates a xml file for json on a given path
+     * Creates a xml file for json on a given path.
      * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
      * @param path path of the file to read after process termination
-     * @return output argument containing the json that will be read from a given file
+     * @return output argument containing the json that will be
+     * read from a given file
      */
-    public static IIdentifierWithBinding createFileOutJson(
+    public IOutputParameter createFileOutJson(
             final String identifier,
-            final Stirng optionalAbstract,
+            final boolean isOptional,
+            final String optionalAbstract,
             final String path) {
-        return new IdentifierWithBindingImpl.Builder(identifier, JsonDataBinding.class)
-                .withAbstract(optionalAbstract)
-                .withPath(path)
-                .withFunctionToReadFromFiles(new ReadSingleByteStreamFromPath(new ConvertBytesToJsonDataBinding()))
-                .build();
+        final OutputParameterImpl.Builder<JsonDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        JsonDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToJsonDataBinding()));
+        return builder.build();
     }
 ```
 

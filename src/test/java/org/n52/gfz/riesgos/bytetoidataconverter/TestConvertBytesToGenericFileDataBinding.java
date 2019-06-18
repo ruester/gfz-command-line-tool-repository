@@ -21,6 +21,7 @@ package org.n52.gfz.riesgos.bytetoidataconverter;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
+import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -35,16 +36,16 @@ public class TestConvertBytesToGenericFileDataBinding {
      */
     @Test
     public void testEquals() {
-        final IConvertByteArrayToIData converter1 = new ConvertBytesToGenericFileDataBinding();
-        final IConvertByteArrayToIData converter2 = new ConvertBytesToGenericFileDataBinding();
+        final IConvertByteArrayToIData<GenericFileDataBinding> converter1 = new ConvertBytesToGenericFileDataBinding();
+        final IConvertByteArrayToIData<GenericFileDataBinding> converter2 = new ConvertBytesToGenericFileDataBinding();
 
         assertEquals("Both are the same", converter1, converter2);
 
-        final IConvertByteArrayToIData converter3 = new ConvertBytesToGenericFileDataBinding("application/octet-stream");
+        final IConvertByteArrayToIData<GenericFileDataBinding> converter3 = new ConvertBytesToGenericFileDataBinding("application/octet-stream");
 
         assertEquals("the octet-stream is the default", converter1, converter3);
 
-        final IConvertByteArrayToIData converter4 = new ConvertBytesToGenericFileDataBinding("text/xml");
+        final IConvertByteArrayToIData<GenericFileDataBinding> converter4 = new ConvertBytesToGenericFileDataBinding("text/xml");
 
         assertNotEquals("The converter4 is different", converter1, converter4);
 

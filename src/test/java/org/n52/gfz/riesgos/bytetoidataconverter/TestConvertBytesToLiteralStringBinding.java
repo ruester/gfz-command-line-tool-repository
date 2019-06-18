@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.bytetoidataconverter;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -27,8 +28,8 @@ public class TestConvertBytesToLiteralStringBinding {
 
     @Test
     public void testEquals() {
-        final IConvertByteArrayToIData converter1 = new ConvertBytesToLiteralStringBinding();
-        final IConvertByteArrayToIData converter2 = new ConvertBytesToLiteralStringBinding();
+        final IConvertByteArrayToIData<LiteralStringBinding> converter1 = new ConvertBytesToLiteralStringBinding();
+        final IConvertByteArrayToIData<LiteralStringBinding> converter2 = new ConvertBytesToLiteralStringBinding();
 
         assertEquals("Both must be the equal", converter1, converter2);
     }

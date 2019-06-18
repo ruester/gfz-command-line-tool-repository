@@ -25,7 +25,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import java.io.File;
@@ -39,10 +38,10 @@ import java.util.Objects;
 /**
  * Implementation to read multiple files for a shapefile
  */
-public class ReadShapeFileFromPath implements IReadIDataFromFiles {
+public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBinding> {
 
     @Override
-    public IData readFromFiles(
+    public GTVectorDataBinding readFromFiles(
             final IExecutionContext context,
             final String workingDirectory,
             final String path) throws IOException {

@@ -23,7 +23,7 @@ import org.n52.wps.io.data.IData;
  * Interface to convert a byte array to an IData element
  */
 @FunctionalInterface
-public interface IConvertByteArrayToIData {
+public interface IConvertByteArrayToIData<T extends IData> {
 
     /**
      * converts the byte array to an IData element
@@ -31,5 +31,5 @@ public interface IConvertByteArrayToIData {
      * @return IData element
      * @throws ConvertToIDataException exception if there is an internal error / exception on conversion
      */
-    IData convertToIData(final byte[] content) throws ConvertToIDataException;
+    T convertToIData(final byte[] content) throws ConvertToIDataException;
 }

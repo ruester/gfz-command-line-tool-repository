@@ -22,7 +22,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
 import java.util.Objects;
@@ -30,18 +29,13 @@ import java.util.Objects;
 /**
  * Implementation to convert a GenericXMLDataBinding to a byte array
  */
-public class ConvertGenericXMLDataBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertGenericXMLDataBindingToBytes<T extends GenericXMLDataBinding> implements IConvertIDataToByteArray<T> {
 
     @Override
-    public byte[] convertToBytes(IData iData) throws ConvertToBytesException {
-        if(iData instanceof GenericXMLDataBinding) {
-            final GenericXMLDataBinding binding = (GenericXMLDataBinding) iData;
-            final XmlObject xmlObject = binding.getPayload();
-            final String strContent = xmlObject.xmlText();
-            return strContent.getBytes();
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
-        }
+    public byte[] convertToBytes(T binding) throws ConvertToBytesException {
+        final XmlObject xmlObject = binding.getPayload();
+        final String strContent = xmlObject.xmlText();
+        return strContent.getBytes();
     }
 
     @Override

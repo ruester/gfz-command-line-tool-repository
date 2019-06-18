@@ -21,7 +21,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 
 import java.io.File;
@@ -32,22 +31,17 @@ import java.util.Objects;
 /**
  * Implementation to convert a GeotiffBinding to a byte array
  */
-public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray {
+public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray<GeotiffBinding> {
 
     @Override
-    public byte[] convertToBytes(final IData iData) throws ConvertToBytesException {
+    public byte[] convertToBytes(final GeotiffBinding binding) throws ConvertToBytesException {
 
-        if(iData instanceof GeotiffBinding) {
-            final GeotiffBinding binding = (GeotiffBinding) iData;
-            final File file = binding.getPayload();
+        final File file = binding.getPayload();
 
-            try(final FileReader fileReader = new FileReader(file)) {
-                return IOUtils.toByteArray(fileReader);
-            } catch(final IOException exception) {
-                throw new ConvertToBytesException(exception);
-            }
-        } else {
-            throw new ConvertToBytesException("Wrong binding class");
+        try(final FileReader fileReader = new FileReader(file)) {
+            return IOUtils.toByteArray(fileReader);
+        } catch(final IOException exception) {
+            throw new ConvertToBytesException(exception);
         }
     }
 

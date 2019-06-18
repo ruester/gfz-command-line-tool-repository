@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -33,8 +34,8 @@ public class TestConvertGTVectorDataBindingToBytes {
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToByteArray converter1 = new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON);
-        final IConvertIDataToByteArray converter2 = new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON);
+        final IConvertIDataToByteArray<GTVectorDataBinding> converter1 = new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON);
+        final IConvertIDataToByteArray<GTVectorDataBinding> converter2 = new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON);
 
         assertEquals("Both are equal", converter1, converter2);
     }

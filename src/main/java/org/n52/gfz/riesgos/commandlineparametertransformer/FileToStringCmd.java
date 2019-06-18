@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class FileToStringCmd implements IConvertIDataToCommandLineParameter {
+public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandLineParameter<T> {
 
     private final String filename;
     private final String defaultCommandLineFlag;
@@ -42,7 +42,7 @@ public class FileToStringCmd implements IConvertIDataToCommandLineParameter {
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(IData iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(T iData) throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
         Optional.ofNullable(defaultCommandLineFlag).ifPresent(result::add);
         if(filename == null) {

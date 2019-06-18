@@ -16,9 +16,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  * limitations under the Licence.
  */
 
-import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ import java.util.Optional;
  * Can also handle default flags.
  */
 public class LiteralStringBindingToStringCmd
-        implements IConvertIDataToCommandLineParameter {
+        implements IConvertIDataToCommandLineParameter<LiteralStringBinding> {
 
     /**
      * Internal default flag (for example '--text').
@@ -58,26 +56,19 @@ public class LiteralStringBindingToStringCmd
 
     /**
      * Converts the IData to a list of arguments.
-     * @param iData element to convert
+     * @param binding element to convert
      * @return list of strings
-     * @throws ConvertToStringCmdException exception if the input can't be
      * handled by the function
      */
     @Override
     public List<String> convertToCommandLineParameter(
-            final IData iData)
-            throws ConvertToStringCmdException {
+            final LiteralStringBinding binding) {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
 
-        if (iData instanceof LiteralStringBinding) {
-            final LiteralStringBinding binding = (LiteralStringBinding) iData;
-            final String value = binding.getPayload();
-            result.add(value);
-        } else {
-            throw new ConvertToStringCmdException("Wrong binding class");
-        }
+        final String value = binding.getPayload();
+        result.add(value);
         return result;
     }
 

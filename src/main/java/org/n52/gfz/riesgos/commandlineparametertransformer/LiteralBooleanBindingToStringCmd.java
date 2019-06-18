@@ -18,9 +18,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  *
  */
 
-import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ import java.util.Objects;
  * Used to add it as a command line argument.
  * Uses the flag to add it if the value is true.
  */
-public class LiteralBooleanBindingToStringCmd implements IConvertIDataToCommandLineParameter {
+public class LiteralBooleanBindingToStringCmd implements IConvertIDataToCommandLineParameter<LiteralBooleanBinding> {
 
     private final String commandLineFlag;
 
@@ -45,19 +43,15 @@ public class LiteralBooleanBindingToStringCmd implements IConvertIDataToCommandL
 
     }
     @Override
-    public List<String> convertToCommandLineParameter(IData iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(LiteralBooleanBinding binding) {
 
         final List<String> result = new ArrayList<>();
 
-        if(iData instanceof LiteralBooleanBinding) {
-            final LiteralBooleanBinding binding = (LiteralBooleanBinding) iData;
-            final Boolean value = binding.getPayload();
-            if(value) {
-                result.add(commandLineFlag);
-            }
-        } else {
-            throw new ConvertToStringCmdException("Wrong binding class");
+        final Boolean value = binding.getPayload();
+        if(value) {
+            result.add(commandLineFlag);
         }
+
 
         return result;
     }

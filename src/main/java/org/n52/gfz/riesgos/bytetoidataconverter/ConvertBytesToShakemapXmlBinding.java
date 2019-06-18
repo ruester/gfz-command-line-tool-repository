@@ -23,7 +23,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -32,10 +31,10 @@ import java.util.Objects;
 /**
  * Function to convert the content of a byte array to a ShakemapXmlBinding
  */
-public class ConvertBytesToShakemapXmlBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToShakemapXmlBinding implements IConvertByteArrayToIData<ShakemapXmlDataBinding> {
 
     @Override
-    public IData convertToIData(final byte[] content) throws ConvertToIDataException {
+    public ShakemapXmlDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
             return ShakemapXmlDataBinding.fromXml(XmlObject.Factory.parse(byteArrayInputStream));
         } catch(final XmlException | IOException exception) {

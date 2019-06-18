@@ -19,7 +19,6 @@ package org.n52.gfz.riesgos.bytetoidataconverter;
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.Objects;
@@ -27,10 +26,10 @@ import java.util.Objects;
 /**
  * Function to convert bytes to a literal string binding
  */
-public class ConvertBytesToLiteralStringBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToLiteralStringBinding implements IConvertByteArrayToIData<LiteralStringBinding> {
 
     @Override
-    public IData convertToIData(final byte[] content) {
+    public LiteralStringBinding convertToIData(final byte[] content) {
         return new LiteralStringBinding(new String(content));
     }
 

@@ -24,7 +24,6 @@ import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 
 import java.util.Objects;
 
@@ -32,7 +31,7 @@ import java.util.Objects;
  * Function to convert the content of a byte array to a JsonDataBinding.
  */
 public class ConvertBytesToJsonDataBinding
-        implements IConvertByteArrayToIData {
+        implements IConvertByteArrayToIData<JsonDataBinding> {
 
     /**
      * Converts the byte array to an IData element.
@@ -42,7 +41,7 @@ public class ConvertBytesToJsonDataBinding
      * internal error / exception on conversion
      */
     @Override
-    public IData convertToIData(final byte[] content)
+    public JsonDataBinding convertToIData(final byte[] content)
             throws ConvertToIDataException {
         final String text = new String(content);
         final JSONParser parser = new JSONParser();

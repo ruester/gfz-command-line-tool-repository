@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.readidatafromfiles;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -33,8 +34,8 @@ public class TestReadShapeFileFromPath {
      */
     @Test
     public void testEquals() {
-        final IReadIDataFromFiles reader1 = new ReadShapeFileFromPath();
-        final IReadIDataFromFiles reader2 = new ReadShapeFileFromPath();
+        final IReadIDataFromFiles<GTVectorDataBinding> reader1 = new ReadShapeFileFromPath();
+        final IReadIDataFromFiles<GTVectorDataBinding> reader2 = new ReadShapeFileFromPath();
 
         assertEquals("Both must be equal", reader1, reader2);
     }

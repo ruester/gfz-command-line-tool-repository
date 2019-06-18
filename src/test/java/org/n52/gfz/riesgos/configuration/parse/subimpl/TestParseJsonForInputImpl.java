@@ -28,8 +28,8 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBinding
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.parse.json.subimpl.ParseJsonForInputImpl;
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl.ParseJsonForInputImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
@@ -37,7 +37,6 @@ import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
-import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytesWithoutHeader;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
@@ -126,13 +125,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralIntBinding", LiteralIntBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -163,13 +158,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralIntBinding", LiteralIntBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -201,13 +192,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralIntBindingToStringCmd("--a");
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralIntBinding", LiteralIntBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -237,13 +224,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralDoubleBinding", LiteralDoubleBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -274,13 +257,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralDoubleBinding", LiteralDoubleBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -312,13 +291,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralDoubleBindingToStringCmd("--a");
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralDoubleBinding", LiteralDoubleBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -348,13 +323,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralStringBindingToStringCmd();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -385,13 +356,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralStringBindingToStringCmd();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -423,13 +390,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralStringBindingToStringCmd("--a");
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -464,13 +427,9 @@ public class TestParseJsonForInputImpl {
         final ICheckDataAndGetErrorMessage validator = new LiteralStringBindingWithAllowedValues(Arrays.asList("a", "b", "c"));
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertTrue("There is a validator", inputIdentifier.getValidator().isPresent());
@@ -505,13 +464,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new LiteralBooleanBindingToStringCmd("--verbose");
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralBoolean", LiteralBooleanBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -543,13 +498,9 @@ public class TestParseJsonForInputImpl {
         final IConvertIDataToCommandLineParameter converter = new BoundingBoxDataToStringCmd();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a BoundingBoxData", BoundingBoxData.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -580,16 +531,50 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
             final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
+            assertTrue("There is a schema", inputIdentifier.getSchema().isPresent());
+            assertEquals("The schema is as expected", "http://some-schema.org/path", inputIdentifier.getSchema().get());
+            assertTrue("There is a validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertTrue("There is a function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertEquals("The function to write the data to files is as expected", writer, inputIdentifier.getFunctionToWriteIDataToFiles().get());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the filename as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+
+    /**
+     * Test with a xml file as command line argument with a schema but with a flag
+     */
+    @Test
+    public void parseCommandLineArgumentXmlFileWithSchemaWithCmdFlag() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"type\": \"xml\"," +
+                "\"commandLineFlag\": \"--xml\"," +
+                "\"schema\": \"http://some-schema.org/path\" " +
+                "}";
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
+
+        try {
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, inputIdentifier.getBindingClass());
+            assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
+            final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path, "--xml");
             assertTrue("There is a schema", inputIdentifier.getSchema().isPresent());
             assertEquals("The schema is as expected", "http://some-schema.org/path", inputIdentifier.getSchema().get());
             assertTrue("There is a validator", inputIdentifier.getValidator().isPresent());
@@ -619,132 +604,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
-            assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
-            final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
-            final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
-            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
-            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
-            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertTrue("There is a function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertEquals("The function to write the data to files is as expected", writer, inputIdentifier.getFunctionToWriteIDataToFiles().get());
-            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the filename as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
-            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
-        } catch(final ParseConfigurationException exception) {
-            fail("There should be no exception");
-        }
-    }
-
-    /**
-     * Test with a xml file as command line argument with a schema but without the header
-     */
-    @Test
-    public void parseCommandLineArgumentXmlFileWithSchemaWithoutHeader() {
-        final String text = "{" +
-                "\"title\": \"a\"," +
-                "\"useAs\": \"commandLineArgument\"," +
-                "\"type\": \"xmlWithoutHeader\"," +
-                "\"schema\": \"http://some-schema.org/path\" " +
-                "}";
-        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader());
-
-        try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
-            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
-            assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
-            assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
-            final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
-            final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
-            assertTrue("There is a schema", inputIdentifier.getSchema().isPresent());
-            assertEquals("The schema is as expected", "http://some-schema.org/path", inputIdentifier.getSchema().get());
-            assertTrue("There is a validator", inputIdentifier.getValidator().isPresent());
-            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertTrue("There is a function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertEquals("The function to write the data to files is as expected", writer, inputIdentifier.getFunctionToWriteIDataToFiles().get());
-            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the filename as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
-            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
-        } catch(final ParseConfigurationException exception) {
-            fail("There should be no exception");
-        }
-    }
-
-    /**
-     * Test with a xml file as command line argument with a schema but without the header but with a flag
-     */
-    @Test
-    public void parseCommandLineArgumentXmlFileWithSchemaWithoutHeaderWithCmdFlag() {
-        final String text = "{" +
-                "\"title\": \"a\"," +
-                "\"useAs\": \"commandLineArgument\"," +
-                "\"type\": \"xmlWithoutHeader\"," +
-                "\"commandLineFlag\": \"--xml\"," +
-                "\"schema\": \"http://some-schema.org/path\" " +
-                "}";
-        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader());
-
-        try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
-            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
-            assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
-            assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
-            final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
-            final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path, "--xml");
-            assertTrue("There is a schema", inputIdentifier.getSchema().isPresent());
-            assertEquals("The schema is as expected", "http://some-schema.org/path", inputIdentifier.getSchema().get());
-            assertTrue("There is a validator", inputIdentifier.getValidator().isPresent());
-            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertTrue("There is a function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertEquals("The function to write the data to files is as expected", writer, inputIdentifier.getFunctionToWriteIDataToFiles().get());
-            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertEquals("The converter is to write the filename as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
-            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
-        } catch(final ParseConfigurationException exception) {
-            fail("There should be no exception");
-        }
-    }
-
-    /**
-     * Test with a xml file as command line argument without a schema but without the header
-     */
-    @Test
-    public void parseCommandLineArgumentXmlFileWithoutSchemaWithoutHeader() {
-        final String text = "{" +
-                "\"title\": \"a\"," +
-                "\"useAs\": \"commandLineArgument\"," +
-                "\"type\": \"xmlWithoutHeader\"," +
-                "}";
-        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader());
-
-        try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
-            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
-            assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
             final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
@@ -766,24 +628,20 @@ public class TestParseJsonForInputImpl {
      * Test with a xml file as command line argument without a schema but without the header but with a flag
      */
     @Test
-    public void parseCommandLineArgumentXmlFileWithoutSchemaWithoutHeaderWithCmdFlag() {
+    public void parseCommandLineArgumentXmlFileWithoutSchemaWithCmdFlag() {
         final String text = "{" +
                 "\"title\": \"a\"," +
                 "\"useAs\": \"commandLineArgument\"," +
-                "\"type\": \"xmlWithoutHeader\"," +
+                "\"type\": \"xml\"," +
                 "\"commandLineFlag\": \"--xml\"," +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytesWithoutHeader());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
             final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path, "--xml");
@@ -815,13 +673,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes());
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GeotiffBinding", GeotiffBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
             final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
@@ -853,13 +707,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON));
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
             final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
@@ -891,13 +741,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteShapeFileToPath();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
             final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
@@ -929,13 +775,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes());
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GenericFileDataBinding", GenericFileDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             final String path = inputIdentifier.getPathToWriteToOrReadFromFile().get();
             final IConvertIDataToCommandLineParameter converter = new FileToStringCmd(path);
@@ -967,13 +809,9 @@ public class TestParseJsonForInputImpl {
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
@@ -1004,13 +842,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes());
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GeotiffBinding", GeotiffBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertEquals("The path is as expected", "test.tiff", inputIdentifier.getPathToWriteToOrReadFromFile().get());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
@@ -1042,13 +876,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON));
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertEquals("The path is as expected", "test.json", inputIdentifier.getPathToWriteToOrReadFromFile().get());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
@@ -1081,13 +911,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteShapeFileToPath();
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertEquals("The path is as expected", "test.shp", inputIdentifier.getPathToWriteToOrReadFromFile().get());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
@@ -1119,13 +945,9 @@ public class TestParseJsonForInputImpl {
         final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes());
 
         try {
-            final IIdentifierWithBinding inputIdentifier = parser.parseInput(parseJson(text));
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
             assertEquals("The identifier is the title", "a", inputIdentifier.getIdentifier());
             assertEquals("It uses a GenericFileDataBinding", GenericFileDataBinding.class, inputIdentifier.getBindingClass());
-            assertFalse("There is no function to read from stdout", inputIdentifier.getFunctionToHandleStdout().isPresent());
-            assertFalse("There is no function to read from stderr", inputIdentifier.getFunctionToHandleStderr().isPresent());
-            assertFalse("There is no function to read from exit value", inputIdentifier.getFunctionToHandleExitValue().isPresent());
-            assertFalse("There is no function to read from files", inputIdentifier.getFunctionToReadIDataFromFiles().isPresent());
             assertTrue("There is a path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
             assertEquals("The path is as expected", "test.txt", inputIdentifier.getPathToWriteToOrReadFromFile().get());
             assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());

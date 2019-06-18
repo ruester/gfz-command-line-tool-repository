@@ -20,7 +20,6 @@ import org.apache.xmlbeans.XmlObject;
 
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.util.XmlSchemaFileTranslator;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -46,10 +45,10 @@ import javax.xml.validation.Validator;
  * Validator, that checks that a value is one of some given
  * String values
  */
-public class XmlBindingWithAllowedSchema implements ICheckDataAndGetErrorMessage {
+public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding> implements ICheckDataAndGetErrorMessage<T> {
 
     private final String allowedschema;
-    private final List<SAXParseException> validationErrors = new LinkedList<SAXParseException>();
+    private final List<SAXParseException> validationErrors = new LinkedList<>();
 
     /**
      * @param value schema for the given xml file
@@ -59,68 +58,63 @@ public class XmlBindingWithAllowedSchema implements ICheckDataAndGetErrorMessage
     }
 
     @Override
-    public Optional<String> check(final IData iData) {
+    public Optional<String> check(final T xmlbinding) {
         validationErrors.clear();
 
-        if(iData instanceof GenericXMLDataBinding) {
-            final GenericXMLDataBinding xmlbinding = (GenericXMLDataBinding) iData;
-            final XmlObject xml = xmlbinding.getPayload();
-            final XmlSchemaFileTranslator translator = new XmlSchemaFileTranslator();
+        final XmlObject xml = xmlbinding.getPayload();
+        final XmlSchemaFileTranslator translator = new XmlSchemaFileTranslator();
 
-            // https://stackoverflow.com/a/16054/2249798
-            Object schemaFile = translator.translateUri(allowedschema);
+        // https://stackoverflow.com/a/16054/2249798
+        Object schemaFile = translator.translateUri(allowedschema);
 
-            if (schemaFile == null) {
-                return Optional.of("XML schema file could not be loaded: " + validationErrors.toString());
-            }
-
-            Source xmlFile = new StreamSource(new StringReader(xml.toString()));
-            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-            try {
-                Schema schema;
-
-                if (schemaFile instanceof URL) {
-                    schema = schemaFactory.newSchema((URL) schemaFile);
-                } else {
-                    schema = schemaFactory.newSchema((File) schemaFile);
-                }
-
-                Validator validator = schema.newValidator();
-
-                // https://stackoverflow.com/a/11131775/2249798
-                validator.setErrorHandler(new ErrorHandler(){
-                    @Override
-                    public void warning(SAXParseException exception) throws SAXException {
-                        validationErrors.add(exception);
-                    }
-
-                    @Override
-                    public void fatalError(SAXParseException exception) throws SAXException {
-                        validationErrors.add(exception);
-                    }
-
-                    @Override
-                    public void error(SAXParseException exception) throws SAXException {
-                        validationErrors.add(exception);
-                    }
-                });
-
-                validator.validate(xmlFile);
-            } catch (SAXException e) {
-                return Optional.of("XML file does not validate: " + e);
-            } catch (IOException e) {
-                return Optional.of("IO error while reading xml or schema");
-            }
-
-            if (validationErrors.isEmpty()) {
-                return Optional.empty();
-            }
-
-            return Optional.of("XML file does not validate: " + validationErrors.toString());
+        if (schemaFile == null) {
+            return Optional.of("XML schema file could not be loaded: " + validationErrors.toString());
         }
 
-        return Optional.of("Unexpected input type");
+        Source xmlFile = new StreamSource(new StringReader(xml.toString()));
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+        try {
+            Schema schema;
+
+            if (schemaFile instanceof URL) {
+                schema = schemaFactory.newSchema((URL) schemaFile);
+            } else {
+                schema = schemaFactory.newSchema((File) schemaFile);
+            }
+
+            Validator validator = schema.newValidator();
+
+            // https://stackoverflow.com/a/11131775/2249798
+            validator.setErrorHandler(new ErrorHandler(){
+                @Override
+                public void warning(SAXParseException exception) throws SAXException {
+                    validationErrors.add(exception);
+                }
+
+                @Override
+                public void fatalError(SAXParseException exception) throws SAXException {
+                    validationErrors.add(exception);
+                }
+
+                @Override
+                public void error(SAXParseException exception) throws SAXException {
+                    validationErrors.add(exception);
+                }
+            });
+
+            validator.validate(xmlFile);
+        } catch (SAXException e) {
+            return Optional.of("XML file does not validate: " + e);
+        } catch (IOException e) {
+            return Optional.of("IO error while reading xml or schema");
+        }
+
+        if (validationErrors.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of("XML file does not validate: " + validationErrors.toString());
     }
 
     @Override

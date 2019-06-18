@@ -21,14 +21,11 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
@@ -44,9 +41,9 @@ public class TestLiteralBooleanBindingToStringCmd {
      */
     @Test
     public void testsValidTrue() {
-        final IData iData = new LiteralBooleanBinding(true);
+        final LiteralBooleanBinding iData = new LiteralBooleanBinding(true);
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralBooleanBindingToStringCmd("--verbose");
+        final IConvertIDataToCommandLineParameter<LiteralBooleanBinding> converter = new LiteralBooleanBindingToStringCmd("--verbose");
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -63,9 +60,9 @@ public class TestLiteralBooleanBindingToStringCmd {
      */
     @Test
     public void testValidFalse() {
-        final IData iData = new LiteralBooleanBinding(false);
+        final LiteralBooleanBinding iData = new LiteralBooleanBinding(false);
 
-        final IConvertIDataToCommandLineParameter converter = new LiteralBooleanBindingToStringCmd("--verbose");
+        final IConvertIDataToCommandLineParameter<LiteralBooleanBinding> converter = new LiteralBooleanBindingToStringCmd("--verbose");
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(iData);
@@ -75,30 +72,14 @@ public class TestLiteralBooleanBindingToStringCmd {
         }
     }
 
-    /**
-     * Test with non valid input
-     */
-    @Test
-    public void testNonValid() {
-        final IData iData = new LiteralStringBinding("true");
-
-        final IConvertIDataToCommandLineParameter converter = new LiteralBooleanBindingToStringCmd("--verbose");
-
-        try {
-            converter.convertToCommandLineParameter(iData);
-            fail("There must be an exception");
-        } catch(final ConvertToStringCmdException exception) {
-            assertNotNull("There must be an exception", exception);
-        }
-    }
 
     /**
      * Tests equality
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToCommandLineParameter converter1 = new LiteralBooleanBindingToStringCmd("--verbose");
-        final IConvertIDataToCommandLineParameter converter2 = new LiteralBooleanBindingToStringCmd("--verbose");
+        final IConvertIDataToCommandLineParameter<LiteralBooleanBinding> converter1 = new LiteralBooleanBindingToStringCmd("--verbose");
+        final IConvertIDataToCommandLineParameter<LiteralBooleanBinding> converter2 = new LiteralBooleanBindingToStringCmd("--verbose");
 
         assertEquals("Both are equal", converter1, converter2);
 

@@ -19,15 +19,14 @@ package org.n52.gfz.riesgos.exitvaluetoidataconverter;
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import java.util.Objects;
 
-public class ConvertExitValueToLiteralIntBinding implements IConvertExitValueToIData {
+public class ConvertExitValueToLiteralIntBinding implements IConvertExitValueToIData<LiteralIntBinding> {
 
     @Override
-    public IData convertToIData(int exitValue) {
+    public LiteralIntBinding convertToIData(int exitValue) {
         return new LiteralIntBinding(exitValue);
     }
 

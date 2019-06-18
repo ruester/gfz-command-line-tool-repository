@@ -19,7 +19,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 
 import java.util.ArrayList;
@@ -31,43 +30,38 @@ import java.util.Objects;
  * Used to add it as a command line argument.
  */
 public class BoundingBoxDataToStringCmd
-        implements IConvertIDataToCommandLineParameter {
+        implements IConvertIDataToCommandLineParameter<BoundingBoxData> {
 
     /**
      * Converts the IData to a list of arguments.
-     * @param iData element to convert
+     * @param bbox element to convert
      * @return list of strings
      * @throws ConvertToStringCmdException exception if the input can't be
      * handled by the function
      */
     @Override
     public List<String> convertToCommandLineParameter(
-            final IData iData)
+            final BoundingBoxData bbox)
             throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
 
-        if (iData instanceof BoundingBoxData) {
-            final BoundingBoxData bbox = (BoundingBoxData) iData;
-            final double[] lowerCorner = bbox.getLowerCorner();
-            final double[] upperCorner = bbox.getUpperCorner();
+        final double[] lowerCorner = bbox.getLowerCorner();
+        final double[] upperCorner = bbox.getUpperCorner();
 
-            if (lowerCorner.length < 2 || upperCorner.length < 2) {
-                throw new ConvertToStringCmdException(
-                    "Not enough coordinates in the bounding box lower corner");
-            }
-
-            final double latMin = lowerCorner[0];
-            final double lonMin = lowerCorner[1];
-            final double latMax = upperCorner[0];
-            final double lonMax = upperCorner[1];
-
-            result.add(String.valueOf(lonMin));
-            result.add(String.valueOf(lonMax));
-            result.add(String.valueOf(latMin));
-            result.add(String.valueOf(latMax));
-        } else {
-            throw new ConvertToStringCmdException("Wrong binding class");
+        if (lowerCorner.length < 2 || upperCorner.length < 2) {
+            throw new ConvertToStringCmdException(
+                "Not enough coordinates in the bounding box lower corner");
         }
+
+        final double latMin = lowerCorner[0];
+        final double lonMin = lowerCorner[1];
+        final double latMax = upperCorner[0];
+        final double lonMax = upperCorner[1];
+
+        result.add(String.valueOf(lonMin));
+        result.add(String.valueOf(lonMax));
+        result.add(String.valueOf(latMin));
+        result.add(String.valueOf(latMax));
 
         return result;
     }

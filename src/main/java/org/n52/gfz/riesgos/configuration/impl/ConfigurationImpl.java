@@ -19,7 +19,8 @@ package org.n52.gfz.riesgos.configuration.impl;
  */
 
 import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
+import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
@@ -37,8 +38,8 @@ public class ConfigurationImpl implements IConfiguration {
     private final String workingDirectory;
     private final List<String> commandToExecute;
     private final List<String> defaultCommandLineFlags;
-    private final List<IIdentifierWithBinding> inputIdentifier;
-    private final List<IIdentifierWithBinding> outputIdentifier;
+    private final List<IInputParameter> inputIdentifier;
+    private final List<IOutputParameter> outputIdentifier;
     private final IStderrHandler stderrHandler;
     private final IExitValueHandler exitValueHandler;
     private final IStdoutHandler stdoutHandler;
@@ -50,8 +51,8 @@ public class ConfigurationImpl implements IConfiguration {
             final String workingDirectory,
             final List<String> commandToExecute,
             final List<String> defaultCommandLineFlags,
-            final List<IIdentifierWithBinding> inputIdentifier,
-            final List<IIdentifierWithBinding> outputIdentifier,
+            final List<IInputParameter> inputIdentifier,
+            final List<IOutputParameter> outputIdentifier,
             final IStderrHandler stderrHandler,
             final IExitValueHandler exitValueHandler,
             final IStdoutHandler stdoutHandler) {
@@ -99,12 +100,12 @@ public class ConfigurationImpl implements IConfiguration {
     }
 
     @Override
-    public List<IIdentifierWithBinding> getInputIdentifiers() {
+    public List<IInputParameter> getInputIdentifiers() {
         return inputIdentifier;
     }
 
     @Override
-    public List<IIdentifierWithBinding> getOutputIdentifiers() {
+    public List<IOutputParameter> getOutputIdentifiers() {
         return outputIdentifier;
     }
 
@@ -160,8 +161,8 @@ public class ConfigurationImpl implements IConfiguration {
         private final List<String> commandToExecute;
 
         private final List<String> defaultCommandLineFlags;
-        private final List<IIdentifierWithBinding> inputIdentifier;
-        private final List<IIdentifierWithBinding> outputIdentifier;
+        private final List<IInputParameter> inputIdentifier;
+        private final List<IOutputParameter> outputIdentifier;
 
         private IStderrHandler stderrHandler;
         private IExitValueHandler exitValueHandler;
@@ -207,7 +208,7 @@ public class ConfigurationImpl implements IConfiguration {
          * @param inputIdentifiers identifiers for input
          * @return builder instance
          */
-        public Builder withAddedInputIdentifiers(final List<IIdentifierWithBinding> inputIdentifiers) {
+        public Builder withAddedInputIdentifiers(final List<IInputParameter> inputIdentifiers) {
             this.inputIdentifier.addAll(inputIdentifiers);
             return this;
         }
@@ -217,7 +218,7 @@ public class ConfigurationImpl implements IConfiguration {
          * @param inputIdentifier identifiers for input to add
          * @return builder instance
          */
-        public Builder withAddedInputIdentifier(final IIdentifierWithBinding inputIdentifier) {
+        public Builder withAddedInputIdentifier(final IInputParameter inputIdentifier) {
             this.inputIdentifier.add(inputIdentifier);
             return this;
         }
@@ -227,7 +228,7 @@ public class ConfigurationImpl implements IConfiguration {
          * @param outputIdentifiers identifiers for output
          * @return builder instance
          */
-        public Builder withAddedOutputIdentifiers(final List<IIdentifierWithBinding> outputIdentifiers) {
+        public Builder withAddedOutputIdentifiers(final List<IOutputParameter> outputIdentifiers) {
             this.outputIdentifier.addAll(outputIdentifiers);
             return this;
         }
@@ -237,7 +238,7 @@ public class ConfigurationImpl implements IConfiguration {
          * @param outputIdentifier identifiers for output to add
          * @return builder instance
          */
-        public Builder withAddedOutputIdentifier(final IIdentifierWithBinding outputIdentifier) {
+        public Builder withAddedOutputIdentifier(final IOutputParameter outputIdentifier) {
             this.outputIdentifier.add(outputIdentifier);
             return this;
         }

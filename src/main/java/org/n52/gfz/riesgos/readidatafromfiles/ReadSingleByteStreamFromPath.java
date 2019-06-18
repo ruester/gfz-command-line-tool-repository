@@ -32,9 +32,9 @@ import java.util.Objects;
  * Implementation that reads a single byte array for one single file.
  * Can be used with every IConvertByteArrayToIData implementation
  */
-public class ReadSingleByteStreamFromPath implements IReadIDataFromFiles {
+public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIDataFromFiles<T> {
 
-    private final IConvertByteArrayToIData converter;
+    private final IConvertByteArrayToIData<T> converter;
 
     /**
      * Implementation that just uses a function to convert the
@@ -42,12 +42,12 @@ public class ReadSingleByteStreamFromPath implements IReadIDataFromFiles {
      *
      * Can be used in all situations where one file produces the iData
      */
-    public ReadSingleByteStreamFromPath(final IConvertByteArrayToIData converter) {
+    public ReadSingleByteStreamFromPath(final IConvertByteArrayToIData<T> converter) {
         this.converter = converter;
     }
 
     @Override
-    public IData readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
+    public T readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
 
         final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
         return converter.convertToIData(content);

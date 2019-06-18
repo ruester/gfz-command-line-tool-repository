@@ -27,8 +27,8 @@ import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericFileDataBin
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
-import org.n52.gfz.riesgos.configuration.IIdentifierWithBinding;
-import org.n52.gfz.riesgos.configuration.parse.json.subimpl.ParseJsonForOutputImpl;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl.ParseJsonForOutputImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
@@ -105,7 +105,7 @@ public class TestParseJsonForOutputImpl {
         final IConvertByteArrayToIData converter = new ConvertBytesToLiteralStringBinding();
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, outputIdentifier.getBindingClass());
             assertTrue("There is a function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -117,10 +117,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -139,7 +135,7 @@ public class TestParseJsonForOutputImpl {
         final IConvertByteArrayToIData converter = new ConvertBytesToLiteralStringBinding();
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralStringBinding", LiteralStringBinding.class, outputIdentifier.getBindingClass());
             assertTrue("There is a function to read from stderr", outputIdentifier.getFunctionToHandleStderr().isPresent());
@@ -151,10 +147,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -172,7 +164,7 @@ public class TestParseJsonForOutputImpl {
         final IConvertExitValueToIData converter = new ConvertExitValueToLiteralIntBinding();
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a LiteralIntBinding", LiteralIntBinding.class, outputIdentifier.getBindingClass());
             assertTrue("There is a function to read from exit value", outputIdentifier.getFunctionToHandleExitValue().isPresent());
@@ -184,10 +176,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -205,7 +193,7 @@ public class TestParseJsonForOutputImpl {
         final IConvertByteArrayToIData converter = new ConvertBytesToGenericXMLDataBinding();
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, outputIdentifier.getBindingClass());
             assertTrue("There is a function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -217,10 +205,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -239,7 +223,7 @@ public class TestParseJsonForOutputImpl {
         final IConvertByteArrayToIData converter = new ConvertBytesToGenericXMLDataBinding();
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, outputIdentifier.getBindingClass());
             assertTrue("There is a function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -252,10 +236,6 @@ public class TestParseJsonForOutputImpl {
             assertEquals("The schema is abc", "abc", outputIdentifier.getSchema().get());
             assertTrue("There is a validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -275,7 +255,7 @@ public class TestParseJsonForOutputImpl {
         final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGenericXMLDataBinding());
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, outputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -288,10 +268,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -312,7 +288,7 @@ public class TestParseJsonForOutputImpl {
         final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGenericXMLDataBinding());
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GenericXMLDataBinding", GenericXMLDataBinding.class, outputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -326,10 +302,6 @@ public class TestParseJsonForOutputImpl {
             assertEquals("The schema is abc", "abc", outputIdentifier.getSchema().get());
             assertTrue("There is a validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -348,7 +320,7 @@ public class TestParseJsonForOutputImpl {
         final IReadIDataFromFiles reader = new ReadShapeFileFromPath();
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, outputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -361,10 +333,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -383,7 +351,7 @@ public class TestParseJsonForOutputImpl {
         final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGenericFileDataBinding());
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GenericFileDataBinding", GenericFileDataBinding.class, outputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -396,10 +364,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -418,7 +382,7 @@ public class TestParseJsonForOutputImpl {
         final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON));
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GTVectorDataBinding", GTVectorDataBinding.class, outputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -431,10 +395,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }
@@ -453,7 +413,7 @@ public class TestParseJsonForOutputImpl {
         final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding());
 
         try {
-            final IIdentifierWithBinding outputIdentifier = parser.parseOutput(parseJson(text));
+            final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
             assertEquals("the identifier is the title", "a", outputIdentifier.getIdentifier());
             assertEquals("It uses a GeotiffBinding", GeotiffBinding.class, outputIdentifier.getBindingClass());
             assertFalse("There is no function to read from stdout", outputIdentifier.getFunctionToHandleStdout().isPresent());
@@ -466,10 +426,6 @@ public class TestParseJsonForOutputImpl {
             assertFalse("There is no schema", outputIdentifier.getSchema().isPresent());
             assertFalse("There is no validator", outputIdentifier.getValidator().isPresent());
             assertFalse("There are no supported crs for bbox", outputIdentifier.getSupportedCRSForBBox().isPresent());
-            assertFalse("There is no function to write the data to files", outputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
-            assertFalse("There is no function to write the data to stdin", outputIdentifier.getFunctionToWriteToStdin().isPresent());
-            assertFalse("There is a function to convert it to a cmd argument", outputIdentifier.getFunctionToTransformToCmd().isPresent());
-            assertFalse("There is no default value", outputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");
         }

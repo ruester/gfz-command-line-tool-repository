@@ -16,9 +16,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  * limitations under the Licence.
  */
 
-import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ import java.util.Optional;
  * Can also handle default flags.
  */
 public class LiteralDoubleBindingToStringCmd
-        implements IConvertIDataToCommandLineParameter {
+        implements IConvertIDataToCommandLineParameter<LiteralDoubleBinding> {
 
     /**
      * Internal default flag (for example '--value').
@@ -58,26 +56,20 @@ public class LiteralDoubleBindingToStringCmd
 
     /**
      * Converts the IData to a list of arguments.
-     * @param iData element to convert
+     * @param binding element to convert
      * @return list of strings
-     * @throws ConvertToStringCmdException exception if the input can't be
      * handled by the function
      */
     @Override
     public List<String> convertToCommandLineParameter(
-            final IData iData)
-            throws ConvertToStringCmdException {
+            final LiteralDoubleBinding binding) {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
 
-        if (iData instanceof LiteralDoubleBinding) {
-            final LiteralDoubleBinding binding = (LiteralDoubleBinding) iData;
-            final Double value = binding.getPayload();
-            result.add(String.valueOf(value));
-        } else {
-            throw new ConvertToStringCmdException("Wrong binding class");
-        }
+        final Double value = binding.getPayload();
+        result.add(String.valueOf(value));
+
         return result;
     }
 

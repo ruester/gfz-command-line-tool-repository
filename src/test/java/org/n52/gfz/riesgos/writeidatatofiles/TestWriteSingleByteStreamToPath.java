@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
+import org.n52.wps.io.data.binding.complex.GeotiffBinding;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -36,9 +38,9 @@ public class TestWriteSingleByteStreamToPath {
      */
     @Test
     public void testEquals() {
-        final IWriteIDataToFiles writer1 = new WriteSingleByteStreamToPath(new ConvertLiteralStringToBytes());
-        final IWriteIDataToFiles writer2 = new WriteSingleByteStreamToPath(new ConvertLiteralStringToBytes());
-        final IWriteIDataToFiles writer3 = new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes());
+        final IWriteIDataToFiles<LiteralStringBinding> writer1 = new WriteSingleByteStreamToPath(new ConvertLiteralStringToBytes());
+        final IWriteIDataToFiles<LiteralStringBinding> writer2 = new WriteSingleByteStreamToPath(new ConvertLiteralStringToBytes());
+        final IWriteIDataToFiles<GeotiffBinding> writer3 = new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes());
 
         assertEquals("1 and 2 are equal", writer1, writer2);
         assertNotEquals("1 and 3 are different", writer1, writer3);

@@ -22,9 +22,7 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.List;
 
@@ -48,9 +46,9 @@ public class TestBoundingBoxDataToStringCmd {
         final double latmax = 30;
         final double lonmax = 40;
 
-        final IData boundingBox = new BoundingBoxData(new double[]{latmin, lonmin}, new double[]{latmax, lonmax}, "EPSG:4326");
+        final BoundingBoxData boundingBox = new BoundingBoxData(new double[]{latmin, lonmin}, new double[]{latmax, lonmax}, "EPSG:4326");
 
-        final IConvertIDataToCommandLineParameter converter = new BoundingBoxDataToStringCmd();
+        final IConvertIDataToCommandLineParameter<BoundingBoxData> converter = new BoundingBoxDataToStringCmd();
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(boundingBox);
@@ -68,28 +66,12 @@ public class TestBoundingBoxDataToStringCmd {
     }
 
     /**
-     * Test without a bounding box binding
-     */
-    @Test
-    public void testNonValidNoBoundingBox() {
-        final IData iData = new LiteralStringBinding("no usable value");
-        final IConvertIDataToCommandLineParameter converter = new BoundingBoxDataToStringCmd();
-
-        try {
-            converter.convertToCommandLineParameter(iData);
-            fail("There must be an exception");
-        } catch(final ConvertToStringCmdException exception) {
-            assertNotNull("There is an exception", exception);
-        }
-    }
-
-    /**
      * Test with a bounding box binding with too less coordinates
      */
     @Test
     public void testNonValidWithTooLessCoordinates() {
-        final IData boundingBox = new BoundingBoxData(new double[]{10.0}, new double[]{10.1}, "EPSG:4326");
-        final IConvertIDataToCommandLineParameter converter = new BoundingBoxDataToStringCmd();
+        final BoundingBoxData boundingBox = new BoundingBoxData(new double[]{10.0}, new double[]{10.1}, "EPSG:4326");
+        final IConvertIDataToCommandLineParameter<BoundingBoxData> converter = new BoundingBoxDataToStringCmd();
         try {
             converter.convertToCommandLineParameter(boundingBox);
             fail("There must be an exception");
@@ -103,8 +85,8 @@ public class TestBoundingBoxDataToStringCmd {
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToCommandLineParameter converter1 = new BoundingBoxDataToStringCmd();
-        final IConvertIDataToCommandLineParameter converter2 = new BoundingBoxDataToStringCmd();
+        final IConvertIDataToCommandLineParameter<BoundingBoxData> converter1 = new BoundingBoxDataToStringCmd();
+        final IConvertIDataToCommandLineParameter<BoundingBoxData> converter2 = new BoundingBoxDataToStringCmd();
 
         assertEquals("Both must be equal", converter1, converter2);
 

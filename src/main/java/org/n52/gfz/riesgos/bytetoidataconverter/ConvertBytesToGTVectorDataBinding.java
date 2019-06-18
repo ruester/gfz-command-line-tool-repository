@@ -23,7 +23,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import java.io.ByteArrayInputStream;
@@ -34,7 +33,7 @@ import java.util.Objects;
 /**
  * Function to create a GTVectorDataBinding from a byte array
  */
-public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIData {
+public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIData<GTVectorDataBinding> {
 
     private final Format format;
 
@@ -47,7 +46,7 @@ public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIDa
     }
 
     @Override
-    public IData convertToIData(byte[] content) throws ConvertToIDataException {
+    public GTVectorDataBinding convertToIData(byte[] content) throws ConvertToIDataException {
 
         try(final ByteArrayInputStream in = new ByteArrayInputStream(content)) {
             final FeatureCollection<?, ?> featureCollection = format.readFeatures(in);

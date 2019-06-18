@@ -22,7 +22,7 @@ import org.n52.wps.io.data.IData;
 /**
  * Interface for converting the exit value to an IData element
  */
-public interface IConvertExitValueToIData {
+public interface IConvertExitValueToIData<T extends IData> {
 
     /**
      * converts the exit value to an IData element
@@ -30,5 +30,5 @@ public interface IConvertExitValueToIData {
      * @return IData element
      * @throws ConvertToIDataException exception if there is an internal error / exception on conversion
      */
-    IData convertToIData(final int exitValue) throws ConvertToIDataException;
+    T convertToIData(final int exitValue) throws ConvertToIDataException;
 }

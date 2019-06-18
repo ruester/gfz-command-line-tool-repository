@@ -21,4 +21,4 @@
  * of parsing input and output data for json configuration files
  * which are used to wrap command line programs in wps processes.
  */
-package org.n52.gfz.riesgos.configuration.parse.json.subimpl;
+package org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl;

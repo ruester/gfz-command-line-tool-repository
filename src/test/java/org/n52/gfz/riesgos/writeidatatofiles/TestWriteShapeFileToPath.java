@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.writeidatatofiles;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -33,8 +34,8 @@ public class TestWriteShapeFileToPath {
      */
     @Test
     public void testEquals() {
-        final IWriteIDataToFiles writer1 = new WriteShapeFileToPath();
-        final IWriteIDataToFiles writer2 = new WriteShapeFileToPath();
+        final IWriteIDataToFiles<GTVectorDataBinding> writer1 = new WriteShapeFileToPath();
+        final IWriteIDataToFiles<GTVectorDataBinding> writer2 = new WriteShapeFileToPath();
 
         assertEquals("1 and 2 are equal", writer1, writer2);
     }

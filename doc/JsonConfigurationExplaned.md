@@ -156,6 +156,14 @@ include a field "abstract" and to provide a string with the
 description of the input parameter here. Please notice that this field
 is optional.
 
+Also there is the option to add a key value pair
+```
+"optional": true
+```
+
+to make the field optional. If no such field is given than the
+field will me handled as non optional.
+
 The useAs gives the basic process skeleton the information about
 how to transfer the data to the command line program.
 
@@ -183,6 +191,11 @@ the at least the following fields as well:
 Same as for input parameters it is possible here too to provide
 a "abstract" field with a string, so the user get a description
 of the output parameter. As for inputs this field is optional here too.
+
+Also it is possible here to mark the output as optional as well (same as
+for input values. This will treat the server to try to load the value
+after the processing but to not thrown an error in case the file/stream
+is not there. 
 
 The term readFrom may be difficult to understand for output parameters,
 but it specifies the moment on which the command line program runs
