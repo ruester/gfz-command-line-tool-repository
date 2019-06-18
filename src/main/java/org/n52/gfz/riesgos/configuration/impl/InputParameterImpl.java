@@ -232,7 +232,7 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
         }
 
         public IInputParameter build() {
-            return new InputParameterImpl<T>(this);
+            return new InputParameterImpl<>(this);
         }
     }
 }

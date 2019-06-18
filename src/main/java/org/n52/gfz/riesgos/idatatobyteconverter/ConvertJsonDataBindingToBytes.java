@@ -22,7 +22,6 @@ import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 
 import java.util.Objects;
 

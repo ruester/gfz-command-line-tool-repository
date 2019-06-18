@@ -47,6 +47,11 @@ public enum ExitValueHandlerOption {
     ERROR("errorIfNotZero", ExceptionIfExitValueIsNotEmptyHandler::new);
 
     /**
+     * String with the attribute name for exit value handlers.
+     */
+    private static final String HANDLER = "exitValueHandler";
+
+    /**
      * Key with the name to lookup.
      */
     private final String key;
@@ -99,6 +104,6 @@ public enum ExitValueHandlerOption {
      * @return string with the attribute name for exit value handlers
      */
     public static String getHandler() {
-        return "exitValueHandler";
+        return HANDLER;
     }
 }

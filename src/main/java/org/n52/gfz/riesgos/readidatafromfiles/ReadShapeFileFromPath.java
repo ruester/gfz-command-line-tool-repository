@@ -25,7 +25,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
 import java.io.File;

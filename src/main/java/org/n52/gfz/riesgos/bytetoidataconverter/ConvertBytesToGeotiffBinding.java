@@ -22,7 +22,6 @@ package org.n52.gfz.riesgos.bytetoidataconverter;
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 
 import java.io.File;

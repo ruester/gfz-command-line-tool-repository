@@ -197,7 +197,7 @@ public class OutputParameterImpl<T extends IData> implements IOutputParameter {
         }
 
         public IOutputParameter build() {
-            return new OutputParameterImpl<T>(this);
+            return new OutputParameterImpl<>(this);
         }
 
 

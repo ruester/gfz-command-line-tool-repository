@@ -20,7 +20,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.Objects;

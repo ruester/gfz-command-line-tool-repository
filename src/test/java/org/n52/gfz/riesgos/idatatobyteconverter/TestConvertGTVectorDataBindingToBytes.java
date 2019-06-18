@@ -18,8 +18,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
  *
  */
 
-import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
-import org.geotools.image.crop.GTCropCRIF;
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;

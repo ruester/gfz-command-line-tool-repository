@@ -23,7 +23,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

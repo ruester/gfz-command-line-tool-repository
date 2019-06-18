@@ -27,7 +27,6 @@ import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapData;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapField;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapSpecification;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

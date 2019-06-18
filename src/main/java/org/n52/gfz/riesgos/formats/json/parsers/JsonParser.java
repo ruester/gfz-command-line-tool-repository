@@ -90,10 +90,8 @@ public class JsonParser
             }
             throw new RuntimeException(
                     "Can't parse the content to an json object");
-        } catch (final IOException ioException) {
-            throw new RuntimeException(ioException);
-        } catch (final ParseException parseException) {
-            throw new RuntimeException(parseException);
+        } catch (final IOException | ParseException exception) {
+            throw new RuntimeException(exception);
         }
     }
 }

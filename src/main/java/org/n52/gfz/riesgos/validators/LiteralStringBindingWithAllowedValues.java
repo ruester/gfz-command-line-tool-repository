@@ -17,7 +17,6 @@ package org.n52.gfz.riesgos.validators;
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.HashSet;

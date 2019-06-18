@@ -19,7 +19,6 @@ package org.n52.gfz.riesgos.bytetoidataconverter;
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import java.util.Objects;

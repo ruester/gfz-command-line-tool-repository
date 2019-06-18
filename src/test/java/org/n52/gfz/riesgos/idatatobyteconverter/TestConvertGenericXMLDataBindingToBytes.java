@@ -23,9 +23,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -85,7 +83,7 @@ public class TestConvertGenericXMLDataBindingToBytes {
                 fail("There is already an xml exception");
             }
         } catch(final XmlException xmlException) {
-            assertNotNull("There is a xml exception");
+            assertNotNull("There is a xml exception", xmlException);
         }
 
     }

@@ -1,7 +1,6 @@
 package org.n52.gfz.riesgos.util;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URISyntaxException;
@@ -33,7 +32,7 @@ public class XmlSchemaFileTranslator {
     Map<String, URI> translator;
 
     public XmlSchemaFileTranslator() {
-        translator = new HashMap<String, URI>();
+        translator = new HashMap<>();
         URI quakemlSchemaFile = null,
             shakemapSchemaFile = null;
 
@@ -57,7 +56,7 @@ public class XmlSchemaFileTranslator {
     }
 
     /**
-     * @param filename filename that should be changed
+     * @param uri uri that should be changed
      * @return File
      */
     public Object translateUri(String uri) {

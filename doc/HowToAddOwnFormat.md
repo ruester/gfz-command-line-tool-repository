@@ -130,10 +130,8 @@ public class JsonParser extends AbstractParser implements IMimeTypeAndSchemaCons
                 return new JsonDataBinding(jsonObject);
             }
             throw new RuntimeException("Can't parse the content to an json object");
-        } catch(final IOException ioException) {
-            throw new RuntimeException(ioException);
-        } catch(final ParseException parseException) {
-            throw new RuntimeException(parseException);
+        } catch(final IOException | ParseException exception) {
+            throw new RuntimeException(exception);
         }
     }
 }
@@ -187,8 +185,7 @@ public class JsonGenerator extends AbstractGenerator implements IMimeTypeAndSche
         if(data instanceof JsonDataBinding) {
             final JsonDataBinding binding = (JsonDataBinding) data;
             final JSONObject jsonObject = binding.getPayload();
-            final ByteArrayInputStream inputStream = new ByteArrayInputStream(jsonObject.toJSONString().getBytes());
-            return inputStream;
+            return new ByteArrayInputStream(jsonObject.toJSONString().getBytes());
         } else {
             LOGGER.error("Can't convert another data binding as JsonDataBinding");
         }

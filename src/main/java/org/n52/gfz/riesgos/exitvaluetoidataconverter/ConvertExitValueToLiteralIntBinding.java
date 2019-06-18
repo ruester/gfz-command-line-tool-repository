@@ -19,7 +19,6 @@ package org.n52.gfz.riesgos.exitvaluetoidataconverter;
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import java.util.Objects;

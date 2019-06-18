@@ -21,7 +21,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 
 import java.io.File;

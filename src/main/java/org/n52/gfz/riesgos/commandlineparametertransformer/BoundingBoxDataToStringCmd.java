@@ -19,7 +19,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
 
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
 
 import java.util.ArrayList;

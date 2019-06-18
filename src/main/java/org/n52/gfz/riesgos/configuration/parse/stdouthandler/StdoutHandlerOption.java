@@ -31,6 +31,11 @@ public enum StdoutHandlerOption {
     IGNORE("ignore", () -> null);
 
     /**
+     * Text attribute to search in.
+     */
+    private static final String HANLDER = "stdoutHandler";
+
+    /**
      * Key for the lookup of the option.
      */
     private final String key;
@@ -84,6 +89,6 @@ public enum StdoutHandlerOption {
      * @return text attribute to search in
      */
     public static String getHandler() {
-        return "stdoutHandler";
+        return HANLDER;
     }
 }

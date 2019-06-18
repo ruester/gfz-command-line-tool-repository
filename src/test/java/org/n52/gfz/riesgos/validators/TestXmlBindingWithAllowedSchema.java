@@ -21,9 +21,7 @@ import org.apache.xmlbeans.XmlObject;
 
 import org.junit.Test;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
-import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import java.io.IOException;
 import java.net.URL;
@@ -60,9 +58,7 @@ public class TestXmlBindingWithAllowedSchema {
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
-        if (errorMessage.isPresent()) {
-            System.err.println(errorMessage.get());
-        }
+        errorMessage.ifPresent(System.err::println);
 
         assertFalse("We expect the input file to validate", errorMessage.isPresent());
     }
@@ -92,9 +88,7 @@ public class TestXmlBindingWithAllowedSchema {
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
-        if (errorMessage.isPresent()) {
-            System.err.println(errorMessage.get());
-        }
+        errorMessage.ifPresent(System.err::println);
 
         assertFalse("We expect the input file to validate", errorMessage.isPresent());
     }
@@ -125,9 +119,7 @@ public class TestXmlBindingWithAllowedSchema {
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
-        if (errorMessage.isPresent()) {
-            System.err.println(errorMessage.get());
-        }
+        errorMessage.ifPresent(System.err::println);
 
         assertFalse("We expect the input file to validate", errorMessage.isPresent());
     }
@@ -158,9 +150,7 @@ public class TestXmlBindingWithAllowedSchema {
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
 
-        if (errorMessage.isPresent()) {
-            System.err.println(errorMessage.get());
-        }
+        errorMessage.ifPresent(System.err::println);
 
         assertFalse("We expect the input file to validate", errorMessage.isPresent());
     }

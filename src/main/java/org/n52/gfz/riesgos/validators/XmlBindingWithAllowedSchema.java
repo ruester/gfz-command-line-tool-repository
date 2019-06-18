@@ -48,7 +48,7 @@ import javax.xml.validation.Validator;
 public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding> implements ICheckDataAndGetErrorMessage<T> {
 
     private final String allowedschema;
-    private final List<SAXParseException> validationErrors = new LinkedList<SAXParseException>();
+    private final List<SAXParseException> validationErrors = new LinkedList<>();
 
     /**
      * @param value schema for the given xml file

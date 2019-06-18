@@ -22,7 +22,6 @@ import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.wps.io.data.GenericFileData;
-import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 
 import java.io.File;

@@ -56,6 +56,11 @@ public enum StderrHandlerOption {
     R_ERROR("rError", RErrorMessageStderrHandler::new);
 
     /**
+     * Text for the stderrHandler attribute.
+     */
+    private static final String HANDLER = "stderrHandler";
+
+    /**
      * The key for the option.
      */
     private final String key;
@@ -108,6 +113,6 @@ public enum StderrHandlerOption {
      * @return text for the stderrHandler attribute
      */
     public static String getHandler() {
-        return "stderrHandler";
+        return HANDLER;
     }
 }
