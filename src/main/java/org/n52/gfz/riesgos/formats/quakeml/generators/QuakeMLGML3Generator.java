@@ -19,7 +19,7 @@
 package org.n52.gfz.riesgos.formats.quakeml.generators;
 
 import org.geotools.feature.FeatureCollection;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
@@ -39,9 +39,10 @@ import java.io.InputStream;
 /**
  * Generator to transform the validated xml from the QuakeMLXmlDataBinding to gml
  */
-public class QuakeMLGML3Generator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class QuakeMLGML3Generator extends AbstractGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Generator.class);
+    private static final FormatEntry GML = DefaultFormatOption.GML.getFormat();
 
     /**
      * Default constructor
@@ -50,10 +51,10 @@ public class QuakeMLGML3Generator extends AbstractGenerator implements IMimeType
         super();
 
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_GML_3_2_1);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_GML_3_2_1, DEFAULT_ENCODING, true));
+        supportedFormats.add(GML.getMimeType());
+        supportedSchemas.add(GML.getSchema());
+        supportedEncodings.add(GML.getEncoding());
+        formats.add(GML);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class QuakeMLGML3Generator extends AbstractGenerator implements IMimeType
                 final IQuakeML quakeML = binding.getPayloadQuakeML();
                 final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
 
-                return new GML3BasicGenerator().generateStream(new GTVectorDataBinding(featureCollection), MIME_TYPE_XML, SCHEMA_GML_3_2_1);
+                return new GML3BasicGenerator().generateStream(new GTVectorDataBinding(featureCollection), GML.getMimeType(), GML.getSchema());
             } catch(final ConvertFormatException convertFormatException) {
                 LOGGER.error("Can't convert the validated quakeml format to gml3");
                 LOGGER.error(convertFormatException.toString());

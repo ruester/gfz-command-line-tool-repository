@@ -16,8 +16,6 @@
 
 package org.n52.gfz.riesgos.configuration.parse.output.exitvalue;
 
-import org.n52.gfz.riesgos.configuration.OutputParameterFactory;
-
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,7 +28,7 @@ public enum FromExitValueOption {
     /**
      * This is the enum to read ints from the exit value.
      */
-    INT("int", OutputParameterFactory.INSTANCE::createExitValueInt);
+    INT("int", new ExitValueIntFactory());
 
     /**
      * This is the constant of the readFrom value

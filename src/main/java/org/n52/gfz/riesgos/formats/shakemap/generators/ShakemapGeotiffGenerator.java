@@ -19,6 +19,7 @@
 package org.n52.gfz.riesgos.formats.shakemap.generators;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
@@ -50,12 +51,15 @@ public class ShakemapGeotiffGenerator extends AbstractGenerator implements IMime
     public ShakemapGeotiffGenerator() {
         super();
 
+        final FormatEntry geotiff = DefaultFormatOption.GEOTIFF.getFormat();
+        final FormatEntry geotiff64 = DefaultFormatOption.GEOTIFF_BASE_64.getFormat();
+
         supportedIDataTypes.add(ShakemapXmlDataBinding.class);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        supportedEncodings.add(ENCODING_BASE64);
-        supportedFormats.add(MIME_TYPE_GEOTIFF);
-        formats.add(new FormatEntry(MIME_TYPE_GEOTIFF, null, DEFAULT_ENCODING, true));
-        formats.add(new FormatEntry(MIME_TYPE_GEOTIFF, null, ENCODING_BASE64, true));
+        supportedEncodings.add(geotiff.getEncoding());
+        supportedEncodings.add(geotiff64.getEncoding());
+        supportedFormats.add(geotiff.getMimeType());
+        formats.add(geotiff);
+        formats.add(geotiff64);
     }
 
     @Override

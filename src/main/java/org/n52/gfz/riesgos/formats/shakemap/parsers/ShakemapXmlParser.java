@@ -20,6 +20,7 @@ package org.n52.gfz.riesgos.formats.shakemap.parsers;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.wps.io.data.IData;
@@ -42,11 +43,13 @@ public class ShakemapXmlParser extends AbstractParser implements IMimeTypeAndSch
     public ShakemapXmlParser() {
         super();
 
+        final FormatEntry shakemap = DefaultFormatOption.SHAKEMAP.getFormat();
+
         supportedIDataTypes.add(ShakemapXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_SHAKEMAP);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_SHAKEMAP, DEFAULT_ENCODING, true));
+        supportedFormats.add(shakemap.getMimeType());
+        supportedSchemas.add(shakemap.getSchema());
+        supportedEncodings.add(shakemap.getEncoding());
+        formats.add(shakemap);
     }
 
     @Override

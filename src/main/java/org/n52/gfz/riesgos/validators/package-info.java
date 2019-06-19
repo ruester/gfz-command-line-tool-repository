@@ -1,5 +1,3 @@
-package org.n52.gfz.riesgos.functioninterfaces;
-
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,19 +14,8 @@ package org.n52.gfz.riesgos.functioninterfaces;
  * limitations under the Licence.
  */
 
-import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
-
 /**
- * Handler for text from stderr
+ * Package with implementations of the ICheckDataAndGetErrorMessage
+ * interface.
  */
-@FunctionalInterface
-public interface IStderrHandler {
-
-    /**
-     * Handles stderr text.
-     * @param stderr text to handle
-     * @param logger logger of the algorithm
-     * @throws NonEmptyStderrException there may be an exception on non empty stderr
-     */
-    void handleStderr(final String stderr, final ILogger logger) throws NonEmptyStderrException;
-}
+package org.n52.gfz.riesgos.validators;

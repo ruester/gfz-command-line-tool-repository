@@ -20,6 +20,7 @@ import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 /**
  * Implementation to create a file input with json.
@@ -33,6 +34,7 @@ public class InputFileJsonFactory implements IAsFileInputFactory {
      * @param identifier       identifier of the data
      * @param isOptional       true if the input is optional
      * @param optionalAbstract optional abstract (description) of the data
+     * @param defaultFormat optional default format
      * @param path             path to the file
      * @param schema           optional schema
      * @return input parameter
@@ -44,6 +46,7 @@ public class InputFileJsonFactory implements IAsFileInputFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path,
             final String schema)
 
@@ -55,7 +58,9 @@ public class InputFileJsonFactory implements IAsFileInputFactory {
         }
         return InputParameterFactory.INSTANCE.createFileInJson(
                 identifier,
-                isOptional, optionalAbstract,
+                isOptional,
+                optionalAbstract,
+                defaultFormat,
                 path
         );
     }

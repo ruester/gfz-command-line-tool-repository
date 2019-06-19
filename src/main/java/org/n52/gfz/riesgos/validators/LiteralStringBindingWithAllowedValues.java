@@ -27,14 +27,18 @@ import java.util.Set;
 
 /**
  * Validator, that checks that a value is one of some given
- * String values
+ * String values.
  */
-public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetErrorMessage<LiteralStringBinding> {
+public class LiteralStringBindingWithAllowedValues
+        implements ICheckDataAndGetErrorMessage<LiteralStringBinding> {
 
+    /**
+     * Set with the allowed values.
+     */
     private final Set<String> allowedValues;
 
     /**
-     *
+     * Constructor with some allowed values.
      * @param values list with some allowed String values
      */
     public LiteralStringBindingWithAllowedValues(final List<String> values) {
@@ -42,12 +46,18 @@ public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetEr
         allowedValues.addAll(values);
     }
 
+    /**
+     * Checks a IData and (maybe) gives back the text of the problem.
+     * @param wrappedStr element to check
+     * @return empty if there is no problem with the value; else the text
+     * of the problem description
+     */
     @Override
     public Optional<String> check(final LiteralStringBinding wrappedStr) {
         final Optional<String> error;
 
         final String str = wrappedStr.getPayload();
-        if(allowedValues.contains(str)) {
+        if (allowedValues.contains(str)) {
             error = Optional.empty();
         } else {
             error = Optional.of("Input is non of the allowed values");
@@ -57,18 +67,28 @@ public class LiteralStringBindingWithAllowedValues implements ICheckDataAndGetEr
         return error;
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LiteralStringBindingWithAllowedValues that = (LiteralStringBindingWithAllowedValues) o;
+        LiteralStringBindingWithAllowedValues that =
+                (LiteralStringBindingWithAllowedValues) o;
         return Objects.equals(allowedValues, that.allowedValues);
     }
 
+    /**
+     *
+     * @return hashcode of the object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(allowedValues);

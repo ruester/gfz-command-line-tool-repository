@@ -19,7 +19,7 @@
 package org.n52.gfz.riesgos.formats.quakeml.generators;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
@@ -37,18 +37,19 @@ import java.io.InputStream;
  * and converts it into the original format from the original quakeledger (that is not valid
  * according to the schema).
  */
-public class QuakeMLOriginalXmlGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class QuakeMLOriginalXmlGenerator extends AbstractGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLOriginalXmlGenerator.class);
 
     public QuakeMLOriginalXmlGenerator() {
         super();
 
+        final FormatEntry quakeml = DefaultFormatOption.NON_VALID_QUAKEML.getFormat();
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_QUAKE_ML_OLD);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_QUAKE_ML_OLD, DEFAULT_ENCODING, true));
+        supportedFormats.add(quakeml.getMimeType());
+        supportedSchemas.add(quakeml.getSchema());
+        supportedEncodings.add(quakeml.getEncoding());
+        formats.add(quakeml);
     }
 
     @Override

@@ -19,7 +19,7 @@
 package org.n52.gfz.riesgos.formats.shakemap.generators;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToSimpleFeatureCollection;
@@ -38,9 +38,10 @@ import java.util.function.Function;
 /**
  * Generator to transform the xml of a shakemap to gml3
  */
-public class ShakemapGML3Generator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class ShakemapGML3Generator extends AbstractGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGML3Generator.class);
+    private static final FormatEntry GML = DefaultFormatOption.GML.getFormat();
     private static final Function<IShakemap, SimpleFeatureCollection> TO_FEATURE_COLLECTION =
             new ShakemapToSimpleFeatureCollection();
 
@@ -51,10 +52,10 @@ public class ShakemapGML3Generator extends AbstractGenerator implements IMimeTyp
         super();
 
         supportedIDataTypes.add(ShakemapXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_GML_3_2_1);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_GML_3_2_1, DEFAULT_ENCODING, true));
+        supportedFormats.add(GML.getMimeType());
+        supportedSchemas.add(GML.getSchema());
+        supportedEncodings.add(GML.getEncoding());
+        formats.add(GML);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class ShakemapGML3Generator extends AbstractGenerator implements IMimeTyp
 
             final SimpleFeatureCollection collection = TO_FEATURE_COLLECTION.apply(shakemap);
 
-            return new GML3BasicGenerator().generateStream(new GTVectorDataBinding(collection), MIME_TYPE_XML, SCHEMA_GML_3_2_1);
+            return new GML3BasicGenerator().generateStream(new GTVectorDataBinding(collection), GML.getMimeType(), GML.getSchema());
         } else {
             LOGGER.error("Can't convert another data binding as ShakemalXmlDataBinding");
         }

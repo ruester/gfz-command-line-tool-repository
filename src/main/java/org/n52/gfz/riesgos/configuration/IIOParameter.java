@@ -2,6 +2,7 @@ package org.n52.gfz.riesgos.configuration;
 
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.wps.io.data.IData;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,4 +72,15 @@ public interface IIOParameter {
      * @return true if the parameter is optional
      */
     boolean isOptional();
+
+    /**
+     * Optional default format for the parsers and generators.
+     * It is necessary in order to make qgis and pythons
+     * owslib support our processes (they only support the
+     * default format, so we can create a json configuration which
+     * is almost the same but with the default format so that
+     * there is a process that can be used by qgis).
+     * @return optional with a default format for complex data
+     */
+    Optional<FormatEntry> getDefaultFormat();
 }

@@ -31,26 +31,50 @@ import java.util.Objects;
  */
 public class PythonTracebackStderrHandler implements IStderrHandler  {
 
+    /**
+     * Pattern for a python traceback.
+     */
     private static final String TRACEBACK = "Traceback (most recent call";
 
+    /**
+     * handles stderr text.
+     * @param stderr text to handle
+     * @param logger logger of the algorithm
+     * @throws NonEmptyStderrException there may be an exception
+     * if there is a python traceback
+     */
     @Override
-    public void handleStderr(String stderr, ILogger logger) throws NonEmptyStderrException {
+    public void handleStderr(
+            final String stderr,
+            final ILogger logger)
+
+            throws NonEmptyStderrException {
+
         final int index = stderr.indexOf(TRACEBACK);
 
-        if(index >= 0) {
+        if (index >= 0) {
             final String subString = stderr.substring(index);
             throw new NonEmptyStderrException(subString);
         }
     }
 
+    /**
+     * Tests for equality.
+     * @param o other object
+     * @return true if both are equal.
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

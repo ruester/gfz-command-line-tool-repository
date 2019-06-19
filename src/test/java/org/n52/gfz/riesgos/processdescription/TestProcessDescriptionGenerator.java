@@ -255,7 +255,7 @@ public class TestProcessDescriptionGenerator {
         public List<IOutputParameter> getOutputIdentifiers() {
             return Collections.singletonList(
                     OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema(
-                            "selectedRows", false, "the resulting quakeml", "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
+                            "selectedRows", false, "the resulting quakeml", null, "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")
             );
         }
 

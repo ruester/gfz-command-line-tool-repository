@@ -22,23 +22,37 @@ import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import java.util.Objects;
 
 /**
- * Handler for stderr that logs the stderr text
+ * Handler for stderr that logs the stderr text.
  */
 public class LogStderrHandler implements IStderrHandler {
 
+    /**
+     * Handles stderr text.
+     * @param stderr text to handle
+     * @param logger logger of the algorithm
+     */
     @Override
-    public void handleStderr(String stderr, final ILogger logger) {
+    public void handleStderr(final String stderr, final ILogger logger) {
         logger.log("Text on stderr:\n" + stderr);
     }
 
+    /**
+     * Tests for equality.
+     * @param o other object
+     * @return true if both are equal.
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

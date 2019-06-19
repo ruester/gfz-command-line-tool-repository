@@ -20,11 +20,13 @@ package org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl;
 
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.configuration.parse.formats.json.AbstractParseJson;
 import org.n52.gfz.riesgos.configuration.parse.input.commandlineargument.ToCommandLineArgumentOption;
 import org.n52.gfz.riesgos.configuration.parse.input.file.ToFileInputOption;
 import org.n52.gfz.riesgos.configuration.parse.input.stdin.ToStdinInputOption;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 import java.util.Map;
@@ -79,12 +81,20 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
             optionsToUseAsFileInput;
 
     /**
+     * Map with the options for default formats by name.
+     */
+    private final Map<String, DefaultFormatOption>
+            optionsForDefaultFormat;
+
+    /**
      * Default constructor.
      */
     public ParseJsonForInputImpl() {
-        optionsToUseAsCommandLineArgument = ToCommandLineArgumentOption.asMap();
-        optionsToUseAsStdinInput = ToStdinInputOption.asMap();
-        optionsToUseAsFileInput = ToFileInputOption.asMap();
+        this.optionsToUseAsCommandLineArgument = ToCommandLineArgumentOption.asMap();
+        this.optionsToUseAsStdinInput = ToStdinInputOption.asMap();
+        this.optionsToUseAsFileInput = ToFileInputOption.asMap();
+
+        this.optionsForDefaultFormat = DefaultFormatOption.asMap();
     }
 
     /**
@@ -113,6 +123,21 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
         final Optional<List<String>> optionalSupportedCrs =
                 getOptionalListOfStrings(json, CRS);
         final Optional<String> optionalSchema = getOptionalString(json, SCHEMA);
+        final Optional<String> defaultFormatStr =
+                getOptionalString(json, DEFAULT_FORMAT);
+
+
+        if(defaultFormatStr.isPresent()) {
+            if (!optionsForDefaultFormat.containsKey(defaultFormatStr.get())) {
+                throw new ParseConfigurationException(
+                        defaultFormatStr.get()
+                                + " is not a supported default format");
+            }
+        }
+        final FormatEntry defaultFormat = defaultFormatStr
+                .map(optionsForDefaultFormat::get)
+                .orElse(DefaultFormatOption.NONE)
+                .getFormat();
 
         if (ToCommandLineArgumentOption.useAs().equals(useAs)) {
             if (optionsToUseAsCommandLineArgument.containsKey(type)) {
@@ -123,6 +148,7 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
                             identifier,
                             isOptional,
                             optionalAbstract.orElse(null),
+                            defaultFormat,
                             optionalDefaultCommandLineFlag.orElse(null),
                             optionalDefaultValue.orElse(null),
                             optionalAllowedValues.orElse(null),
@@ -141,6 +167,7 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
                             identifier,
                             isOptional,
                             optionalAbstract.orElse(null),
+                            defaultFormat,
                             optionalDefaultValue.orElse(null),
                             optionalAllowedValues.orElse(null),
                             optionalSchema.orElse(null));
@@ -157,6 +184,7 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
                         identifier,
                         isOptional,
                         optionalAbstract.orElse(null),
+                        defaultFormat,
                         path,
                         optionalSchema.orElse(null)
                 );

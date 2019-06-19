@@ -189,3 +189,26 @@ coordinate reference systems.
 
 The json data type was added in order to go through the process
 of writing the documentation of how to add an own format.
+
+## default formats
+
+For the complex data (so everything that is not a bbox, literal string,
+double, int or boolean) you can also give a "defaultFormat" attribute.
+
+The idea here is to have a work around to use the processes in
+QGIS, which currently not support the choice of output formats. As it
+will always use the default format, this field gives the possibility
+to specify this.
+
+The following values are supported:
+
+* geojson
+* gml
+* xml (without a schema)
+* quakeml (which is the validated one)
+* nonValidQuakeml (which is the original one, that is not valid 
+according to the schema)
+* shakemap
+* json
+* geotiff (which uses default encoding)
+* geotiff64 (which uses base 64 encoding)

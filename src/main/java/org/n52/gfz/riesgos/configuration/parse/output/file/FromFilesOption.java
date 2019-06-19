@@ -37,51 +37,135 @@ public enum FromFilesOption {
      * This is the enum to read generic files.
      */
     FILE("file",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutGeneric(
-                            identifier, isOptional, optionalAbstract, path)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path)),
     /**
      * This is the enum to read geojson from files.
      */
     GEOJSON("geojson",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutGeojson(
-                            identifier, isOptional, optionalAbstract, path)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path)),
     /**
      * This is the enum to read geotiff rasters from files.
      */
     GEOTIFF("geotiff",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutGeotiff(
-                            identifier, isOptional, optionalAbstract, path)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path)),
     /**
      * This is the enum to read shapefiles from files.
      */
     SHP("shapefile",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutShapeFile(
-                            identifier, isOptional, optionalAbstract, path)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path)),
     /**
      * This is the enum to read xml quakeml from files.
      */
     QUAKEML("quakeml",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutQuakeMLFile(
-                            identifier, isOptional, optionalAbstract, path)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path)),
     /**
      * This is the enum to read xml shakemap from files.
      */
     SHAKEMAP("shakemap",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutShakemap(
-                            identifier, isOptional, optionalAbstract, path)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path)),
     /**
      * This is the enum to read json from files.
      */
     JSON("json",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutJson(
-                            identifier, isOptional, optionalAbstract, path));
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path));
 
     /**
      * This is the constant of the readFrom value

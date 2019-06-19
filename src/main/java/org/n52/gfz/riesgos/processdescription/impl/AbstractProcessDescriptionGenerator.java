@@ -97,12 +97,15 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
      */
     protected void addInputFormats(final SupportedComplexDataInputType complexData, final List<IParser> foundParsers) {
 
-        final List<FormatEntry> supportedFullFormats = foundParsers.stream()
+        final List<FormatEntry> supportedFullFormats = extractFormatsFromParsers(foundParsers);
+        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
+    }
+
+    protected List<FormatEntry> extractFormatsFromParsers(final List<IParser> foundParsers) {
+        return foundParsers.stream()
                 .map(IParser::getSupportedFullFormats)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-
-        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
     }
 
 
@@ -113,12 +116,15 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
      * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
      */
     protected void addOutputFormats(SupportedComplexDataType complexData, List<IGenerator> foundGenerators) {
-        final List<FormatEntry> supportedFullFormats = foundGenerators.stream()
+        final List<FormatEntry> supportedFullFormats = extractFormatsFromGenerators(foundGenerators);
+        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
+    }
+
+    protected List<FormatEntry> extractFormatsFromGenerators(final List<IGenerator> foundGenerators) {
+        return foundGenerators.stream()
                 .map(IGenerator::getSupportedFullFormats)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-
-        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
     }
 
     /**

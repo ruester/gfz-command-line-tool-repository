@@ -23,6 +23,16 @@ package org.n52.gfz.riesgos.formats;
  */
 public interface IMimeTypeAndSchemaConstants {
 
+
+    /**
+     * Default-Encoding
+     */
+    String DEFAULT_ENCODING = "UTF-8";
+
+    /**
+     * Base64-Encoding
+     */
+    String ENCODING_BASE64 = "base64";
     /**
      * Mime-Type for xml
      */

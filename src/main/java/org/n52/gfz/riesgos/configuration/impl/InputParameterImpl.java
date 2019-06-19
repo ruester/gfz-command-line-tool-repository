@@ -25,16 +25,38 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.wps.io.data.IData;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Implementation of the IInputParameter interface.
+ * This implementation is generic to realize problems
+ * on compsing the functions on compile time.
+ *
+ * @param <T> type that extends IData
+ */
 public class InputParameterImpl<T extends IData> implements IInputParameter {
 
+    /**
+     * Identifier of the data.
+     */
     private final String identifier;
+    /**
+     * Binding class of the data (class that extends
+     * the IData interface).
+     */
     private final Class<T> bindingClass;
+    /**
+     * Variable to hold if the input is optional (true) or not.
+     */
     private final boolean isOptional;
+    /**
+     * String to contain the abstract / description of the
+     * input parameter.
+     */
     private final String optionalAbstract;
     private final ICheckDataAndGetErrorMessage<T> validator;
     private final IConvertIDataToCommandLineParameter<T> functionToTransformToCmd;
@@ -45,6 +67,7 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
     private final String defaultValue;
     private final List<String> supportedCRSForBBox;
     private final String schema;
+    private final FormatEntry defaultFormat;
 
     private InputParameterImpl(final Builder<T> builder) {
         this.identifier = builder.identifier;
@@ -60,6 +83,7 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
         this.defaultValue = builder.defaultValue;
         this.supportedCRSForBBox = builder.supportedCRSForBBox;
         this.schema = builder.schema;
+        this.defaultFormat = builder.defaultFormat;
     }
 
     @Override
@@ -129,6 +153,11 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
     }
 
     @Override
+    public Optional<FormatEntry> getDefaultFormat() {
+        return Optional.ofNullable(defaultFormat);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -149,12 +178,13 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
                 Objects.equals(allowedValues, that.allowedValues) &&
                 Objects.equals(defaultValue, that.defaultValue) &&
                 Objects.equals(supportedCRSForBBox, that.supportedCRSForBBox) &&
-                Objects.equals(schema, that.schema);
+                Objects.equals(schema, that.schema) &&
+                Objects.equals(defaultFormat, that.defaultFormat);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, bindingClass, isOptional, optionalAbstract, validator, functionToTransformToCmd, path, functionToWriteToFiles, functionToWriteToStdin, allowedValues, defaultValue, supportedCRSForBBox, schema);
+        return Objects.hash(identifier, bindingClass, isOptional, optionalAbstract, validator, functionToTransformToCmd, path, functionToWriteToFiles, functionToWriteToStdin, allowedValues, defaultValue, supportedCRSForBBox, schema, defaultFormat);
     }
 
     public static class Builder<T extends IData> {
@@ -173,6 +203,7 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
         private String defaultValue;
         private List<String> supportedCRSForBBox;
         private String schema;
+        private FormatEntry defaultFormat;
 
         public Builder(
                 final String aIdentifier,
@@ -228,6 +259,11 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
 
         public Builder withSchema(final String aSchema) {
             this.schema = aSchema;
+            return this;
+        }
+
+        public Builder withDefaultFormat(final FormatEntry aDefaultFormat) {
+            this.defaultFormat = aDefaultFormat;
             return this;
         }
 

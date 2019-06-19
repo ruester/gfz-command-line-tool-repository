@@ -34,38 +34,51 @@ import org.json.simple.JSONObject;
 import org.n52.wps.io.data.IComplexData;
 
 /**
- * Binding class that contains a simple json object
+ * Binding class that contains a simple json object.
  */
 public class JsonDataBinding implements IComplexData {
 
     private static final long serialVersionUID = 8386437107877117360L;
 
-    private final JSONObject jsonObject;
+    /**
+     * Inner json object.
+     */
+    private final JsonObjectOrArray jsonObject;
 
     /**
-     * Default constructor
-     * @param jsonObject jsonObject to wrap
+     * Default constructor for JsonDataBinding.
+     * @param aJsonObject jsonObject to wrap
      */
-    public JsonDataBinding(final JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
+    public JsonDataBinding(final JsonObjectOrArray aJsonObject) {
+        this.jsonObject = aJsonObject;
     }
 
+    /**
+     * Disposes the data binding.
+     */
     @Override
     public void dispose() {
         // do nothing
     }
 
+    /**
+     *
+     * @return the content of the data binding
+     */
     @Override
-    public JSONObject getPayload() {
+    public JsonObjectOrArray getPayload() {
         return jsonObject;
     }
 
+    /**
+     *
+     * @return supported class for the data binding
+     */
     @Override
     public Class<?> getSupportedClass() {
-        return JSONObject.class;
+        return JsonObjectOrArray.class;
     }
 }
-
 ```
 
 Here we use an JSONObject to store all our data in. We just could have gone
@@ -73,7 +86,88 @@ with a simple string to read and write JSON out, but this way we at least
 have the validation that the data is valid json (but not 
 necessary valid geojson).
 
+Because we use a custom payload class we have to create this is well:
+```java
+package org.n52.gfz.riesgos.formats.json.binding;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.Serializable;
+import java.util.Optional;
+
+/**
+ * Wrapper to support both arrays and objects.
+ */
+public class JsonObjectOrArray implements Serializable {
+
+    private static final long serialVersionUID = -3251367313463873184L;
+
+    /**
+     * This contains the json object if it used.
+     */
+    private final JSONObject jsonObject;
+    /**
+     * This contains the json array if it used.
+     */
+    private final JSONArray jsonArray;
+
+    /**
+     * This is the constructor with the json object.
+     * @param aJsonObject json object to store
+     */
+    public JsonObjectOrArray(final JSONObject aJsonObject) {
+        this.jsonObject = aJsonObject;
+        this.jsonArray = null;
+    }
+
+    /**
+     * This is the constructor with the json array.
+     * @param aJsonArray json array to store.
+     */
+    public JsonObjectOrArray(final JSONArray aJsonArray) {
+        this.jsonObject = null;
+        this.jsonArray = aJsonArray;
+    }
+
+    /**
+     *
+     * @return optional json object
+     */
+    public Optional<JSONObject> getJsonObject() {
+        return Optional.ofNullable(jsonObject);
+    }
+
+    /**
+     *
+     * @return optional json array
+     */
+    public Optional<JSONArray> getJsonArray() {
+        return Optional.ofNullable(jsonArray);
+    }
+}
+````
+
 If you just want to use an existing binding class you can skip this step.
+
+## Add the entry to the DefaultFormatOption enum
+
+In the DefaultFormatOption enum in the org.n52.gfz.riesgos.configuration.parse.defaultformats 
+package are the format entries that can be
+used for the defaultFormat attribute.
+Just add the following line:
+
+```
+    /**
+     * Enum for json.
+     */
+    JSON("json",
+            new FormatEntry(
+                    MIME_TYPE_JSON,
+                    null,
+                    DEFAULT_ENCODING,
+                    true)),
+```
 
 ## Write a parser
 
@@ -83,11 +177,13 @@ Next step is to write a parser for your new binding class:
 package org.n52.gfz.riesgos.formats.json.parsers;
 
 import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.parser.AbstractParser;
 import org.n52.wps.webapp.api.FormatEntry;
@@ -99,42 +195,65 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Parser for json input
+ * Parser for json input.
  */
-public class JsonParser extends AbstractParser implements IMimeTypeAndSchemaConstants {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonParser.class);
+public class JsonParser
+        extends AbstractParser {
 
     /**
-     * default constructor
+     * Logger for this class.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(JsonParser.class);
+
+    /**
+     * This is the default constructor for the JsonParser.
      */
     public JsonParser() {
         super();
 
+        final FormatEntry json = DefaultFormatOption.JSON.getFormat();
         supportedIDataTypes.add(JsonDataBinding.class);
-        supportedFormats.add(MIME_TYPE_JSON);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_JSON, null, DEFAULT_ENCODING, true));
+        supportedFormats.add(json.getMimeType());
+        supportedEncodings.add(json.getEncoding());
+        formats.add(json);
     }
 
+    /**
+     * Parses the stream to a JsonDataBinding.
+     * @param stream stream with the content
+     * @param mimeType mimeType of the content
+     * @param schema schema of the content
+     * @return JsonDataBinding
+     */
     @Override
-    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+    public IData parse(
+            final InputStream stream,
+            final String mimeType,
+            final String schema) {
         try {
-            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            final ByteArrayOutputStream byteArrayOutputStream =
+                    new ByteArrayOutputStream();
             IOUtils.copy(stream, byteArrayOutputStream);
-            final String content = new String(byteArrayOutputStream.toByteArray());
+            final String content =
+                    new String(byteArrayOutputStream.toByteArray());
             final JSONParser parser = new JSONParser();
             final Object parsed = parser.parse(content);
-            if(parsed instanceof  JSONObject) {
+            if (parsed instanceof  JSONObject) {
                 final JSONObject jsonObject = (JSONObject) parsed;
-                return new JsonDataBinding(jsonObject);
+                return new JsonDataBinding(new JsonObjectOrArray(jsonObject));
+            } else if (parsed instanceof JSONArray) {
+                final JSONArray jsonArray = (JSONArray) parsed;
+                return new JsonDataBinding(new JsonObjectOrArray(jsonArray));
             }
-            throw new RuntimeException("Can't parse the content to an json object");
-        } catch(final IOException | ParseException exception) {
+            throw new RuntimeException(
+                    "Can't parse the content to an json object");
+        } catch (final IOException | ParseException exception) {
             throw new RuntimeException(exception);
         }
     }
 }
+
 ```
 
 We added the mime type in the IMimeTypeAndSchemaConstants interface
@@ -148,9 +267,11 @@ you can skip this step.
 ```java
 package org.n52.gfz.riesgos.formats.json.generators;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
 import org.n52.wps.webapp.api.FormatEntry;
@@ -158,40 +279,72 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 /**
- * Generator for json data
+ * Generator for json data.
  */
-public class JsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonGenerator.class);
+public class JsonGenerator
+        extends AbstractGenerator {
 
     /**
-     * default constructor
+     * Logger for this class.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(JsonGenerator.class);
+
+    /**
+     * default constructor.
      */
     public JsonGenerator() {
         super();
 
+        final FormatEntry json = DefaultFormatOption.JSON.getFormat();
         supportedIDataTypes.add(JsonDataBinding.class);
-        supportedFormats.add(MIME_TYPE_JSON);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_JSON, null, DEFAULT_ENCODING, true));
+        supportedFormats.add(json.getMimeType());
+        supportedEncodings.add(json.getEncoding());
+        formats.add(json);
     }
 
+    /**
+     * Generates an input stream with the content of the data.
+     * @param data data binding with information to put in the stream
+     * @param mimeType mime type to generate
+     * @param schema schema to generate
+     * @return input stream with the data
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
-        if(data instanceof JsonDataBinding) {
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) {
+        if (data instanceof JsonDataBinding) {
             final JsonDataBinding binding = (JsonDataBinding) data;
-            final JSONObject jsonObject = binding.getPayload();
-            return new ByteArrayInputStream(jsonObject.toJSONString().getBytes());
+            final JsonObjectOrArray jsonObject = binding.getPayload();
+
+            final Optional<JSONObject> asJsonObject = jsonObject.getJsonObject();
+
+            if(asJsonObject.isPresent()) {
+                return new ByteArrayInputStream(asJsonObject.get().toJSONString().getBytes());
+            }
+
+            final Optional<JSONArray> asJsonArray = jsonObject.getJsonArray();
+
+            if(asJsonArray.isPresent()) {
+                return new ByteArrayInputStream(asJsonArray.get().toJSONString().getBytes());
+            }
+            
+            LOGGER.error("JSON not an object nor an array");
+
         } else {
-            LOGGER.error("Can't convert another data binding as JsonDataBinding");
+            LOGGER.error(
+                    "Can't convert another data binding as JsonDataBinding");
         }
         return null;
     }
 }
+
 ```
 
 If you just want to use an existing binding class and an existing generator class
@@ -214,50 +367,49 @@ of the IConvertByteArrayToIData interface:
 ```java
 package org.n52.gfz.riesgos.bytetoidataconverter;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.wps.io.data.IData;
 
 import java.util.Objects;
 
 /**
- * Function to convert the content of a byte array to a JsonDataBinding
+ * Function to convert the content of a byte array to a JsonDataBinding.
  */
-public class ConvertBytesToJsonDataBinding implements IConvertByteArrayToIData<JsonDataBinding> {
+public class ConvertBytesToJsonDataBinding
+        implements IConvertByteArrayToIData<JsonDataBinding> {
 
+    /**
+     * Converts the byte array to an IData element.
+     * @param content byte array to convert
+     * @return IData element
+     * @throws ConvertToIDataException exception if there is an
+     * internal error / exception on conversion
+     */
     @Override
-    public JsonDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
+    public JsonDataBinding convertToIData(final byte[] content)
+            throws ConvertToIDataException {
         final String text = new String(content);
         final JSONParser parser = new JSONParser();
         try {
             final Object parsed = parser.parse(text);
             if (parsed instanceof JSONObject) {
                 final JSONObject jsonObject = (JSONObject) parsed;
-                return new JsonDataBinding(jsonObject);
+                return new JsonDataBinding(new JsonObjectOrArray(jsonObject));
+            } else if (parsed instanceof JSONArray) {
+                final JSONArray jsonArray = (JSONArray) parsed;
+                return new JsonDataBinding(new JsonObjectOrArray(jsonArray));
             }
-        } catch(final ParseException parseException) {
+        } catch (final ParseException parseException) {
             throw new ConvertToIDataException(parseException);
         }
         return null;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        return o != null && getClass() == o.getClass();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getClass().getName());
-    }
-
 }
 ```
 
@@ -272,37 +424,45 @@ to write our json to the docker container.
 ```java
 package org.n52.gfz.riesgos.idatatobyteconverter;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
- * Function to convert a json data binding to a byte array
+ * Function to convert a json data binding to a byte array.
  */
-public class ConvertJsonDataBindingToBytes implements IConvertIDataToByteArray<JsonDataBinding> {
+public class ConvertJsonDataBindingToBytes
+        implements IConvertIDataToByteArray<JsonDataBinding> {
 
+    /**
+     * Converts the IData to a byte array.
+     * @param binding element to convert
+     * @return byte array
+     * @throws ConvertToBytesException exception that indicates that the
+     * element could not converted to byte array
+     */
     @Override
-    public byte[] convertToBytes(final JsonDataBinding binding) throws ConvertToBytesException {
-       final JSONObject jsonObject = binding.getPayload();
-       final String content = jsonObject.toJSONString();
-       return content.getBytes();
-       
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public byte[] convertToBytes(final JsonDataBinding binding)
+            throws ConvertToBytesException {
+        final JsonObjectOrArray jsonObject = binding.getPayload();
+        final Optional<JSONObject> asObject = jsonObject.getJsonObject();
+        final Optional<JSONArray> asArray = jsonObject.getJsonArray();
+        final String content;
+        if(asObject.isPresent()) {
+            content = asObject.get().toJSONString();
+        } else if(asArray.isPresent()) {
+            content = asArray.get().toJSONString();
+        } else {
+            throw new ConvertToBytesException(
+                    "Can't convert as json object nor as json array");
         }
-        return o != null && getClass() == o.getClass();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getClass().getName());
+        return content.getBytes();
     }
 }
 ```
@@ -320,13 +480,14 @@ JSON("json", new StdinJsonFactory()),
 
 And we also need to add the a factory class mentioned there:
 
-```
+```java
 package org.n52.gfz.riesgos.configuration.parse.input.stdin;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 
@@ -339,6 +500,7 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the parameter is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param defaultValue optional default value
      * @param allowedValues optional list with allowed values
      * @param schema optional schema
@@ -351,6 +513,7 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String defaultValue,
             final List<String> allowedValues,
             final String schema) throws ParseConfigurationException {
@@ -368,7 +531,9 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
         }
         return InputParameterFactory.INSTANCE.createStdinJson(
                 identifier,
-                isOptional, optionalAbstract
+                isOptional,
+                optionalAbstract,
+                defaultFormat
         );
     }
 }
@@ -378,24 +543,27 @@ We also want to add the createStdinJson method to the
 InputParameterFactory.INSTANCE:
 
 ```
-        /**
-         * Creates a stdin input with json.
-         * @param identifier identifier of the data
-         * @param isOptional true if the value is optional
-         * @param optionalAbstract optional description of the parameter
-         * @return object with information about how to use the value
-         * as a json stdin input parameter
-         */
-        public IInputParameter createStdinJson(
-                final String identifier,
-                final boolean isOptional,
-                final String optionalAbstract) {
-            return new InputParameterImpl.Builder<>(
-                    identifier, JsonDataBinding.class, isOptional, optionalAbstract)
-                    .withFunctionToWriteToStdin(
-                            new ConvertJsonDataBindingToBytes())
-                    .build();
-        }
+    /**
+     * Creates a stdin input with json.
+     * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
+     * @return object with information about how to use the value
+     * as a json stdin input parameter
+     */
+    public IInputParameter createStdinJson(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
+        return new InputParameterImpl.Builder<>(
+                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                .withFunctionToWriteToStdin(
+                        new ConvertJsonDataBindingToBytes())
+                .withDefaultFormat(defaultFormat)
+                .build();
+    }
 ```
 
 ## Add the type as input as commandLineArgument
@@ -410,13 +578,14 @@ JSON("json",
 
 And we also add the factory class:
 
-```
+```java
 package org.n52.gfz.riesgos.configuration.parse.input.commandlineargument;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 
@@ -431,6 +600,7 @@ public class CommandLineArgumentJsonFileFactory
      * @param identifier identifier of the data
      * @param isOptional true if the input is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param defaultCommandLineFlag optional default command line flag
      * @param defaultValue optional default value
      * @param allowedValues optional list with allowed values
@@ -445,6 +615,7 @@ public class CommandLineArgumentJsonFileFactory
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String defaultCommandLineFlag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -468,11 +639,14 @@ public class CommandLineArgumentJsonFileFactory
         }
         return InputParameterFactory.INSTANCE.createCommandLineArgumentJson(
                 identifier,
-                isOptional, optionalAbstract,
+                isOptional,
+                optionalAbstract,
+                defaultFormat,
                 defaultCommandLineFlag
         );
     }
 }
+
 ```
 
 And we add the createCommandLineArgumentJson method to the 
@@ -485,6 +659,7 @@ InputParameterFactory.INSTANCE:
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param flag optional command line flag
      * @return json command line argument
      */
@@ -492,6 +667,7 @@ InputParameterFactory.INSTANCE:
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String flag) {
         final String filename = createUUIDFilename(".json");
 
@@ -507,6 +683,7 @@ InputParameterFactory.INSTANCE:
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertJsonDataBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 ```
@@ -522,13 +699,14 @@ JSON("json", new InputFileJsonFactory())
 
 Then we add the factory class:
 
-```
+```java
 package org.n52.gfz.riesgos.configuration.parse.input.file;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 /**
  * Implementation to create a file input with json.
@@ -542,6 +720,7 @@ public class InputFileJsonFactory implements IAsFileInputFactory {
      * @param identifier       identifier of the data
      * @param isOptional       true if the input is optional
      * @param optionalAbstract optional abstract (description) of the data
+     * @param defaultFormat optional default format
      * @param path             path to the file
      * @param schema           optional schema
      * @return input parameter
@@ -553,6 +732,7 @@ public class InputFileJsonFactory implements IAsFileInputFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path,
             final String schema)
 
@@ -564,7 +744,9 @@ public class InputFileJsonFactory implements IAsFileInputFactory {
         }
         return InputParameterFactory.INSTANCE.createFileInJson(
                 identifier,
-                isOptional, optionalAbstract,
+                isOptional,
+                optionalAbstract,
+                defaultFormat,
                 path
         );
     }
@@ -586,6 +768,7 @@ And we add the createFileInJson to the InputParameterFactory.INSTANCE:
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final InputParameterImpl.Builder<JsonDataBinding> builder =
@@ -598,6 +781,7 @@ And we add the createFileInJson to the InputParameterFactory.INSTANCE:
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertJsonDataBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 ```
@@ -613,31 +797,44 @@ to the FromStdoutOption enum:
      * This is the enum to read json from stdout.
      */
     JSON("json",
-            (identifier, isOptional, optionalAbstract, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createStdoutJson(
-                            identifier, isOptional, optionalAbstract))
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat));
 ```
 
 And we have to add the createStdoutJson method to the OutputParameterFactory.INSTANCE:
 
 ```
-        /**
-         * Creates a json output (via stdout).
-         * @param identifier identifier of the data
-         * @param isOptional true if the output is optional
-         * @param optionalAbstract optional description of the parameter
-         * @return output argument containing json that will be read from stdout
-         */
-        public IOutputParameter createStdoutJson(
-                final String identifier,
-                final boolean isOptional,
-                final String optionalAbstract) {
-            return new OutputParameterImpl.Builder<>(
-                    identifier, JsonDataBinding.class, isOptional, optionalAbstract)
-                    .withFunctionToHandleStdout(
-                            new ConvertBytesToJsonDataBinding())
-                    .build();
-        }
+    /**
+     * Creates a json output (via stdout).
+     * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
+     * @return output argument containing json that will be read from stdout
+     */
+    public IOutputParameter createStdoutJson(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
+        return new OutputParameterImpl.Builder<>(
+                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                .withFunctionToHandleStdout(
+                        new ConvertBytesToJsonDataBinding())
+                .withDefaultFormat(defaultFormat)
+                .build();
+    }
 ```
 
 ## Add the type as output for stderr
@@ -646,7 +843,10 @@ This is again very similar to adding it to stdout.
 We have to add the line to the FromStderrOption enum:
 
 ```
-JSON("json", OutputParameterFactory.INSTANCE::createStderrJson)
+    /**
+     * This is the enum to read json from stderr.
+     */
+    JSON("json", OutputParameterFactory.INSTANCE::createStderrJson);
 ```
 
 and the createStderrJson method in OutputParameterFactory.INSTANCE:
@@ -657,17 +857,20 @@ and the createStderrJson method in OutputParameterFactory.INSTANCE:
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @return output argument containing the json that will be read from
      * stderr
      */
     public IOutputParameter createStderrJson(
             final String identifier,
             final boolean isOptional,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
         return new OutputParameterImpl.Builder<>(
                 identifier, JsonDataBinding.class, isOptional, optionalAbstract)
                 .withFunctionToHandleStderr(
                         new ConvertBytesToJsonDataBinding())
+                .withDefaultFormat(defaultFormat)
                 .build();
     }
 ```
@@ -677,10 +880,25 @@ and the createStderrJson method in OutputParameterFactory.INSTANCE:
 We have to add the line to the FromFilesOption enum:
 
 ```
-JSON("json",
-            (identifier, isOptional, optionalAbstract, path, schema) ->
+    /**
+     * This is the enum to read json from files.
+     */
+    JSON("json",
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createFileOutJson(
-                            identifier, isOptional, optionalAbstract, path))
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path));
 ```
 
 Then we have to add the method createFileOutJson method to the
@@ -692,6 +910,7 @@ OutputParameterFactory.INSTANCE.
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @return output argument containing the json that will be
      * read from a given file
@@ -700,6 +919,7 @@ OutputParameterFactory.INSTANCE.
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final OutputParameterImpl.Builder<JsonDataBinding> builder =
                 new OutputParameterImpl.Builder<>(
@@ -711,6 +931,8 @@ OutputParameterFactory.INSTANCE.
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToJsonDataBinding()));
+        builder.withDefaultFormat(defaultFormat);
+
         return builder.build();
     }
 ```

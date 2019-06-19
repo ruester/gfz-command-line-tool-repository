@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.configuration.parse.input.commandlineargument;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public interface IAsCommandLineArgumentFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the input is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param defaultCommandLineFlag optional default command line flag
      * @param defaultValue optional default value
      * @param allowedValues optional list with allowed values
@@ -48,6 +50,7 @@ public interface IAsCommandLineArgumentFactory {
             String identifier,
             boolean isOptional,
             String optionalAbstract,
+            FormatEntry defaultFormat,
             String defaultCommandLineFlag,
             String defaultValue,
             List<String> allowedValues,
