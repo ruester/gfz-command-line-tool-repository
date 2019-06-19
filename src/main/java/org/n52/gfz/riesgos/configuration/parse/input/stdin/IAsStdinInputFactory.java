@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.configuration.parse.input.stdin;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public interface IAsStdinInputFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the input is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param defaultValue optional default value
      * @param allowedValues optional list with allowed values
      * @param schema optional schema
@@ -46,6 +48,7 @@ public interface IAsStdinInputFactory {
             String identifier,
             boolean isOptional,
             String optionalAbstract,
+            FormatEntry defaultFormat,
             String defaultValue,
             List<String> allowedValues,
             String schema

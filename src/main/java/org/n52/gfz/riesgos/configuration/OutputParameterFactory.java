@@ -40,6 +40,7 @@ import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
+import org.n52.wps.webapp.api.FormatEntry;
 
 /**
  * Factory for creating the output parameters.
@@ -57,7 +58,8 @@ public enum OutputParameterFactory {
      * Creates a xml file (output) on a given path with an additional schema.
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
-     * @param optionalAbstact optional description of the parameter
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @param schema schema of the xml
      * @return output argument containing xml that will be read from a given
@@ -66,7 +68,8 @@ public enum OutputParameterFactory {
     public IOutputParameter createFileOutXmlWithSchema(
             final String identifier,
             final boolean isOptional,
-            final String optionalAbstact,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path,
             final String schema) {
 
@@ -83,13 +86,14 @@ public enum OutputParameterFactory {
                         identifier,
                         GenericXMLDataBinding.class,
                         isOptional,
-                        optionalAbstact);
+                        optionalAbstract);
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToGenericXMLDataBinding()));
         builder.withSchema(schema);
         builder.withValidator(validator);
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -99,6 +103,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @return output argument containing the quakeml xml that will be
      * read from a given file
@@ -107,6 +112,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
@@ -123,6 +129,7 @@ public enum OutputParameterFactory {
                         new ConvertBytesToQuakeMLXmlBinding()));
         builder.withSchema(schema);
         builder.withValidator(new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
     }
@@ -133,6 +140,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @return output argument containing the shakemap xml that will be
      * read from a given file
@@ -141,6 +149,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
@@ -158,6 +167,7 @@ public enum OutputParameterFactory {
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -166,6 +176,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @return output argument containing the json that will be
      * read from a given file
@@ -174,6 +185,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final OutputParameterImpl.Builder<JsonDataBinding> builder =
                 new OutputParameterImpl.Builder<>(
@@ -185,6 +197,8 @@ public enum OutputParameterFactory {
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToJsonDataBinding()));
+        builder.withDefaultFormat(defaultFormat);
+
         return builder.build();
     }
 
@@ -195,6 +209,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @return output argument containing the geotiff data that will be
      * read from a given file
@@ -203,6 +218,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final OutputParameterImpl.Builder<GeotiffBinding> builder =
                 new OutputParameterImpl.Builder<>(
@@ -214,6 +230,8 @@ public enum OutputParameterFactory {
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToGeotiffBinding()));
+        builder.withDefaultFormat(defaultFormat);
+
         return builder.build();
     }
 
@@ -222,6 +240,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @return output argument containing the geojson data that will be read
      * from a given file
@@ -230,6 +249,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final OutputParameterImpl.Builder<GTVectorDataBinding> builder =
                 new OutputParameterImpl.Builder<>(
@@ -242,6 +262,7 @@ public enum OutputParameterFactory {
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToGTVectorDataBinding(
                             ConvertBytesToGTVectorDataBinding.Format.JSON)));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -250,6 +271,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the data
+     * @param defaultFormat optional default format
      * @param path path of the file to read after process termination
      * @return output argument containing the data that will be read from a
      * given file
@@ -258,6 +280,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final OutputParameterImpl.Builder<GenericFileDataBinding> builder =
                 new OutputParameterImpl.Builder<>(
@@ -269,6 +292,7 @@ public enum OutputParameterFactory {
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToGenericFileDataBinding()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -277,6 +301,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the .shp file to read after process termination
      * @return output argument containing the data that will be read from the
      * given files
@@ -285,6 +310,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final OutputParameterImpl.Builder<GTVectorDataBinding> builder =
                 new OutputParameterImpl.Builder<>(
@@ -295,6 +321,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadShapeFileFromPath());
+        builder.withDefaultFormat(defaultFormat);
+
         return builder.build();
     }
 
@@ -303,6 +331,7 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param schema schema of the xml
      * @return output argument containing xml that will be read from stdout
      */
@@ -310,6 +339,7 @@ public enum OutputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String schema) {
 
         final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator;
@@ -330,6 +360,7 @@ public enum OutputParameterFactory {
                 new ConvertBytesToGenericXMLDataBinding());
         builder.withSchema(schema);
         builder.withValidator(validator);
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -338,13 +369,15 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @return output argument containing quakeml xml that will be read from
      * stdout
      */
     public IOutputParameter createStdoutQuakeML(
             final String identifier,
             final boolean isOptional,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
 
@@ -359,6 +392,7 @@ public enum OutputParameterFactory {
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -367,13 +401,15 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the data
+     * @param defaultFormat optional default format
      * @return output argument containing shakemap xml that will be read from
      * stdout
      */
     public IOutputParameter createStdoutShakemap(
             final String identifier,
             final boolean isOptional,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
 
@@ -387,6 +423,7 @@ public enum OutputParameterFactory {
                 new ConvertBytesToShakemapXmlBinding());
         builder.withSchema(schema);
         builder.withValidator(new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -395,16 +432,19 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @return output argument containing json that will be read from stdout
      */
     public IOutputParameter createStdoutJson(
             final String identifier,
             final boolean isOptional,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
         return new OutputParameterImpl.Builder<>(
                 identifier, JsonDataBinding.class, isOptional, optionalAbstract)
                 .withFunctionToHandleStdout(
                         new ConvertBytesToJsonDataBinding())
+                .withDefaultFormat(defaultFormat)
                 .build();
     }
 
@@ -457,17 +497,20 @@ public enum OutputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @return output argument containing the json that will be read from
      * stderr
      */
     public IOutputParameter createStderrJson(
             final String identifier,
             final boolean isOptional,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
         return new OutputParameterImpl.Builder<>(
                 identifier, JsonDataBinding.class, isOptional, optionalAbstract)
                 .withFunctionToHandleStderr(
                         new ConvertBytesToJsonDataBinding())
+                .withDefaultFormat(defaultFormat)
                 .build();
     }
 
@@ -492,5 +535,4 @@ public enum OutputParameterFactory {
                         new ConvertExitValueToLiteralIntBinding())
                 .build();
     }
-
 }

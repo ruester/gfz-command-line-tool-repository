@@ -30,7 +30,7 @@ public enum FromStderrOption {
     /**
      * This is the enum to read a string from stderr.
      */
-    STRING("string", OutputParameterFactory.INSTANCE::createStderrString),
+    STRING("string", new StderrStringFactory()),
     /**
      * This is the enum to read json from stderr.
      */

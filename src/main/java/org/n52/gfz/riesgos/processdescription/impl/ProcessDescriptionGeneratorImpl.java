@@ -41,6 +41,7 @@ import org.n52.wps.io.data.IBBOXData;
 import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.ILiteralData;
+import org.n52.wps.webapp.api.FormatEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -252,7 +253,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
             final SupportedComplexDataInputType complexData = inputDescriptionType.addNewComplexData();
             final List<IParser> parsers = parserSupplier.get();
             final List<IParser> foundParsers = findParser(parsers, inputParameter.getBindingClass());
-            addInputFormats(complexData, foundParsers);
+
+            final List<FormatEntry> supportedFullFormats = extractFormatsFromParsers(foundParsers);
+
+            final FormatEntry defaultFormat = inputParameter.getDefaultFormat().orElse(supportedFullFormats.get(0));
+
+            addFormats(complexData, defaultFormat, supportedFullFormats);
         }
     }
 
@@ -371,7 +377,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
             final SupportedComplexDataType complexData = outputDescriptionType.addNewComplexOutput();
             final List<IGenerator> generators = generatorSupplier.get();
             final List<IGenerator> foundGenerators = findGenerators(generators, outputParameter.getBindingClass());
-            addOutputFormats(complexData, foundGenerators);
+
+            final List<FormatEntry> supportedFullFormats = extractFormatsFromGenerators(foundGenerators);
+
+            final FormatEntry defaultFormat = outputParameter.getDefaultFormat().orElse(supportedFullFormats.get(0));
+
+            addFormats(complexData, defaultFormat, supportedFullFormats);
         }
     }
 

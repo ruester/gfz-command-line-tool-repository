@@ -18,7 +18,9 @@
 
 package org.n52.gfz.riesgos.formats.quakeml.generators;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
@@ -39,17 +41,18 @@ import java.io.InputStream;
 /**
  * Generator that takes the IQuakeMLXmlDataBinding and returns GeoJson
  */
-public class QuakeMLGeoJsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class QuakeMLGeoJsonGenerator extends AbstractGenerator {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonGenerator.class);
+    private final static FormatEntry GEOJSON = DefaultFormatOption.GEOJSON.getFormat();
 
     public QuakeMLGeoJsonGenerator() {
         super();
 
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_GEOJSON);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_GEOJSON, null, DEFAULT_ENCODING, true));
+        supportedFormats.add(GEOJSON.getMimeType());
+        supportedEncodings.add(GEOJSON.getEncoding());
+        formats.add(GEOJSON);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class QuakeMLGeoJsonGenerator extends AbstractGenerator implements IMimeT
                 final IQuakeML quakeML = binding.getPayloadQuakeML();
                 final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
 
-                return new GeoJSONGenerator().generateStream(new GTVectorDataBinding(featureCollection), MIME_TYPE_GEOJSON, null);
+                return new GeoJSONGenerator().generateStream(new GTVectorDataBinding(featureCollection), GEOJSON.getEncoding(), null);
             } catch(final ConvertFormatException convertFormatException) {
                 LOGGER.error("Can't convert the validated quakeml format to geojson");
                 LOGGER.error(convertFormatException.toString());

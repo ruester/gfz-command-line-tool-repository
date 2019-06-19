@@ -60,6 +60,11 @@ public abstract class AbstractParseJson {
     protected static final String OPTIONAL = "optional";
 
     /**
+     * Constant with the field attribute for default format.
+     */
+    protected static final String DEFAULT_FORMAT = "defaultFormat";
+
+    /**
      * Searches for the key in the json object.
      * If the key is not there it returns an empty optional.
      * If the key is there but no string, than it throws an exception.

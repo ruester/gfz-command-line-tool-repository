@@ -20,7 +20,7 @@ package org.n52.gfz.riesgos.formats.quakeml.parsers;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
@@ -35,17 +35,19 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
-public class QuakeMLGML3Parser extends AbstractParser implements IMimeTypeAndSchemaConstants {
+public class QuakeMLGML3Parser extends AbstractParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Parser.class);
 
     public QuakeMLGML3Parser() {
         super();
 
+        final FormatEntry gml = DefaultFormatOption.GML.getFormat();
+
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_XML);
-        supportedSchemas.add(SCHEMA_GML_3_2_1);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_XML, SCHEMA_GML_3_2_1, DEFAULT_ENCODING, true));
+        supportedFormats.add(gml.getMimeType());
+        supportedSchemas.add(gml.getSchema());
+        supportedEncodings.add(gml.getEncoding());
+        formats.add(gml);
     }
 
     @Override

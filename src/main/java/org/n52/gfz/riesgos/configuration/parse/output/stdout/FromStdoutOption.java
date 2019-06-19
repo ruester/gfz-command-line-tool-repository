@@ -31,35 +31,63 @@ public enum FromStdoutOption {
     /**
      * This is the enum to read a string from stdout.
      */
-    STRING("string",
-            (identifier, isOptional, optionalAbstract, schema) ->
-                    OutputParameterFactory.INSTANCE.createStdoutString(
-                            identifier, isOptional, optionalAbstract)),
+    STRING("string", new StdoutStringFactory()),
     /**
      * This is the enum to read generic xml from stdout.
      */
-    XML("xml", OutputParameterFactory.INSTANCE::createStdoutXmlWithSchema),
+    XML("xml",
+            OutputParameterFactory.INSTANCE::createStdoutXmlWithSchema),
     /**
      * This is the enum to read xml quakeml from stdout.
      */
     QUAKEML("quakeml",
-            (identifier, isOptional, optionalAbstract, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createStdoutQuakeML(
-                            identifier, isOptional, optionalAbstract)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat)),
     /**
      * This is the enum to read xml shakemaps from stdout.
      */
     SHAKEMAP("shakemap",
-            (identifier, isOptional, optionalAbstract, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createStdoutShakemap(
-                            identifier, isOptional, optionalAbstract)),
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat)),
     /**
      * This is the enum to read json from stdout.
      */
     JSON("json",
-            (identifier, isOptional, optionalAbstract, schema) ->
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    schema
+            ) ->
+                    // ignore schema
                     OutputParameterFactory.INSTANCE.createStdoutJson(
-                            identifier, isOptional, optionalAbstract));
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat));
 
     /**
      * This is the constant of the readFrom value

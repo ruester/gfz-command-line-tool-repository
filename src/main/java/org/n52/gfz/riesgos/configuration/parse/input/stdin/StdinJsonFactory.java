@@ -20,6 +20,7 @@ import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the parameter is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param defaultValue optional default value
      * @param allowedValues optional list with allowed values
      * @param schema optional schema
@@ -44,6 +46,7 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String defaultValue,
             final List<String> allowedValues,
             final String schema) throws ParseConfigurationException {
@@ -61,7 +64,9 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
         }
         return InputParameterFactory.INSTANCE.createStdinJson(
                 identifier,
-                isOptional, optionalAbstract
+                isOptional,
+                optionalAbstract,
+                defaultFormat
         );
     }
 }

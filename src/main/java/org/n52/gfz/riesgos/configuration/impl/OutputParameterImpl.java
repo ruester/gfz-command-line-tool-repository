@@ -6,6 +6,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
 import org.n52.wps.io.data.IData;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,7 @@ public class OutputParameterImpl<T extends IData> implements IOutputParameter {
     private final IReadIDataFromFiles<T> functionToReadFromFiles;
     private final List<String> supportedCRSForBBox;
     private final String schema;
+    private final FormatEntry defaultFormat;
 
     private OutputParameterImpl(final Builder<T> builder) {
         this.identifier = builder.identifier;
@@ -39,6 +41,7 @@ public class OutputParameterImpl<T extends IData> implements IOutputParameter {
         this.functionToReadFromFiles = builder.functionToReadFromFiles;
         this.supportedCRSForBBox = builder.supportedCRSForBBox;
         this.schema = builder.schema;
+        this.defaultFormat = builder.defaultFormat;
     }
 
     @Override
@@ -102,6 +105,11 @@ public class OutputParameterImpl<T extends IData> implements IOutputParameter {
     }
 
     @Override
+    public Optional<FormatEntry> getDefaultFormat() {
+        return Optional.ofNullable(defaultFormat);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -121,12 +129,13 @@ public class OutputParameterImpl<T extends IData> implements IOutputParameter {
                 Objects.equals(functionToHandleStdout, that.functionToHandleStdout) &&
                 Objects.equals(functionToReadFromFiles, that.functionToReadFromFiles) &&
                 Objects.equals(supportedCRSForBBox, that.supportedCRSForBBox) &&
-                Objects.equals(schema, that.schema);
+                Objects.equals(schema, that.schema) &&
+                Objects.equals(defaultFormat, that.defaultFormat);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, bindingClass, isOptional, optionalAbstract, validator, path, functionToHandleStderr, functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles, supportedCRSForBBox, schema);
+        return Objects.hash(identifier, bindingClass, isOptional, optionalAbstract, validator, path, functionToHandleStderr, functionToHandleExitValue, functionToHandleStdout, functionToReadFromFiles, supportedCRSForBBox, schema, defaultFormat);
     }
 
     public static class Builder<T extends IData> {
@@ -143,6 +152,7 @@ public class OutputParameterImpl<T extends IData> implements IOutputParameter {
         private IReadIDataFromFiles<T> functionToReadFromFiles;
         private List<String> supportedCRSForBBox;
         private String schema;
+        private FormatEntry defaultFormat;
 
         public Builder(
                 final String aIdentifier,
@@ -193,6 +203,11 @@ public class OutputParameterImpl<T extends IData> implements IOutputParameter {
 
         public Builder withSupportedCRSForBBox(final List<String> aSupportedCRSForBBox) {
             this.supportedCRSForBBox = aSupportedCRSForBBox;
+            return this;
+        }
+
+        public Builder withDefaultFormat(final FormatEntry aDefaultFormat) {
+            this.defaultFormat = aDefaultFormat;
             return this;
         }
 

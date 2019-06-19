@@ -17,6 +17,8 @@
 package org.n52.gfz.riesgos.configuration.parse.output.stdout;
 
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 /**
  * Interface for a factory to create the identifiers for
@@ -30,12 +32,17 @@ public interface IStdoutOutputFactory {
      * @param identifier identifier of the data
      * @param isOptional true of the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param schema optional schema (for xml)
      * @return IIdentifierWithBinding
+     * @throws ParseConfigurationException exception to throw
+     * if a attribute is not supported by the factory
      */
     IOutputParameter create(
             String identifier,
             boolean isOptional,
             String optionalAbstract,
-            String schema);
+            FormatEntry defaultFormat,
+            String schema)
+    throws ParseConfigurationException;
 }

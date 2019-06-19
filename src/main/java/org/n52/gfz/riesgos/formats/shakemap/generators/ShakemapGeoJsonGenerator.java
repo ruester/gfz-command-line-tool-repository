@@ -19,7 +19,7 @@
 package org.n52.gfz.riesgos.formats.shakemap.generators;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToSimpleFeatureCollection;
@@ -38,9 +38,12 @@ import java.util.function.Function;
 /**
  * GeoJson Generator for Shakemaps
  */
-public class ShakemapGeoJsonGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class ShakemapGeoJsonGenerator extends AbstractGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGeoJsonGenerator.class);
+
+    private static final FormatEntry GEOJSON = DefaultFormatOption.GEOJSON.getFormat();
+
     private static final Function<IShakemap, SimpleFeatureCollection> TO_FEATURE_COLLECTION =
             new ShakemapToSimpleFeatureCollection();
 
@@ -51,9 +54,9 @@ public class ShakemapGeoJsonGenerator extends AbstractGenerator implements IMime
         super();
 
         supportedIDataTypes.add(ShakemapXmlDataBinding.class);
-        supportedFormats.add(MIME_TYPE_GEOJSON);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(new FormatEntry(MIME_TYPE_GEOJSON, null, DEFAULT_ENCODING, true));
+        supportedFormats.add(GEOJSON.getMimeType());
+        supportedEncodings.add(GEOJSON.getEncoding());
+        formats.add(GEOJSON);
     }
 
     @Override
@@ -64,7 +67,7 @@ public class ShakemapGeoJsonGenerator extends AbstractGenerator implements IMime
 
             final SimpleFeatureCollection featureCollection = TO_FEATURE_COLLECTION.apply(shakemap);
 
-            return new GeoJSONGenerator().generateStream(new GTVectorDataBinding(featureCollection), MIME_TYPE_GEOJSON, null);
+            return new GeoJSONGenerator().generateStream(new GTVectorDataBinding(featureCollection), GEOJSON.getMimeType(), GEOJSON.getSchema());
         } else {
             LOGGER.error("Can't convert another data binding as ShakemapXmlDataBinding");
         }

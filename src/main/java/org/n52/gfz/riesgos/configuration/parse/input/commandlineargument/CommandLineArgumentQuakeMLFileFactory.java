@@ -20,6 +20,7 @@ import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class CommandLineArgumentQuakeMLFileFactory
      * @param identifier identifier of the data
      * @param isOptional true if the input is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param defaultCommandLineFlag optional default command line flag
      * @param defaultValue optional default value
      * @param allowedValues optional list with allowed values
@@ -47,6 +49,7 @@ public class CommandLineArgumentQuakeMLFileFactory
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String defaultCommandLineFlag,
             final String defaultValue,
             final List<String> allowedValues,
@@ -67,7 +70,9 @@ public class CommandLineArgumentQuakeMLFileFactory
         // ignore schema
         return InputParameterFactory.INSTANCE.createCommandLineArgumentQuakeML(
                 identifier,
-                isOptional, optionalAbstract,
+                isOptional,
+                optionalAbstract,
+                defaultFormat,
                 defaultCommandLineFlag
         );
     }

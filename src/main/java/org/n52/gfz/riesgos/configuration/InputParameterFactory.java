@@ -34,6 +34,7 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBy
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertJsonDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertQuakeMLXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.gfz.riesgos.validators.XmlBindingWithAllowedSchema;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
@@ -47,6 +48,7 @@ import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.List;
 import java.util.UUID;
@@ -254,6 +256,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String schema,
             final String defaultFlag) {
 
@@ -280,6 +283,7 @@ public enum InputParameterFactory {
                 new WriteSingleByteStreamToPath<>(
                         new ConvertGenericXMLDataBindingToBytes<>()));
         builder.withSchema(schema);
+        builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
     }
@@ -296,6 +300,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String flag) {
         final String filename = createUUIDFilename(".xml");
 
@@ -312,10 +317,11 @@ public enum InputParameterFactory {
         builder.withPath(filename);
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
-                        new ConvertGenericXMLDataBindingToBytes<>()));
+                        new ConvertQuakeMLXMLDataBindingToBytes()));
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
     }
@@ -326,6 +332,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param flag optional command line flag
      * @return geotiff file command line argument
      */
@@ -333,6 +340,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String flag) {
         final String filename = createUUIDFilename(".tiff");
 
@@ -348,6 +356,7 @@ public enum InputParameterFactory {
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertGeotiffBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
     }
@@ -358,6 +367,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalDescription optional description of the parameter
+     * @param defaultFormat optional default format
      * @param flag optional command line flag
      * @return geojson file command line argument
      */
@@ -365,6 +375,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalDescription,
+            final FormatEntry defaultFormat,
             final String flag) {
         final String filename = createUUIDFilename(".json");
         final InputParameterImpl.Builder<GTVectorDataBinding> builder =
@@ -380,6 +391,7 @@ public enum InputParameterFactory {
                 new WriteSingleByteStreamToPath<>(
                         new ConvertGTVectorDataBindingToBytes(
                             ConvertGTVectorDataBindingToBytes.Format.JSON)));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -397,6 +409,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String flag) {
 
         final String filename = createUUIDFilename(".shp");
@@ -412,6 +425,7 @@ public enum InputParameterFactory {
         builder.withPath(filename);
         builder.withFunctionToWriteToFiles(
                 new WriteShapeFileToPath());
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -422,6 +436,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param flag optional command line flag
      * @return file command line argument
      */
@@ -429,6 +444,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String flag) {
         final String filename = createUUIDFilename(".dat");
 
@@ -444,6 +460,7 @@ public enum InputParameterFactory {
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertGenericFileDataBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -453,6 +470,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param flag optional command line flag
      * @return json command line argument
      */
@@ -460,6 +478,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String flag) {
         final String filename = createUUIDFilename(".json");
 
@@ -475,6 +494,7 @@ public enum InputParameterFactory {
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertJsonDataBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -521,17 +541,20 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @return object with information about how to use the value
      * as a json stdin input parameter
      */
     public IInputParameter createStdinJson(
             final String identifier,
             final boolean isOptional,
-            final String optionalAbstract) {
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
         return new InputParameterImpl.Builder<>(
                 identifier, JsonDataBinding.class, isOptional, optionalAbstract)
                 .withFunctionToWriteToStdin(
                         new ConvertJsonDataBindingToBytes())
+                .withDefaultFormat(defaultFormat)
                 .build();
     }
 
@@ -540,6 +563,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to write before starting the process
      * @return geotiff input file
      */
@@ -547,6 +571,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final InputParameterImpl.Builder<GeotiffBinding> builder
                 = new InputParameterImpl.Builder<>(
@@ -558,6 +583,7 @@ public enum InputParameterFactory {
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertGeotiffBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -566,6 +592,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to write before staring the process
      * @return geojson input file
      */
@@ -573,6 +600,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final InputParameterImpl.Builder<GTVectorDataBinding> builder =
@@ -586,6 +614,7 @@ public enum InputParameterFactory {
                 new WriteSingleByteStreamToPath<>(
                         new ConvertGTVectorDataBindingToBytes(
                             ConvertGTVectorDataBindingToBytes.Format.JSON)));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -603,6 +632,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final InputParameterImpl.Builder<GTVectorDataBinding> builder =
@@ -614,6 +644,7 @@ public enum InputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToWriteToFiles(
                 new WriteShapeFileToPath());
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -622,6 +653,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to write before starting the process
      * @return quakeml input file
      */
@@ -629,6 +661,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML;
@@ -642,10 +675,11 @@ public enum InputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
-                        new ConvertGenericXMLDataBindingToBytes<>()));
+                        new ConvertQuakeMLXMLDataBindingToBytes()));
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -654,6 +688,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to write before starting the process
      * @return shakemap input file
      */
@@ -661,6 +696,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final String schema = IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP;
@@ -678,6 +714,7 @@ public enum InputParameterFactory {
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -693,6 +730,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
 
         final InputParameterImpl.Builder<JsonDataBinding> builder =
@@ -705,6 +743,7 @@ public enum InputParameterFactory {
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertJsonDataBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 
@@ -714,6 +753,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path of the file to write before staring the process
      * @return generic input file
      */
@@ -721,6 +761,7 @@ public enum InputParameterFactory {
             final String identifier,
             final boolean isOptional,
             final String optionalAbstract,
+            final FormatEntry defaultFormat,
             final String path) {
         final InputParameterImpl.Builder<GenericFileDataBinding> builder =
                 new InputParameterImpl.Builder<>(
@@ -732,6 +773,7 @@ public enum InputParameterFactory {
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
                         new ConvertGenericFileDataBindingToBytes()));
+        builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
 

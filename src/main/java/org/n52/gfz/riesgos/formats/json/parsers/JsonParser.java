@@ -22,7 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.parser.AbstractParser;
@@ -38,8 +38,7 @@ import java.io.InputStream;
  * Parser for json input.
  */
 public class JsonParser
-        extends AbstractParser
-        implements IMimeTypeAndSchemaConstants {
+        extends AbstractParser {
 
     /**
      * Logger for this class.
@@ -53,15 +52,11 @@ public class JsonParser
     public JsonParser() {
         super();
 
+        final FormatEntry json = DefaultFormatOption.JSON.getFormat();
         supportedIDataTypes.add(JsonDataBinding.class);
-        supportedFormats.add(MIME_TYPE_JSON);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(
-                new FormatEntry(
-                        MIME_TYPE_JSON,
-                        null,
-                        DEFAULT_ENCODING,
-                        true));
+        supportedFormats.add(json.getMimeType());
+        supportedEncodings.add(json.getEncoding());
+        formats.add(json);
     }
 
     /**

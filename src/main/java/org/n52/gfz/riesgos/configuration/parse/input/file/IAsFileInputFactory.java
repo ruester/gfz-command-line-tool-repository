@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.configuration.parse.input.file;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 /**
  * Interface for a factory to create the identifiers for
@@ -32,6 +33,7 @@ public interface IAsFileInputFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the input is optional
      * @param optionalAbstract optional abstract (description) of the data
+     * @param defaultFormat optional default format
      * @param path path to the file
      * @param schema optional schema
      * @return input parameter
@@ -42,6 +44,7 @@ public interface IAsFileInputFactory {
             String identifier,
             boolean isOptional,
             String optionalAbstract,
+            FormatEntry defaultFormat,
             String path,
             String schema)
         throws ParseConfigurationException;

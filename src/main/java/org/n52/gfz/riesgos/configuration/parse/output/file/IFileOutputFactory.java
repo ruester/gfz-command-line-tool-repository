@@ -17,6 +17,8 @@
 package org.n52.gfz.riesgos.configuration.parse.output.file;
 
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 /**
  * Interface for a factory to create the identifiers for
@@ -30,6 +32,7 @@ public interface IFileOutputFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the output is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
      * @param path path to the file
      * @param schema optional schema
      * @return IIdentifierWithBinding
@@ -38,8 +41,9 @@ public interface IFileOutputFactory {
             String identifier,
             boolean isOptional,
             String optionalAbstract,
+            FormatEntry defaultFormat,
             String path,
             String schema
-    );
+    ) throws ParseConfigurationException;
 
 }

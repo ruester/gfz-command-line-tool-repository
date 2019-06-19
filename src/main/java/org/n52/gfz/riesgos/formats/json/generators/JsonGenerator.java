@@ -19,7 +19,7 @@
 package org.n52.gfz.riesgos.formats.json.generators;
 
 import org.json.simple.JSONObject;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
@@ -34,8 +34,7 @@ import java.io.InputStream;
  * Generator for json data.
  */
 public class JsonGenerator
-        extends AbstractGenerator
-        implements IMimeTypeAndSchemaConstants {
+        extends AbstractGenerator {
 
     /**
      * Logger for this class.
@@ -49,15 +48,11 @@ public class JsonGenerator
     public JsonGenerator() {
         super();
 
+        final FormatEntry json = DefaultFormatOption.JSON.getFormat();
         supportedIDataTypes.add(JsonDataBinding.class);
-        supportedFormats.add(MIME_TYPE_JSON);
-        supportedEncodings.add(DEFAULT_ENCODING);
-        formats.add(
-                new FormatEntry(
-                        MIME_TYPE_JSON,
-                        null,
-                        DEFAULT_ENCODING,
-                        true));
+        supportedFormats.add(json.getMimeType());
+        supportedEncodings.add(json.getEncoding());
+        formats.add(json);
     }
 
     /**

@@ -317,7 +317,7 @@ public class TestParseJsonConfigurationImpl {
 
             assertEquals(
                 "The output is xml",
-                OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema("selectedRows", false, null,"test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"),
+                OutputParameterFactory.INSTANCE.createFileOutXmlWithSchema("selectedRows", false, null,null, "test.xml", "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd"),
                 output.get(0)
             );
 

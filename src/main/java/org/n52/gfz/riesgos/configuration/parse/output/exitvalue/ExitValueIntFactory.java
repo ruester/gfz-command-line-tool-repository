@@ -17,30 +17,42 @@
 package org.n52.gfz.riesgos.configuration.parse.output.exitvalue;
 
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.configuration.OutputParameterFactory;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.wps.webapp.api.FormatEntry;
 
 /**
- * Interface for a factory to create the identifiers for
- * the supported types to read data from the exit value.
+ * Implementation to create a exit value int parameter.
  */
-@FunctionalInterface
-public interface IExitValueOutputFactory {
+public class ExitValueIntFactory implements IExitValueOutputFactory {
 
     /**
      * Factory method to create the identifier with the given data.
-     * @param identifier identifier of the data
-     * @param isOptional true if the output is optional
+     *
+     * @param identifier       identifier of the data
+     * @param isOptional       true if the output is optional
      * @param optionalAbstract optional description of the parameter
-     * @param defaultFormat optional default format
-     * @return output parameter
-     * @throws ParseConfigurationException exception that is thrown if a
-     * attribute is not supported by the factory
+     * @param defaultFormat    optional default format
+     * @return IIdentifierWithBinding
      */
-    IOutputParameter create(
-            String identifier,
-            boolean isOptional,
-            String optionalAbstract,
-            FormatEntry defaultFormat
-    ) throws ParseConfigurationException;
+    @Override
+    public IOutputParameter create(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat)
+
+            throws ParseConfigurationException {
+
+        if (defaultFormat != null) {
+            throw new ParseConfigurationException(
+                    "defaultFormat is not supported for int types");
+        }
+
+        return OutputParameterFactory.INSTANCE.createExitValueInt(
+                identifier,
+                isOptional,
+                optionalAbstract
+        );
+    }
 }

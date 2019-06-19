@@ -20,12 +20,14 @@ package org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl;
 
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.configuration.parse.formats.json.AbstractParseJson;
 import org.n52.gfz.riesgos.configuration.parse.output.exitvalue.FromExitValueOption;
 import org.n52.gfz.riesgos.configuration.parse.output.file.FromFilesOption;
 import org.n52.gfz.riesgos.configuration.parse.output.stderr.FromStderrOption;
 import org.n52.gfz.riesgos.configuration.parse.output.stdout.FromStdoutOption;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
+import org.n52.wps.webapp.api.FormatEntry;
 
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +64,13 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
     private final Map<String, FromExitValueOption> optionsToReadFromExitValue;
 
     /**
+     * Map with the options for default formats by name.
+     */
+    private final Map<String, DefaultFormatOption>
+            optionsForDefaultFormat;
+
+
+    /**
      * Default constructor.
      */
     public ParseJsonForOutputImpl() {
@@ -70,6 +79,8 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
         this.optionsToReadFromFiles = FromFilesOption.asMap();
         this.optionsToReadFromStderr = FromStderrOption.asMap();
         this.optionsToReadFromExitValue = FromExitValueOption.asMap();
+
+        this.optionsForDefaultFormat = DefaultFormatOption.asMap();
     }
 
     /**
@@ -92,6 +103,20 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
                 getOptionalString(json, SCHEMA);
 
         final boolean isOptional = getOptionalBoolean(json, OPTIONAL, false);
+        final Optional<String> defaultFormatStr =
+                getOptionalString(json, DEFAULT_FORMAT);
+
+        if(defaultFormatStr.isPresent()) {
+            if (!optionsForDefaultFormat.containsKey(defaultFormatStr.get())) {
+                throw new ParseConfigurationException(
+                        defaultFormatStr.get()
+                                + " is not a supported default format");
+            }
+        }
+        final FormatEntry defaultFormat = defaultFormatStr
+                .map(optionsForDefaultFormat::get)
+                .orElse(DefaultFormatOption.NONE)
+                .getFormat();
 
         if (FromStdoutOption.readFrom().equals(readFrom)) {
             if (optionsToReadFromStdout.containsKey(type)) {
@@ -102,6 +127,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
                             identifier,
                             isOptional,
                             optionalAbstract.orElse(null),
+                            defaultFormat,
                             optionalSchema.orElse(null));
 
             } else {
@@ -116,7 +142,8 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
                         .create(
                                 identifier,
                                 isOptional,
-                                optionalAbstract.orElse(null));
+                                optionalAbstract.orElse(null),
+                                defaultFormat);
             } else {
                 throw new ParseConfigurationException(
                         "Not supported type value");
@@ -129,7 +156,8 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
                         .create(
                                 identifier,
                                 isOptional,
-                                optionalAbstract.orElse(null));
+                                optionalAbstract.orElse(null),
+                                defaultFormat);
             } else {
                 throw new ParseConfigurationException(
                         "Not supported type value");
@@ -146,6 +174,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
                                 identifier,
                                 isOptional,
                                 optionalAbstract.orElse(null),
+                                defaultFormat,
                                 path,
                                 optionalSchema.orElse(null));
             } else {
