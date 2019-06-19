@@ -18,11 +18,13 @@
 
 package org.n52.gfz.riesgos.bytetoidataconverter;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 
 import java.util.Objects;
@@ -49,7 +51,10 @@ public class ConvertBytesToJsonDataBinding
             final Object parsed = parser.parse(text);
             if (parsed instanceof JSONObject) {
                 final JSONObject jsonObject = (JSONObject) parsed;
-                return new JsonDataBinding(jsonObject);
+                return new JsonDataBinding(new JsonObjectOrArray(jsonObject));
+            } else if (parsed instanceof JSONArray) {
+                final JSONArray jsonArray = (JSONArray) parsed;
+                return new JsonDataBinding(new JsonObjectOrArray(jsonArray));
             }
         } catch (final ParseException parseException) {
             throw new ConvertToIDataException(parseException);

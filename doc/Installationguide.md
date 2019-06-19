@@ -232,6 +232,16 @@ At the moment there is a 1:1 mapping of the processes and the docker images.
 This is mostly for handling the dependencies seperate for each process.
 Nothing will stop you in using one docker image for multiple processes.
 
+## Configure the wps server
+
+In order to create GML or other xml output that will contain a
+reference to files (for example xsd files) it is necessary to
+check the values for the server protocol, the server host name
+and the server host ports in the server configurations.
+
+If your server runs on localhost you find this site on
+http://localhost:8080/wps/server on the server sub site.
+
 ## Optional configure the folder to use as a configuration repository
 
 This project relies on providing json files as configurations for

@@ -18,9 +18,11 @@
 
 package org.n52.gfz.riesgos.formats.json.generators;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
 import org.n52.wps.webapp.api.FormatEntry;
@@ -29,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * Generator for json data.
@@ -69,9 +72,22 @@ public class JsonGenerator
             final String schema) {
         if (data instanceof JsonDataBinding) {
             final JsonDataBinding binding = (JsonDataBinding) data;
-            final JSONObject jsonObject = binding.getPayload();
-            return new ByteArrayInputStream(
-                    jsonObject.toJSONString().getBytes());
+            final JsonObjectOrArray jsonObject = binding.getPayload();
+
+            final Optional<JSONObject> asJsonObject = jsonObject.getJsonObject();
+
+            if(asJsonObject.isPresent()) {
+                return new ByteArrayInputStream(asJsonObject.get().toJSONString().getBytes());
+            }
+
+            final Optional<JSONArray> asJsonArray = jsonObject.getJsonArray();
+
+            if(asJsonArray.isPresent()) {
+                return new ByteArrayInputStream(asJsonArray.get().toJSONString().getBytes());
+            }
+
+            LOGGER.error("JSON not an object nor an array");
+
         } else {
             LOGGER.error(
                     "Can't convert another data binding as JsonDataBinding");

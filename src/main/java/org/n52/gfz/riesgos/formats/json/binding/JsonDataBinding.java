@@ -31,13 +31,13 @@ public class JsonDataBinding implements IComplexData {
     /**
      * Inner json object.
      */
-    private final JSONObject jsonObject;
+    private final JsonObjectOrArray jsonObject;
 
     /**
      * Default constructor for JsonDataBinding.
      * @param aJsonObject jsonObject to wrap
      */
-    public JsonDataBinding(final JSONObject aJsonObject) {
+    public JsonDataBinding(final JsonObjectOrArray aJsonObject) {
         this.jsonObject = aJsonObject;
     }
 
@@ -54,7 +54,7 @@ public class JsonDataBinding implements IComplexData {
      * @return the content of the data binding
      */
     @Override
-    public JSONObject getPayload() {
+    public JsonObjectOrArray getPayload() {
         return jsonObject;
     }
 
@@ -64,6 +64,6 @@ public class JsonDataBinding implements IComplexData {
      */
     @Override
     public Class<?> getSupportedClass() {
-        return JSONObject.class;
+        return JsonObjectOrArray.class;
     }
 }

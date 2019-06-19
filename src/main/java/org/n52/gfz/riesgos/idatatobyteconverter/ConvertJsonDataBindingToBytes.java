@@ -18,12 +18,15 @@
 
 package org.n52.gfz.riesgos.idatatobyteconverter;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Function to convert a json data binding to a byte array.
@@ -41,8 +44,18 @@ public class ConvertJsonDataBindingToBytes
     @Override
     public byte[] convertToBytes(final JsonDataBinding binding)
             throws ConvertToBytesException {
-        final JSONObject jsonObject = binding.getPayload();
-        final String content = jsonObject.toJSONString();
+        final JsonObjectOrArray jsonObject = binding.getPayload();
+        final Optional<JSONObject> asObject = jsonObject.getJsonObject();
+        final Optional<JSONArray> asArray = jsonObject.getJsonArray();
+        final String content;
+        if(asObject.isPresent()) {
+            content = asObject.get().toJSONString();
+        } else if(asArray.isPresent()) {
+            content = asArray.get().toJSONString();
+        } else {
+            throw new ConvertToBytesException(
+                    "Can't convert as json object nor as json array");
+        }
         return content.getBytes();
     }
 
