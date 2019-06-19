@@ -21,23 +21,29 @@ package org.n52.gfz.riesgos.util;
 import java.util.Map;
 
 /**
- * Utility class to provide a tuple of two values
+ * Utility class to provide a tuple of two values.
  * @param <A> a first type
  * @param <B> a second type
  */
 public class Tuple<A, B> {
 
+    /**
+     * The first object.
+     */
     private final A first;
+    /**
+     * The second object.
+     */
     private final B second;
 
     /**
-     * creates a new tuple
-     * @param first first element
-     * @param second second element
+     * Creates a new tuple.
+     * @param aFirst first element
+     * @param aSecond second element
      */
-    public Tuple(final A first, final B second) {
-        this.first = first;
-        this.second = second;
+    public Tuple(final A aFirst, final B aSecond) {
+        this.first = aFirst;
+        this.second = aSecond;
     }
 
     /**
@@ -57,13 +63,14 @@ public class Tuple<A, B> {
     }
 
     /**
-     * Creates a tuple from a map entry
+     * Creates a tuple from a map entry.
      * @param entry entry with key (first) and value (second)
      * @param <AA> first type
      * @param <BB> second type
      * @return new Tuple(key, value)
      */
-    public static <AA, BB> Tuple<AA, BB> fromEntry(final Map.Entry<AA, BB> entry) {
+    public static <AA, BB> Tuple<AA, BB> fromEntry(
+            final Map.Entry<AA, BB> entry) {
         return new Tuple<>(entry.getKey(), entry.getValue());
     }
 }

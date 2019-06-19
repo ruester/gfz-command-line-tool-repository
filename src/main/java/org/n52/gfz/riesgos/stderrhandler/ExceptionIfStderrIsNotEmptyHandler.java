@@ -23,25 +23,46 @@ import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import java.util.Objects;
 
 /**
- * Handler for stderr that throws an exception on non empty stderr
+ * Handler for stderr that throws an exception on non empty stderr.
  */
 public class ExceptionIfStderrIsNotEmptyHandler implements IStderrHandler {
 
+    /**
+     * Handles stderr text.
+     * @param stderr text to handle
+     * @param logger logger of the algorithm
+     * @throws NonEmptyStderrException there may be an exception
+     * on non empty stderr
+     */
     @Override
-    public void handleStderr(String stderr, final ILogger logger) throws NonEmptyStderrException {
-        if(! stderr.trim().isEmpty()) {
+    public void handleStderr(
+            final String stderr,
+            final ILogger logger)
+
+            throws NonEmptyStderrException {
+
+        if (!stderr.trim().isEmpty()) {
             throw new NonEmptyStderrException(stderr);
         }
     }
 
+    /**
+     * Tests for equality.
+     * @param o other object
+     * @return true if both are equal.
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

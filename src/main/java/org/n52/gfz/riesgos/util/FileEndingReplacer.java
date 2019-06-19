@@ -19,23 +19,31 @@ package org.n52.gfz.riesgos.util;
  */
 
 /**
- * Utility class to replace file endings
+ * Utility class to replace file endings.
  */
-public class FileEndingReplacer {
+public final class FileEndingReplacer {
 
+    /**
+     * Private constructor, so this class should only by used
+     * from a static context.
+     */
     private FileEndingReplacer() {
         // static
     }
 
     /**
+     * Replaces the file ending.
      *
      * @param filename filename that should be changed
      * @param endingToReplace ending that should be replaced
      * @param replacement replacement
      * @return String with a replaced ending
      */
-    public static String replaceFileEnding(final String filename, final String endingToReplace, final String replacement) {
-        if(filename.endsWith(endingToReplace)) {
+    public static String replaceFileEnding(
+            final String filename,
+            final String endingToReplace,
+            final String replacement) {
+        if (filename.endsWith(endingToReplace)) {
             return filename.replace(endingToReplace, replacement);
         }
         return filename + replacement;

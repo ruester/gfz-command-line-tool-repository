@@ -18,21 +18,43 @@
 
 package org.n52.gfz.riesgos.util;
 
+/**
+ * Implementation of a sequence.
+ */
 public class Sequence {
+
+    /**
+     * Variable to store the current count.
+     */
     private int counter;
 
-    public Sequence(final int counter) {
-        this.counter = counter;
+    /**
+     * Constructs a new Sequence.
+     * @param aCounter count to start with
+     */
+    public Sequence(final int aCounter) {
+        this.counter = aCounter;
     }
 
+    /**
+     * Default constructor that starts with zero.
+     */
     public Sequence() {
         this(0);
     }
 
+    /**
+     *
+     * @return increments and returns the next value
+     */
     public int nextValue() {
         return ++counter;
     }
 
+    /**
+     *
+     * @return current value
+     */
     public int getCurrent() {
         return counter;
     }
