@@ -43,11 +43,20 @@ import javax.xml.validation.Validator;
 
 /**
  * Validator, that checks that a value is one of some given
- * String values
+ * String values.
+ *
+ * @param <T> class that extends the GenericXMLDataBinding
  */
-public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding> implements ICheckDataAndGetErrorMessage<T> {
+public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding>
+        implements ICheckDataAndGetErrorMessage<T> {
 
+    /**
+     * Variable with the schema that should be checked.
+     */
     private final String allowedschema;
+    /**
+     * List with validation errors.
+     */
     private final List<SAXParseException> validationErrors = new LinkedList<>();
 
     /**
@@ -57,25 +66,36 @@ public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding> implem
         allowedschema = value;
     }
 
+    /**
+     * Checks a IData and (maybe) gives back the text of the problem.
+     * @param xmlbinding element to check
+     * @return empty if there is no problem with the value; else the
+     * text of the problem description
+     */
     @Override
     public Optional<String> check(final T xmlbinding) {
         validationErrors.clear();
 
         final XmlObject xml = xmlbinding.getPayload();
-        final XmlSchemaFileTranslator translator = new XmlSchemaFileTranslator();
+        final XmlSchemaFileTranslator translator =
+                new XmlSchemaFileTranslator();
 
         // https://stackoverflow.com/a/16054/2249798
-        Object schemaFile = translator.translateUri(allowedschema);
+        final Object schemaFile = translator.translateUri(allowedschema);
 
         if (schemaFile == null) {
-            return Optional.of("XML schema file could not be loaded: " + validationErrors.toString());
+            return Optional.of(
+                    "XML schema file could not be loaded: "
+                            + validationErrors.toString());
         }
 
-        Source xmlFile = new StreamSource(new StringReader(xml.toString()));
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        final Source xmlFile = new StreamSource(
+                new StringReader(xml.toString()));
+        final SchemaFactory schemaFactory =
+                SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
         try {
-            Schema schema;
+            final Schema schema;
 
             if (schemaFile instanceof URL) {
                 schema = schemaFactory.newSchema((URL) schemaFile);
@@ -83,22 +103,22 @@ public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding> implem
                 schema = schemaFactory.newSchema((File) schemaFile);
             }
 
-            Validator validator = schema.newValidator();
+            final Validator validator = schema.newValidator();
 
             // https://stackoverflow.com/a/11131775/2249798
-            validator.setErrorHandler(new ErrorHandler(){
+            validator.setErrorHandler(new ErrorHandler() {
                 @Override
-                public void warning(SAXParseException exception) throws SAXException {
+                public void warning(final SAXParseException exception) {
                     validationErrors.add(exception);
                 }
 
                 @Override
-                public void fatalError(SAXParseException exception) throws SAXException {
+                public void fatalError(final SAXParseException exception) {
                     validationErrors.add(exception);
                 }
 
                 @Override
-                public void error(SAXParseException exception) throws SAXException {
+                public void error(final SAXParseException exception) {
                     validationErrors.add(exception);
                 }
             });
@@ -114,11 +134,17 @@ public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding> implem
             return Optional.empty();
         }
 
-        return Optional.of("XML file does not validate: " + validationErrors.toString());
+        return Optional.of("XML file does not validate: "
+                + validationErrors.toString());
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -129,6 +155,10 @@ public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding> implem
         return Objects.equals(allowedschema, that.allowedschema);
     }
 
+    /**
+     *
+     * @return hashcode of the object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(allowedschema);
