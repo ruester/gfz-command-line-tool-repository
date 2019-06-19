@@ -33,27 +33,58 @@ import java.util.Objects;
  * IData to an byte[] and just writes that to the single given file.
  *
  * Can be used in all situations where the iData just produces one file.
+ *
+ * @param <T> binding class that extends the IData interface
  */
-public class WriteSingleByteStreamToPath<T extends IData> implements IWriteIDataToFiles<T> {
-
-    public final IConvertIDataToByteArray<T> converter;
+public class WriteSingleByteStreamToPath<T extends IData>
+        implements IWriteIDataToFiles<T> {
 
     /**
-     *
-     * @param converter Function to convert the iData to byte[]
+     * Inner converter to convert the idata to a byte array.
      */
-    public WriteSingleByteStreamToPath(final IConvertIDataToByteArray<T> converter) {
-        this.converter = converter;
+    private final IConvertIDataToByteArray<T> converter;
+
+    /**
+     * Default constructor with an inner converter.
+     * @param aConverter Function to convert the iData to byte[]
+     */
+    public WriteSingleByteStreamToPath(
+            final IConvertIDataToByteArray<T> aConverter) {
+        this.converter = aConverter;
     }
 
+    /**
+     * Writes the content of the idata to the filesystem (maybe multiple files)
+     * and maybe in a container.
+     * @param iData Binding class to write
+     * @param context context (maybe a container)
+     * @param workingDirectory directory to copy the f
+     * @param path destination of the iData
+     * @throws ConvertToBytesException Exception on converting
+     * the IData to byte[]
+     * @throws IOException a normal IOException that may happen
+     * on writing the files
+     */
     @Override
-    public void writeToFiles(T iData, IExecutionContext context, String workingDirectory, String path) throws ConvertToBytesException, IOException {
+    public void writeToFiles(
+            final T iData,
+            final IExecutionContext context,
+            final String workingDirectory,
+            final String path)
+
+            throws ConvertToBytesException, IOException {
+
         final byte[] content = converter.convertToBytes(iData);
         context.writeToFile(content, workingDirectory, path);
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -64,6 +95,10 @@ public class WriteSingleByteStreamToPath<T extends IData> implements IWriteIData
         return Objects.equals(converter, that.converter);
     }
 
+    /**
+     *
+     * @return hashcode of the object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(converter);
