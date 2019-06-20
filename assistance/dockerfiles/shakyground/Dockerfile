@@ -11,8 +11,8 @@ RUN mkdir -p /tmp/install_gmt/
 RUN cd /tmp/install_gmt/ && git clone https://github.com/GenericMappingTools/pygmt.git
 RUN pip3 install pygmt
 
-RUN mkdir /usr/share/git
-
-RUN cd /usr/share/git && git clone https://github.com/ruester/shakyground.git
+RUN mkdir -pv /usr/share/git/shakyground
 
 RUN cd /usr/share/git/shakyground && wget https://earthquake.usgs.gov/static/lfs/data/global_vs30_grd.zip && unzip global_vs30_grd.zip -d . && rm global_vs30_grd.zip
+
+RUN cd /usr/share/git/shakyground && git init . && git remote add origin https://github.com/ruester/shakyground.git && git pull origin master
