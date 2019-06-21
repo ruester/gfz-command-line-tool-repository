@@ -124,6 +124,13 @@ public enum DefaultFormatOption implements IMimeTypeAndSchemaConstants {
                     MIME_TYPE_GEOTIFF,
                     null,
                     ENCODING_BASE64,
+                    true)),
+
+    WMS("wms",
+            new FormatEntry(
+                    MIME_TYPE_WMS,
+                    null,
+                    null,
                     true));
 
     /**

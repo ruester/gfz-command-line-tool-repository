@@ -85,6 +85,55 @@ public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions 
         assertTrue("But the upperCornerX is at 2", Math.abs(upperCornerX - 2.0) < 0.0001);
         assertFalse("The upperCornerY is not exactly at 8", Math.abs(upperCornerY - 8) < 0.0001);
         assertTrue("But The upperCornerY is at 10", Math.abs(upperCornerY - 10) < 0.0001);
+
+        final int width = gridCoverage.getRenderedImage().getWidth();
+        final int height = gridCoverage.getRenderedImage().getHeight();
+
+        assertEquals("The width is 5", 5, width);
+        assertEquals("The height is 5", 5, height);
+    }
+
+
+    /**
+     * A more interesting test case with a shakemap with a nonquadratic shape.
+     */
+    @Test
+    public void testExampleNonQuadratic() {
+        final XmlObject veryBasicShakemap = createExampleShakemapNonQuadratic();
+        final GridCoverage gridCoverage = transformToGridCoverage(veryBasicShakemap);
+
+        assertNotNull("The gridcoverage is not null", gridCoverage);
+        assertEquals("There is two bands", 2, gridCoverage.getRenderedImage().getData().getNumBands());
+        assertTrue("The value on the base corner on the first band has the value 5",
+                Math.abs(gridCoverage.getRenderedImage().getData().getSampleDouble(0, 0, 0) - 5.0) < 0.00001);
+        assertTrue("The value on the base corner on the second band has the value 7",
+                Math.abs(gridCoverage.getRenderedImage().getData().getSampleDouble(0, 0, 1) - 7.0) < 0.00001);
+
+        final Envelope envelope = gridCoverage.getEnvelope();
+        final double lowerCornerX = envelope.getLowerCorner().getCoordinate()[0];
+        final double lowerCornerY = envelope.getLowerCorner().getCoordinate()[1];
+
+        final double upperCornerX = envelope.getUpperCorner().getCoordinate()[0];
+        final double upperCornerY = envelope.getUpperCorner().getCoordinate()[1];
+
+        // the envelope is a bit different from the min and max lon/lat values
+        // so that the locations of the points from the shakemap is in the middle of
+        // the cells
+        assertFalse("The lowerCornerX is not exactly at -16.0", Math.abs(lowerCornerX - -16.0) < 0.0001);
+        assertTrue("But the lowerCornerX is -18.0", Math.abs(lowerCornerX - -18.0) < 0.0001);
+        assertFalse("The lowerCornerY is not exactly at -8", Math.abs(lowerCornerY - -8.0) < 0.0001);
+        assertTrue("But the lowerCornerY is -10", Math.abs(lowerCornerY - -10.0) < 0.0001);
+
+        assertFalse("The upperCornerX is not exactly at 4", Math.abs(upperCornerX - 4.0) < 0.0001);
+        assertTrue("But the upperCornerX is at 6", Math.abs(upperCornerX - 6.0) < 0.0001);
+        assertFalse("The upperCornerY is not exactly at 8", Math.abs(upperCornerY - 8) < 0.0001);
+        assertTrue("But The upperCornerY is at 10", Math.abs(upperCornerY - 10) < 0.0001);
+
+        final int width = gridCoverage.getRenderedImage().getWidth();
+        final int height = gridCoverage.getRenderedImage().getHeight();
+
+        assertEquals("The width is 6", 6, width);
+        assertEquals("The height is 5", 5, height);
     }
 
     /**
