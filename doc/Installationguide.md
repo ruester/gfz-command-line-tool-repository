@@ -270,3 +270,17 @@ docker-compose up
 ```
 
 Now the server should start and the supported processes are included.
+
+## Optional: Change settings for the Geoserver to support WMS output in the wps-js-client
+
+The docker image that we use for setting up the server also contains
+a geoserver and a - almost - configured wms generator.
+In order to make this generator work it is necessary to login into
+the geoserver (localhost:8080/geoserver if you use the same docker container
+and run it under localhost; you can see the password in the configuration
+of the geoserver wms generator under localhost:8080/wps) and insert a style
+called "shakemap" in the workspace riesgos.
+
+After this change the wps-js-client (http://localhost:8080/wps-js-client) is able
+to display the image from the wms service right after output with the
+link was generated. 

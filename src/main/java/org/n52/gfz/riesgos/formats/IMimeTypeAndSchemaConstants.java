@@ -54,9 +54,11 @@ public interface IMimeTypeAndSchemaConstants {
     String MIME_TYPE_GEOTIFF = "image/geotiff";
 
     /**
-     * Mime-Type for WMS
+     * Mime-Type for WMS.
+     * It is written in capital letters to
+     * support the wps-js-client to test it.
      */
-    String MIME_TYPE_WMS = "application/wms";
+    String MIME_TYPE_WMS = "application/WMS";
 
     /**
      * Schema for quakeML
