@@ -37,9 +37,12 @@ import java.io.InputStream;
 import java.util.function.Function;
 
 /**
- * Generator to transform shakemaps to geotiffs
+ * Generator to transform shakemaps to geotiffs.
+ * This is the generator for:
+ * - Geotiff with normal encoding (so it gives back the binary data)
+ * - Geotiff with base64 encoding
  */
-public class ShakemapGeotiffGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
+public class ShakemapGeotiffGenerator extends AbstractGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGeotiffGenerator.class);
     private static final Function<IShakemap, GridCoverage2D> TO_GRID =

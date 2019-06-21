@@ -54,6 +54,11 @@ public interface IMimeTypeAndSchemaConstants {
     String MIME_TYPE_GEOTIFF = "image/geotiff";
 
     /**
+     * Mime-Type for WMS
+     */
+    String MIME_TYPE_WMS = "application/wms";
+
+    /**
      * Schema for quakeML
      */
     String SCHEMA_QUAKE_ML = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";

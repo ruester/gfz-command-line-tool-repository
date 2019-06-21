@@ -22,12 +22,13 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.CRS;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapData;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapField;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapSpecification;
 import org.opengis.geometry.Envelope;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import javax.media.jai.RasterFactory;
@@ -38,16 +39,35 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Function to convert the IShakemap to a GridCoverage
+ * Function to convert the IShakemap to a GridCoverage.
+ * This just converts to grids and takes all the rows
+ * in a shakemap to different bands.
+ * There is no meaning between the different bands except that
+ * they share the same geographic location (and no coding as
+ * red, green or blue bands).
  */
-public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage2D> {
+public class ShakemapToGridCoverage
+        implements Function<IShakemap, GridCoverage2D> {
 
+    /**
+     * Name for the coverage.
+     */
     private static final String COVERAGE_NAME = "Shakemap";
+    /**
+     * Data type that should be used for the grids.
+     */
     private static final int DATA_TYPE = DataBuffer.TYPE_DOUBLE;
 
+    /**
+     * Converts the shakemap to a grid coverage.
+     * @param shakemap shakemap to convert
+     * @return Grid coverage with some bands for the data rows in shakemap
+     */
     @Override
     public GridCoverage2D apply(final IShakemap shakemap) {
-        final IShakemapSpecification specification = shakemap.getSpecification();
+
+        final IShakemapSpecification specification =
+                shakemap.getSpecification();
 
         final int width = specification.getNLon();
         final int height = specification.getNLat();
@@ -73,14 +93,20 @@ public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage2
                 null
         );
 
-        for(int bandIndex = 0; bandIndex < customFields.size(); bandIndex += 1) {
+        for (
+                int bandIndex = 0;
+                bandIndex < customFields.size();
+                bandIndex += 1
+        ) {
+
             final IShakemapField field = customFields.get(bandIndex);
 
-            for(final IShakemapData data : shakemap.getData()) {
+            for (final IShakemapData data : shakemap.getData()) {
                 final double lon = data.getLon();
                 final double lat = data.getLat();
 
-                final double value = data.getCustomValues().getOrDefault(field.getName(), Double.NaN);
+                final double value = data.getCustomValues().getOrDefault(
+                        field.getName(), Double.NaN);
                 raster.setSample(
                         transformLonToImageCoordinate(lon, minX, maxX, width),
                         transformLatToImageCoordinate(lat, minY, maxY, height),
@@ -89,9 +115,11 @@ public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage2
             }
         }
 
-        final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
+        // long (x), lat (y)
+        final CoordinateReferenceSystem crs = findWgs84();
 
-        // making the envelope bigger means that the locations are in the middle of the points
+        // making the envelope bigger means that the
+        // locations are in the middle of the points
         final double minXExtended = minX - diffX / 2;
         final double maxXExtended = maxX + diffX / 2;
         final double minYExtended = minY - diffY / 2;
@@ -102,11 +130,20 @@ public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage2
                 minYExtended, maxYExtended,
                 crs);
 
-        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
+        final GridCoverageFactory factory =
+                CoverageFactoryFinder.getGridCoverageFactory(null);
 
         return factory.create(COVERAGE_NAME, raster, envelope);
     }
 
+    /**
+     *
+     * @param lon longitude of the point
+     * @param lonMin minimum lon of the grid
+     * @param lonMax maximum lon of the grid
+     * @param width width of the grid
+     * @return image coordinage (x)
+     */
     private int transformLonToImageCoordinate(
             final double lon,
             final double lonMin,
@@ -120,6 +157,14 @@ public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage2
         return (int) Math.round(normed0x);
     }
 
+    /**
+     *
+     * @param lat latitude for the point
+     * @param latMin minimum lat of the grid
+     * @param latMax maximum lat of the grid
+     * @param height height of the grid
+     * @return image coordinate (y)
+     */
     private int transformLatToImageCoordinate(
             final double lat,
             final double latMin,
@@ -132,5 +177,18 @@ public class ShakemapToGridCoverage implements Function<IShakemap, GridCoverage2
         final int asInt = (int) Math.round(normed0x);
         // the coordinates for the y part is inverted (upper left is 0,0)
         return height - asInt - 1;
+    }
+
+    /**
+     *
+     * @return CRS with WGS84
+     */
+    private CoordinateReferenceSystem findWgs84() {
+
+        try {
+            return CRS.decode("EPSG:4326");
+        } catch (FactoryException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 }
