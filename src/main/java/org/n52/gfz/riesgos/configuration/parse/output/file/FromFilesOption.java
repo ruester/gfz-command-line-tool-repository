@@ -128,6 +128,29 @@ public enum FromFilesOption {
                             optionalAbstract,
                             defaultFormat,
                             path)),
+
+    /**
+     * This is the enum to read xml nrml from files.
+     */
+    NRML("nrml",
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    path,
+                    schema
+            ) ->
+                    // ignore schema
+                    OutputParameterFactory.INSTANCE.createFileOutNrml(
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat,
+                            path)),
+
+
+
     /**
      * This is the enum to read xml shakemap from files.
      */

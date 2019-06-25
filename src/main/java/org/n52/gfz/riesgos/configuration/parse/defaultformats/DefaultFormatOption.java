@@ -126,11 +126,24 @@ public enum DefaultFormatOption implements IMimeTypeAndSchemaConstants {
                     ENCODING_BASE64,
                     true)),
 
+    /**
+     * Enum for wms.
+     */
     WMS("wms",
             new FormatEntry(
                     MIME_TYPE_WMS,
                     null,
                     null,
+                    true)),
+
+    /**
+     * Enum for nrml.
+     */
+    NRML("nrml",
+            new FormatEntry(
+                    MIME_TYPE_XML,
+                    SCHEMA_NRML,
+                    DEFAULT_ENCODING,
                     true));
 
     /**

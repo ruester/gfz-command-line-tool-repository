@@ -54,6 +54,24 @@ public enum FromStdoutOption {
                             isOptional,
                             optionalAbstract,
                             defaultFormat)),
+
+    /**
+     * This is the enum to read xml nrml from stdout.
+     */
+    NRML("nrml",
+            (
+                    identifier,
+                    isOptional,
+                    optionalAbstract,
+                    defaultFormat,
+                    schema
+            ) ->
+                    // ignore schema
+                    OutputParameterFactory.INSTANCE.createStdoutNrml(
+                            identifier,
+                            isOptional,
+                            optionalAbstract,
+                            defaultFormat)),
     /**
      * This is the enum to read xml shakemaps from stdout.
      */

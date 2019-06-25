@@ -85,7 +85,7 @@ issue on reading geojson files created by geopandas in java.
 Also at the moment there are no input parameter which will change with
 the next versions.
 
-## assetmaster
+## Assetmaster
 
 Assetmaster is a process to provide exposure models in the riesgos
 project.
@@ -102,7 +102,7 @@ error handler.
 You can find the fine in the 
 [resource folder](../src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json).
 
-## modelprop
+## Modelprop
 
 Modelprop is a program to 
 serve a fragility / vulnerability model according to a given schema.

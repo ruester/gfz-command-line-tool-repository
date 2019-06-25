@@ -25,6 +25,7 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingT
 import org.n52.gfz.riesgos.configuration.impl.InputParameterImpl;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.nrml.binding.NrmlXmlDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
@@ -34,7 +35,6 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBy
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertJsonDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
-import org.n52.gfz.riesgos.idatatobyteconverter.ConvertQuakeMLXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.gfz.riesgos.validators.XmlBindingWithAllowedSchema;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
@@ -246,6 +246,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat default format for the input parameter
      * @param schema schema of the xml
      * @param defaultFlag default flag for the command line argument
      *                    (for example --file)
@@ -289,10 +290,55 @@ public enum InputParameterFactory {
     }
 
     /**
+     * Creates a command line argument (nrml file) with a file path that will
+     * be written down as a temporary file.
+     * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat default format for the input parameter
+     * @param defaultFlag default flag for the command line argument
+     *                    (for example --file)
+     * @return xml file command line argument
+     */
+    public IInputParameter
+    createCommandLineArgumentNrmlFile(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat,
+            final String defaultFlag) {
+
+        final String filename = createUUIDFilename(".xml");
+
+
+        // for nrml files no validator
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_NRML;
+
+        final InputParameterImpl.Builder<NrmlXmlDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        NrmlXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToTransformToCmd(
+                new FileToStringCmd<>(filename, defaultFlag));
+        builder.withPath(filename);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericXMLDataBindingToBytes<>()));
+        builder.withDefaultFormat(defaultFormat);
+        builder.withSchema(schema);
+
+        return builder.build();
+    }
+
+    /**
      * Same as  createCommandLineArgumentXmlFileWithSchema but with QuakeML.
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat default format for the input parameter
      * @param flag optional flag for the command line argument
      * @return quakeml xml file command line argument
      */
@@ -317,7 +363,7 @@ public enum InputParameterFactory {
         builder.withPath(filename);
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
-                        new ConvertQuakeMLXMLDataBindingToBytes()));
+                        new ConvertGenericXMLDataBindingToBytes<>()));
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
@@ -402,6 +448,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat default format for the input parameter
      * @param flag optional command line flag
      * @return shapefile command line argument
      */
@@ -624,6 +671,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat default format for the input parameter
      * @param path path of the file to write before starting the process
      *             (just the .shp file)
      * @return shapefile input file
@@ -675,10 +723,43 @@ public enum InputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
-                        new ConvertQuakeMLXMLDataBindingToBytes()));
+                        new ConvertGenericXMLDataBindingToBytes<>()));
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
+        builder.withDefaultFormat(defaultFormat);
+        return builder.build();
+    }
+
+    /**
+     * Creates an input file argument with nrml.
+     * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
+     * @param path path of the file to write before starting the process
+     * @return quakeml input file
+     */
+    public IInputParameter createFileInNrml(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat,
+            final String path) {
+
+        final String schema = IMimeTypeAndSchemaConstants.SCHEMA_NRML;
+
+        final InputParameterImpl.Builder<NrmlXmlDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        NrmlXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericXMLDataBindingToBytes<>()));
+        builder.withSchema(schema);
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
@@ -723,6 +804,7 @@ public enum InputParameterFactory {
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
      * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat default format for the input parameter
      * @param path path of file to write before starting the process
      * @return json input file
      */
