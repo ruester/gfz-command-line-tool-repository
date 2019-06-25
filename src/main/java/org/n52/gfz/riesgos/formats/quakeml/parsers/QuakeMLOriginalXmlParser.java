@@ -52,7 +52,7 @@ public class QuakeMLOriginalXmlParser extends AbstractParser {
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(quakeml.getMimeType());
         supportedSchemas.add(quakeml.getSchema());
-        supportedEncodings.add(quakeml.getSchema());
+        supportedEncodings.add(quakeml.getEncoding());
         formats.add(quakeml);
     }
 
