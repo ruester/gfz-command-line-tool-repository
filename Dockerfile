@@ -1,11 +1,14 @@
 FROM tomcat:9-jre8
 
-# you need to have docker installed on the host system and pull all needed images:
+ENV WPS_VERSION=v4.0.0-beta.7
+ENV WPS_VERSION_DIR=4.0.0-beta.7
+
+# you need to have docker daemon running on the host system and pull all needed images:
 # docker pull ruestergfz/quakeledger:latest
 # docker pull ruestergfz/shakyground:latest
 # docker pull ruestergfz/assetmaster:latest
 # docker pull ruestergfz/modelprop:latest
-# docker pull ruestergfz/flooddamage:latest # not published yet
+# docker pull ruestergfz/flooddamage:latest
 
 # start the RIESGOS WPS docker image with:
 # docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ruestergfz/riesgos-wps
@@ -72,7 +75,7 @@ WORKDIR /root/git
 
 RUN git clone -b dev --depth=1 https://github.com/52North/wps-js.git && \
     git clone -b develop --depth=1 https://github.com/52North/wps-js-client.git && \
-    git clone https://github.com/52North/WPS.git && \
+    git clone -b ${WPS_VERSION} --depth 1 https://github.com/52North/WPS.git && \
     git clone -b master --depth=1 https://github.com/ruester/gfz-command-line-tool-repository.git
 
 WORKDIR /root/git/wps-js
@@ -94,10 +97,8 @@ RUN npm install && \
     cp -vr dist /usr/local/tomcat/webapps/wps-js-client
 
 WORKDIR /root/git/WPS
-# checkout last tested commit to work with gfz-command-line-tool-repository
-RUN git checkout -b current 1d1a7b9abf0e8f0b8c302651f7206f175866c4a8 && \
-    mvn clean install -P with-geotools && \
-    cp -vr 52n-wps-webapp/target/52n-wps-webapp-*-SNAPSHOT/ /usr/local/tomcat/webapps/wps && \
+RUN mvn clean install -P with-geotools && \
+    cp -vr 52n-wps-webapp/target/52n-wps-webapp-${WPS_VERSION_DIR}/ /usr/local/tomcat/webapps/wps && \
     sed -i -e 's@base-package="org\.n52\.wps"@base-package="org\.n52"@' /usr/local/tomcat/webapps/wps/WEB-INF/classes/dispatcher-servlet.xml
 
 WORKDIR /root/git/gfz-command-line-tool-repository
