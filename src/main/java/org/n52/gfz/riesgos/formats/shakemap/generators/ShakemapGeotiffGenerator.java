@@ -20,7 +20,6 @@ package org.n52.gfz.riesgos.formats.shakemap.generators;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverage;

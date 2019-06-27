@@ -18,6 +18,9 @@ package org.n52.gfz.riesgos.repository;
 
 import org.n52.gfz.riesgos.formats.json.generators.JsonGenerator;
 import org.n52.gfz.riesgos.formats.json.parsers.JsonParser;
+import org.n52.gfz.riesgos.formats.nrml.generators.NrmlGeoJsonGenerator;
+import org.n52.gfz.riesgos.formats.nrml.generators.NrmlXmlGenerator;
+import org.n52.gfz.riesgos.formats.nrml.parsers.NrmlXmlParser;
 import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGML3Generator;
 import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGeoJsonGenerator;
 import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLOriginalXmlGenerator;
@@ -50,15 +53,19 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
- * Repository for the algorithms for the gfz in riesgos using the generation of services
- * by providing configurations to call command line tools in docker.
+ * Repository for the algorithms for the gfz in riesgos using the
+ * generation of services by providing configurations to call
+ * command line tools in docker.
  */
-public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  {
+public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository {
 
+    /**
+     * The configuration module.
+     */
     private final GfzRiesgosRepositoryCM configurationModule;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public GfzRiesgosRepository() {
 
@@ -67,14 +74,20 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
         registerGenerators();
         registerParsers();
 
-        final ConfigurationModule cm = wpsConfig.getConfigurationModuleForClass(getClass().getName(), ConfigurationCategory.REPOSITORY);
-        if(cm instanceof GfzRiesgosRepositoryCM) {
+        final ConfigurationModule cm = wpsConfig
+                .getConfigurationModuleForClass(
+                        getClass().getName(),
+                        ConfigurationCategory.REPOSITORY);
+        if (cm instanceof GfzRiesgosRepositoryCM) {
             configurationModule = (GfzRiesgosRepositoryCM) cm;
         } else {
             throw new RuntimeException("Configuration Module has wrong type");
         }
     }
 
+    /**
+     * Method to use to register all the generators to the server.
+     */
     private void registerGenerators() {
         Stream.of(
                 // quakeml
@@ -89,10 +102,16 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
                 new ShakemapGeotiffGenerator(),
                 new ShakemapWMSGenerator(),
                 // json
-                new JsonGenerator()
+                new JsonGenerator(),
+                // nrml
+                new NrmlXmlGenerator(),
+                new NrmlGeoJsonGenerator()
         ).forEach(new RegisterGeneratorTask());
     }
 
+    /**
+     * Method to use to register all the parsers to the server.
+     */
     private void registerParsers() {
         Stream.of(
                 // quakeml
@@ -103,73 +122,143 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository  
                 // shakemap
                 new ShakemapXmlParser(),
                 // json
-                new JsonParser()
+                new JsonParser(),
+                // nrml
+                new NrmlXmlParser()
         ).forEach(new RegisterParserTask());
     }
 
+    /**
+     * Method to add an algorithm.
+     * Currently not supported.
+     * @param processIdentifier process identifier to add
+     * @return nothing; Unsupported operation
+     */
     @Override
     public boolean addAlgorithm(final Object processIdentifier) {
-        throw new UnsupportedOperationException("The repository is only configured via the json config. Adding an algorithm via java code is not supported");
+        throw new UnsupportedOperationException(
+                "The repository is only configured via the json config. "
+                 + "Adding an algorithm via java code is not supported");
     }
 
+    /**
+     * Method to remove an algorithm.
+     * Currently not supported.
+     * @param processIdentifier process identifier to remove
+     * @return nothing; Unsupported operation
+     */
     @Override
     public boolean removeAlgorithm(final Object processIdentifier) {
-        throw new UnsupportedOperationException("The repository is only configured via the json config. Removing an algorithm via java code is not supported");
+        throw new UnsupportedOperationException(
+                "The repository is only configured via the json config. "
+                + "Removing an algorithm via java code is not supported");
     }
 
+    /**
+     * Method to get a collection with the method names.
+     * @return collection with all the algorithm names
+     */
     @Override
     public Collection<String> getAlgorithmNames() {
         return configurationModule.getAlgorithmNames();
     }
 
+    /**
+     * Method to lookup an algorithm by identifier.
+     * @param processIdentifier identifier to lookup the algorithm
+     * @return algorithm
+     */
     @Override
-    public IAlgorithm getAlgorithm(String processIdentifier) {
+    public IAlgorithm getAlgorithm(final String processIdentifier) {
         return configurationModule.getAlgorithm(processIdentifier);
     }
 
+    /**
+     * Method to get the process description for the process
+     * identified by the identifier.
+     * @param processIdentifier identifier to lookup the algorithm
+     * @return process description
+     */
     @Override
-    public ProcessDescription getProcessDescription(String processIdentifier) {
+    public ProcessDescription getProcessDescription(
+            final String processIdentifier) {
         return configurationModule.getProcessDescription(processIdentifier);
     }
 
+    /**
+     * Test if the repo contains an algorithm by identifier.
+     * @param processIdentifier identifier to lookup the algorithm
+     * @return true if there is an algorithm for the identifier
+     */
     @Override
-    public boolean containsAlgorithm(String processIdentifier) {
+    public boolean containsAlgorithm(final String processIdentifier) {
         return getAlgorithmNames().contains(processIdentifier);
     }
 
+    /**
+     * Shutdown-Hook.
+     */
     @Override
     public void shutdown() {
         // nothing to do
     }
 
-    /*
+    /**
      * Warning:
-     * This class uses the side-effects of adding a generator to a modifiable list.
-     * That may break if the getAllGenerators() Method is generated or has an unmodifiable view.
+     * This class uses the side-effects of adding a generator to
+     * a modifiable list.
+     * That may break if the getAllGenerators() Method is generated or
+     * has an unmodifiable view.
      *
      * But in the current implementation that works.
      */
     private static class RegisterGeneratorTask implements Consumer<IGenerator> {
 
+        /**
+         * Reference to a list with all the generators currently supported
+         * by the server.
+         */
         private final List<IGenerator> allGenerators;
 
+        /**
+         * Creates an new Instance of this task.
+         */
         RegisterGeneratorTask() {
             allGenerators = GeneratorFactory.getInstance().getAllGenerators();
         }
 
+        /**
+         * Adds the generator to the list of supported generators.
+         * @param generator generator to add
+         */
         public void accept(final IGenerator generator) {
             allGenerators.add(generator);
         }
     }
 
+    /**
+     * This is also an approach that make use of side-effects
+     * to register a parser on the server.
+     */
     private static class RegisterParserTask implements Consumer<IParser> {
 
+        /**
+         * Reference to a list of all parsers currently supported by the
+         * server.
+         */
         private final List<IParser> allParsers;
 
+        /**
+         * Creates an new instance of this task.
+         */
         RegisterParserTask() {
             allParsers = ParserFactory.getInstance().getAllParsers();
         }
 
+        /**
+         * Adds the parser to the list of supported parsers.
+         * @param parser parser to add
+         */
         public void accept(final IParser parser) {
             allParsers.add(parser);
         }

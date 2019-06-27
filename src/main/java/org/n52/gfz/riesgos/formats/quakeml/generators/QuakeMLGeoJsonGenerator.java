@@ -18,10 +18,8 @@
 
 package org.n52.gfz.riesgos.formats.quakeml.generators;
 
-import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
-import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 import org.n52.gfz.riesgos.formats.quakeml.IQuakeML;
