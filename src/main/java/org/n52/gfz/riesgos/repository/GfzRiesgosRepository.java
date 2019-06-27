@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.repository;
 
 import org.n52.gfz.riesgos.formats.json.generators.JsonGenerator;
 import org.n52.gfz.riesgos.formats.json.parsers.JsonParser;
+import org.n52.gfz.riesgos.formats.nrml.generators.NrmlGeoJsonGenerator;
 import org.n52.gfz.riesgos.formats.nrml.generators.NrmlXmlGenerator;
 import org.n52.gfz.riesgos.formats.nrml.parsers.NrmlXmlParser;
 import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGML3Generator;
@@ -103,7 +104,8 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository {
                 // json
                 new JsonGenerator(),
                 // nrml
-                new NrmlXmlGenerator()
+                new NrmlXmlGenerator(),
+                new NrmlGeoJsonGenerator()
         ).forEach(new RegisterGeneratorTask());
     }
 
