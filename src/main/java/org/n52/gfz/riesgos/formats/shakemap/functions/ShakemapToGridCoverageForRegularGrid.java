@@ -45,8 +45,10 @@ import java.util.stream.Collectors;
  * There is no meaning between the different bands except that
  * they share the same geographic location (and no coding as
  * red, green or blue bands).
+ *
+ * This works for regular gridded shakemaps only.
  */
-public class ShakemapToGridCoverage
+public class ShakemapToGridCoverageForRegularGrid
         implements Function<IShakemap, GridCoverage2D> {
 
     /**

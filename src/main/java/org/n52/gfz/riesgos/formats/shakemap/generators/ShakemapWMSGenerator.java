@@ -22,7 +22,7 @@ import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.functions.PgaShakemapToIntensityRgbGrid;
-import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverage;
+import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverageForRegularGrid;
 import org.n52.gfz.riesgos.formats.wms.generators.WMSGeneratorFactory;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTRasterDataBinding;
@@ -60,7 +60,7 @@ public class ShakemapWMSGenerator extends AbstractGenerator {
      * This is done in the PgaShakemapToIntensityRgbGrid function.
      */
     private static final Function<IShakemap, GridCoverage2D> TO_GRID =
-            new ShakemapToGridCoverage().andThen(
+            new ShakemapToGridCoverageForRegularGrid().andThen(
                     new PgaShakemapToIntensityRgbGrid());
 
     /**

@@ -21,7 +21,7 @@ package org.n52.gfz.riesgos.formats.shakemap;
 import org.apache.xmlbeans.XmlObject;
 
 import org.junit.Test;
-import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverage;
+import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverageForRegularGrid;
 import org.n52.gfz.riesgos.formats.shakemap.impl.ShakemapXmlImpl;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
@@ -34,7 +34,7 @@ import static org.junit.Assert.assertFalse;
 /**
  * This is the test class for the conversion of shakemaps to grids
  */
-public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions {
+public class TestShakemapToGridCoverageForRegularGrid implements ICommonTestShakemapFunctions {
 
     /**
      * A very basic shakemap with just 0 values in one single band
@@ -149,6 +149,6 @@ public class TestShakemapToGridCoverage implements ICommonTestShakemapFunctions 
     }
 
     private GridCoverage transformToGridCoverage(final XmlObject xmlShakemap) {
-        return new ShakemapToGridCoverage().apply(new ShakemapXmlImpl(xmlShakemap));
+        return new ShakemapToGridCoverageForRegularGrid().apply(new ShakemapXmlImpl(xmlShakemap));
     }
 }

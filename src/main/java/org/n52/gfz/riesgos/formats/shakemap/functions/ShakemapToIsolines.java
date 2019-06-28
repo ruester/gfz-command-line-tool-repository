@@ -25,34 +25,75 @@ import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.opengis.util.ProgressListener;
 
 import java.util.function.Function;
+import java.util.stream.Stream;
 
-public class ShakemapToIsolines implements Function<IShakemap, SimpleFeatureCollection> {
+/**
+ * Function to transform the shakemap to an feature collection with isolines.
+ */
+public class ShakemapToIsolines
+        implements Function<IShakemap, SimpleFeatureCollection> {
 
-    private static final Function<IShakemap, GridCoverage2D> TO_GRID = new ShakemapToGridCoverage();
+    /**
+     * Transformer to convert the shakemap to a grid before.
+     */
+    private static final Function<IShakemap, GridCoverage2D> TO_GRID =
+            new ShakemapToGridCoverageForRegularGrid();
 
+    /**
+     * Band for which the conversion should happen.
+     */
+    private static final int PGA_BAND = 0;
+
+    /**
+     * Function to convert the shakemap to isolines.
+     * @param shakemap shakemap with a pga band to convert
+     * @return feature collection with the iso lines
+     */
     @Override
     public SimpleFeatureCollection apply(final IShakemap shakemap) {
 
         final GridCoverage2D grid = TO_GRID.apply(shakemap);
         final ContourProcess p = new ContourProcess();
 
-
-        final int band = 0;
         final boolean simplify = true;
         final boolean smooth = false;
         final Geometry roi = null;
 
-        final double[] levels = null;
-        final double interval = 0.1;
+        final double[] levels = getLevels(grid);
+
+        // -> use the levels instead
+        final Double interval = null;
 
         final ProgressListener processListener = new DefaultProgressListener();
 
-        // you need to add the gt-process-raster jar
-        // and also the gt-process jar
-        // and also jt-contour-1.3.1.jar
-        // and jt-attributeop-1.3.1.jar
-
-        return p.execute(grid, band, levels, interval, simplify, smooth, roi, processListener);
-
+        return p.execute(
+                grid,
+                PGA_BAND,
+                levels,
+                interval,
+                simplify,
+                smooth,
+                roi,
+                processListener);
     }
+
+    /**
+     * Method to provide the values for the iso lines.
+     * @param grid grid with the data
+     * @return double array with the levels
+     */
+    private double[] getLevels(final GridCoverage2D grid) {
+        return useLevelsFromPgaLevels();
+    }
+
+    /**
+     * Method to get the levels from the pga classification.
+     * @return levels from pga classification
+     */
+    private double[] useLevelsFromPgaLevels() {
+        return Stream.of(PgaIntensityLevel.values())
+                .mapToDouble(PgaIntensityLevel::getUpperLimitForPga)
+                .toArray();
+    }
+
 }

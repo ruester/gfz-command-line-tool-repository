@@ -22,7 +22,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
-import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverage;
+import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverageForRegularGrid;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTRasterDataBinding;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
@@ -45,7 +45,7 @@ public class ShakemapGeotiffGenerator extends AbstractGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGeotiffGenerator.class);
     private static final Function<IShakemap, GridCoverage2D> TO_GRID =
-            new ShakemapToGridCoverage();
+            new ShakemapToGridCoverageForRegularGrid();
 
     /**
      * Default constructor

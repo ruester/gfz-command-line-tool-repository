@@ -143,6 +143,10 @@ you have to add the following jars into the WEB-INF/lib folder:
 
 - commons-compress-1.9.jar
 - ant-1.10.5.jar
+- gt-process-raster-13.5.jar
+- gt-process-13.5.jar
+- jt-contour-1.3.1.jar
+- jt-attributeop-1.3.1.jar
 
 Because of the usage of maven to build the jar file, maven already
 downloaded the dependencies to your computer.
@@ -164,13 +168,6 @@ Maybe also libraries that are not explicit mentioned here necessary as
 well, because we focused on running the server inside of the docker
 image. This already included several other jar files.
 In case you have a question about this, feel free to contact us.
-
-In order to provide transformations of data to contour lines you must
-also include the following jars:
-- gt-process-raster-13.5.jar
-- gt-process-13.5.jar
-- jt-contour-1.3.1.jar
-- jt-attributeop-1.3.1.jar
 
 ## Edit the dispatcher-servlet.xml
 
