@@ -170,6 +170,15 @@
             <artifactId>gt-process-raster</artifactId>
             <version>13.5</version>
         </dependency>
+        <!-- if you need the interpolation function (kriging)
+        add this dependency and insert it to
+
+        <dependency>
+            <groupId>com.github.haifengl</groupId>
+            <artifactId>smile-interpolation</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+        -->
         <!-- just for stand alone testing;
         should later be removed
         -->
