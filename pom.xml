@@ -42,6 +42,17 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>boundless</id>
+            <name>Boudless Repo</name>
+            <url>http://repo.boundlessgeo.com/main/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -154,6 +165,20 @@
             <artifactId>ant</artifactId>
             <version>1.10.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-process-raster</artifactId>
+            <version>13.5</version>
+        </dependency>
+        <!-- if you need the interpolation function (kriging)
+        add this dependency and insert it to
+
+        <dependency>
+            <groupId>com.github.haifengl</groupId>
+            <artifactId>smile-interpolation</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+        -->
         <!-- just for stand alone testing;
         should later be removed
         -->
