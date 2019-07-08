@@ -5,7 +5,7 @@ FROM tomcat:9-jre8
 # docker pull ruestergfz/shakyground:latest
 # docker pull ruestergfz/assetmaster:latest
 # docker pull ruestergfz/modelprop:latest
-# docker pull ruestergfz/flooddamage:latest # not published yet
+# docker pull ruestergfz/flooddamage:latest
 
 # start the RIESGOS WPS docker image with:
 # docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ruestergfz/riesgos-wps
