@@ -18,6 +18,8 @@ package org.n52.gfz.riesgos.algorithm;
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
+import org.n52.gfz.riesgos.cache.CacheSingleton;
+import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRun;
@@ -67,6 +69,8 @@ import java.util.stream.Collectors;
  */
 public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
+    private final ICacher cache;
+
     private final IConfiguration configuration;
     private final Logger logger;
     private final List<IInputParameter> inputIdentifiers;
@@ -81,6 +85,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      * @param logger logger to log some messages
      */
     public BaseGfzRiesgosService(final IConfiguration configuration, final Logger logger) {
+
+        cache = CacheSingleton.INSTANCE;
+
         this.configuration = configuration;
         this.logger = logger;
 
@@ -139,9 +146,22 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      */
     @Override
     public Map<String, IData> run(final Map<String, List<IData>> inputDataFromMethod) throws ExceptionReport {
-        final InnerRunContext innerRunContext = new InnerRunContext(inputDataFromMethod);
-        return innerRunContext.run();
 
+        final Optional<Map<String, IData>> cachedResult = cache.getCachedResult(configuration, inputDataFromMethod);
+
+        if(cachedResult.isPresent()) {
+            logger.info("Read the results from cache");
+            return cachedResult.get();
+        }
+
+        logger.info("There is no result in the cache");
+
+        final InnerRunContext innerRunContext = new InnerRunContext(inputDataFromMethod);
+        final Map<String, IData> result = innerRunContext.run();
+
+        cache.insertResultIntoCache(configuration, inputDataFromMethod, result);
+
+        return result;
     }
 
     /**
