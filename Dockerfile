@@ -10,6 +10,20 @@ FROM tomcat:9-jre8
 # start the RIESGOS WPS docker image with:
 # docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ruestergfz/riesgos-wps
 
+# following services can then be accessed at localhost:
+
+# RIESGOS WPS:
+# http://localhost:8080/wps/WebProcessingService?Request=GetCapabilities&Service=WPS
+
+# WPS administration with login wps/wps:
+# http://localhost:8080/wps
+
+# WPS JS client:
+# http://localhost:8080/wps-js-client/
+
+# Tomcat manager with login admin/admin:
+# http://localhost:8080/manager
+
 VOLUME [ "/usr/share/riesgos/json-configurations" ]
 
 RUN apt update && \
@@ -39,15 +53,15 @@ RUN dockerd --version
 RUN docker --version
 
 # setup tomcat
-RUN echo $'<?xml version="1.0" encoding="UTF-8"?>\n\
+RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
 <tomcat-users xmlns="http://tomcat.apache.org/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd" version="1.0">\n\
-  <role rolename="manager-gui"/>\n\
-  <user username="admin" password="admin" roles="manager-gui"/>\n\
+  <role rolename="manager-gui" />\n\
+  <user username="admin" password="admin" roles="manager-gui" />\n\
 </tomcat-users>\n\
 ' > /usr/local/tomcat/conf/tomcat-users.xml
 
-RUN echo $'<?xml version="1.0" encoding="UTF-8"?>\n\
-<Context antiResourceLocking="false" privileged="true" >\n\
+RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
+<Context antiResourceLocking="false" privileged="true">\n\
   <Valve className="org.apache.catalina.valves.RemoteAddrValve"\n\
          allow="^.*$" />\n\
   <Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>\n\
