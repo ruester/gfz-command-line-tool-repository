@@ -36,7 +36,9 @@ public interface ICacher {
      * @param inputData input data
      * @return optional map with output data
      */
-    Optional<Map<String, IData>> getCachedResult(final IConfiguration configuration, final Map<String, List<IData>> inputData);
+    Optional<Map<String, IData>> getCachedResult(
+            IConfiguration configuration,
+            Map<String, List<IData>> inputData);
 
     /**
      * This is the method to call once the algorithm is done and the
@@ -45,5 +47,8 @@ public interface ICacher {
      * @param inputData input data
      * @param outputData resulting data to store
      */
-    void insertResultIntoCache(final IConfiguration configuration, final Map<String, List<IData>> inputData, final Map<String, IData> outputData);
+    void insertResultIntoCache(
+            IConfiguration configuration,
+            Map<String, List<IData>> inputData,
+            Map<String, IData> outputData);
 }

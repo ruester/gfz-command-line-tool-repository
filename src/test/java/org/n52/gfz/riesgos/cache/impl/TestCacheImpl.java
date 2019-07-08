@@ -14,11 +14,13 @@
  * limitations under the Licence.
  */
 
-package org.n52.gfz.riesgos.cache;
+package org.n52.gfz.riesgos.cache.impl;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
+import org.n52.gfz.riesgos.cache.ICacher;
+import org.n52.gfz.riesgos.cache.dockerimagehandling.IDockerImageIdLookup;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
@@ -45,12 +47,17 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-public class TestCacheSingleton {
+public class TestCacheImpl {
 
     @Test
     public void testCacheInt() {
-        final ICacher cache = CacheSingleton.INSTANCE;
+
+
+        final ICacher cache = new CacheImpl(new NoDockerImageIdLookup());
+
 
         final IConfiguration configuration = new TestConfiguration("TestconfigurationInt",
                 InputParameterFactory.INSTANCE.createCommandLineArgumentInt(
@@ -116,7 +123,7 @@ public class TestCacheSingleton {
 
     @Test
     public void testCacheBBox() {
-        final ICacher cache = CacheSingleton.INSTANCE;
+        final ICacher cache = new CacheImpl(new NoDockerImageIdLookup());
 
         final IConfiguration configuration = new TestConfiguration("TestConfigurationBBox", InputParameterFactory.INSTANCE.createCommandLineArgumentBBox(
                 "bbox", false, null, Collections.singletonList("EPSG:4328")));
@@ -171,11 +178,11 @@ public class TestCacheSingleton {
 
     @Test
     public void testCacheXml() {
-        final ICacher cache = CacheSingleton.INSTANCE;
+        final ICacher cache = new CacheImpl(new NoDockerImageIdLookup());
 
         try {
             final IConfiguration configuration = new TestConfiguration("TestConfigurationXml", InputParameterFactory.INSTANCE.createFileInNrml("nrm",
-                    false, null, DefaultFormatOption.NRML.getFormat(), "file-out.xml"));
+                    false, null, DefaultFormatOption.NRML.getFormat(), "file-in.xml"));
 
             final IData xml = NrmlXmlDataBinding.fromXml(XmlObject.Factory.parse("<a><b><c>Element1</c></b></a>"));
 
@@ -213,7 +220,7 @@ public class TestCacheSingleton {
 
 
             final IConfiguration configuration2 = new TestConfiguration("TestConfigurationXml", InputParameterFactory.INSTANCE.createFileInNrml("nrm",
-                    false, null, DefaultFormatOption.NRML.getFormat(), "file-out.xml"));
+                    false, null, DefaultFormatOption.NRML.getFormat(), "file-in.xml"));
 
             final IData xml2 = NrmlXmlDataBinding.fromXml(XmlObject.Factory.parse("<a><b><c>Element1</c></b></a>"));
 
@@ -330,6 +337,13 @@ public class TestCacheSingleton {
         @Override
         public Optional<IStdoutHandler> getStdoutHandler() {
             return Optional.empty();
+        }
+    }
+
+    private static class NoDockerImageIdLookup implements IDockerImageIdLookup {
+        @Override
+        public String lookUpImageId(String imageIdWithLabel) {
+            return imageIdWithLabel;
         }
     }
 }

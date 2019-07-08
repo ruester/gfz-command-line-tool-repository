@@ -19,6 +19,10 @@
 
 package org.n52.gfz.riesgos.configuration.impl;
 
+import org.n52.gfz.riesgos.cache.generateinputcachekey.GenerateCacheKeyByConvertToByteArray;
+import org.n52.gfz.riesgos.cache.generateinputcachekey.GenerateCacheKeyByTransformToCmd;
+import org.n52.gfz.riesgos.cache.generateinputcachekey.GenerateCacheKeyByWriteToFiles;
+import org.n52.gfz.riesgos.cache.IFunctionToGenerateCacheKey;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
@@ -155,6 +159,23 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
     @Override
     public Optional<FormatEntry> getDefaultFormat() {
         return Optional.ofNullable(defaultFormat);
+    }
+
+    @Override
+    public IFunctionToGenerateCacheKey<T> getFunctionToGenerateCacheKey() {
+        if(functionToWriteToStdin != null) {
+            return new GenerateCacheKeyByConvertToByteArray<>(functionToWriteToStdin);
+        } else if(functionToWriteToFiles != null) {
+            // the way that the write to files function is used before
+            // the transform th cmd it is not necessary
+            // to care about the file name that is used if the file is used
+            // as a command line argument
+            return new GenerateCacheKeyByWriteToFiles<>(functionToWriteToFiles);
+        } else if(functionToTransformToCmd != null) {
+            return new GenerateCacheKeyByTransformToCmd<>(functionToTransformToCmd);
+        } else {
+            throw new RuntimeException("There must be a mechanism to handle the input parameter");
+        }
     }
 
     @Override
