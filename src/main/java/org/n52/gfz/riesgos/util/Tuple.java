@@ -19,6 +19,7 @@
 package org.n52.gfz.riesgos.util;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Utility class to provide a tuple of two values.
@@ -72,5 +73,23 @@ public class Tuple<A, B> {
     public static <AA, BB> Tuple<AA, BB> fromEntry(
             final Map.Entry<AA, BB> entry) {
         return new Tuple<>(entry.getKey(), entry.getValue());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Tuple<?, ?> tuple = (Tuple<?, ?>) o;
+        return Objects.equals(first, tuple.first) &&
+                Objects.equals(second, tuple.second);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(first, second);
     }
 }

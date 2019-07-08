@@ -20,6 +20,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
 import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunImpl;
 import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunResultImpl;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl;
@@ -59,7 +60,8 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
         "org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl",
         "org.n52.gfz.riesgos.cmdexecution.docker.DockerExecutionContextImpl",
         "org.n52.gfz.riesgos.cmdexecution.ExecutionRunImpl",
-        "org.n52.gfz.riesgos.cmdexecution.ExecutionRunResultImpl"
+        "org.n52.gfz.riesgos.cmdexecution.ExecutionRunResultImpl",
+        "org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup"
 })
 public class TestBaseGfzRiesgosService {
 
@@ -88,12 +90,16 @@ public class TestBaseGfzRiesgosService {
         final DockerExecutionContextImpl mockContext = mock(DockerExecutionContextImpl.class);
         final ExecutionRunImpl mockRun = mock(ExecutionRunImpl.class);
         final ExecutionRunResultImpl mockRunResult = mock(ExecutionRunResultImpl.class);
+        final DockerImageIdLookup mockImageIdLookup = mock(DockerImageIdLookup.class);
         try {
             whenNew(DockerContainerExecutionContextManagerImpl.class).withAnyArguments().thenReturn(mockContextManager);
             whenNew(DockerExecutionContextImpl.class).withAnyArguments().thenReturn(mockContext);
             whenNew(ExecutionRunImpl.class).withAnyArguments().thenReturn(mockRun);
             whenNew(ExecutionRunResultImpl.class).withAnyArguments().thenReturn(mockRunResult);
+            whenNew(DockerImageIdLookup.class).withAnyArguments().thenReturn(mockImageIdLookup);
 
+
+            when(mockImageIdLookup.lookUpImageId(Mockito.anyString())).thenReturn("quakeledger:latest");
             when(mockContextManager.createExecutionContext(Mockito.anyString(), Mockito.anyList())).thenReturn(mockContext);
 
             doNothing().when(mockContext).close();

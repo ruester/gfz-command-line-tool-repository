@@ -18,7 +18,7 @@ package org.n52.gfz.riesgos.algorithm;
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
-import org.n52.gfz.riesgos.cache.CacheSingleton;
+import org.n52.gfz.riesgos.cache.impl.CacheSingleton;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
