@@ -22,12 +22,15 @@ import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBind
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToJsonDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToNrmlXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToQuakeMLXmlBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToShakemapXmlBinding;
 import org.n52.gfz.riesgos.configuration.impl.OutputParameterImpl;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.nrml.binding.NrmlXmlDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
@@ -93,6 +96,40 @@ public enum OutputParameterFactory {
                         new ConvertBytesToGenericXMLDataBinding()));
         builder.withSchema(schema);
         builder.withValidator(validator);
+        builder.withDefaultFormat(defaultFormat);
+        return builder.build();
+    }
+
+    /**
+     * Creates a nrml file (output) on a given path with an additional schema.
+     * @param identifier identifier of the data
+     * @param isOptional true if the output is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
+     * @param path path of the file to read after process termination
+     * @return output argument containing xml that will be read from a given
+     * file
+     */
+    public IOutputParameter createFileOutNrml(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat,
+            final String path) {
+
+
+        final String schema = DefaultFormatOption.NRML.getFormat().getSchema();
+        final OutputParameterImpl.Builder<NrmlXmlDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        NrmlXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToReadFromFiles(
+                new ReadSingleByteStreamFromPath<>(
+                        new ConvertBytesToNrmlXMLDataBinding()));
+        builder.withSchema(schema);
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
@@ -360,6 +397,35 @@ public enum OutputParameterFactory {
                 new ConvertBytesToGenericXMLDataBinding());
         builder.withSchema(schema);
         builder.withValidator(validator);
+        builder.withDefaultFormat(defaultFormat);
+        return builder.build();
+    }
+
+    /**
+     * Creates a nrml output (via stdout).
+     * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param defaultFormat optional default format
+     * @return output argument containing xml that will be read from stdout
+     */
+    public IOutputParameter createStdoutNrml(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat) {
+
+        final String schema = DefaultFormatOption.NRML.getFormat().getSchema();
+
+        final OutputParameterImpl.Builder<NrmlXmlDataBinding> builder =
+                new OutputParameterImpl.Builder<>(
+                        identifier,
+                        NrmlXmlDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withFunctionToHandleStdout(
+                new ConvertBytesToNrmlXMLDataBinding());
+        builder.withSchema(schema);
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }

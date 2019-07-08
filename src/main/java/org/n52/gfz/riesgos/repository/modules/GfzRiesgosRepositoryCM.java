@@ -25,6 +25,7 @@ import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.formats.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.nrml.binding.NrmlXmlDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
@@ -296,7 +297,13 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                         new XmlBindingWithAllowedSchema(
                                 IMimeTypeAndSchemaConstants.SCHEMA_SHAKEMAP),
                         "Process to transform shakemaps between "
-                            + "various formats")
+                            + "various formats"),
+                new ClassTransformationProcess(
+                        NrmlXmlDataBinding.class,
+                        "NrmlTransformationProcess",
+                        new XmlBindingWithAllowedSchema(
+                                IMimeTypeAndSchemaConstants.SCHEMA_QUAKE_ML),
+                        "Process to transform nrml between various formats")
         )) {
             final String processName = transformationProcess.getProcessName();
             final AlgorithmData algorithmData = new AlgorithmData(

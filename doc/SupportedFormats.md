@@ -43,6 +43,7 @@ supported types. It includes:
 - file
 - quakeml
 - json
+- nrml
 
 Please note that for the literal values (int, double, string) it is possible
 to provide a default value and a list of allowed values. Please note
@@ -90,6 +91,7 @@ The supported types are:
 - quakeml
 - shakemap
 - json
+- nrml
 
 All this options are listed in the ToFileInputOption enum
 in the ParseJsonForInputImpl.
@@ -123,6 +125,7 @@ The supported types for the working with the stdout stream are:
 - xml
 - quakeml
 - shakemap
+- nrml
 - json
 
 ### Stderr
@@ -144,6 +147,7 @@ The following are supported:
 - quakeml
 - shakemap
 - json
+- nrml
 
 ## Information about specific data formats
 
@@ -167,6 +171,12 @@ We also include a xsd file for faster validation of this data.
 
 Same as quakeml shakemap is also pure xml.
 You can find the schema in the src/main/resources/org/n52/gfz/riesgos/validators/xml folder.
+
+### nrml
+
+The nrml format is - similar to quakeml and shakemap - just an xml format.
+At the moment we don't include a schema for this datatype, so there is
+no validation of the xml content.
 
 ### boolean
 
@@ -209,6 +219,7 @@ The following values are supported:
 * nonValidQuakeml (which is the original one, that is not valid 
 according to the schema)
 * shakemap
+* nrml
 * json
 * geotiff (which uses default encoding)
 * geotiff64 (which uses base 64 encoding)

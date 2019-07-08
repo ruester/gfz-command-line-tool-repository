@@ -22,6 +22,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
+import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToIsolines;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToSimpleFeatureCollection;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
@@ -43,7 +44,7 @@ public class ShakemapGML3Generator extends AbstractGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGML3Generator.class);
     private static final FormatEntry GML = DefaultFormatOption.GML.getFormat();
     private static final Function<IShakemap, SimpleFeatureCollection> TO_FEATURE_COLLECTION =
-            new ShakemapToSimpleFeatureCollection();
+            new ShakemapToIsolines();
 
     /**
      * Default constructor

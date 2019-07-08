@@ -19,37 +19,37 @@
 package org.n52.gfz.riesgos.formats;
 
 /**
- * Constants for mime types and schema values
+ * Constants for mime types and schema values.
  */
 public interface IMimeTypeAndSchemaConstants {
 
 
     /**
-     * Default-Encoding
+     * Default-Encoding.
      */
     String DEFAULT_ENCODING = "UTF-8";
 
     /**
-     * Base64-Encoding
+     * Base64-Encoding.
      */
     String ENCODING_BASE64 = "base64";
     /**
-     * Mime-Type for xml
+     * Mime-Type for xml.
      */
     String MIME_TYPE_XML = "text/xml";
 
     /**
-     * Mime-Type for json
+     * Mime-Type for json.
      */
     String MIME_TYPE_JSON = "application/json";
 
     /**
-     * Mime-Type for geojson
+     * Mime-Type for geojson.
      */
     String MIME_TYPE_GEOJSON = "application/vnd.geo+json";
 
     /**
-     * Mime-Type for geotiff
+     * Mime-Type for geotiff.
      */
     String MIME_TYPE_GEOTIFF = "image/geotiff";
 
@@ -61,22 +61,31 @@ public interface IMimeTypeAndSchemaConstants {
     String MIME_TYPE_WMS = "application/WMS";
 
     /**
-     * Schema for quakeML
+     * Schema for quakeML.
      */
-    String SCHEMA_QUAKE_ML = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
+    String SCHEMA_QUAKE_ML =
+            "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd";
 
     /**
-     * Dummy value for the quakeML that does not match the schema
+     * Dummy value for the quakeML that does not match the schema.
      */
-    String SCHEMA_QUAKE_ML_OLD = "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)";
+    String SCHEMA_QUAKE_ML_OLD =
+            "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd "
+                    + "(original; not conform to schema)";
 
     /**
-     * Schema for GML 3.2.1
+     * Schema for GML 3.2.1.
      */
-    String SCHEMA_GML_3_2_1 = "http://schemas.opengis.net/gml/3.2.1/base/feature.xsd";
+    String SCHEMA_GML_3_2_1 =
+            "http://schemas.opengis.net/gml/3.2.1/base/feature.xsd";
 
     /**
-     * Schema for shakemap
+     * Schema for shakemap.
      */
     String SCHEMA_SHAKEMAP = "http://earthquake.usgs.gov/eqcenter/shakemap";
+
+    /**
+     * Schema for nrml.
+     */
+    String SCHEMA_NRML = "http://openquake.org/xmlns/nrml/0.5";
 }

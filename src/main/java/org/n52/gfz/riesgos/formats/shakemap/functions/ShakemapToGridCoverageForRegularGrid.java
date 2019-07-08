@@ -1,19 +1,17 @@
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     http://apache.org/licenses/LICENSE-2.0
+ *   http://apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the Licence is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the Licence for the specific language governing permissions and
- *  limitations under the Licence.
- *
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
  */
 
 package org.n52.gfz.riesgos.formats.shakemap.functions;
@@ -45,8 +43,10 @@ import java.util.stream.Collectors;
  * There is no meaning between the different bands except that
  * they share the same geographic location (and no coding as
  * red, green or blue bands).
+ *
+ * This works for regular gridded shakemaps only.
  */
-public class ShakemapToGridCoverage
+public class ShakemapToGridCoverageForRegularGrid
         implements Function<IShakemap, GridCoverage2D> {
 
     /**

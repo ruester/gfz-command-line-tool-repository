@@ -143,6 +143,10 @@ you have to add the following jars into the WEB-INF/lib folder:
 
 - commons-compress-1.9.jar
 - ant-1.10.5.jar
+- gt-process-raster-13.5.jar
+- gt-process-13.5.jar
+- jt-contour-1.3.1.jar
+- jt-attributeop-1.3.1.jar
 
 Because of the usage of maven to build the jar file, maven already
 downloaded the dependencies to your computer.
@@ -160,7 +164,7 @@ In case of commons-compress you find the jar under:
 
 In case you run your own standalone server just check if the jars are
 inside of your WEB-INF/lib folder.
-Maybe also libraries that are not explizit mentioned here necessary as
+Maybe also libraries that are not explicit mentioned here necessary as
 well, because we focused on running the server inside of the docker
 image. This already included several other jar files.
 In case you have a question about this, feel free to contact us.

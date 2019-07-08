@@ -53,6 +53,14 @@ points and then give GML or GeoJSON as output.
 
 GML, GeoJSON and GeoTiff all of them use WGS84 as coordinate reference system.
 
+## Nrml
+
+Similar to shakemaps it is possible to convert nrml to geojson.
+At the moment it maps the hierarchical structure in a table
+structure duplicating all the information for the exposure model
+in every row.
+
+
 ## How to add your own format conversion process
 
 The format conversion processes only rely on the parser and generator

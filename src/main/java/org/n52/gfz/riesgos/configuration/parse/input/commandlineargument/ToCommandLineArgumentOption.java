@@ -80,6 +80,11 @@ public enum ToCommandLineArgumentOption {
      */
     QUAKEML("quakeml",
             new CommandLineArgumentQuakeMLFileFactory()),
+
+    /**
+     * This is the enum to use a nrml file as command line argument.
+     */
+    NRML("nrml", new CommandLineArgumentNrmlFileFactory()),
     /**
      * This is the enum to use a json file as command line argument.
      */
