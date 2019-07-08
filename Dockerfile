@@ -24,6 +24,12 @@ FROM tomcat:9-jre8
 # Tomcat manager with login admin/admin:
 # http://localhost:8080/manager
 
+# developer hint:
+# if you want to use your own version of the gfz-command-line-tool-repository
+# just mount your .jar file to /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
+# -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
+
+
 VOLUME [ "/usr/share/riesgos/json-configurations" ]
 
 RUN apt update && \
@@ -121,7 +127,7 @@ RUN sed -i -e 's@assetmaster:latest@ruestergfz/assetmaster:latest@' src/main/res
     sed -i -e 's@quakeledger:latest@ruestergfz/quakeledger:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
     sed -i -e 's@shakyground:latest@ruestergfz/shakyground:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
     mvn clean install && \
-    cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/
+    cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
 RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/commons-compress-1.9.jar && \
     wget https://repo1.maven.org/maven2/org/apache/ant/ant/1.10.5/ant-1.10.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/ant-1.10.5.jar
