@@ -48,6 +48,8 @@ import java.util.Optional;
  *   This is especially true for the current handling of shapefiles.
  * - The whole mechanism should be permanent (so store the data in a database).
  * - Test with optional input parameters must be written.
+ * - The wohle cache fills over the time and no key is forgotten. This may
+ *   lead to OutOfMemory Errors.
  */
 public class CacheImpl implements ICacher {
 
