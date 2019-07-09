@@ -18,13 +18,12 @@ package org.n52.gfz.riesgos.algorithm;
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
-import org.n52.gfz.riesgos.cache.impl.CacheSingleton;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRun;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRunResult;
-import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl;
+import org.n52.gfz.riesgos.cmdexecution.util.IExecutionContextManagerFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
@@ -70,6 +69,7 @@ import java.util.stream.Collectors;
 public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
     private final ICacher cache;
+    private final IExecutionContextManagerFactory executionContextFactory;
 
     private final IConfiguration configuration;
     private final Logger logger;
@@ -85,9 +85,14 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      * @param logger logger to log some messages
      * @param cache implementation of the cache
      */
-    public BaseGfzRiesgosService(final IConfiguration configuration, final Logger logger, final ICacher cache) {
+    public BaseGfzRiesgosService(
+            final IConfiguration configuration,
+            final Logger logger,
+            final ICacher cache,
+            final IExecutionContextManagerFactory executionContextFactory) {
 
         this.cache = cache;
+        this.executionContextFactory = executionContextFactory;
 
         this.configuration = configuration;
         this.logger = logger;
@@ -293,13 +298,13 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
             logger.debug("List with cmd-arguments: " + cmd);
 
-            final IExecutionContextManager contextManager = new DockerContainerExecutionContextManagerImpl(imageId);
+            final IExecutionContextManager contextManager = executionContextFactory.createExecutionContext(configuration);
 
             try(final IExecutionContext context = contextManager.createExecutionContext(workingDirectory, cmd)) {
-                logger.debug("Docker container created");
+                logger.debug("Context container created");
                 runExecutableInContext(context);
             }
-            logger.debug("Docker container removed");
+            logger.debug("Context container removed");
         }
 
         /*

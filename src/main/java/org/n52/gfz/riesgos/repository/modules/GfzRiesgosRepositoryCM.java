@@ -20,6 +20,7 @@ import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
 import org.n52.gfz.riesgos.algorithm.TransformDataFormatProcess;
 import org.n52.gfz.riesgos.cache.impl.CacheSingleton;
+import org.n52.gfz.riesgos.cmdexecution.docker.DockerExecutionContextManagerFactory;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
@@ -331,7 +332,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 new BaseGfzRiesgosService(configuration,
                         LoggerFactory.getLogger(
                                 configuration.getFullQualifiedIdentifier()),
-                        CacheSingleton.INSTANCE));
+                        CacheSingleton.INSTANCE,
+                        new DockerExecutionContextManagerFactory()));
     }
 
     /**

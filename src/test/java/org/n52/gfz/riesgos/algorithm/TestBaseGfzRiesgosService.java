@@ -27,6 +27,7 @@ import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunImpl;
 import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunResultImpl;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerExecutionContextImpl;
+import org.n52.gfz.riesgos.cmdexecution.util.IExecutionContextManagerFactory;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
@@ -189,7 +190,9 @@ public class TestBaseGfzRiesgosService {
 
             final ICacher cache = new CacheImpl(mockImageIdLookup);
 
-            final BaseGfzRiesgosService service = new BaseGfzRiesgosService(configuration, LoggerFactory.getLogger(TestBaseGfzRiesgosService.class), cache);
+            final IExecutionContextManagerFactory factory = (conf) -> mockContextManager;
+
+            final BaseGfzRiesgosService service = new BaseGfzRiesgosService(configuration, LoggerFactory.getLogger(TestBaseGfzRiesgosService.class), cache, factory);
 
             try {
                 final Map<String, IData> result = service.run(inputData);
