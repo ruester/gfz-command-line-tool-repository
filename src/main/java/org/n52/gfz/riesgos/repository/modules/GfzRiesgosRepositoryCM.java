@@ -19,6 +19,7 @@ package org.n52.gfz.riesgos.repository.modules;
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
 import org.n52.gfz.riesgos.algorithm.TransformDataFormatProcess;
+import org.n52.gfz.riesgos.cache.impl.CacheSingleton;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
@@ -329,7 +330,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         return new AlgorithmData(configuration.getFullQualifiedIdentifier(),
                 new BaseGfzRiesgosService(configuration,
                         LoggerFactory.getLogger(
-                                configuration.getFullQualifiedIdentifier())));
+                                configuration.getFullQualifiedIdentifier()),
+                        CacheSingleton.INSTANCE));
     }
 
     /**

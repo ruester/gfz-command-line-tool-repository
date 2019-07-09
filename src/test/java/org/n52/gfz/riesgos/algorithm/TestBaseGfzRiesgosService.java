@@ -20,7 +20,9 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.impl.CacheImpl;
 import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunImpl;
 import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunResultImpl;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl;
@@ -185,7 +187,9 @@ public class TestBaseGfzRiesgosService {
             when(mockRunResult.getStderrResult()).thenReturn("");
             when(mockRunResult.getStdoutResult()).thenReturn("");
 
-            final BaseGfzRiesgosService service = new BaseGfzRiesgosService(configuration, LoggerFactory.getLogger(TestBaseGfzRiesgosService.class));
+            final ICacher cache = new CacheImpl(mockImageIdLookup);
+
+            final BaseGfzRiesgosService service = new BaseGfzRiesgosService(configuration, LoggerFactory.getLogger(TestBaseGfzRiesgosService.class), cache);
 
             try {
                 final Map<String, IData> result = service.run(inputData);
