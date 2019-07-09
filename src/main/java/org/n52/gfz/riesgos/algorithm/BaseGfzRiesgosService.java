@@ -83,10 +83,11 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
      * Constructor that only gets a configuration and a logger
      * @param configuration configuration to use for the executable
      * @param logger logger to log some messages
+     * @param cache implementation of the cache
      */
-    public BaseGfzRiesgosService(final IConfiguration configuration, final Logger logger) {
+    public BaseGfzRiesgosService(final IConfiguration configuration, final Logger logger, final ICacher cache) {
 
-        cache = CacheSingleton.INSTANCE;
+        this.cache = cache;
 
         this.configuration = configuration;
         this.logger = logger;
