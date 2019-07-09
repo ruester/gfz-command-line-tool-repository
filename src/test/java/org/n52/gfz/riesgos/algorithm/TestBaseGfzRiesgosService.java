@@ -206,6 +206,7 @@ public class TestBaseGfzRiesgosService {
                 fail("There should be no exception report");
             }
         } catch (final Exception exception) {
+            exception.printStackTrace();
             fail("There should be no exception on mocking");
         }
 
