@@ -23,7 +23,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 public class TestCacheKeyByByteArrayList {

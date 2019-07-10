@@ -20,6 +20,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.hash.HasherImpl;
 import org.n52.gfz.riesgos.cache.impl.CacheImpl;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
@@ -30,7 +31,6 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import org.n52.wps.server.ExceptionReport;
 import org.n52.wps.server.IAlgorithm;
 import org.slf4j.LoggerFactory;
-import sun.misc.Cache;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -103,7 +103,8 @@ public class TestContainerIdCreation {
             final IAlgorithm algorithm = new BaseGfzRiesgosService(conf, LoggerFactory.getLogger(TestContainerIdCreation.class),
                     // caching should not be involved in this test
                     // but the docker image id lookup can be done
-                    new CacheImpl(new DockerImageIdLookup()), new DockerExecutionContextManagerFactory());
+                    new HasherImpl(new DockerImageIdLookup()),
+                    new CacheImpl(), new DockerExecutionContextManagerFactory());
 
             final Map<String, List<IData>> inputData = new HashMap<>();
 

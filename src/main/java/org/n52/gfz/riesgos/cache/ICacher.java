@@ -32,23 +32,19 @@ public interface ICacher {
      * This is the method to ask the caching system about if it has data in it.
      * If there is no data for in the caching system, than it will just give back
      * Optional.empty
-     * @param configuration configuration that is used to process the data
-     * @param inputData input data
+     * @param hash hash that is computed from the configuration and the
+     *             input data
      * @return optional map with output data
      */
-    Optional<Map<String, IData>> getCachedResult(
-            IConfiguration configuration,
-            Map<String, List<IData>> inputData);
+    Optional<Map<String, IData>> getCachedResult(final Object hash);
 
     /**
      * This is the method to call once the algorithm is done and the
      * result should be included in the caching system.
-     * @param configuration configuration used to process the data
-     * @param inputData input data
+     * @param hash hash that is computed from the configuration and
+     *             the input data
      * @param outputData resulting data to store
      */
-    void insertResultIntoCache(
-            IConfiguration configuration,
-            Map<String, List<IData>> inputData,
+    void insertResultIntoCache(final Object hash,
             Map<String, IData> outputData);
 }

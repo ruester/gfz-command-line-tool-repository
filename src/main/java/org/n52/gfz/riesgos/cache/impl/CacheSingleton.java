@@ -47,7 +47,7 @@ public enum CacheSingleton implements ICacher {
      * Constructor for assigning the internal cacher.
      */
     CacheSingleton() {
-        innerCacher = new CacheImpl(new DockerImageIdLookup());
+        innerCacher = new CacheImpl();
     }
 
     /**
@@ -55,32 +55,30 @@ public enum CacheSingleton implements ICacher {
      * If there is no data for in the caching system, than it will just
      * give back Optional.empty
      *
-     * @param configuration configuration that is used to process the data
-     * @param inputData     input data
+     * @param hash hash that takes the configuration and the input data into
+     *             account
      * @return optional map with output data
      */
     @Override
     public Optional<Map<String, IData>> getCachedResult(
-            final IConfiguration configuration,
-            final Map<String, List<IData>> inputData) {
-        return innerCacher.getCachedResult(configuration, inputData);
+            final Object hash) {
+        return innerCacher.getCachedResult(hash);
     }
 
     /**
      * This is the method to call once the algorithm is done and the
      * result should be included in the caching system.
      *
-     * @param configuration configuration used to process the data
-     * @param inputData     input data
+     * @param hash hash that takes the configuration and the input data
+     *             into account
      * @param outputData    resulting data to store
      */
     @Override
     public void insertResultIntoCache(
-            final IConfiguration configuration,
-            final Map<String, List<IData>> inputData,
+            final Object hash,
             final Map<String, IData> outputData) {
 
-        innerCacher.insertResultIntoCache(configuration, inputData, outputData);
+        innerCacher.insertResultIntoCache(hash, outputData);
 
     }
 }

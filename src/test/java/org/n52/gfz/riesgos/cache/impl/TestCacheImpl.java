@@ -21,6 +21,8 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.IDockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.hash.HasherImpl;
+import org.n52.gfz.riesgos.cache.hash.IHasher;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
@@ -55,8 +57,9 @@ public class TestCacheImpl {
     @Test
     public void testCacheInt() {
 
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
 
-        final ICacher cache = new CacheImpl(new NoDockerImageIdLookup());
+        final ICacher cache = new CacheImpl();
 
 
         final IConfiguration configuration = new TestConfiguration("TestconfigurationInt",
@@ -73,7 +76,9 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData = new HashMap<>();
         inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(literalIntInput));
 
-        final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(configuration, inputData);
+        final Object hash = hasher.hash(configuration, inputData);
+
+        final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
 
         assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
 
@@ -83,9 +88,9 @@ public class TestCacheImpl {
         final Map<String, IData> outputData = new HashMap<>();
         outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), strOutput);
 
-        cache.insertResultIntoCache(configuration, inputData, outputData);
+        cache.insertResultIntoCache(hash, outputData);
 
-        final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(configuration, inputData);
+        final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(hash);
 
         assertTrue("There is a result in the cache", cacheResult.isPresent());
 
@@ -115,7 +120,8 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData2 = new HashMap<>();
         inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(literalIntInput2));
 
-        final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(configuration2, inputData2);
+        final Object hash2 = hasher.hash(configuration2, inputData2);
+        final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
 
         // I think it is a problem regarding to identities and equality
         assertTrue("Also here the data is present", cachedResult2.isPresent());
@@ -123,7 +129,8 @@ public class TestCacheImpl {
 
     @Test
     public void testCacheBBox() {
-        final ICacher cache = new CacheImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final ICacher cache = new CacheImpl();
 
         final IConfiguration configuration = new TestConfiguration("TestConfigurationBBox", InputParameterFactory.INSTANCE.createCommandLineArgumentBBox(
                 "bbox", false, null, Collections.singletonList("EPSG:4328")));
@@ -133,7 +140,8 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData = new HashMap<>();
         inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(bbox));
 
-        final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(configuration, inputData);
+        final Object hash = hasher.hash(configuration, inputData);
+        final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
 
         assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
 
@@ -143,9 +151,9 @@ public class TestCacheImpl {
         final Map<String, IData> outputData = new HashMap<>();
         outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), strOutput);
 
-        cache.insertResultIntoCache(configuration, inputData, outputData);
+        cache.insertResultIntoCache(hash, outputData);
 
-        final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(configuration, inputData);
+        final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(hash);
 
         assertTrue("There is a result in the cache", cacheResult.isPresent());
 
@@ -170,7 +178,8 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData2 = new HashMap<>();
         inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(bbox2));
 
-        final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(configuration2, inputData2);
+        final Object hash2 = hasher.hash(configuration2, inputData2);
+        final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
 
         // I think it is a problem regarding to identities and equality
         assertTrue("Also here the data is present", cachedResult2.isPresent());
@@ -178,7 +187,8 @@ public class TestCacheImpl {
 
     @Test
     public void testCacheXml() {
-        final ICacher cache = new CacheImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final ICacher cache = new CacheImpl();
 
         try {
             final IConfiguration configuration = new TestConfiguration("TestConfigurationXml", InputParameterFactory.INSTANCE.createFileInNrml("nrm",
@@ -189,7 +199,8 @@ public class TestCacheImpl {
             final Map<String, List<IData>> inputData = new HashMap<>();
             inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(xml));
 
-            final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(configuration, inputData);
+            final Object hash = hasher.hash(configuration, inputData);
+            final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
 
             assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
 
@@ -199,9 +210,9 @@ public class TestCacheImpl {
             final Map<String, IData> outputData = new HashMap<>();
             outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), strOutput);
 
-            cache.insertResultIntoCache(configuration, inputData, outputData);
+            cache.insertResultIntoCache(hash, outputData);
 
-            final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(configuration, inputData);
+            final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(hash);
 
             assertTrue("There is a result in the cache", cacheResult.isPresent());
 
@@ -227,7 +238,8 @@ public class TestCacheImpl {
             final Map<String, List<IData>> inputData2 = new HashMap<>();
             inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(xml2));
 
-            final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(configuration2, inputData2);
+            final Object hash2 = hasher.hash(configuration2, inputData2);
+            final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
 
             // I think it is a problem regarding to identities and equality
             assertTrue("Also here the data is present", cachedResult2.isPresent());

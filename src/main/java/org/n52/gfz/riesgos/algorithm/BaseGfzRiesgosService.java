@@ -19,6 +19,7 @@ package org.n52.gfz.riesgos.algorithm;
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.cache.ICacher;
+import org.n52.gfz.riesgos.cache.hash.IHasher;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRun;
@@ -68,6 +69,7 @@ import java.util.stream.Collectors;
  */
 public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
+    private final IHasher hasher;
     private final ICacher cache;
     private final IExecutionContextManagerFactory executionContextFactory;
 
@@ -88,9 +90,11 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
     public BaseGfzRiesgosService(
             final IConfiguration configuration,
             final Logger logger,
+            final IHasher hasher,
             final ICacher cache,
             final IExecutionContextManagerFactory executionContextFactory) {
 
+        this.hasher = hasher;
         this.cache = cache;
         this.executionContextFactory = executionContextFactory;
 
@@ -153,7 +157,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
     @Override
     public Map<String, IData> run(final Map<String, List<IData>> inputDataFromMethod) throws ExceptionReport {
 
-        final Optional<Map<String, IData>> cachedResult = cache.getCachedResult(configuration, inputDataFromMethod);
+        final Object hash = hasher.hash(configuration, inputDataFromMethod);
+        final Optional<Map<String, IData>> cachedResult = cache.getCachedResult(hash);
 
         if(cachedResult.isPresent()) {
             logger.info("Read the results from cache");
@@ -165,7 +170,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         final InnerRunContext innerRunContext = new InnerRunContext(inputDataFromMethod);
         final Map<String, IData> result = innerRunContext.run();
 
-        cache.insertResultIntoCache(configuration, inputDataFromMethod, result);
+        cache.insertResultIntoCache(hash, result);
 
         return result;
     }
