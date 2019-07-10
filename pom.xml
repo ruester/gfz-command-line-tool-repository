@@ -170,6 +170,12 @@
             <artifactId>gt-process-raster</artifactId>
             <version>13.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
+        </dependency>
+
         <!-- if you need the interpolation function (kriging)
         add this dependency and insert it to
 

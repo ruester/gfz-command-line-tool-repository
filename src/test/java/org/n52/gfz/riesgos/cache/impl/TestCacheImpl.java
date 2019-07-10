@@ -77,7 +77,7 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData = new HashMap<>();
         inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(literalIntInput));
 
-        final Object hash = hasher.hash(configuration, inputData);
+        final String hash = hasher.hash(configuration, inputData);
 
         final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
 
@@ -121,7 +121,7 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData2 = new HashMap<>();
         inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(literalIntInput2));
 
-        final Object hash2 = hasher.hash(configuration2, inputData2);
+        final String hash2 = hasher.hash(configuration2, inputData2);
         final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
 
         // I think it is a problem regarding to identities and equality
@@ -141,7 +141,7 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData = new HashMap<>();
         inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(bbox));
 
-        final Object hash = hasher.hash(configuration, inputData);
+        final String hash = hasher.hash(configuration, inputData);
         final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
 
         assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
@@ -179,7 +179,7 @@ public class TestCacheImpl {
         final Map<String, List<IData>> inputData2 = new HashMap<>();
         inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(bbox2));
 
-        final Object hash2 = hasher.hash(configuration2, inputData2);
+        final String hash2 = hasher.hash(configuration2, inputData2);
         final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
 
         // I think it is a problem regarding to identities and equality
@@ -200,7 +200,7 @@ public class TestCacheImpl {
             final Map<String, List<IData>> inputData = new HashMap<>();
             inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(xml));
 
-            final Object hash = hasher.hash(configuration, inputData);
+            final String hash = hasher.hash(configuration, inputData);
             final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
 
             assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
@@ -239,7 +239,7 @@ public class TestCacheImpl {
             final Map<String, List<IData>> inputData2 = new HashMap<>();
             inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(xml2));
 
-            final Object hash2 = hasher.hash(configuration2, inputData2);
+            final String hash2 = hasher.hash(configuration2, inputData2);
             final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
 
             // I think it is a problem regarding to identities and equality

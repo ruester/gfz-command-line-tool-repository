@@ -34,7 +34,7 @@ public interface ICacher {
      *             input data
      * @return optional map with output data
      */
-    Optional<Map<String, IData>> getCachedResult(final Object hash);
+    Optional<Map<String, IData>> getCachedResult(final String hash);
 
     /**
      * This is the method to call once the algorithm is done and the
@@ -43,6 +43,6 @@ public interface ICacher {
      *             the input data
      * @param outputData resulting data to store
      */
-    void insertResultIntoCache(final Object hash,
+    void insertResultIntoCache(final String hash,
             Map<String, IData> outputData);
 }

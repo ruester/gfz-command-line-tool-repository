@@ -54,14 +54,20 @@ public class GenerateCacheKeyByWriteToFiles<T extends IData>
      * manager.
      */
     private final IWriteIDataToFiles<T> writeIDataToFiles;
+    private final String path;
+    private final boolean isOptional;
 
     /**
      * Constructor with a IWriteIDataToFiles.
      * @param aWriteIDataToFiles function to write the idata to files
      */
     public GenerateCacheKeyByWriteToFiles(
-            final IWriteIDataToFiles<T> aWriteIDataToFiles) {
+            final IWriteIDataToFiles<T> aWriteIDataToFiles,
+            final String aPath,
+            final boolean aIsOptional) {
         this.writeIDataToFiles = aWriteIDataToFiles;
+        this.path = aPath;
+        this.isOptional = aIsOptional;
     }
 
     /**
@@ -80,9 +86,9 @@ public class GenerateCacheKeyByWriteToFiles<T extends IData>
                     context,
                     PSEUDO_WORK_DIR,
                     PSEUDO_PATH);
-            return new InputParameterCacheKeyByByteArrayList(context.contents);
+            return new InputParameterCacheKeyByByteArrayList(context.contents, path, isOptional);
         } catch (final IOException | ConvertToBytesException exception) {
-            return new InputParameterCacheKeyByException(exception);
+            return new InputParameterCacheKeyByException(exception, path, isOptional);
         }
     }
 

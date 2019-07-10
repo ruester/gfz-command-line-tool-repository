@@ -17,41 +17,41 @@
 package org.n52.gfz.riesgos.cache.impl;
 
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.wps.io.data.IData;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of the caching mechanism.
  *
  * TODO: Things that are not supported at the moment:
- * - The full mechanism of how to read the data (at the moment
- *   the mechanism is the same for elements that are read from files
- *   and elements that are read from files but given to the program
- *   as command line arguments)
  * - The output data mechanism can't handle temporary files at the moment.
  *   This is especially true for the current handling of shapefiles.
- * - The whole mechanism should be permanent (so store the data in a database).
  * - Test with optional input parameters must be written.
- * - The wohle cache fills over the time and no key is forgotten. This may
- *   lead to OutOfMemory Errors.
  */
 public class CacheImpl implements ICacher {
+
+    private static final long MAX_SIZE = 50_000L;
+    private static final long MAX_DURATION_DAYS = 60;
 
     /**
      * Map to save the data.
      */
-    private final Map<Object, Map<String, IData>> cache;
+    final Cache<String, Map<String, IData>> cache;
 
 
     /**
      * Constructor without parameters.
      */
     public CacheImpl() {
-
-        cache = new HashMap<>();
+        cache = CacheBuilder.newBuilder().maximumSize(MAX_SIZE).expireAfterAccess(MAX_DURATION_DAYS, TimeUnit.DAYS).build();
     }
 
     /**
@@ -65,10 +65,11 @@ public class CacheImpl implements ICacher {
      */
     @Override
     public Optional<Map<String, IData>> getCachedResult(
-            final Object hash) {
+            final String hash) {
 
-        if (cache.containsKey(hash)) {
-            return Optional.ofNullable(cache.get(hash));
+
+        if (cache.asMap().containsKey(hash)) {
+            return Optional.ofNullable(cache.getIfPresent(hash));
         }
         return Optional.empty();
     }
@@ -83,7 +84,7 @@ public class CacheImpl implements ICacher {
      */
     @Override
     public void insertResultIntoCache(
-            final Object hash,
+            final String hash,
             final Map<String, IData> outputData) {
 
         cache.put(hash, outputData);

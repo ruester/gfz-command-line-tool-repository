@@ -37,6 +37,8 @@ public class GenerateCacheKeyByConvertToByteArray<T extends IData>
      * Function to convert the data to a byte array.
      */
     private final IConvertIDataToByteArray<T> functionToConvertToByteArray;
+    private final String path;
+    private final boolean isOptional;
 
     /**
      * Constructor that takes a function to convert the data to
@@ -44,8 +46,12 @@ public class GenerateCacheKeyByConvertToByteArray<T extends IData>
      * @param aFunctionToConvertToByteArray function to convert the data
      */
     public GenerateCacheKeyByConvertToByteArray(
-            final IConvertIDataToByteArray<T> aFunctionToConvertToByteArray) {
+            final IConvertIDataToByteArray<T> aFunctionToConvertToByteArray,
+            final String aPath,
+            final boolean aIsOptional) {
         this.functionToConvertToByteArray = aFunctionToConvertToByteArray;
+        this.path = aPath;
+        this.isOptional = aIsOptional;
     }
 
     /**
@@ -59,9 +65,9 @@ public class GenerateCacheKeyByConvertToByteArray<T extends IData>
         try {
             final byte[] content =
                     functionToConvertToByteArray.convertToBytes(idata);
-            return new InputParameterCacheKeyByByteArray(content);
+            return new InputParameterCacheKeyByByteArray(content, path, isOptional);
         } catch (final ConvertToBytesException exception) {
-            return new InputParameterCacheKeyByException(exception);
+            return new InputParameterCacheKeyByException(exception, path, isOptional);
         }
     }
 }

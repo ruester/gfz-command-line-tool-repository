@@ -34,15 +34,22 @@ public class InputParameterCacheKeyByByteArrayList
      * List of keys for all the byte arrays.
      */
     private final List<IInputParameterCacheKey> keys;
+    private final String path;
+    private final boolean isOptional;
 
     /**
      * Constructor with a list of byte arrays.
      * @param aContents list of byte arrays (maybe several files).
      */
-    public InputParameterCacheKeyByByteArrayList(final List<byte[]> aContents) {
+    public InputParameterCacheKeyByByteArrayList(
+            final List<byte[]> aContents,
+            final String aPath,
+            final boolean aIsOptional) {
         this.keys = aContents.stream()
-                .map(InputParameterCacheKeyByByteArray::new)
+                .map(content -> new InputParameterCacheKeyByByteArray(content, aPath, aIsOptional))
                 .collect(Collectors.toList());
+        this.path = aPath;
+        this.isOptional = aIsOptional;
     }
 
     /**
@@ -60,7 +67,9 @@ public class InputParameterCacheKeyByByteArrayList
         }
         InputParameterCacheKeyByByteArrayList that =
                 (InputParameterCacheKeyByByteArrayList) o;
-        return Objects.equals(keys, that.keys);
+        return Objects.equals(keys, that.keys)
+                && Objects.equals(path, that.path)
+                && isOptional == that.isOptional;
     }
 
     /**
@@ -69,6 +78,6 @@ public class InputParameterCacheKeyByByteArrayList
      */
     @Override
     public int hashCode() {
-        return Objects.hash(keys);
+        return Objects.hash(keys, path, isOptional);
     }
 }

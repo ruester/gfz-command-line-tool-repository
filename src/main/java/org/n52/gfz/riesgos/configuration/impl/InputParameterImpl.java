@@ -164,15 +164,19 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
     @Override
     public IFunctionToGenerateCacheKey<T> getFunctionToGenerateCacheKey() {
         if(functionToWriteToStdin != null) {
-            return new GenerateCacheKeyByConvertToByteArray<>(functionToWriteToStdin);
+            return new GenerateCacheKeyByConvertToByteArray<>(functionToWriteToStdin, path, isOptional);
         } else if(functionToWriteToFiles != null) {
-            // the way that the write to files function is used before
-            // the transform th cmd it is not necessary
-            // to care about the file name that is used if the file is used
-            // as a command line argument
-            return new GenerateCacheKeyByWriteToFiles<>(functionToWriteToFiles);
+            // this is necessary for files that should be written to files
+            // and should be mentioned as command line arguments
+            // --> those have random file names to give them to the program
+            // --> path should not be included
+            if(functionToTransformToCmd != null) {
+                return new GenerateCacheKeyByWriteToFiles<>(functionToWriteToFiles, null, isOptional);
+            }
+
+            return new GenerateCacheKeyByWriteToFiles<>(functionToWriteToFiles, path, isOptional);
         } else if(functionToTransformToCmd != null) {
-            return new GenerateCacheKeyByTransformToCmd<>(functionToTransformToCmd);
+            return new GenerateCacheKeyByTransformToCmd<>(functionToTransformToCmd, isOptional);
         } else {
             throw new RuntimeException("There must be a mechanism to handle the input parameter");
         }

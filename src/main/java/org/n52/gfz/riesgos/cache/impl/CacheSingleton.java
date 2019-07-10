@@ -58,7 +58,7 @@ public enum CacheSingleton implements ICacher {
      */
     @Override
     public Optional<Map<String, IData>> getCachedResult(
-            final Object hash) {
+            final String hash) {
         return innerCacher.getCachedResult(hash);
     }
 
@@ -72,7 +72,7 @@ public enum CacheSingleton implements ICacher {
      */
     @Override
     public void insertResultIntoCache(
-            final Object hash,
+            final String hash,
             final Map<String, IData> outputData) {
 
         innerCacher.insertResultIntoCache(hash, outputData);

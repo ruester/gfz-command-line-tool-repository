@@ -29,18 +29,18 @@ public class TestCacheKeyByByteArrayList {
 
     @Test
     public void testEqual() {
-        final IInputParameterCacheKey key1 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()));
+        final IInputParameterCacheKey key1 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()), "a.txt", false);
 
-        final IInputParameterCacheKey key2 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()));
+        final IInputParameterCacheKey key2 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()), "a.txt", false);
 
         assertEquals("Both must be equal", key1, key2);
     }
 
     @Test
     public void testNotEqual() {
-        final IInputParameterCacheKey key1 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()));
+        final IInputParameterCacheKey key1 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()), "a.txt", false);
 
-        final IInputParameterCacheKey key2 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes(), "third one".getBytes()));
+        final IInputParameterCacheKey key2 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes(), "third one".getBytes()), "a.txt", false);
 
         assertNotEquals("Both must not be equal", key1, key2);
     }
@@ -58,9 +58,9 @@ public class TestCacheKeyByByteArrayList {
             byteOut2.write(b);
         }
 
-        final IInputParameterCacheKey key1 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()));
+        final IInputParameterCacheKey key1 = new InputParameterCacheKeyByByteArrayList(Arrays.asList("first try".getBytes(), "second one".getBytes()), "a.txt", false);
 
-        final IInputParameterCacheKey key2 = new InputParameterCacheKeyByByteArrayList(Arrays.asList(byteOut1.toByteArray(), byteOut2.toByteArray()));
+        final IInputParameterCacheKey key2 = new InputParameterCacheKeyByByteArrayList(Arrays.asList(byteOut1.toByteArray(), byteOut2.toByteArray()), "a.txt", false);
 
         assertEquals("Both must be equal", key1, key2);
     }

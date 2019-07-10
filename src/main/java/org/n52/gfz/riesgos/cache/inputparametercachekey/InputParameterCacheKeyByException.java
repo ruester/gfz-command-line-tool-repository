@@ -36,13 +36,21 @@ public class InputParameterCacheKeyByException
      * Exception that is wrapped.
      */
     private final Exception exception;
+    private final String path;
+    private final boolean isOptional;
 
     /**
      * Constructor with the exception.
      * @param aException exception to wrap
      */
-    public InputParameterCacheKeyByException(final Exception aException) {
+    public InputParameterCacheKeyByException(
+            final Exception aException,
+            final String aPath,
+            final boolean aIsOptional) {
+
         this.exception = aException;
+        this.path = aPath;
+        this.isOptional = aIsOptional;
     }
 
     /**
@@ -60,7 +68,9 @@ public class InputParameterCacheKeyByException
         }
         InputParameterCacheKeyByException that =
                 (InputParameterCacheKeyByException) o;
-        return Objects.equals(exception, that.exception);
+        return Objects.equals(exception, that.exception)
+                && Objects.equals(path, that.path)
+                && isOptional == that.isOptional;
     }
 
     /**
@@ -69,6 +79,6 @@ public class InputParameterCacheKeyByException
      */
     @Override
     public int hashCode() {
-        return Objects.hash(exception);
+        return Objects.hash(exception, path, isOptional);
     }
 }

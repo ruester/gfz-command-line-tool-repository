@@ -19,6 +19,7 @@ package org.n52.gfz.riesgos.cache.inputparametercachekey;
 import org.n52.gfz.riesgos.cache.IInputParameterCacheKey;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Key that works with a byte array.
@@ -31,13 +32,20 @@ public class InputParameterCacheKeyByByteArray
      * Byte array with the content.
      */
     private final byte[] content;
+    private final String path;
+    private final boolean isOptional;
 
     /**
      * Constructor with a byte array.
      * @param aContent byte array with the content of an idata.
      */
-    public InputParameterCacheKeyByByteArray(final byte[] aContent) {
+    public InputParameterCacheKeyByByteArray(
+            final byte[] aContent,
+            final String aPath,
+            final boolean aIsOptional) {
         this.content = aContent;
+        this.path = aPath;
+        this.isOptional = aIsOptional;
     }
 
     /**
@@ -46,24 +54,27 @@ public class InputParameterCacheKeyByByteArray
      * @return true if both are equal.
      */
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InputParameterCacheKeyByByteArray that =
-                (InputParameterCacheKeyByByteArray) o;
-        return Arrays.equals(content, that.content);
+        InputParameterCacheKeyByByteArray that = (InputParameterCacheKeyByByteArray) o;
+        return isOptional == that.isOptional &&
+                Arrays.equals(content, that.content) &&
+                Objects.equals(path, that.path);
     }
 
     /**
-     *
-     * @return hashcode of the object.
+     * Generate the hash code.
+     * @return hash code
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(content);
+        int result = Objects.hash(path, isOptional);
+        result = 31 * result + Arrays.hashCode(content);
+        return result;
     }
 }

@@ -16,6 +16,7 @@
 
 package org.n52.gfz.riesgos.cache.hash;
 
+import org.apache.commons.codec.binary.Hex;
 import org.n52.gfz.riesgos.cache.IInputParameterCacheKey;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.IDockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.inputparametercachekey.InputParameterCacheKeyByException;
@@ -70,7 +71,9 @@ public class HasherImpl implements IHasher {
             objectOutputStream.writeObject(key);
 
             final byte[] md5 = MESSAGE_DIGEST.digest(byteArrayOutputStream.toByteArray());
-            return new String(md5);
+
+            MESSAGE_DIGEST.reset();
+            return Hex.encodeHexString(md5);
 
         } catch(final IOException ioException) {
             throw new RuntimeException(ioException);
@@ -204,7 +207,9 @@ public class HasherImpl implements IHasher {
                             new Tuple<>(
                                     inputParameter.getIdentifier(),
                                     new InputParameterCacheKeyByException(
-                                            exception)));
+                                            exception,
+                                            inputParameter.getPathToWriteToOrReadFromFile().orElse(null),
+                                            inputParameter.isOptional())));
                 }
             }
         }

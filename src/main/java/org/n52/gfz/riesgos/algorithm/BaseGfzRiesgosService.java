@@ -157,7 +157,10 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
     @Override
     public Map<String, IData> run(final Map<String, List<IData>> inputDataFromMethod) throws ExceptionReport {
 
-        final Object hash = hasher.hash(configuration, inputDataFromMethod);
+        final String hash = hasher.hash(configuration, inputDataFromMethod);
+
+        logger.info("Cache-Hash: " + hash);
+
         final Optional<Map<String, IData>> cachedResult = cache.getCachedResult(hash);
 
         if(cachedResult.isPresent()) {

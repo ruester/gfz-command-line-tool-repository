@@ -21,6 +21,7 @@ import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
 import org.n52.gfz.riesgos.algorithm.TransformDataFormatProcess;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.hash.HasherImpl;
+import org.n52.gfz.riesgos.cache.hash.HasherSingleton;
 import org.n52.gfz.riesgos.cache.impl.CacheSingleton;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerExecutionContextManagerFactory;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
@@ -335,7 +336,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 new BaseGfzRiesgosService(configuration,
                         LoggerFactory.getLogger(
                                 configuration.getFullQualifiedIdentifier()),
-                        new HasherImpl(new DockerImageIdLookup()),
+                        HasherSingleton.INSTANCE,
                         CacheSingleton.INSTANCE,
                         new DockerExecutionContextManagerFactory()));
     }

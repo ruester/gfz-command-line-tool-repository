@@ -33,14 +33,17 @@ public class InputParameterCacheKeyByCmdArguments
      * List with command line arguments.
      */
     private final List<String> cmds;
+    private final boolean isOptional;
 
     /**
      * Constructor with a list of command line arguments.
      * @param aCmds list of command line arguments
      */
     public InputParameterCacheKeyByCmdArguments(
-            final List<String> aCmds) {
+            final List<String> aCmds,
+            final boolean aIsOptional) {
         this.cmds = aCmds;
+        this.isOptional = aIsOptional;
     }
 
     /**
@@ -58,7 +61,8 @@ public class InputParameterCacheKeyByCmdArguments
         }
         InputParameterCacheKeyByCmdArguments that =
                 (InputParameterCacheKeyByCmdArguments) o;
-        return Objects.equals(cmds, that.cmds);
+        return Objects.equals(cmds, that.cmds)
+                && isOptional == that.isOptional;
 
     }
 
@@ -68,6 +72,6 @@ public class InputParameterCacheKeyByCmdArguments
      */
     @Override
     public int hashCode() {
-        return Objects.hash(cmds);
+        return Objects.hash(cmds, isOptional);
     }
 }
