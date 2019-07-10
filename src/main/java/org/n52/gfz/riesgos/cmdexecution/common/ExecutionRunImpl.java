@@ -25,22 +25,35 @@ import java.io.PrintStream;
 
 /**
  * Implementation that provides stdin, exit value
- * and provides the results of stderr and stdout streams
+ * and provides the results of stderr and stdout streams.
  */
 public class ExecutionRunImpl implements IExecutionRun {
 
+    /**
+     * The process that runs.
+     */
     private final Process process;
 
+    /**
+     * The stdin stream.
+     */
     private final PrintStream stdin;
+
+    /**
+     * A threaded reader to read from stderr.
+     */
     private final ThreadedStreamStringReader stderr;
+    /**
+     * A threaded reader to read from stdout.
+     */
     private final ThreadedStreamStringReader stdout;
 
     /**
-     *
-     * @param process the process to wrap
+     * Constructor with a process.
+     * @param aProcess the process to wrap
      */
-    public ExecutionRunImpl(final Process process) {
-        this.process = process;
+    public ExecutionRunImpl(final Process aProcess) {
+        this.process = aProcess;
 
         stdin = new PrintStream(process.getOutputStream());
         stderr = new ThreadedStreamStringReader(process.getErrorStream());
@@ -49,16 +62,29 @@ public class ExecutionRunImpl implements IExecutionRun {
         stdout.start();
     }
 
+    /**
+     *
+     * @return stdin stream
+     */
     @Override
     public PrintStream getStdin() {
         return stdin;
     }
 
+    /**
+     * Waits for the process to be done.
+     * @return class with access to the results of the process.
+     * @throws InterruptedException may throw an InterruptedException
+     */
     @Override
     public IExecutionRunResult waitForCompletion() throws InterruptedException {
         stdin.close();
 
         final int exitValue = process.waitFor();
+
+        stderr.join();
+        stdout.join();
+
         process.destroy();
 
         final String stderrText = stderr.getResult();
@@ -67,7 +93,7 @@ public class ExecutionRunImpl implements IExecutionRun {
         try {
             stderr.throwExceptionIfNecessary();
             stdout.throwExceptionIfNecessary();
-        } catch(final IOException ioException) {
+        } catch (final IOException ioException) {
             throw new RuntimeException(ioException);
         }
 
