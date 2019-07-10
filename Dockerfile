@@ -74,6 +74,11 @@ RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
 </Context>\n\
 ' > /usr/local/tomcat/webapps/manager/META-INF/context.xml
 
+# do not use the git protocol for GitHub dependencies
+RUN printf '[url "https://github"]\n\
+    insteadOf = git://github\n\
+' > /etc/gitconfig
+
 RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar
 
 
