@@ -14,7 +14,7 @@
  * limitations under the Licence.
  */
 
-package org.n52.gfz.riesgos;
+package org.n52.gfz.riesgos.cmdexecution.docker;
 
 import org.junit.Ignore;
 import org.junit.Test;
