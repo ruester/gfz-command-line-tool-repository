@@ -16,6 +16,8 @@
 
 package org.n52.gfz.riesgos.cache;
 
+import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
+import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.wps.io.data.IData;
 
 import java.util.Map;
@@ -34,7 +36,7 @@ public interface ICacher {
      *             input data
      * @return optional map with output data
      */
-    Optional<Map<String, IData>> getCachedResult(final String hash);
+    Optional<Map<String, IDataRecreator>> getCachedResult(final String hash);
 
     /**
      * This is the method to call once the algorithm is done and the
@@ -44,5 +46,5 @@ public interface ICacher {
      * @param outputData resulting data to store
      */
     void insertResultIntoCache(final String hash,
-            Map<String, IData> outputData);
+            Map<String, IDataRecreator> outputData);
 }

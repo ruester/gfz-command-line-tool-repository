@@ -22,6 +22,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.n52.gfz.riesgos.cache.ICacher;
+import org.n52.gfz.riesgos.cache.IDataRecreator;
 import org.n52.wps.io.data.IData;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +32,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Implementation of the caching mechanism.
  *
- * TODO: Things that are not supported at the moment:
- * - The output data mechanism can't handle temporary files at the moment.
- *   This is especially true for the current handling of shapefiles.
- * - Test with optional input parameters must be written.
  */
 public class CacheImpl implements ICacher {
 
@@ -44,7 +41,7 @@ public class CacheImpl implements ICacher {
     /**
      * Map to save the data.
      */
-    final Cache<String, Map<String, IData>> cache;
+    final Cache<String, Map<String, IDataRecreator>> cache;
 
 
     /**
@@ -64,7 +61,7 @@ public class CacheImpl implements ICacher {
      * @return optional map with output data
      */
     @Override
-    public Optional<Map<String, IData>> getCachedResult(
+    public Optional<Map<String, IDataRecreator>> getCachedResult(
             final String hash) {
 
 
@@ -85,7 +82,7 @@ public class CacheImpl implements ICacher {
     @Override
     public void insertResultIntoCache(
             final String hash,
-            final Map<String, IData> outputData) {
+            final Map<String, IDataRecreator> outputData) {
 
         cache.put(hash, outputData);
     }

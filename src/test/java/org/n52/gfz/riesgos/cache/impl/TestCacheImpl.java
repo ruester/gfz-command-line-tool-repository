@@ -20,7 +20,10 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.gfz.riesgos.cache.ICacher;
+import org.n52.gfz.riesgos.cache.IDataRecreator;
+import org.n52.gfz.riesgos.cache.RecreateFromBindingClass;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.IDockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.dockerimagehandling.NoDockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.hash.HasherImpl;
 import org.n52.gfz.riesgos.cache.hash.IHasher;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
@@ -79,25 +82,26 @@ public class TestCacheImpl {
 
         final String hash = hasher.hash(configuration, inputData);
 
-        final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
+        final Optional<Map<String, IDataRecreator>> optionalCacheResult = cache.getCachedResult(hash);
 
         assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
 
         final String outputValue = "Hello World";
         final LiteralStringBinding strOutput = new LiteralStringBinding(outputValue);
 
-        final Map<String, IData> outputData = new HashMap<>();
-        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), strOutput);
+        final Map<String, IDataRecreator> outputData = new HashMap<>();
+        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput));
 
         cache.insertResultIntoCache(hash, outputData);
 
-        final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(hash);
+        final Optional<Map<String, IDataRecreator>> cacheResult = cache.getCachedResult(hash);
 
         assertTrue("There is a result in the cache", cacheResult.isPresent());
 
         assertTrue("The cached result has the entry for the output", cacheResult.get().containsKey(configuration.getOutputIdentifiers().get(0).getIdentifier()));
 
-        final IData innerCachedResult = cacheResult.get().get(configuration.getOutputIdentifiers().get(0).getIdentifier());
+        final IDataRecreator innerCachedResultCreator = cacheResult.get().get(configuration.getOutputIdentifiers().get(0).getIdentifier());
+        final IData innerCachedResult = innerCachedResultCreator.recreate();
 
         assertTrue("The cached result contains a string", innerCachedResult instanceof LiteralStringBinding);
 
@@ -122,7 +126,7 @@ public class TestCacheImpl {
         inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(literalIntInput2));
 
         final String hash2 = hasher.hash(configuration2, inputData2);
-        final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
+        final Optional<Map<String, IDataRecreator>> cachedResult2 = cache.getCachedResult(hash2);
 
         // I think it is a problem regarding to identities and equality
         assertTrue("Also here the data is present", cachedResult2.isPresent());
@@ -142,25 +146,26 @@ public class TestCacheImpl {
         inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(bbox));
 
         final String hash = hasher.hash(configuration, inputData);
-        final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
+        final Optional<Map<String, IDataRecreator>> optionalCacheResult = cache.getCachedResult(hash);
 
         assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
 
         final String outputValue = "Hello World";
         final LiteralStringBinding strOutput = new LiteralStringBinding(outputValue);
 
-        final Map<String, IData> outputData = new HashMap<>();
-        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), strOutput);
+        final Map<String, IDataRecreator> outputData = new HashMap<>();
+        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput));
 
         cache.insertResultIntoCache(hash, outputData);
 
-        final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(hash);
+        final Optional<Map<String, IDataRecreator>> cacheResult = cache.getCachedResult(hash);
 
         assertTrue("There is a result in the cache", cacheResult.isPresent());
 
         assertTrue("The cached result has the entry for the output", cacheResult.get().containsKey(configuration.getOutputIdentifiers().get(0).getIdentifier()));
 
-        final IData innerCachedResult = cacheResult.get().get(configuration.getOutputIdentifiers().get(0).getIdentifier());
+        final IDataRecreator innerCacheResultCreator = cacheResult.get().get(configuration.getOutputIdentifiers().get(0).getIdentifier());
+        final IData innerCachedResult = innerCacheResultCreator.recreate();
 
         assertTrue("The cached result contains a string", innerCachedResult instanceof LiteralStringBinding);
 
@@ -180,7 +185,7 @@ public class TestCacheImpl {
         inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(bbox2));
 
         final String hash2 = hasher.hash(configuration2, inputData2);
-        final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
+        final Optional<Map<String, IDataRecreator>> cachedResult2 = cache.getCachedResult(hash2);
 
         // I think it is a problem regarding to identities and equality
         assertTrue("Also here the data is present", cachedResult2.isPresent());
@@ -201,25 +206,26 @@ public class TestCacheImpl {
             inputData.put(configuration.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(xml));
 
             final String hash = hasher.hash(configuration, inputData);
-            final Optional<Map<String, IData>> optionalCacheResult = cache.getCachedResult(hash);
+            final Optional<Map<String, IDataRecreator>> optionalCacheResult = cache.getCachedResult(hash);
 
             assertFalse("There is no data at the beginning", optionalCacheResult.isPresent());
 
             final String outputValue = "Hello World";
             final LiteralStringBinding strOutput = new LiteralStringBinding(outputValue);
 
-            final Map<String, IData> outputData = new HashMap<>();
-            outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), strOutput);
+            final Map<String, IDataRecreator> outputData = new HashMap<>();
+            outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput));
 
             cache.insertResultIntoCache(hash, outputData);
 
-            final Optional<Map<String, IData>> cacheResult = cache.getCachedResult(hash);
+            final Optional<Map<String, IDataRecreator>> cacheResult = cache.getCachedResult(hash);
 
             assertTrue("There is a result in the cache", cacheResult.isPresent());
 
             assertTrue("The cached result has the entry for the output", cacheResult.get().containsKey(configuration.getOutputIdentifiers().get(0).getIdentifier()));
 
-            final IData innerCachedResult = cacheResult.get().get(configuration.getOutputIdentifiers().get(0).getIdentifier());
+            final IDataRecreator innerCachedResultCreator = cacheResult.get().get(configuration.getOutputIdentifiers().get(0).getIdentifier());
+            final IData innerCachedResult = innerCachedResultCreator.recreate();
 
             assertTrue("The cached result contains a string", innerCachedResult instanceof LiteralStringBinding);
 
@@ -240,7 +246,7 @@ public class TestCacheImpl {
             inputData2.put(configuration2.getInputIdentifiers().get(0).getIdentifier(), Collections.singletonList(xml2));
 
             final String hash2 = hasher.hash(configuration2, inputData2);
-            final Optional<Map<String, IData>> cachedResult2 = cache.getCachedResult(hash2);
+            final Optional<Map<String, IDataRecreator>> cachedResult2 = cache.getCachedResult(hash2);
 
             // I think it is a problem regarding to identities and equality
             assertTrue("Also here the data is present", cachedResult2.isPresent());
@@ -353,10 +359,4 @@ public class TestCacheImpl {
         }
     }
 
-    private static class NoDockerImageIdLookup implements IDockerImageIdLookup {
-        @Override
-        public String lookUpImageId(String imageIdWithLabel) {
-            return imageIdWithLabel;
-        }
-    }
 }

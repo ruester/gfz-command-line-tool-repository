@@ -22,8 +22,11 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.n52.gfz.riesgos.cache.IDataRecreator;
+import org.n52.gfz.riesgos.cache.RecreateFromBindingClass;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
+import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
@@ -43,7 +46,7 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
     private static final long serialVersionUID = -8077547979877603576L;
 
     @Override
-    public GTVectorDataBinding readFromFiles(
+    public Tuple<GTVectorDataBinding, IDataRecreator> readFromFiles(
             final IExecutionContext context,
             final String workingDirectory,
             final String path) throws IOException {
@@ -69,7 +72,12 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
         // that code is reused from GTBinZippedSHPParser
         final DataStore store = new ShapefileDataStore(new File(outputFilePathShp).toURI().toURL());
         final SimpleFeatureCollection features = store.getFeatureSource(store.getTypeNames()[0]).getFeatures();
-        return new GTVectorDataBinding(features);
+
+        final GTVectorDataBinding binding = new GTVectorDataBinding(features);
+
+        // the recreate because we know that there is no temporary file
+        // involved here
+        return new Tuple<>(binding, new RecreateFromBindingClass(binding));
     }
 
     private void writeFile(final File file, final byte[] content) throws IOException {
@@ -90,5 +98,6 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
     public int hashCode() {
         return Objects.hash(getClass().getName());
     }
+
 
 }

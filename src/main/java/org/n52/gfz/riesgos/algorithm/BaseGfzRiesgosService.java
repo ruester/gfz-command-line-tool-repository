@@ -19,6 +19,9 @@ package org.n52.gfz.riesgos.algorithm;
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.cache.ICacher;
+import org.n52.gfz.riesgos.cache.IDataRecreator;
+import org.n52.gfz.riesgos.cache.RecreateFromByteArray;
+import org.n52.gfz.riesgos.cache.RecreateFromExitValue;
 import org.n52.gfz.riesgos.cache.hash.IHasher;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
@@ -45,6 +48,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
+import org.n52.gfz.riesgos.util.Triple;
+import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
@@ -161,19 +166,34 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
         logger.info("Cache-Hash: " + hash);
 
-        final Optional<Map<String, IData>> cachedResult = cache.getCachedResult(hash);
+        final Optional<Map<String, IDataRecreator>> cachedResult = cache.getCachedResult(hash);
 
         if(cachedResult.isPresent()) {
             logger.info("Read the results from cache");
-            return cachedResult.get();
+
+            return cachedResult.get().entrySet().stream().collect(Collectors.toMap(
+                    entry -> entry.getKey(),
+                    entry -> entry.getValue().recreate()
+            ));
         }
 
         logger.info("There is no result in the cache");
 
         final InnerRunContext innerRunContext = new InnerRunContext(inputDataFromMethod);
-        final Map<String, IData> result = innerRunContext.run();
+        final Map<String, Tuple<IData, IDataRecreator>> innerResult = innerRunContext.run();
 
-        cache.insertResultIntoCache(hash, result);
+        final Map<String, IDataRecreator> dataToStoreInCache = innerResult.entrySet().stream().collect(Collectors.toMap(
+                entry -> entry.getKey(),
+                entry -> entry.getValue().getSecond()
+        ));
+
+        cache.insertResultIntoCache(hash, dataToStoreInCache);
+
+        final Map<String, IData> result = innerResult.entrySet().stream().collect(Collectors.toMap(
+                entry -> entry.getKey(),
+                entry -> entry.getValue().getFirst()
+        ));
+
 
         return result;
     }
@@ -225,7 +245,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
     private class InnerRunContext {
 
         private final Map<String, IData> inputData;
-        private final Map<String, IData> outputData;
+        private final Map<String, Tuple<IData, IDataRecreator>> outputData;
 
         /**
          * Constructor with the original input data
@@ -242,7 +262,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
          * @return Map with IData as the results
          * @throws ExceptionReport maybe a ExceptionReport is thrown to handle the errors in the process
          */
-        private Map<String, IData> run() throws ExceptionReport {
+        private Map<String, Tuple<IData, IDataRecreator>> run() throws ExceptionReport {
             logger.debug("Start run");
             runExecutable();
             return outputData;
@@ -450,8 +470,11 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
                     try {
                         if (stderrHandler.isPresent()) {
-                            final IData iData = stderrHandler.get().convertToIData(stderr.getBytes());
-                            putIntoOutput(outputValue, iData);
+                            final byte[] bytes = stderr.getBytes();
+                            final IConvertByteArrayToIData converter = stderrHandler.get();
+
+                            final IData iData = converter.convertToIData(bytes);
+                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter));
                         }
                     } catch (final ConvertToIDataException convertException) {
                         if(outputValue.isOptional()) {
@@ -472,7 +495,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
          * insert the data into the output map
          * if there is an validator, then it is used here
          */
-        private void putIntoOutput(final IOutputParameter outputValue, final IData iData) throws ExceptionReport {
+        private void putIntoOutput(final IOutputParameter outputValue, final IData iData, final IDataRecreator dataRecreator) throws ExceptionReport {
             final Optional<ICheckDataAndGetErrorMessage> optionalValidator = outputValue.getValidator();
             if(optionalValidator.isPresent()) {
                 final ICheckDataAndGetErrorMessage validator = optionalValidator.get();
@@ -484,7 +507,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                     throw new ExceptionReport("The output for '" + outputValue.getIdentifier() + "' is not valid:\n" + errorMessage, ExceptionReport.REMOTE_COMPUTATION_ERROR);
                 }
             }
-            outputData.put(outputValue.getIdentifier(), iData);
+            outputData.put(outputValue.getIdentifier(), new Tuple<>(iData, dataRecreator));
         }
 
         /*
@@ -504,8 +527,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                     try {
                         final Optional<IConvertExitValueToIData> exitValueHandler = outputValue.getFunctionToHandleExitValue();
                         if (exitValueHandler.isPresent()) {
-                            final IData iData = exitValueHandler.get().convertToIData(exitValue);
-                            putIntoOutput(outputValue, iData);
+                            final IConvertExitValueToIData converter = exitValueHandler.get();
+                            final IData iData = converter.convertToIData(exitValue);
+                            putIntoOutput(outputValue, iData, new RecreateFromExitValue(exitValue, converter));
                         }
                     } catch (final ConvertToIDataException convertException) {
                         if(outputValue.isOptional()) {
@@ -534,8 +558,10 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                     try {
                         final Optional<IConvertByteArrayToIData> stdoutHandler = outputValue.getFunctionToHandleStdout();
                         if (stdoutHandler.isPresent()) {
-                            final IData iData = stdoutHandler.get().convertToIData(stdout.getBytes());
-                            putIntoOutput(outputValue, iData);
+                            final byte[] bytes = stdout.getBytes();
+                            final IConvertByteArrayToIData converter = stdoutHandler.get();
+                            final IData iData = converter.convertToIData(bytes);
+                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter));
                         }
                     } catch(final ConvertToIDataException convertException) {
                         if(outputValue.isOptional()) {
@@ -564,8 +590,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                         if(optionalPath.isPresent() && optionalFunctionToReadFromFiles.isPresent()) {
                             final String path = optionalPath.get();
                             final IReadIDataFromFiles functionToReadFromFiles = optionalFunctionToReadFromFiles.get();
-                            final IData iData = functionToReadFromFiles.readFromFiles(context, configuration.getWorkingDirectory(), path);
-                            putIntoOutput(outputValue, iData);
+                            final Tuple<IData, IDataRecreator> readResult = functionToReadFromFiles.readFromFiles(context, configuration.getWorkingDirectory(), path);
+                            putIntoOutput(outputValue, readResult.getFirst(), readResult.getSecond());
                         }
                     } catch(final IOException | ConvertToIDataException exception) {
                         if(outputValue.isOptional()) {

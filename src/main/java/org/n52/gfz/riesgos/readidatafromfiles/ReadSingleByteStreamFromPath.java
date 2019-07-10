@@ -18,10 +18,13 @@ package org.n52.gfz.riesgos.readidatafromfiles;
  *
  */
 
+import org.n52.gfz.riesgos.cache.IDataRecreator;
+import org.n52.gfz.riesgos.cache.RecreateFromByteArray;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
+import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.wps.io.data.IData;
 
 import java.io.IOException;
@@ -49,10 +52,10 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
     }
 
     @Override
-    public T readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
+    public Tuple<T, IDataRecreator> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
 
         final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
-        return converter.convertToIData(content);
+        return new Tuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter));
     }
 
     @Override

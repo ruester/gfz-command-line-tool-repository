@@ -18,8 +18,10 @@ package org.n52.gfz.riesgos.functioninterfaces;
  *
  */
 
+import org.n52.gfz.riesgos.cache.IDataRecreator;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
+import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.wps.io.data.IData;
 
 import java.io.IOException;
@@ -40,5 +42,5 @@ public interface IReadIDataFromFiles<T extends IData> extends Serializable {
      * @throws ConvertToIDataException if the conversion is not possible this exception will be thrown
      * @throws IOException will be thrown if there is problem on the IO mechanism on java
      */
-    T readFromFiles(final IExecutionContext context, final String workingDirectory, final String path) throws ConvertToIDataException, IOException;
+    Tuple<T, IDataRecreator> readFromFiles(final IExecutionContext context, final String workingDirectory, final String path) throws ConvertToIDataException, IOException;
 }

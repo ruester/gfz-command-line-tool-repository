@@ -17,6 +17,7 @@
 package org.n52.gfz.riesgos.cache.impl;
 
 import org.n52.gfz.riesgos.cache.ICacher;
+import org.n52.gfz.riesgos.cache.IDataRecreator;
 import org.n52.wps.io.data.IData;
 
 import java.util.Map;
@@ -57,7 +58,7 @@ public enum CacheSingleton implements ICacher {
      * @return optional map with output data
      */
     @Override
-    public Optional<Map<String, IData>> getCachedResult(
+    public Optional<Map<String, IDataRecreator>> getCachedResult(
             final String hash) {
         return innerCacher.getCachedResult(hash);
     }
@@ -73,7 +74,7 @@ public enum CacheSingleton implements ICacher {
     @Override
     public void insertResultIntoCache(
             final String hash,
-            final Map<String, IData> outputData) {
+            final Map<String, IDataRecreator> outputData) {
 
         innerCacher.insertResultIntoCache(hash, outputData);
 
