@@ -28,6 +28,8 @@ import java.util.Objects;
  */
 public class ConvertBytesToLiteralStringBinding implements IConvertByteArrayToIData<LiteralStringBinding> {
 
+    private static final long serialVersionUID = 8298315810379102433L;
+
     @Override
     public LiteralStringBinding convertToIData(final byte[] content) {
         return new LiteralStringBinding(new String(content));

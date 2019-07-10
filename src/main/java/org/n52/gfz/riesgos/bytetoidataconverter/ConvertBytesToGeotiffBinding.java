@@ -34,6 +34,8 @@ import java.util.Objects;
  */
 public class ConvertBytesToGeotiffBinding implements IConvertByteArrayToIData<GeotiffBinding> {
 
+    private static final long serialVersionUID = 5174079061385019321L;
+
     @Override
     public GeotiffBinding convertToIData(final byte[] content) throws ConvertToIDataException {
 

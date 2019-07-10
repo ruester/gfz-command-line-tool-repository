@@ -98,7 +98,7 @@ public class TestContainerIdCreation {
     private static class StartQueryRunnable implements Runnable {
         @Override
         public void run() {
-            final IConfiguration conf = ConfigurationFactory.createQuakeledger();
+            final IConfiguration conf = ConfigurationFactory.INSTANCE.createQuakeledger();
 
             final IAlgorithm algorithm = new BaseGfzRiesgosService(conf, LoggerFactory.getLogger(TestContainerIdCreation.class),
                     // caching should not be involved in this test

@@ -34,6 +34,8 @@ import java.util.Objects;
  */
 public class ConvertBytesToGenericFileDataBinding implements IConvertByteArrayToIData<GenericFileDataBinding> {
 
+    private static final long serialVersionUID = 3394953481818065813L;
+
     private static final String MOST_GENERIC_MIME_TYPE = "application/octet-stream";
 
     private final String mimeType;

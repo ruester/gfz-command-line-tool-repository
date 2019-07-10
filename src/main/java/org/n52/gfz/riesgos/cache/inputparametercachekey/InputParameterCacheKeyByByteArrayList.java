@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 public class InputParameterCacheKeyByByteArrayList
         implements IInputParameterCacheKey {
 
+    private static final long serialVersionUID = 8005087896116912457L;
+
     /**
      * List of keys for all the byte arrays.
      */

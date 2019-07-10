@@ -173,7 +173,7 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
     private class AddTypeForInputLiteralImpl implements IAddTypeDataForInput {
 
-        private IInputParameter inputParameter;
+        private final IInputParameter inputParameter;
 
         AddTypeForInputLiteralImpl(
                 final IInputParameter aInputParameter
@@ -264,7 +264,7 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
     private class AddTypeForInputUnknownImpl implements IAddTypeDataForInput {
 
-        private IInputParameter inputParameter;
+        private final IInputParameter inputParameter;
 
         AddTypeForInputUnknownImpl(
                 final IInputParameter aInputParameter

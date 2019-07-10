@@ -34,6 +34,8 @@ import java.util.Objects;
  */
 public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIDataFromFiles<T> {
 
+    private static final long serialVersionUID = 7014190269474895564L;
+
     private final IConvertByteArrayToIData<T> converter;
 
     /**

@@ -27,12 +27,17 @@ import java.io.InputStream;
 /**
  * Utility functions to work with strings.
  */
-public final class StringUtils {
+public enum StringUtils {
+
+    /**
+     * Singleton.
+     */
+    INSTANCE;
 
     /**
      * Private constructor for the class that should only be used static.
      */
-    private StringUtils() {
+    StringUtils() {
         // static
     }
 

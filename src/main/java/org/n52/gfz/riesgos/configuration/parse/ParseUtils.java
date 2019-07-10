@@ -21,12 +21,13 @@ import java.util.List;
 /**
  * Utility class with some functions for several parsers.
  */
-public final class ParseUtils {
+public enum ParseUtils {
 
+    INSTANCE;
     /**
      * The class should be used as static.
      */
-    private ParseUtils() {
+    ParseUtils() {
         // static
     }
 
@@ -35,7 +36,7 @@ public final class ParseUtils {
      * @param str string to check
      * @return true if there is text inside of the string
      */
-    public static boolean strHasValue(final String str) {
+    public boolean strHasValue(final String str) {
         return str != null && (!str.isEmpty());
     }
 
@@ -45,7 +46,7 @@ public final class ParseUtils {
      * @return true if there is no text inside of the string
      * (or it is null)
      */
-    public static boolean strHasNoValue(final String str) {
+    public boolean strHasNoValue(final String str) {
         return !strHasValue(str);
     }
 
@@ -55,7 +56,7 @@ public final class ParseUtils {
      * @param list list to check
      * @return true if there is a value inside of the list
      */
-    public static boolean listHasValue(final List<String> list) {
+    public boolean listHasValue(final List<String> list) {
         return list != null && (!list.isEmpty());
     }
 
@@ -64,7 +65,7 @@ public final class ParseUtils {
      * @param list list to check
      * @return true if the list is null or empty
      */
-    public static boolean listHasNoValues(final List<String> list) {
+    public boolean listHasNoValues(final List<String> list) {
         return !listHasValue(list);
     }
 }

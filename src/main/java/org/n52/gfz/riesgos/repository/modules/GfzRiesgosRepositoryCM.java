@@ -228,12 +228,13 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
      * that are integrated by default
      */
     private List<IConfiguration> createPredefinedConfigurations() {
+        final ConfigurationFactory factory = ConfigurationFactory.INSTANCE;
         return Arrays.asList(
-                ConfigurationFactory.createQuakeledger(),
-                ConfigurationFactory.createShakyground(),
-                ConfigurationFactory.createFlooddamage(),
-                ConfigurationFactory.createAssetmaster(),
-                ConfigurationFactory.createModelprop()
+                factory.createQuakeledger(),
+                factory.createShakyground(),
+                factory.createFlooddamage(),
+                factory.createAssetmaster(),
+                factory.createModelprop()
         );
     }
 

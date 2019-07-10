@@ -32,6 +32,8 @@ import java.util.Objects;
  */
 public class ConvertBytesToGenericXMLDataBinding implements IConvertByteArrayToIData<GenericXMLDataBinding> {
 
+    private static final long serialVersionUID = -6568169758753772163L;
+
     @Override
     public GenericXMLDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {

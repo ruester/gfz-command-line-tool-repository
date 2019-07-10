@@ -26,6 +26,7 @@ import java.util.Arrays;
 public class InputParameterCacheKeyByByteArray
         implements IInputParameterCacheKey {
 
+    private static final long serialVersionUID = -4274760777940747832L;
     /**
      * Byte array with the content.
      */

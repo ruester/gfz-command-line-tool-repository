@@ -17,11 +17,8 @@
 package org.n52.gfz.riesgos.cache.impl;
 
 import org.n52.gfz.riesgos.cache.ICacher;
-import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
-import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.wps.io.data.IData;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 

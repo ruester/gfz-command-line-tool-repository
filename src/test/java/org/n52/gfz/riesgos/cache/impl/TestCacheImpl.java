@@ -49,9 +49,10 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
+/**
+ * Test for the caching mechanism
+ */
 public class TestCacheImpl {
 
     @Test
@@ -323,7 +324,7 @@ public class TestCacheImpl {
          */
         @Override
         public List<IOutputParameter> getOutputIdentifiers() {
-            return Arrays.asList(
+            return Collections.singletonList(
                     OutputParameterFactory.INSTANCE.createStdoutString("std-out", false, null));
         }
 

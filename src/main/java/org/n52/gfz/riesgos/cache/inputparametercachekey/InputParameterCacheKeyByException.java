@@ -30,6 +30,8 @@ import java.util.Objects;
 public class InputParameterCacheKeyByException
         implements IInputParameterCacheKey {
 
+    private static final long serialVersionUID = 4303266509490539979L;
+
     /**
      * Exception that is wrapped.
      */

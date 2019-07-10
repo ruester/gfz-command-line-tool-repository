@@ -27,6 +27,8 @@ import java.util.Objects;
 public class InputParameterCacheKeyByCmdArguments
         implements IInputParameterCacheKey {
 
+    private static final long serialVersionUID = 6286290863841381454L;
+
     /**
      * List with command line arguments.
      */

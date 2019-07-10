@@ -16,10 +16,12 @@
 
 package org.n52.gfz.riesgos.cache;
 
+import java.io.Serializable;
+
 /**
  * Interface for a key for the input parameter for the
  * caching mechanism.
  */
-public interface IInputParameterCacheKey {
+public interface IInputParameterCacheKey extends Serializable {
     // empty at the moment
 }

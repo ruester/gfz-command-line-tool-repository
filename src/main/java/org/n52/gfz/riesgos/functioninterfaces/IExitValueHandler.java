@@ -18,11 +18,13 @@ package org.n52.gfz.riesgos.functioninterfaces;
 
 import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 
+import java.io.Serializable;
+
 /**
  * Interface for the handling of the exit value
  */
 @FunctionalInterface
-public interface IExitValueHandler {
+public interface IExitValueHandler extends Serializable {
     /**
      * handles the exit value
      * @param exitValue value to handle

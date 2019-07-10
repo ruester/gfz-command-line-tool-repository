@@ -34,6 +34,8 @@ import java.util.Objects;
  */
 public class ConvertBytesToQuakeMLXmlBinding implements IConvertByteArrayToIData<QuakeMLXmlDataBinding> {
 
+    private static final long serialVersionUID = -7540093149844123664L;
+
     @Override
     public QuakeMLXmlDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {

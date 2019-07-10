@@ -528,7 +528,7 @@ public class TestParseJsonForInputImpl {
                 "\"schema\": \"http://some-schema.org/path\" " +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGenericXMLDataBindingToBytes<>());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -566,7 +566,7 @@ public class TestParseJsonForInputImpl {
                 "\"schema\": \"http://some-schema.org/path\" " +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGenericXMLDataBindingToBytes<>());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -601,7 +601,7 @@ public class TestParseJsonForInputImpl {
                 "\"type\": \"xml\"," +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGenericXMLDataBindingToBytes<>());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -636,7 +636,7 @@ public class TestParseJsonForInputImpl {
                 "\"commandLineFlag\": \"--xml\"," +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericXMLDataBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGenericXMLDataBindingToBytes<>());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -670,7 +670,7 @@ public class TestParseJsonForInputImpl {
                 "\"type\": \"geotiff\"" +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGeotiffBindingToBytes());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -704,7 +704,7 @@ public class TestParseJsonForInputImpl {
                 "\"type\": \"geojson\"" +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON));
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON));
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -772,7 +772,7 @@ public class TestParseJsonForInputImpl {
                 "\"type\": \"file\"" +
                 "}";
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGenericFileDataBindingToBytes());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -839,7 +839,7 @@ public class TestParseJsonForInputImpl {
                 "}";
 
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGeotiffBindingToBytes());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -873,7 +873,7 @@ public class TestParseJsonForInputImpl {
                 "}";
 
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON));
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGTVectorDataBindingToBytes(ConvertGTVectorDataBindingToBytes.Format.JSON));
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
@@ -942,7 +942,7 @@ public class TestParseJsonForInputImpl {
                 "}";
 
         final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
-        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath(new ConvertGenericFileDataBindingToBytes());
+        final IWriteIDataToFiles writer = new WriteSingleByteStreamToPath<>(new ConvertGenericFileDataBindingToBytes());
 
         try {
             final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));

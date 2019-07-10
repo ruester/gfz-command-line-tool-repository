@@ -18,13 +18,14 @@ package org.n52.gfz.riesgos.functioninterfaces;
 
 import org.n52.wps.io.data.IData;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
  * Interface to check an idata element
  */
 @FunctionalInterface
-public interface ICheckDataAndGetErrorMessage<T extends IData> {
+public interface ICheckDataAndGetErrorMessage<T extends IData> extends Serializable {
 
     /**
      * Checks a IData and (maybe) gives back the text of the problem

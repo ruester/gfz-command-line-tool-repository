@@ -280,6 +280,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 final Optional<ICheckDataAndGetErrorMessage> optionalValidator = inputValue.getValidator();
                 if(optionalValidator.isPresent()) {
                     final ICheckDataAndGetErrorMessage validator = optionalValidator.get();
+                    @SuppressWarnings("unchecked")
                     final Optional<String> errorMessage = validator.check(firstElement);
                     if(errorMessage.isPresent()) {
                         throw new ExceptionReport("There is invalid input for the identifier '" + identifier + "'. " + errorMessage.get(), ExceptionReport.INVALID_PARAMETER_VALUE);
@@ -297,7 +298,6 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
          */
         private void runExecutable() throws ExceptionReport {
 
-            final String imageId = configuration.getImageId();
             final String workingDirectory = configuration.getWorkingDirectory();
             final List<String> cmd = createCommandToExecute();
 
@@ -326,6 +326,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                 for (final IInputParameter inputValue : inputIdentifiers) {
                     final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd = inputValue.getFunctionToTransformToCmd();
                     if (functionToTransformToCmd.isPresent() && inputData.containsKey(inputValue.getIdentifier())) {
+                        @SuppressWarnings("unchecked")
                         final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifier()));
                         result.addAll(args);
                     }
@@ -391,6 +392,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                         if (optionalPath.isPresent() && optionalWriteIDataToFiles.isPresent()) {
                             final String path = optionalPath.get();
                             final IWriteIDataToFiles writeIDataToFiles = optionalWriteIDataToFiles.get();
+                            //noinspection unchecked
                             writeIDataToFiles.writeToFiles(inputData.get(inputValue.getIdentifier()), context,
                                     configuration.getWorkingDirectory(), path);
                         }
@@ -413,6 +415,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                         final Optional<IConvertIDataToByteArray> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
                         if (optionalFunctionToWriteToStdin.isPresent()) {
                             final IConvertIDataToByteArray functionToWriteToStdin = optionalFunctionToWriteToStdin.get();
+                            @SuppressWarnings("unchecked")
                             final byte[] content = functionToWriteToStdin.convertToBytes(inputData.get(inputValue.getIdentifier()));
                             IOUtils.write(content, stdin);
                         }
@@ -471,6 +474,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             if(optionalValidator.isPresent()) {
                 final ICheckDataAndGetErrorMessage validator = optionalValidator.get();
 
+                @SuppressWarnings("unchecked")
                 final Optional<String> optionalErrorMessage = validator.check(iData);
                 if(optionalErrorMessage.isPresent()) {
                     final String errorMessage = optionalErrorMessage.get();

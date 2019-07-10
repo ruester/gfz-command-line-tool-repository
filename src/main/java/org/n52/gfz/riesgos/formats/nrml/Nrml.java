@@ -22,6 +22,7 @@ import org.n52.gfz.riesgos.formats.nrml.impl.NrmlXmlImpl;
 /**
  * This is the static class to get an INrml implementation.
  */
+@SuppressWarnings({"UtilityClassCanBeEnum", "UtilityClass"})
 public final class Nrml {
 
     /**

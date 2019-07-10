@@ -32,6 +32,8 @@ import java.util.Set;
 public class LiteralStringBindingWithAllowedValues
         implements ICheckDataAndGetErrorMessage<LiteralStringBinding> {
 
+    private static final long serialVersionUID = 3361502609382096722L;
+
     /**
      * Set with the allowed values.
      */

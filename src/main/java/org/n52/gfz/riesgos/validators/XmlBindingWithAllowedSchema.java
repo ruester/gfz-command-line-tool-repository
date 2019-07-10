@@ -50,6 +50,8 @@ import javax.xml.validation.Validator;
 public class XmlBindingWithAllowedSchema<T extends GenericXMLDataBinding>
         implements ICheckDataAndGetErrorMessage<T> {
 
+    private static final long serialVersionUID = 3939394396122529315L;
+
     /**
      * Variable with the schema that should be checked.
      */

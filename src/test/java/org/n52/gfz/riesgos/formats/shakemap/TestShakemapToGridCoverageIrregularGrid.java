@@ -16,23 +16,6 @@
 
 package org.n52.gfz.riesgos.formats.shakemap;
 
-import org.apache.xmlbeans.XmlObject;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.gce.geotiff.GeoTiffWriter;
-import org.junit.Test;
-import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverageIrregularGrid;
-import org.opengis.geometry.Envelope;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertFalse;
-
 public class TestShakemapToGridCoverageIrregularGrid implements ICommonTestShakemapFunctions {
 
 

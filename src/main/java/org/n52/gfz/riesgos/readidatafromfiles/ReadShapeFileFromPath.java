@@ -40,6 +40,8 @@ import java.util.Objects;
  */
 public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBinding> {
 
+    private static final long serialVersionUID = -8077547979877603576L;
+
     @Override
     public GTVectorDataBinding readFromFiles(
             final IExecutionContext context,

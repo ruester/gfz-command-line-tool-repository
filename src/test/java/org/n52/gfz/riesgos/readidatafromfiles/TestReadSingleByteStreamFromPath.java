@@ -44,7 +44,7 @@ public class TestReadSingleByteStreamFromPath {
 
         assertEquals("Both are equal", reader1, reader2);
 
-        final IReadIDataFromFiles<GeotiffBinding> reader3 = new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding());
+        final IReadIDataFromFiles<GeotiffBinding> reader3 = new ReadSingleByteStreamFromPath<>(new ConvertBytesToGeotiffBinding());
 
         assertNotEquals("The third one is different", reader1, reader3);
     }

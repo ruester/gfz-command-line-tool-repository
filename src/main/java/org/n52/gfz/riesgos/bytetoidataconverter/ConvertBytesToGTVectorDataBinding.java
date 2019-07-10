@@ -35,6 +35,8 @@ import java.util.Objects;
  */
 public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIData<GTVectorDataBinding> {
 
+    private static final long serialVersionUID = 7638158856073948956L;
+
     private final Format format;
 
     /**

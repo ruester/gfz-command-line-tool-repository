@@ -24,6 +24,6 @@ import java.util.Map;
 
 public interface IHasher {
 
-    Object hash(final IConfiguration configuration, final Map<String, List<IData>> inputData);
+    String hash(final IConfiguration configuration, final Map<String, List<IData>> inputData);
 
 }

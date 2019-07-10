@@ -26,6 +26,8 @@ import java.util.Objects;
  */
 public class LogExitValueHandler implements IExitValueHandler {
 
+    private static final long serialVersionUID = 1896475898072071171L;
+
     @Override
     public void handleExitValue(int exitValue, final ILogger logger) {
         logger.log("Exit value: " + exitValue);

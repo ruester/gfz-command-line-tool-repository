@@ -45,7 +45,7 @@ public class TestConvertGenericXMLDataBindingToBytes {
 
             final GenericXMLDataBinding xmlBinding = new GenericXMLDataBinding(XmlObject.Factory.parse(input));
 
-            final IConvertIDataToByteArray<GenericXMLDataBinding> converter = new ConvertGenericXMLDataBindingToBytes();
+            final IConvertIDataToByteArray<GenericXMLDataBinding> converter = new ConvertGenericXMLDataBindingToBytes<>();
 
             try {
                 final byte[] content = converter.convertToBytes(xmlBinding);
@@ -74,7 +74,7 @@ public class TestConvertGenericXMLDataBindingToBytes {
 
             final GenericXMLDataBinding xmlBinding = new GenericXMLDataBinding(XmlObject.Factory.parse(input));
 
-            final IConvertIDataToByteArray<GenericXMLDataBinding> converter = new ConvertGenericXMLDataBindingToBytes();
+            final IConvertIDataToByteArray<GenericXMLDataBinding> converter = new ConvertGenericXMLDataBindingToBytes<>();
 
             try {
                 converter.convertToBytes(xmlBinding);

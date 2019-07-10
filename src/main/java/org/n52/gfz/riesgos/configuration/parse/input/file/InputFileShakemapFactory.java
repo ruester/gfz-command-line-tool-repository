@@ -18,7 +18,6 @@ package org.n52.gfz.riesgos.configuration.parse.input.file;
 
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
-import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.wps.webapp.api.FormatEntry;
 
 /**
@@ -36,8 +35,6 @@ public class InputFileShakemapFactory implements IAsFileInputFactory {
      * @param path             path to the file
      * @param schema           optional schema
      * @return input parameter
-     * @throws ParseConfigurationException exception that will be thrown
-     * if an unsupported argument is given to the implementation.
      */
     @Override
     public IInputParameter create(
@@ -46,9 +43,7 @@ public class InputFileShakemapFactory implements IAsFileInputFactory {
             final String optionalAbstract,
             final FormatEntry defaultFormat,
             final String path,
-            final String schema)
-
-            throws ParseConfigurationException {
+            final String schema) {
 
         // schema is ignored here
         // takes the schema for shakemap

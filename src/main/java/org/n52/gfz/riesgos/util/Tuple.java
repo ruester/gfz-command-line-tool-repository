@@ -18,6 +18,7 @@
 
 package org.n52.gfz.riesgos.util;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,7 +27,9 @@ import java.util.Objects;
  * @param <A> a first type
  * @param <B> a second type
  */
-public class Tuple<A, B> {
+public class Tuple<A extends Serializable, B extends Serializable> implements Serializable {
+
+    private static final long serialVersionUID = 3516097485825823384L;
 
     /**
      * The first object.
@@ -70,7 +73,7 @@ public class Tuple<A, B> {
      * @param <BB> second type
      * @return new Tuple(key, value)
      */
-    public static <AA, BB> Tuple<AA, BB> fromEntry(
+    public static <AA extends Serializable, BB extends  Serializable> Tuple<AA, BB> fromEntry(
             final Map.Entry<AA, BB> entry) {
         return new Tuple<>(entry.getKey(), entry.getValue());
     }

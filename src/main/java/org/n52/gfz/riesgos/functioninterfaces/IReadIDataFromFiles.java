@@ -23,12 +23,13 @@ import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.wps.io.data.IData;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Interface to read the idata from one or moore files
  * (maybe on a container)
  */
-public interface IReadIDataFromFiles<T extends IData> {
+public interface IReadIDataFromFiles<T extends IData> extends Serializable {
 
     /**
      * Reads the idata from the filesystem (maybe multiple files, maybe from a container)

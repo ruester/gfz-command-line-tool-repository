@@ -28,12 +28,28 @@ import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.wps.io.data.IData;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class HasherImpl implements IHasher {
+
+    private static final MessageDigest MESSAGE_DIGEST = getMd5();
+
+    private static MessageDigest getMd5() {
+        try {
+            return MessageDigest.getInstance("MD5");
+        } catch(final NoSuchAlgorithmException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 
     private final IDockerImageIdLookup imageIdLookup;
 
@@ -42,11 +58,23 @@ public class HasherImpl implements IHasher {
     }
 
     @Override
-    public Object hash(IConfiguration configuration, Map<String, List<IData>> inputData) {
-        return new CacheKey(
+    public String hash(IConfiguration configuration, Map<String, List<IData>> inputData) {
+
+        final CacheKey key = new CacheKey(
                 configuration,
                 imageIdLookup.lookUpImageId(configuration.getImageId()),
                 inputData);
+
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
+            objectOutputStream.writeObject(key);
+
+            final byte[] md5 = MESSAGE_DIGEST.digest(byteArrayOutputStream.toByteArray());
+            return new String(md5);
+
+        } catch(final IOException ioException) {
+            throw new RuntimeException(ioException);
+        }
     }
 
 
@@ -54,8 +82,9 @@ public class HasherImpl implements IHasher {
     /**
      * Class for storing the data as keys.
      */
-    private static class CacheKey {
+    private static class CacheKey implements Serializable {
 
+        private static final long serialVersionUID = -3303094796676261450L;
 
         /**
          * Full qualified indentifier of the data.
@@ -107,14 +136,14 @@ public class HasherImpl implements IHasher {
          * List with the keys for caching the input data.
          * This includes the mechanism (how the data is read)
          * and the data itself together with the identifier.
-         *
+         * <p>
          * Having a list instead of a map allows us to care
          * about the ordering (important for the command line arguments).
-         *
+         * <p>
          * TODO: Maybe this must be extended to care about the binding classes
-         *       (the mechanism cares a bit about it for how to
-         *       read the data in which is included in reading the content
-         *       to create the cache key)
+         * (the mechanism cares a bit about it for how to
+         * read the data in which is included in reading the content
+         * to create the cache key)
          */
         private final List<Tuple<String, IInputParameterCacheKey>>
                 inputCacheKeyMap;
@@ -122,9 +151,10 @@ public class HasherImpl implements IHasher {
         /**
          * Constructor with the configuration, a image id and the
          * input data.
+         *
          * @param configuration configuration to use for caching
-         * @param aImageId real image id to use for running the code
-         * @param inputData input data to execute the code with
+         * @param aImageId      real image id to use for running the code
+         * @param inputData     input data to execute the code with
          */
         CacheKey(final IConfiguration configuration,
                  final String aImageId,
@@ -159,6 +189,7 @@ public class HasherImpl implements IHasher {
                             inputData.get(inputParameter.getIdentifier());
                     final IData iData = iDataList.get(0);
 
+                    @SuppressWarnings("unchecked")
                     final IInputParameterCacheKey cacheKey =
                             inputParameter
                                     .getFunctionToGenerateCacheKey()
@@ -180,6 +211,7 @@ public class HasherImpl implements IHasher {
 
         /**
          * Tests equality.
+         *
          * @param o other object
          * @return true if both are equal
          */
@@ -213,6 +245,7 @@ public class HasherImpl implements IHasher {
 
         /**
          * Generates the hash code.
+         *
          * @return hash code of the object.
          */
         @Override

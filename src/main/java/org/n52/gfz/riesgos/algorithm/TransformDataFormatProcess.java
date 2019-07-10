@@ -99,6 +99,7 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
             final IData data = value.get(0);
 
             if(validator != null) {
+                @SuppressWarnings("unchecked")
                 final Optional<String> optionalErrorMessage = validator.check(data);
                 if(optionalErrorMessage.isPresent()) {
                     throw new ExceptionReport(optionalErrorMessage.get(), ExceptionReport.INVALID_PARAMETER_VALUE);

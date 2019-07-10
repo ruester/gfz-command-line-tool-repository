@@ -76,7 +76,7 @@ public class TestBaseGfzRiesgosService {
     @Test
     public void testQuakeledger() {
 
-        final IConfiguration configuration = ConfigurationFactory.createQuakeledger();
+        final IConfiguration configuration = ConfigurationFactory.INSTANCE.createQuakeledger();
 
         final Map<String, List<IData>> inputData = new HashMap<>();
 

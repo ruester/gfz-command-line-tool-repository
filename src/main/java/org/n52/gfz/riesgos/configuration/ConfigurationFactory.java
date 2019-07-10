@@ -28,16 +28,22 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Factory class for providing predefined configurations.
+ * Factory singleton for providing predefined configurations.
  */
-public final class ConfigurationFactory {
+public enum ConfigurationFactory {
+
+    /**
+     * Singleton.
+     */
+    INSTANCE;
+
 
     /**
      * This is a private constructor.
      * We don't want to have an instance
      * of this for accessing the static methods.
      */
-    private ConfigurationFactory() {
+    ConfigurationFactory() {
         // static
     }
 
@@ -46,7 +52,7 @@ public final class ConfigurationFactory {
      * It uses a predefined docker image (quakeledger:latest)
      * @return IConfiguration
      */
-    public static IConfiguration createQuakeledger() {
+    public IConfiguration createQuakeledger() {
         try {
             final InputStream inputStream = ConfigurationFactory
                     .class
@@ -69,7 +75,7 @@ public final class ConfigurationFactory {
      * It uses a predefined docker image (shakyground:latest)
      * @return IConfiguration
      */
-    public static IConfiguration createShakyground() {
+    public IConfiguration createShakyground() {
         try {
             final InputStream inputStream = ConfigurationFactory
                     .class
@@ -92,7 +98,7 @@ public final class ConfigurationFactory {
      * It uses a predefined docker image (flooddamage:latest)
      * @return IConfiguration
      */
-    public static IConfiguration createFlooddamage() {
+    public IConfiguration createFlooddamage() {
         try {
             final InputStream inputStream = ConfigurationFactory
                     .class
@@ -115,7 +121,7 @@ public final class ConfigurationFactory {
      * It uses a predefined docker image (assetmaster:latest)
      * @return IConfiguration
      */
-    public static IConfiguration createAssetmaster() {
+    public IConfiguration createAssetmaster() {
         try {
             final InputStream inputStream = ConfigurationFactory
                     .class
@@ -138,7 +144,7 @@ public final class ConfigurationFactory {
      * It uses a predefined docker image (modelprop:latest)
      * @return IConfiguration
      */
-    public static IConfiguration createModelprop() {
+    public IConfiguration createModelprop() {
         try {
             final InputStream inputStream = ConfigurationFactory
                     .class

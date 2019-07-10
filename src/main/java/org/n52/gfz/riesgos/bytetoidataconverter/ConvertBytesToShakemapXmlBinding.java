@@ -33,6 +33,8 @@ import java.util.Objects;
  */
 public class ConvertBytesToShakemapXmlBinding implements IConvertByteArrayToIData<ShakemapXmlDataBinding> {
 
+    private static final long serialVersionUID = 2545645993592527378L;
+
     @Override
     public ShakemapXmlDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
         try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
