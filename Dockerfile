@@ -82,13 +82,18 @@ RUN printf '[url "https://github"]\n\
 RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar
 
 
-# add or build needed webapps
-WORKDIR /usr/local/tomcat/webapps
+# add or build needed webapps:
+
+RUN mkdir -pv /usr/local/tomcat/webapps/geoserver
+
+WORKDIR /usr/local/tomcat/webapps/geoserver
 RUN wget https://datapacket.dl.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
     unzip geoserver-2.10.4-war.zip && \
-    rm -rf target geoserver-2.10.4-war.zip
+    rm -f geoserver-2.10.4-war.zip && \
+    unzip geoserver.war && \
+    rm -f geoserver.war
 
-RUN mkdir /root/git
+RUN mkdir -pv /root/git
 
 WORKDIR /root/git
 
@@ -134,5 +139,6 @@ RUN sed -i -e 's@assetmaster:latest@ruestergfz/assetmaster:latest@' src/main/res
     mvn clean install && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
+# add missing libraries needed by gfz-command-line-tool-repository:
 RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/commons-compress-1.9.jar && \
     wget https://repo1.maven.org/maven2/org/apache/ant/ant/1.10.5/ant-1.10.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/ant-1.10.5.jar
