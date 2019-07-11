@@ -19,12 +19,8 @@ package org.n52.gfz.riesgos.cache.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cache.IDataRecreator;
-import org.n52.wps.io.data.IData;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -41,7 +37,7 @@ public class CacheImpl implements ICacher {
     /**
      * Map to save the data.
      */
-    final Cache<String, Map<String, IDataRecreator>> cache;
+    private final Cache<String, Map<String, IDataRecreator>> cache;
 
 
     /**

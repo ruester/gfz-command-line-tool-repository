@@ -48,7 +48,6 @@ import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
-import org.n52.gfz.riesgos.util.Triple;
 import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
@@ -172,7 +171,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
             logger.info("Read the results from cache");
 
             return cachedResult.get().entrySet().stream().collect(Collectors.toMap(
-                    entry -> entry.getKey(),
+                    Map.Entry::getKey,
                     entry -> entry.getValue().recreate()
             ));
         }
@@ -183,14 +182,14 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         final Map<String, Tuple<IData, IDataRecreator>> innerResult = innerRunContext.run();
 
         final Map<String, IDataRecreator> dataToStoreInCache = innerResult.entrySet().stream().collect(Collectors.toMap(
-                entry -> entry.getKey(),
+                Map.Entry::getKey,
                 entry -> entry.getValue().getSecond()
         ));
 
         cache.insertResultIntoCache(hash, dataToStoreInCache);
 
         final Map<String, IData> result = innerResult.entrySet().stream().collect(Collectors.toMap(
-                entry -> entry.getKey(),
+                Map.Entry::getKey,
                 entry -> entry.getValue().getFirst()
         ));
 
