@@ -14,26 +14,20 @@
  * limitations under the Licence.
  */
 
-package org.n52.gfz.riesgos.cache;
+package org.n52.gfz.riesgos.algorithm;
 
-import org.n52.wps.io.data.IData;
+import org.n52.gfz.riesgos.cache.ICacher;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutputData;
 
+import java.util.List;
 
-public class RecreateFromBindingClass implements IDataRecreator {
+public interface ICachableProcess {
 
-    private final IData data;
+    ICacher getCache();
 
-    public RecreateFromBindingClass(final IData aData) {
-        this.data = aData;
-    }
+    List<String> getOutputIdentifiers();
 
-    @Override
-    public IData recreate() {
-        return data;
-    }
+    Class<?> getOutputDataType(final String id);
 
-    @Override
-    public Class<? extends IData> getBindingClassToRecreate() {
-        return data.getClass();
-    }
+    List<IProcessDescriptionGeneratorOutputData> getOutputDataForProcessGeneration();
 }

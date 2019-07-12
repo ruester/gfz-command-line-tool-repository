@@ -46,7 +46,6 @@ public class DockerImageIdLookup implements IDockerImageIdLookup {
     @Override
     public String lookUpImageId(final String imageIdWithLabel) {
 
-
         final ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command(createCommand(imageIdWithLabel));
 
@@ -65,6 +64,41 @@ public class DockerImageIdLookup implements IDockerImageIdLookup {
             if (exitValue != 0) {
                 throw new RuntimeException(
                         "Can't check the image id. Exit value != 0: "
+                                + exitValue);
+            }
+
+            return result.getStdoutResult().trim();
+
+        } catch (final IOException | InterruptedException ioException) {
+            throw new RuntimeException(ioException);
+        }
+    }
+
+    /**
+     * Asks docker about the version it uses.
+     *
+     * @return version string from docker
+     */
+    @Override
+    public String getDockerVersion() {
+        final ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command(Arrays.asList("docker", "version"));
+
+        try {
+            final Process process = processBuilder.start();
+            final IExecutionRun run = new ExecutionRunImpl(process);
+
+            final IExecutionRunResult result = run.waitForCompletion();
+
+            final String errorText = result.getStderrResult();
+            if (!errorText.isEmpty()) {
+                throw new RuntimeException(
+                        "Can't check the docker version:"  + errorText);
+            }
+            final int exitValue = result.getExitValue();
+            if (exitValue != 0) {
+                throw new RuntimeException(
+                        "Can't check the docker version. Exit value != 0: "
                                 + exitValue);
             }
 

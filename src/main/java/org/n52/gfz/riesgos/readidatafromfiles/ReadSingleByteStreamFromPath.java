@@ -40,6 +40,7 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
     private static final long serialVersionUID = 7014190269474895564L;
 
     private final IConvertByteArrayToIData<T> converter;
+    private final Class<? extends IData> bindingClass;
 
     /**
      * Implementation that just uses a function to convert the
@@ -47,15 +48,18 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
      *
      * Can be used in all situations where one file produces the iData
      */
-    public ReadSingleByteStreamFromPath(final IConvertByteArrayToIData<T> converter) {
+    public ReadSingleByteStreamFromPath(
+            final IConvertByteArrayToIData<T> converter,
+            final Class<T> bindingClass) {
         this.converter = converter;
+        this.bindingClass = bindingClass;
     }
 
     @Override
     public Tuple<T, IDataRecreator> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
 
         final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
-        return new Tuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter));
+        return new Tuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter, bindingClass));
     }
 
     @Override
@@ -67,11 +71,12 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
             return false;
         }
         ReadSingleByteStreamFromPath that = (ReadSingleByteStreamFromPath) o;
-        return Objects.equals(converter, that.converter);
+        return Objects.equals(converter, that.converter)
+                && Objects.equals(bindingClass, that.bindingClass);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(converter);
+        return Objects.hash(converter, bindingClass);
     }
 }

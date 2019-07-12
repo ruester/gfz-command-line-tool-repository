@@ -14,26 +14,8 @@
  * limitations under the Licence.
  */
 
-package org.n52.gfz.riesgos.cache;
-
-import org.n52.wps.io.data.IData;
-
-
-public class RecreateFromBindingClass implements IDataRecreator {
-
-    private final IData data;
-
-    public RecreateFromBindingClass(final IData aData) {
-        this.data = aData;
-    }
-
-    @Override
-    public IData recreate() {
-        return data;
-    }
-
-    @Override
-    public Class<? extends IData> getBindingClassToRecreate() {
-        return data.getClass();
-    }
-}
+/**
+ * Classes and interfaces for adding output data to the
+ * process description.
+ */
+package org.n52.gfz.riesgos.processdescription.impl.addformats;

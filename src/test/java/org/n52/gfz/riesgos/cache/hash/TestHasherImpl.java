@@ -20,6 +20,7 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.NoDockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
@@ -82,7 +83,7 @@ public class TestHasherImpl {
         inputDataSameAs1.put("times", Collections.singletonList(new LiteralIntBinding(3)));
 
 
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
         final String hash1 = hasher.hash(configuration1, inputData1);
         final String hashSameAs1 = hasher.hash(configurationSameAs1, inputDataSameAs1);
@@ -114,7 +115,7 @@ public class TestHasherImpl {
     @Test
     public void testQuakeledger() {
 
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
         final IConfiguration quakeledgerConfig = ConfigurationFactory.INSTANCE.createQuakeledger();
 
@@ -145,7 +146,7 @@ public class TestHasherImpl {
 
     @Test
     public void otherInputDataMechanism() {
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
         final Map<String, List<IData>> exampleInputData = new HashMap<>();
         try {
             exampleInputData.put("dummy", Collections.singletonList(new GenericXMLDataBinding(XmlObject.Factory.parse("<a><b>test</b></a>"))));
@@ -320,7 +321,7 @@ public class TestHasherImpl {
                     "    </focalMechanism>\n" +
                     "  </event>\n" +
                     "</eventParameters>\n"))));
-            final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+            final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
             final String hash = hasher.hash(shakygroundConfig, inputData1);
 
@@ -468,7 +469,7 @@ public class TestHasherImpl {
 
             assertEquals("hash and hash3 must be equal", hash, hash3);
 
-            final IHasher otherHasher = new HasherImpl(new NoDockerImageIdLookup());
+            final IHasher otherHasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
             final String hash4 = otherHasher.hash(shakygroundConfig, inputData3);
 
@@ -517,7 +518,7 @@ public class TestHasherImpl {
                 .withAddedOutputIdentifier(OutputParameterFactory.INSTANCE.createStdoutString("stdout", false, null))
                 .build();
 
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
         final String hash1 = hasher.hash(configuration1, inputData);
         final String hash2 = hasher.hash(configuration2, inputData);
@@ -600,7 +601,7 @@ public class TestHasherImpl {
         inputValues.put("timesA", Collections.singletonList(new LiteralIntBinding(1)));
         inputValues.put("timesB", Collections.singletonList(new LiteralIntBinding(2)));
 
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
         final String hash1 = hasher.hash(conf1, inputValues);
         final String hash2 = hasher.hash(conf2, inputValues);

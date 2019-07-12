@@ -18,18 +18,20 @@ package org.n52.gfz.riesgos.repository.modules;
 
 import org.apache.commons.io.IOUtils;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
+import org.n52.gfz.riesgos.algorithm.CachedProcess;
+import org.n52.gfz.riesgos.algorithm.ReadDataFromCacheProcess;
 import org.n52.gfz.riesgos.algorithm.TransformDataFormatProcess;
-import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
-import org.n52.gfz.riesgos.cache.hash.HasherImpl;
 import org.n52.gfz.riesgos.cache.hash.HasherSingleton;
 import org.n52.gfz.riesgos.cache.impl.CacheSingleton;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerExecutionContextManagerFactory;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
+import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.formats.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
+import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.gfz.riesgos.formats.nrml.binding.NrmlXmlDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
@@ -37,6 +39,15 @@ import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.repository.GfzRiesgosRepository;
 import org.n52.gfz.riesgos.validators.XmlBindingWithAllowedSchema;
 import org.n52.wps.io.data.IComplexData;
+import org.n52.wps.io.data.IData;
+import org.n52.wps.io.data.binding.complex.GTRasterDataBinding;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
+import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
+import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
+import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
+import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
+import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ProcessDescription;
 import org.n52.wps.webapp.api.AlgorithmEntry;
@@ -76,6 +87,38 @@ import java.util.stream.Stream;
  * add a process description on runtime and to execute it immediately.
  */
 public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
+
+    /**
+     * This is map to store possible names for the processes
+     * to read the data from the cache.
+     */
+    private static final Map<Class<? extends IData>, String>
+            READ_FROM_CACHE_NAMES = createMapReadFromCacheNames();
+
+    /**
+     *
+     * @return map with some predefined names for the processes to read from
+     * the cache.
+     */
+    private static Map<Class<? extends IData>, String>
+    createMapReadFromCacheNames() {
+        final Map<Class<? extends IData>, String> processNames =
+                new HashMap<>();
+        processNames.put(QuakeMLXmlDataBinding.class, "QuakeMLCacheReader");
+        processNames.put(ShakemapXmlDataBinding.class, "ShakemapCacheReader");
+        processNames.put(NrmlXmlDataBinding.class, "NrmlCacheReader");
+        processNames.put(GTVectorDataBinding.class, "GTVectorCacheReader");
+        processNames.put(GTRasterDataBinding.class, "GTRasterCacheReader");
+        processNames.put(JsonDataBinding.class, "JSONCacheReader");
+        processNames.put(GenericXMLDataBinding.class, "XMLCacheReader");
+        processNames.put(LiteralStringBinding.class, "StringCacheReader");
+        processNames.put(LiteralDoubleBinding.class, "DoubleCacheReader");
+        processNames.put(LiteralIntBinding.class, "IntCacheReader");
+        processNames.put(LiteralBooleanBinding.class, "BooleanCacheReader");
+        processNames.put(GenericFileDataBinding.class, "FileCacheReader");
+
+        return processNames;
+    }
 
     /**
      * The key (the name) for the fields that can be configured.
@@ -276,10 +319,57 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         // than add all to the result
         configurationProcesses.values().stream()
                 .map(this::configurationToAlgorithm)
-                .forEach(result::add);
+                .forEach(result::addAll);
 
+        // and add all for reading cached data
+        result.addAll(createCacheReaderProcesses(configurationProcesses.values()));
 
         return result;
+    }
+
+    /**
+     * Creates a collection with the processes to read from the cache.
+     * @param configurations all the configurations for whichs output
+     *                       data types we need a process to read it
+     * @return Collection with processes to read from cached data
+     */
+    private Collection<AlgorithmData> createCacheReaderProcesses(
+            final Collection<IConfiguration> configurations) {
+
+
+        return configurations.stream()
+                .map(IConfiguration::getOutputIdentifiers)
+                .flatMap(List::stream)
+                .map(IOutputParameter::getBindingClass)
+                .distinct()
+                .map(outputClass -> new ReadDataFromCacheProcess(
+                        CacheSingleton.INSTANCE,
+                        createIdentifierForCacheReaderProcess(outputClass),
+                        null,
+                        outputClass,
+                        null))
+                .map(algorithm ->  new AlgorithmData(
+                        algorithm.getFullQualifiedIdentifier(),
+                        algorithm))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param clazz binding class to create a process for to read the data
+     *              from the cache
+     * @return Identifier for the process to read the given binding class
+     * from cache.
+     */
+    private String createIdentifierForCacheReaderProcess(
+            final Class<? extends IData> clazz) {
+        final String identifier;
+        if (READ_FROM_CACHE_NAMES.containsKey(clazz)) {
+            identifier = READ_FROM_CACHE_NAMES.get(clazz);
+        } else {
+            identifier = clazz.getSimpleName() + "CacheReader";
+        }
+        return identifier;
     }
 
     /**
@@ -330,15 +420,31 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
      *                      algorithm data object
      * @return algorithm data
      */
-    private AlgorithmData configurationToAlgorithm(
+    private List<AlgorithmData> configurationToAlgorithm(
             final IConfiguration configuration) {
-        return new AlgorithmData(configuration.getFullQualifiedIdentifier(),
-                new BaseGfzRiesgosService(configuration,
-                        LoggerFactory.getLogger(
-                                configuration.getFullQualifiedIdentifier()),
-                        HasherSingleton.INSTANCE,
-                        CacheSingleton.INSTANCE,
-                        new DockerExecutionContextManagerFactory()));
+
+        final BaseGfzRiesgosService baseService = new BaseGfzRiesgosService(configuration,
+                LoggerFactory.getLogger(
+                        configuration.getFullQualifiedIdentifier()),
+                HasherSingleton.INSTANCE,
+                CacheSingleton.INSTANCE,
+                new DockerExecutionContextManagerFactory());
+
+        final AlgorithmData algorithmDataForBaseService = new AlgorithmData(
+                configuration.getFullQualifiedIdentifier(), baseService);
+
+        final Optional<String> baseServiceAbstract = configuration.getAbstract();
+
+        final String cachedProcessIdentifier = "Cached" + configuration.getIdentifier();
+        final CachedProcess cachedService = new CachedProcess(baseService, cachedProcessIdentifier,
+                "Process to read from the cache for the process " + configuration.getIdentifier());
+
+        final AlgorithmData algorithmDataForCachedService = new AlgorithmData(
+                cachedService.getFullQualifiedIdentifier(), cachedService);
+
+
+
+        return Arrays.asList(algorithmDataForBaseService, algorithmDataForCachedService);
     }
 
     /**

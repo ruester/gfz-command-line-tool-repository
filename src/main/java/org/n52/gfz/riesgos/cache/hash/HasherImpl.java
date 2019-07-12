@@ -20,6 +20,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.n52.gfz.riesgos.cache.IInputParameterCacheKey;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.IDockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.inputparametercachekey.InputParameterCacheKeyByException;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.IWpsVersionHandler;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
@@ -40,6 +41,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Implementation of the hasher, that takes the input
+ * data, the configuration and the docker image id and versions
+ * into account.
+ */
 public class HasherImpl implements IHasher {
 
     private static final MessageDigest MESSAGE_DIGEST = getMd5();
@@ -53,9 +59,17 @@ public class HasherImpl implements IHasher {
     }
 
     private final IDockerImageIdLookup imageIdLookup;
+    private final IWpsVersionHandler wpsVersionHandler;
 
-    public HasherImpl(final IDockerImageIdLookup imageIdLookup) {
-        this.imageIdLookup = imageIdLookup;
+    /**
+     * Constructor with some handlers for docker images and server versions.
+     * @param aImageIdLookup handler for asking for real image ids
+     * @param aWpsVersionHandler handler for asking for versions
+     */
+    public HasherImpl(final IDockerImageIdLookup aImageIdLookup,
+                      final IWpsVersionHandler aWpsVersionHandler) {
+        this.imageIdLookup = aImageIdLookup;
+        this.wpsVersionHandler = aWpsVersionHandler;
     }
 
     @Override
@@ -64,7 +78,10 @@ public class HasherImpl implements IHasher {
         final CacheKey key = new CacheKey(
                 configuration,
                 imageIdLookup.lookUpImageId(configuration.getImageId()),
-                inputData);
+                inputData,
+                imageIdLookup.getDockerVersion(),
+                wpsVersionHandler.getRepositoryVersion(),
+                wpsVersionHandler.getWpsVersion());
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
@@ -136,6 +153,20 @@ public class HasherImpl implements IHasher {
         private final List<IOutputParameter> outputParameters;
 
         /**
+         * The version of docker.
+         */
+        private final String dockerVersion;
+
+        /**
+         * Version of the wps server.
+         */
+        private final String wpsVersion;
+        /**
+         * Version of our repository.
+         */
+        private final String repositoryVersion;
+
+        /**
          * List with the keys for caching the input data.
          * This includes the mechanism (how the data is read)
          * and the data itself together with the identifier.
@@ -143,7 +174,6 @@ public class HasherImpl implements IHasher {
          * Having a list instead of a map allows us to care
          * about the ordering (important for the command line arguments).
          * <p>
-         * TODO: Maybe this must be extended to care about the binding classes
          * (the mechanism cares a bit about it for how to
          * read the data in which is included in reading the content
          * to create the cache key)
@@ -158,10 +188,16 @@ public class HasherImpl implements IHasher {
          * @param configuration configuration to use for caching
          * @param aImageId      real image id to use for running the code
          * @param inputData     input data to execute the code with
+         * @param aDockerVersion docker version of the docker daemon
+         * @param aWpsVersion version of the wps server
+         * @param aRepositoryVersion version of the repository
          */
         CacheKey(final IConfiguration configuration,
                  final String aImageId,
-                 final Map<String, List<IData>> inputData) {
+                 final Map<String, List<IData>> inputData,
+                 final String aDockerVersion,
+                 final String aWpsVersion,
+                 final String aRepositoryVersion) {
 
 
             this.fullQualifiedIdentifier =
@@ -212,6 +248,10 @@ public class HasherImpl implements IHasher {
                                             inputParameter.isOptional())));
                 }
             }
+
+            this.dockerVersion = aDockerVersion;
+            this.wpsVersion = aWpsVersion;
+            this.repositoryVersion = aRepositoryVersion;
         }
 
         /**
@@ -245,7 +285,11 @@ public class HasherImpl implements IHasher {
                     && Objects.equals(outputParameters,
                     cacheKey.outputParameters)
                     && Objects.equals(inputCacheKeyMap,
-                    cacheKey.inputCacheKeyMap);
+                    cacheKey.inputCacheKeyMap)
+                    && Objects.equals(dockerVersion, cacheKey.dockerVersion)
+                    && Objects.equals(wpsVersion, cacheKey.wpsVersion)
+                    && Objects.equals(repositoryVersion,
+                    cacheKey.repositoryVersion);
         }
 
         /**
@@ -265,7 +309,10 @@ public class HasherImpl implements IHasher {
                     stderrHandler,
                     stdoutHandler,
                     outputParameters,
-                    inputCacheKeyMap);
+                    inputCacheKeyMap,
+                    dockerVersion,
+                    wpsVersion,
+                    repositoryVersion);
         }
     }
 }

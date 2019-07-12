@@ -22,7 +22,9 @@ import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
-import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorForTransformationImpl;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorData;
+import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorDataImpl;
+import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
 import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
@@ -125,11 +127,15 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
 
     @Override
     public ProcessDescription getDescription() {
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorForTransformationImpl(
-                identifier, IConfiguration.PATH_FULL_QUALIFIED + identifier, clazz,
-                optionalAbstract,
-                INPUT_IDENTIFIER, INPUT_ABSTRACT,
-                OUTPUT_IDENTIFIER, OUTPUT_ABSTRACT);
+
+        final IProcessDescriptionGeneratorData generatorData = new ProcessDescriptionGeneratorDataImpl.Builder(
+                identifier, IConfiguration.PATH_FULL_QUALIFIED + identifier)
+                .withProcessAbstract(optionalAbstract)
+                .withRequiredComplexInput(INPUT_IDENTIFIER, INPUT_ABSTRACT, clazz)
+                .withRequiredComplexOutput(OUTPUT_IDENTIFIER, OUTPUT_ABSTRACT, clazz)
+                .build();
+
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(generatorData);
         final ProcessDescriptionsDocument description = generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
         processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");

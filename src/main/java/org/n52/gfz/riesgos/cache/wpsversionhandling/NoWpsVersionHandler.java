@@ -14,26 +14,27 @@
  * limitations under the Licence.
  */
 
-package org.n52.gfz.riesgos.cache;
+package org.n52.gfz.riesgos.cache.wpsversionhandling;
 
-import org.n52.wps.io.data.IData;
+/**
+ * This is class that should only be used as a temporary solution
+ * and for test cases.
+ */
+public class NoWpsVersionHandler implements IWpsVersionHandler {
 
-
-public class RecreateFromBindingClass implements IDataRecreator {
-
-    private final IData data;
-
-    public RecreateFromBindingClass(final IData aData) {
-        this.data = aData;
+    /**
+     * @return version of the wps server
+     */
+    @Override
+    public String getWpsVersion() {
+        return null;
     }
 
+    /**
+     * @return version of the repository
+     */
     @Override
-    public IData recreate() {
-        return data;
-    }
-
-    @Override
-    public Class<? extends IData> getBindingClassToRecreate() {
-        return data.getClass();
+    public String getRepositoryVersion() {
+        return null;
     }
 }

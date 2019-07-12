@@ -47,6 +47,8 @@ import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutputData;
+import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorDataConfigImpl;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
 import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.wps.io.data.IData;
@@ -71,7 +73,7 @@ import java.util.stream.Collectors;
  *
  * The processes should be created by creating an instance of this class.
  */
-public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
+public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm implements ICachableProcess {
 
     private final IHasher hasher;
     private final ICacher cache;
@@ -110,6 +112,15 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
         this.mapInputDataTypes = extractMapInputDataTypes(configuration);
         this.mapOutputDataTypes = extractMapOutputDataTypes(configuration);
     }
+
+    public ICacher getCache() {
+        return cache;
+    }
+
+    public List<IProcessDescriptionGeneratorOutputData> getOutputDataForProcessGeneration() {
+        return new ProcessDescriptionGeneratorDataConfigImpl(configuration).getOutputData();
+    }
+
 
     /*
      * transforms the input data to a map to lookup the types in a predefined fast way
@@ -188,13 +199,10 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
 
         cache.insertResultIntoCache(hash, dataToStoreInCache);
 
-        final Map<String, IData> result = innerResult.entrySet().stream().collect(Collectors.toMap(
+        return innerResult.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
                 entry -> entry.getValue().getFirst()
         ));
-
-
-        return result;
     }
 
     /**
@@ -230,7 +238,8 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
     @Override
     public ProcessDescription getDescription() {
 
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(configuration);
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(
+                new ProcessDescriptionGeneratorDataConfigImpl(configuration));
         final ProcessDescriptionsDocument description = generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
         processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
@@ -473,7 +482,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                             final IConvertByteArrayToIData converter = stderrHandler.get();
 
                             final IData iData = converter.convertToIData(bytes);
-                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter));
+                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter, outputValue.getBindingClass()));
                         }
                     } catch (final ConvertToIDataException convertException) {
                         if(outputValue.isOptional()) {
@@ -528,7 +537,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                         if (exitValueHandler.isPresent()) {
                             final IConvertExitValueToIData converter = exitValueHandler.get();
                             final IData iData = converter.convertToIData(exitValue);
-                            putIntoOutput(outputValue, iData, new RecreateFromExitValue(exitValue, converter));
+                            putIntoOutput(outputValue, iData, new RecreateFromExitValue(exitValue, converter, outputValue.getBindingClass()));
                         }
                     } catch (final ConvertToIDataException convertException) {
                         if(outputValue.isOptional()) {
@@ -560,7 +569,7 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm {
                             final byte[] bytes = stdout.getBytes();
                             final IConvertByteArrayToIData converter = stdoutHandler.get();
                             final IData iData = converter.convertToIData(bytes);
-                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter));
+                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter, outputValue.getBindingClass()));
                         }
                     } catch(final ConvertToIDataException convertException) {
                         if(outputValue.isOptional()) {

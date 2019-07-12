@@ -22,6 +22,7 @@ import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.hash.HasherImpl;
 import org.n52.gfz.riesgos.cache.impl.CacheImpl;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.wps.io.data.IData;
@@ -103,7 +104,7 @@ public class TestContainerIdCreation {
             final IAlgorithm algorithm = new BaseGfzRiesgosService(conf, LoggerFactory.getLogger(TestContainerIdCreation.class),
                     // caching should not be involved in this test
                     // but the docker image id lookup can be done
-                    new HasherImpl(new DockerImageIdLookup()),
+                    new HasherImpl(new DockerImageIdLookup(), new NoWpsVersionHandler()),
                     new CacheImpl(), new DockerExecutionContextManagerFactory());
 
             final Map<String, List<IData>> inputData = new HashMap<>();

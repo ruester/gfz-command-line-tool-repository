@@ -26,6 +26,7 @@ import org.n52.gfz.riesgos.cache.dockerimagehandling.IDockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.NoDockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.hash.HasherImpl;
 import org.n52.gfz.riesgos.cache.hash.IHasher;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
@@ -61,7 +62,7 @@ public class TestCacheImpl {
     @Test
     public void testCacheInt() {
 
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
         final ICacher cache = new CacheImpl();
 
@@ -134,7 +135,7 @@ public class TestCacheImpl {
 
     @Test
     public void testCacheBBox() {
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
         final ICacher cache = new CacheImpl();
 
         final IConfiguration configuration = new TestConfiguration("TestConfigurationBBox", InputParameterFactory.INSTANCE.createCommandLineArgumentBBox(
@@ -193,7 +194,7 @@ public class TestCacheImpl {
 
     @Test
     public void testCacheXml() {
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup());
+        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
         final ICacher cache = new CacheImpl();
 
         try {

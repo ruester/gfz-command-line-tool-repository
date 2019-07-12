@@ -14,26 +14,21 @@
  * limitations under the Licence.
  */
 
-package org.n52.gfz.riesgos.cache;
+package org.n52.gfz.riesgos.processdescription;
 
-import org.n52.wps.io.data.IData;
+import java.util.List;
+import java.util.Optional;
 
+public interface IProcessDescriptionGeneratorData {
 
-public class RecreateFromBindingClass implements IDataRecreator {
+    String getIdentifier();
 
-    private final IData data;
+    String getFullQualifiedIdentifier();
 
-    public RecreateFromBindingClass(final IData aData) {
-        this.data = aData;
-    }
+    Optional<String> getProcessAbstract();
 
-    @Override
-    public IData recreate() {
-        return data;
-    }
+    List<IProcessDescriptionGeneratorInputData> getInputData();
 
-    @Override
-    public Class<? extends IData> getBindingClassToRecreate() {
-        return data.getClass();
-    }
+    List<IProcessDescriptionGeneratorOutputData> getOutputData();
+
 }

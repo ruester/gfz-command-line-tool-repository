@@ -17,21 +17,43 @@
 package org.n52.gfz.riesgos.cache.hash;
 
 import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.wps.io.data.IData;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Singleton implementation of the hasher.
+ */
 public enum HasherSingleton implements IHasher {
 
-    INSTANCE(new HasherImpl(new DockerImageIdLookup()));
+    /**
+     * Singleton implementation.
+     * Cares about the docker image ids.
+     */
+    INSTANCE(new HasherImpl(
+            new DockerImageIdLookup(),
+            new NoWpsVersionHandler()));
 
     private final IHasher wrappedHasher;
 
+    /**
+     * Constructor with a hasher that is used for all the tasks.
+     * @param aWrappedHasher hasher implementation to use
+     */
     HasherSingleton(final IHasher aWrappedHasher) {
         this.wrappedHasher = aWrappedHasher;
     }
+
+    /**
+     * Computes the hash for the configuration and the
+     * input data.
+     * @param configuration configuration of the process
+     * @param inputData input data for the query
+     * @return hash
+     */
     @Override
     public String hash(IConfiguration configuration, Map<String, List<IData>> inputData) {
         return wrappedHasher.hash(configuration, inputData);

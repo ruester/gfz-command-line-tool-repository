@@ -40,4 +40,14 @@ public class NoDockerImageIdLookup implements IDockerImageIdLookup {
     public String lookUpImageId(final String imageIdWithLabel) {
         return imageIdWithLabel;
     }
+
+    /**
+     * Asks docker about the version it uses.
+     *
+     * @return version string from docker
+     */
+    @Override
+    public String getDockerVersion() {
+        return null;
+    }
 }

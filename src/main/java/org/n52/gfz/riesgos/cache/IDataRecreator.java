@@ -23,4 +23,6 @@ import java.io.Serializable;
 public interface IDataRecreator extends Serializable {
 
     IData recreate();
+
+    Class<? extends IData> getBindingClassToRecreate();
 }

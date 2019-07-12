@@ -24,13 +24,16 @@ public class RecreateFromByteArray implements IDataRecreator {
 
     private final byte[] content;
     private final IConvertByteArrayToIData converter;
+    private final Class<? extends IData> bindingClass;
 
 
     public RecreateFromByteArray(
             final byte[] aContent,
-            final IConvertByteArrayToIData aConverter) {
+            final IConvertByteArrayToIData aConverter,
+            final Class<? extends IData> aBindingClass) {
         this.content = aContent;
         this.converter = aConverter;
+        this.bindingClass = aBindingClass;
     }
 
     @Override
@@ -42,5 +45,10 @@ public class RecreateFromByteArray implements IDataRecreator {
             // not for trying it the first time!
             throw new RuntimeException(exception);
         }
+    }
+
+    @Override
+    public Class<? extends IData> getBindingClassToRecreate() {
+        return bindingClass;
     }
 }

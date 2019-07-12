@@ -24,12 +24,15 @@ public class RecreateFromExitValue implements IDataRecreator {
 
     private final int exitValue;
     private final IConvertExitValueToIData converter;
+    private final Class<? extends IData> bindingClass;
 
     public RecreateFromExitValue(
             final int exitValue,
-            final IConvertExitValueToIData converter) {
+            final IConvertExitValueToIData converter,
+            final Class<? extends IData> bindingClass) {
         this.exitValue = exitValue;
         this.converter = converter;
+        this.bindingClass = bindingClass;
     }
 
 
@@ -42,5 +45,10 @@ public class RecreateFromExitValue implements IDataRecreator {
             // objects
             throw new RuntimeException(exception);
         }
+    }
+
+    @Override
+    public Class<? extends IData> getBindingClassToRecreate() {
+        return bindingClass;
     }
 }

@@ -25,6 +25,7 @@ import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.hash.HasherImpl;
 import org.n52.gfz.riesgos.cache.hash.IHasher;
 import org.n52.gfz.riesgos.cache.impl.CacheImpl;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
 import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunImpl;
 import org.n52.gfz.riesgos.cmdexecution.common.ExecutionRunResultImpl;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerContainerExecutionContextManagerImpl;
@@ -190,7 +191,7 @@ public class TestBaseGfzRiesgosService {
             when(mockRunResult.getStderrResult()).thenReturn("");
             when(mockRunResult.getStdoutResult()).thenReturn("");
 
-            final IHasher hasher = new HasherImpl(mockImageIdLookup);
+            final IHasher hasher = new HasherImpl(mockImageIdLookup, new NoWpsVersionHandler());
             final ICacher cache = new CacheImpl();
 
             final IExecutionContextManagerFactory factory = (conf) -> mockContextManager;

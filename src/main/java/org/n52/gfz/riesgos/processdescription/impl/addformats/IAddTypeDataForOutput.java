@@ -14,26 +14,17 @@
  * limitations under the Licence.
  */
 
-package org.n52.gfz.riesgos.cache;
+package org.n52.gfz.riesgos.processdescription.impl.addformats;
 
-import org.n52.wps.io.data.IData;
+import net.opengis.wps.x100.OutputDescriptionType;
 
-
-public class RecreateFromBindingClass implements IDataRecreator {
-
-    private final IData data;
-
-    public RecreateFromBindingClass(final IData aData) {
-        this.data = aData;
-    }
-
-    @Override
-    public IData recreate() {
-        return data;
-    }
-
-    @Override
-    public Class<? extends IData> getBindingClassToRecreate() {
-        return data.getClass();
-    }
+/**
+ * Interface to add the format parts for the output class.
+ */
+public interface IAddTypeDataForOutput {
+    /**
+     * Adds the type data to the xml.
+     * @param outputDescriptionType xml with the data for the output
+     */
+    void addTypeData(OutputDescriptionType outputDescriptionType);
 }

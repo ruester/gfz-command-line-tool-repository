@@ -35,4 +35,10 @@ public interface IDockerImageIdLookup {
      * @return image id
      */
     String lookUpImageId(String imageIdWithLabel);
+
+    /**
+     * Asks docker about the version it uses.
+     * @return version string from docker
+     */
+    String getDockerVersion();
 }
