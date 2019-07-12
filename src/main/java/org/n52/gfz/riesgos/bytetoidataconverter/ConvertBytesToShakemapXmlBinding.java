@@ -29,29 +29,49 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Function to convert the content of a byte array to a ShakemapXmlBinding
+ * Function to convert the content of a byte array to a ShakemapXmlBinding.
  */
-public class ConvertBytesToShakemapXmlBinding implements IConvertByteArrayToIData<ShakemapXmlDataBinding> {
+public class ConvertBytesToShakemapXmlBinding
+        implements IConvertByteArrayToIData<ShakemapXmlDataBinding> {
 
     private static final long serialVersionUID = 2545645993592527378L;
 
+    /**
+     * Creates a ShakemapXmlDataBinding from the byte array.
+     * @param content byte array to convert
+     * @return ShakemapXmlDataBinding
+     * @throws ConvertToIDataException exception an an io or xml
+     * exception
+     */
     @Override
-    public ShakemapXmlDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
-        try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
-            return ShakemapXmlDataBinding.fromXml(XmlObject.Factory.parse(byteArrayInputStream));
-        } catch(final XmlException | IOException exception) {
+    public ShakemapXmlDataBinding convertToIData(
+            final byte[] content) throws ConvertToIDataException {
+        try (ByteArrayInputStream byteArrayInputStream =
+                     new ByteArrayInputStream(content)) {
+            return ShakemapXmlDataBinding.fromXml(
+                    XmlObject.Factory.parse(byteArrayInputStream));
+        } catch (final XmlException | IOException exception) {
             throw new ConvertToIDataException(exception);
         }
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the instance
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());
