@@ -141,4 +141,8 @@ RUN sed -i -e 's@assetmaster:latest@ruestergfz/assetmaster:latest@' src/main/res
 
 # add missing libraries needed by gfz-command-line-tool-repository:
 RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/commons-compress-1.9.jar && \
-    wget https://repo1.maven.org/maven2/org/apache/ant/ant/1.10.5/ant-1.10.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/ant-1.10.5.jar
+    wget https://repo1.maven.org/maven2/org/apache/ant/ant/1.10.5/ant-1.10.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/ant-1.10.5.jar && \
+    wget http://repo.boundlessgeo.com/main/org/geotools/gt-process-raster/13.5/gt-process-raster-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-raster-13.5.jar && \
+    wget http://repo.boundlessgeo.com/main/org/geotools/gt-process/13.5/gt-process-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-13.5.jar && \
+    wget https://repo1.maven.org/maven2/org/jaitools/jt-contour/1.3.1/jt-contour-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-contour-1.3.1.jar && \
+    wget https://repo1.maven.org/maven2/org/jaitools/jt-attributeop/1.3.1/jt-attributeop-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-attributeop-1.3.1.jar
