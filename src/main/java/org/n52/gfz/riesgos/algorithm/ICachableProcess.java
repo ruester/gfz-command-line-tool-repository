@@ -21,13 +21,40 @@ import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutput
 
 import java.util.List;
 
+/**
+ * Interface for creating a process that gives
+ * back all the same output data
+ * but only reads the content from the cache.
+ */
 public interface ICachableProcess {
 
+    /**
+     * Returns the cache that is used to store
+     * the normal results of the inner process.
+     * @return cache
+     */
     ICacher getCache();
 
+    /**
+     * Returns a list with the output identifiers
+     * of the inner process.
+     * @return List with the output identifiers.
+     */
     List<String> getOutputIdentifiers();
 
-    Class<?> getOutputDataType(final String id);
+    /**
+     * Returns a map with the class of the outputs
+     * by their identifiers.
+     * @param id identifier of the output parameter
+     * @return binding class of the id
+     */
+    Class<?> getOutputDataType(String id);
 
-    List<IProcessDescriptionGeneratorOutputData> getOutputDataForProcessGeneration();
+    /**
+     * Returns a list of the output parameters
+     * for the generation of the process description.
+     * @return list with the names and formats of the output data
+     */
+    List<IProcessDescriptionGeneratorOutputData>
+    getOutputDataForProcessGeneration();
 }

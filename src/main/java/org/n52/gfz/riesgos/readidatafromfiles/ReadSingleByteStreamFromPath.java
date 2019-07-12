@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.readidatafromfiles;
  *
  */
 
+import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
 import org.n52.gfz.riesgos.cache.IDataRecreator;
 import org.n52.gfz.riesgos.cache.RecreateFromByteArray;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
@@ -56,10 +57,10 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
     }
 
     @Override
-    public Tuple<T, IDataRecreator> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
+    public DataWithRecreatorTuple<T> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
 
         final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
-        return new Tuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter, bindingClass));
+        return new DataWithRecreatorTuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter, bindingClass));
     }
 
     @Override

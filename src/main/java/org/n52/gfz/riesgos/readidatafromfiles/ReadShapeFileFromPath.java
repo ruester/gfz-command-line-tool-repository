@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
 import org.n52.gfz.riesgos.cache.IDataRecreator;
 import org.n52.gfz.riesgos.cache.RecreateFromBindingClass;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
@@ -46,7 +47,7 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
     private static final long serialVersionUID = -8077547979877603576L;
 
     @Override
-    public Tuple<GTVectorDataBinding, IDataRecreator> readFromFiles(
+    public DataWithRecreatorTuple<GTVectorDataBinding> readFromFiles(
             final IExecutionContext context,
             final String workingDirectory,
             final String path) throws IOException {
@@ -77,7 +78,7 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
 
         // the recreate because we know that there is no temporary file
         // involved here
-        return new Tuple<>(binding, new RecreateFromBindingClass(binding));
+        return new DataWithRecreatorTuple<>(binding, new RecreateFromBindingClass(binding));
     }
 
     private void writeFile(final File file, final byte[] content) throws IOException {

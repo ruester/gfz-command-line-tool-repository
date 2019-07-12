@@ -66,16 +66,42 @@ public class ReadDataFromCacheProcess extends AbstractSelfDescribingAlgorithm {
             "This is the name of the data for which the cached "
                     + "dataset contains the dataset";
 
+    /**
+     * Output identifier for the process output here.
+     */
     private static final String OUTPUT_IDENTIFIER = "Output";
 
 
+    /**
+     * Cache to access.
+     */
     private final ICacher cacher;
+    /**
+     * Identifier of the process instance.
+     */
     private final String identifier;
+    /**
+     * Optional abstract of the process.
+     */
     private final String processAbstract;
+    /**
+     * binding class to read the data.
+     */
     private final Class<? extends IData> clazz;
+    /**
+     * Optional abstract for the output.
+     */
     private final String outputAbstract;
 
 
+    /**
+     * Create the process to read data from cache.
+     * @param aCacher cache to read from
+     * @param aIdentifier identifier (name) the process should have
+     * @param aProcessAbstract optional abstract of the process
+     * @param aClazz a class to read from the cached outputs
+     * @param aOutputAbstract optional abstract for the output
+     */
     public ReadDataFromCacheProcess(
             final ICacher aCacher,
             final String aIdentifier,
@@ -91,6 +117,10 @@ public class ReadDataFromCacheProcess extends AbstractSelfDescribingAlgorithm {
         this.outputAbstract = aOutputAbstract;
     }
 
+    /**
+     *
+     * @return list with the input identifiers
+     */
     @Override
     public List<String> getInputIdentifiers() {
         return Arrays.asList(
@@ -99,38 +129,70 @@ public class ReadDataFromCacheProcess extends AbstractSelfDescribingAlgorithm {
         );
     }
 
+    /**
+     *
+     * @return list with the output identifiers
+     */
     @Override
     public List<String> getOutputIdentifiers() {
         return Collections.singletonList(OUTPUT_IDENTIFIER);
     }
 
+    /**
+     * Runs the process and gives the result map back.
+     * @param inputData input data for the process
+     * @return map with the resulting data
+     * @throws ExceptionReport exception that is thrown if the process
+     * can't find any output
+     */
     @Override
-    public Map<String, IData> run(final Map<String, List<IData>> inputData) throws ExceptionReport {
+    public Map<String, IData> run(
+            final Map<String, List<IData>> inputData)
+            throws ExceptionReport {
         final Map<String, IData> result = new HashMap<>();
 
-        final String cacheKey = readStringFromInputMap(inputData, IDENTIFIER_CACHE_KEY);
-        final Optional<String> optionalOutputName = readOptionalStringFromInputMap(inputData, IDENTIFIER_OUTPUT_NAME);
+        final String cacheKey = readStringFromInputMap(
+                inputData,
+                IDENTIFIER_CACHE_KEY);
+        final Optional<String> optionalOutputName =
+                readOptionalStringFromInputMap(
+                        inputData,
+                        IDENTIFIER_OUTPUT_NAME);
 
-        final Optional<Map<String, IDataRecreator>> optionalCacheValues = cacher.getCachedResult(cacheKey);
+        final Optional<Map<String, IDataRecreator>> optionalCacheValues =
+                cacher.getCachedResult(cacheKey);
 
         if (!optionalCacheValues.isPresent()) {
-            throw new ExceptionReport("No Data could be found for the cache key '" + cacheKey + "'", ExceptionReport.INVALID_PARAMETER_VALUE);
+            throw new ExceptionReport(
+                    "No Data could be found for the cache key '"
+                            + cacheKey
+                            + "'",
+                    ExceptionReport.INVALID_PARAMETER_VALUE);
         }
 
-        final Map<String, IDataRecreator> cacheValues = optionalCacheValues.get();
-        final Map<String, IDataRecreator> filtered = filterForBindingClass(cacheValues, clazz);
+        final Map<String, IDataRecreator> cacheValues =
+                optionalCacheValues.get();
+        final Map<String, IDataRecreator> filtered =
+                filterForBindingClass(cacheValues, clazz);
 
         final IDataRecreator recreator;
         if (filtered.size() == 1) {
             recreator = filtered.values().iterator().next();
         } else {
             if (!optionalOutputName.isPresent()) {
-                throw new ExceptionReport("There is no output-name given to check which output should be given back", ExceptionReport.MISSING_PARAMETER_VALUE);
+                throw new ExceptionReport(
+                        "There is no output-name given to check "
+                        + "which output should be given back",
+                        ExceptionReport.MISSING_PARAMETER_VALUE);
             }
             final String outputName = optionalOutputName.get();
 
             if (!cacheValues.containsKey(outputName)) {
-                throw new ExceptionReport("No Data could be found for the output name '" + outputName + "'", ExceptionReport.INVALID_PARAMETER_VALUE);
+                throw new ExceptionReport(
+                        "No Data could be found for the output name '"
+                                + outputName
+                                + "'",
+                        ExceptionReport.INVALID_PARAMETER_VALUE);
             }
 
             recreator = cacheValues.get(outputName);
@@ -144,35 +206,78 @@ public class ReadDataFromCacheProcess extends AbstractSelfDescribingAlgorithm {
         return result;
     }
 
-    private Map<String, IDataRecreator> filterForBindingClass(final Map<String, IDataRecreator> cacheValues, final Class<? extends IData> bindingClass) {
+    /**
+     * Filters the map for recreators that support the same binding class.
+     * @param cacheValues data with recreators from the cache
+     * @param bindingClass class that should be included for one or more
+     *                     recreators
+     * @return map with the recreators that support the binding class
+     */
+    private Map<String, IDataRecreator> filterForBindingClass(
+            final Map<String, IDataRecreator> cacheValues,
+            final Class<? extends IData> bindingClass) {
+
         return cacheValues.entrySet().stream()
-                .filter(entry -> Objects.equals(entry.getValue().getBindingClassToRecreate(), bindingClass))
+                .filter(
+                        entry -> Objects.equals(
+                                entry.getValue().getBindingClassToRecreate(),
+                                bindingClass))
                 .collect(Collectors.toMap(
                 Map.Entry::getKey,
                 Map.Entry::getValue
         ));
     }
 
-    private String readStringFromInputMap(final Map<String, List<IData>> inputData, final String identifierToRead) throws ExceptionReport {
+    /**
+     * Function to read a string key from the input data map.
+     * @param inputData input data of the process
+     * @param identifierToRead identifier to read from the input data
+     * @return String with the value
+     * @throws ExceptionReport exception that is thrown
+     * if the identifier can't be found in the input data map
+     * or if the type doesn't match
+     */
+    private String readStringFromInputMap(
+            final Map<String, List<IData>> inputData,
+            final String identifierToRead) throws ExceptionReport {
         if (!inputData.containsKey(identifierToRead)) {
-            throw new ExceptionReport("Can't read " + identifierToRead, ExceptionReport.MISSING_PARAMETER_VALUE);
+            throw new ExceptionReport(
+                    "Can't read "
+                            + identifierToRead,
+                    ExceptionReport.MISSING_PARAMETER_VALUE);
         }
         final List<IData> list = inputData.get(identifierToRead);
         if (list.isEmpty()) {
-            throw new ExceptionReport("Can't read " + identifierToRead, ExceptionReport.MISSING_PARAMETER_VALUE);
+            throw new ExceptionReport(
+                    "Can't read "
+                            + identifierToRead,
+                    ExceptionReport.MISSING_PARAMETER_VALUE);
         }
 
         final IData idata = list.get(0);
 
-        if (! (idata instanceof LiteralStringBinding)) {
-            throw new ExceptionReport(identifierToRead + " has the wrong binding class", ExceptionReport.INVALID_PARAMETER_VALUE);
+        if (!(idata instanceof LiteralStringBinding)) {
+            throw new ExceptionReport(
+                    identifierToRead
+                            + " has the wrong binding class",
+                    ExceptionReport.INVALID_PARAMETER_VALUE);
         }
 
-        final LiteralStringBinding literalStringBinding = (LiteralStringBinding) idata;
+        final LiteralStringBinding literalStringBinding =
+                (LiteralStringBinding) idata;
         return literalStringBinding.getPayload();
     }
 
-    private Optional<String> readOptionalStringFromInputMap(final Map<String, List<IData>> inputData, final String identifierToRead) {
+    /**
+     * Searches for a string value in the input map.
+     * @param inputData map with the input data for the process
+     * @param identifierToRead identifier to read
+     * @return optional with the data or empty
+     */
+    private Optional<String> readOptionalStringFromInputMap(
+            final Map<String, List<IData>> inputData,
+            final String identifierToRead) {
+
         if (!inputData.containsKey(identifierToRead)) {
             return Optional.empty();
         }
@@ -183,44 +288,83 @@ public class ReadDataFromCacheProcess extends AbstractSelfDescribingAlgorithm {
 
         final IData idata = list.get(0);
 
-        if (! (idata instanceof LiteralStringBinding)) {
+        if (!(idata instanceof LiteralStringBinding)) {
             return Optional.empty();
         }
 
-        final LiteralStringBinding literalStringBinding = (LiteralStringBinding) idata;
+        final LiteralStringBinding literalStringBinding =
+                (LiteralStringBinding) idata;
         return Optional.ofNullable(literalStringBinding.getPayload());
     }
 
+    /**
+     * Returns the classes for the input data.
+     * @param id identifier of the input parameter
+     * @return always literal string
+     */
     @Override
     public Class<?> getInputDataType(final String id) {
         // both the cache key and the output name
         return LiteralStringBinding.class;
     }
 
+    /**
+     * Returns the classes for the output data.
+     * @param id identifier of the output parameter
+     * @return always the binding class that is supported by the process
+     */
     @Override
     public Class<?> getOutputDataType(final String id) {
         return clazz;
     }
 
+    /**
+     * Generates the process description.
+     * @return Process description
+     */
     @Override
     public ProcessDescription getDescription() {
 
-        final IProcessDescriptionGeneratorData generatorData = new ProcessDescriptionGeneratorDataImpl.Builder(
+        /*
+         Always the cache key and an optional output-name as inputs.
+         Always the supported class as one output.
+         */
+        final IProcessDescriptionGeneratorData generatorData =
+                new ProcessDescriptionGeneratorDataImpl.Builder(
                 identifier, getFullQualifiedIdentifier())
                 .withProcessAbstract(processAbstract)
-                .withLiteralStringInput(IDENTIFIER_CACHE_KEY, ABSTRACT_CACHE_KEY, false)
-                .withLiteralStringInput(IDENTIFIER_OUTPUT_NAME, ABSTRACT_OUTPUT_NAME, true)
-                .withRequiredComplexOutput(OUTPUT_IDENTIFIER, outputAbstract, clazz)
+                .withLiteralStringInput(
+                        IDENTIFIER_CACHE_KEY,
+                        ABSTRACT_CACHE_KEY,
+                        false)
+                .withLiteralStringInput(
+                        IDENTIFIER_OUTPUT_NAME,
+                        ABSTRACT_OUTPUT_NAME,
+                        true)
+                .withRequiredComplexOutput(
+                        OUTPUT_IDENTIFIER,
+                        outputAbstract,
+                        clazz)
                 .build();
 
 
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(generatorData);
-        final ProcessDescriptionsDocument description = generator.generateProcessDescription();
+        final IProcessDescriptionGenerator generator =
+                new ProcessDescriptionGeneratorImpl(generatorData);
+        final ProcessDescriptionsDocument description =
+                generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
-        processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
+        processDescription.addProcessDescriptionForVersion(
+                description.getProcessDescriptions()
+                        .getProcessDescriptionArray(0), "1.0.0");
         return processDescription;
     }
 
+    /**
+     * This method is to get around that there are serveral instances
+     * of this class around, but each should be a process on its own.
+     *
+     * @return full qualified identifier
+     */
     public String getFullQualifiedIdentifier() {
         return IConfiguration.PATH_FULL_QUALIFIED + identifier;
     }

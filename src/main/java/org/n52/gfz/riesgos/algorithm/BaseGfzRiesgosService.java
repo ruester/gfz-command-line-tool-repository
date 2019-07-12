@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.algorithm;
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
+import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cache.IDataRecreator;
 import org.n52.gfz.riesgos.cache.RecreateFromByteArray;
@@ -47,6 +48,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorData;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutputData;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorDataConfigImpl;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
@@ -73,39 +75,86 @@ import java.util.stream.Collectors;
  *
  * The processes should be created by creating an instance of this class.
  */
-public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm implements ICachableProcess {
+public class BaseGfzRiesgosService
+        extends AbstractSelfDescribingAlgorithm
+        implements ICachableProcess {
 
+    /**
+     * The hasher to compute a hash for saving it in the cache.
+     */
     private final IHasher hasher;
+    /**
+     * The cache to save data inside, so that there is no need
+     * to run the process inside again.
+     */
     private final ICacher cache;
+
+    /**
+     * Factory to create an execution manager for the
+     * command line process.
+     * The most common way is the use of docker.
+     */
     private final IExecutionContextManagerFactory executionContextFactory;
 
+    /**
+     * Configuration to run the process.
+     */
     private final IConfiguration configuration;
+
+    /**
+     * Logger for this service.
+     * Not static to differentiating between several instances of this
+     * class.
+     */
     private final Logger logger;
+
+    /**
+     * A list of input parameters from the configuration.
+     */
     private final List<IInputParameter> inputIdentifiers;
+
+    /**
+     * A list of output parameters form the configuration.
+     */
     private final List<IOutputParameter> outputIdentifiers;
+
+    /**
+     * A map to look up the binding classes for the inputs
+     * by input identifier.
+     */
     private final Map<String, Class<?>> mapInputDataTypes;
+
+    /**
+     * A map to look up the binding classes for the outputs
+     * by output identifier.
+     */
     private final Map<String, Class<?>> mapOutputDataTypes;
 
 
     /**
-     * Constructor that only gets a configuration and a logger
-     * @param configuration configuration to use for the executable
-     * @param logger logger to log some messages
-     * @param cache implementation of the cache
+     * Constructor that  gets a configuration, a logger,
+     * a hasher, a cache and a execution context factory.
+     * @param aConfiguration configuration to use for the executable
+     * @param aLogger logger to log some messages
+     * @param aHasher function to compute stable hashes for the inputs and
+     *               configuration
+     * @param aCache implementation of the cache
+     * @param aExecutionContextFactory factory for creating execution contexts
+     *                                (like running in docker or not)
      */
     public BaseGfzRiesgosService(
-            final IConfiguration configuration,
-            final Logger logger,
-            final IHasher hasher,
-            final ICacher cache,
-            final IExecutionContextManagerFactory executionContextFactory) {
+            final IConfiguration aConfiguration,
+            final Logger aLogger,
+            final IHasher aHasher,
+            final ICacher aCache,
+            final IExecutionContextManagerFactory aExecutionContextFactory) {
 
-        this.hasher = hasher;
-        this.cache = cache;
-        this.executionContextFactory = executionContextFactory;
+        this.hasher = aHasher;
+        this.cache = aCache;
+        this.executionContextFactory = aExecutionContextFactory;
 
-        this.configuration = configuration;
-        this.logger = logger;
+        this.configuration = aConfiguration;
+        this.logger = aLogger;
 
         this.inputIdentifiers = configuration.getInputIdentifiers();
         this.outputIdentifiers = configuration.getOutputIdentifiers();
@@ -113,33 +162,75 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
         this.mapOutputDataTypes = extractMapOutputDataTypes(configuration);
     }
 
+    /**
+     * To be able to serve a process that gives back all the
+     * output from a cache-key we provide access to the used cache.
+     *
+     * For the productive services the cache is shared for
+     * the whole system.
+     * @return cache of the process
+     */
+    @Override
     public ICacher getCache() {
         return cache;
     }
 
-    public List<IProcessDescriptionGeneratorOutputData> getOutputDataForProcessGeneration() {
-        return new ProcessDescriptionGeneratorDataConfigImpl(configuration).getOutputData();
+    /**
+     * To be able to serve a process that gives back all the
+     * output from a cache-key we give the data for
+     * the process description here.
+     * @return list with output parameter data
+     */
+    @Override
+    public List<IProcessDescriptionGeneratorOutputData>
+    getOutputDataForProcessGeneration() {
+        return toProcessDescriptionGeneratorData().getOutputData();
+    }
+
+    /**
+     * Helper method to have the creation of the
+     * IProcessDescriptionGeneratorData only at one point.
+     * @return IProcessDescriptionGeneratorData
+     */
+    private IProcessDescriptionGeneratorData
+    toProcessDescriptionGeneratorData() {
+        return new ProcessDescriptionGeneratorDataConfigImpl(configuration);
     }
 
 
-    /*
-     * transforms the input data to a map to lookup the types in a predefined fast way
+    /**
+     * Transforms the input data to a map to lookup the types
+     * in a predefined fast way.
+     *
+     * @param aConfiguration configuration to use
+     * @return map with the binding classes by identifier
      */
-    private Map<String, Class<?>> extractMapInputDataTypes(final IConfiguration configuration) {
-        return configuration
+    private Map<String, Class<?>> extractMapInputDataTypes(
+            final IConfiguration aConfiguration) {
+        return aConfiguration
                 .getInputIdentifiers()
                 .stream()
-                .collect(Collectors.toMap(IInputParameter::getIdentifier, IInputParameter::getBindingClass));
+                .collect(Collectors.toMap(
+                        IInputParameter::getIdentifier,
+                        IInputParameter::getBindingClass
+                ));
     }
 
-    /*
-     * transforms the output data to a map to lookup the types in a predefined fast way
+    /**
+     * Transforms the output data to a map to lookup the
+     * types in a predefined fast way.
+     * @param aConfiguration configuration to use
+     * @return map with the binding classes by identifier
      */
-    private Map<String, Class<?>> extractMapOutputDataTypes(final IConfiguration configuration) {
-        return configuration
+    private Map<String, Class<?>> extractMapOutputDataTypes(
+            final IConfiguration aConfiguration) {
+        return aConfiguration
                 .getOutputIdentifiers()
                 .stream()
-                .collect(Collectors.toMap(IOutputParameter::getIdentifier, IOutputParameter::getBindingClass));
+                .collect(Collectors.toMap(
+                        IOutputParameter::getIdentifier,
+                        IOutputParameter::getBindingClass
+                ));
     }
 
     /**
@@ -148,7 +239,9 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
      */
     @Override
     public List<String> getInputIdentifiers() {
-        return inputIdentifiers.stream().map(IInputParameter::getIdentifier).collect(Collectors.toList());
+        return inputIdentifiers.stream()
+                .map(IInputParameter::getIdentifier)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -157,44 +250,59 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
      */
     @Override
     public List<String> getOutputIdentifiers() {
-        return outputIdentifiers.stream().map(IOutputParameter::getIdentifier).collect(Collectors.toList());
+        return outputIdentifiers.stream()
+                .map(IOutputParameter::getIdentifier)
+                .collect(Collectors.toList());
     }
 
     /**
-     * method for all the work of the algorithm
-     * extracts the input data
-     * runs the executable
-     * returns the output data
+     * Method for all the work of the algorithm.
+     * - extracts the input data
+     * - runs the executable
+     * - returns the output data
+     *
+     * Now it also computes hashes and looks up and stores
+     * in a caching system.
+     *
      * @param inputDataFromMethod input data from the wps service
      * @return Map with IData as results
-     * @throws ExceptionReport maybe a ExceptionReport is thrown to handle errors in the service
+     * @throws ExceptionReport maybe a ExceptionReport is thrown to
+     * handle errors in the service
      */
     @Override
-    public Map<String, IData> run(final Map<String, List<IData>> inputDataFromMethod) throws ExceptionReport {
+    public Map<String, IData> run(
+            final Map<String, List<IData>> inputDataFromMethod)
+            throws ExceptionReport {
 
         final String hash = hasher.hash(configuration, inputDataFromMethod);
 
         logger.info("Cache-Hash: " + hash);
 
-        final Optional<Map<String, IDataRecreator>> cachedResult = cache.getCachedResult(hash);
+        final Optional<Map<String, IDataRecreator>> cachedResult =
+                cache.getCachedResult(hash);
 
-        if(cachedResult.isPresent()) {
+        if (cachedResult.isPresent()) {
             logger.info("Read the results from cache");
 
-            return cachedResult.get().entrySet().stream().collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    entry -> entry.getValue().recreate()
+            return cachedResult.get().entrySet().stream()
+                    .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().recreate()
             ));
         }
 
         logger.info("There is no result in the cache");
 
-        final InnerRunContext innerRunContext = new InnerRunContext(inputDataFromMethod);
-        final Map<String, Tuple<IData, IDataRecreator>> innerResult = innerRunContext.run();
+        final InnerRunContext innerRunContext =
+                new InnerRunContext(inputDataFromMethod);
+        final Map<String, Tuple<IData, IDataRecreator>> innerResult =
+                innerRunContext.run();
 
-        final Map<String, IDataRecreator> dataToStoreInCache = innerResult.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> entry.getValue().getSecond()
+        final Map<String, IDataRecreator> dataToStoreInCache =
+                innerResult.entrySet().stream()
+                        .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> entry.getValue().getSecond()
         ));
 
         cache.insertResultIntoCache(hash, dataToStoreInCache);
@@ -206,115 +314,164 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
     }
 
     /**
-     * Lookup for the binding class of the input data
+     * Lookup for the binding class of the input data.
      * @param id identifier of the input dataset
-     * @return binding class (for example GenericXMLBinding or LiteralStringBinding)
+     * @return binding class (for example GenericXMLBinding
+     * or LiteralStringBinding)
      */
     @Override
     public Class<?> getInputDataType(final String id) {
-        if(mapInputDataTypes.containsKey(id)) {
+        if (mapInputDataTypes.containsKey(id)) {
             return mapInputDataTypes.get(id);
         }
         return null;
     }
 
     /**
-     * Lookup for the binding class for the output data
+     * Lookup for the binding class for the output data.
      * @param id identifier of the output dataset
-     * @return binding class (for example GenericXMLBinding or LiteralStringBinding)
+     * @return binding class (for example GenericXMLBinding
+     * or LiteralStringBinding)
      */
     @Override
     public Class<?> getOutputDataType(final String id) {
-        if(mapOutputDataTypes.containsKey(id)) {
+        if (mapOutputDataTypes.containsKey(id)) {
             return mapOutputDataTypes.get(id);
         }
         return null;
     }
 
     /**
-     * Generates the process description by using the configuration
+     * Generates the process description by using the configuration.
      * @return ProcessDescription of the process (xml)
      */
     @Override
     public ProcessDescription getDescription() {
 
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(
-                new ProcessDescriptionGeneratorDataConfigImpl(configuration));
-        final ProcessDescriptionsDocument description = generator.generateProcessDescription();
+        final IProcessDescriptionGenerator generator =
+                new ProcessDescriptionGeneratorImpl(
+                    toProcessDescriptionGeneratorData());
+        final ProcessDescriptionsDocument description =
+                generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
-        processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
+        processDescription.addProcessDescriptionForVersion(
+                description
+                        .getProcessDescriptions()
+                        .getProcessDescriptionArray(0),
+                "1.0.0");
         return processDescription;
     }
 
     /**
-     * InnerRunContext
-     * here are the Maps with the input and output data for each run
+     * This is the inner run context.
+     * Here are the Maps with the input and output data for each run
      */
-    private class InnerRunContext {
+    private final class InnerRunContext {
 
+        /**
+         * Map with the input data.
+         */
         private final Map<String, IData> inputData;
+        /**
+         * Map with the output data to fill in.
+         */
         private final Map<String, Tuple<IData, IDataRecreator>> outputData;
 
         /**
-         * Constructor with the original input data
+         * Constructor with the original input data.
          * @param originalInputData Map with input data from the service
-         * @throws ExceptionReport maybe a ExceptionReport is thrown to handle the errors in the process
+         * @throws ExceptionReport maybe a ExceptionReport is thrown
+         * to handle the errors in the process
          */
-        private InnerRunContext(final Map<String, List<IData>> originalInputData) throws ExceptionReport {
+        private InnerRunContext(
+                final Map<String, List<IData>> originalInputData)
+                throws ExceptionReport {
             this.inputData = getInputFields(originalInputData);
             this.outputData = new HashMap<>();
         }
 
         /**
-         * Set the input fields and runs the script
+         * Set the input fields and runs the script.
          * @return Map with IData as the results
-         * @throws ExceptionReport maybe a ExceptionReport is thrown to handle the errors in the process
+         * @throws ExceptionReport maybe a ExceptionReport is thrown
+         * to handle the errors in the process
          */
-        private Map<String, Tuple<IData, IDataRecreator>> run() throws ExceptionReport {
+        private Map<String, Tuple<IData, IDataRecreator>> run()
+                throws ExceptionReport {
             logger.debug("Start run");
             runExecutable();
             return outputData;
         }
 
-        /*
-         * extracts the input fields
+        /**
+         * Extracts the map with the input data.
+         * @param originalInputData original input data from the base service
+         * @return Map only with Strings as keys and the idatas as values
+         * @throws ExceptionReport exception that is thrown if there
+         * is a need to handle errors in the process
          */
-        private Map<String, IData> getInputFields(final Map<String, List<IData>> originalInputData) throws ExceptionReport {
+        private Map<String, IData> getInputFields(
+                final Map<String, List<IData>> originalInputData)
+                throws ExceptionReport {
 
             logger.debug("Start getInputFields");
             final Map<String, IData> result = new HashMap<>();
 
-            for(final IInputParameter inputValue : inputIdentifiers) {
+            for (final IInputParameter inputValue : inputIdentifiers) {
                 final String identifier = inputValue.getIdentifier();
-                if(! originalInputData.containsKey(identifier)) {
-                    if(inputValue.isOptional()) {
+                if (!originalInputData.containsKey(identifier)) {
+                    if (inputValue.isOptional()) {
                         continue;
                     } else {
-                        throw new ExceptionReport("There is no data for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
+                        throw new ExceptionReport(
+                                "There is no data for the identifier '"
+                                        + identifier
+                                        + "'",
+                                ExceptionReport.MISSING_PARAMETER_VALUE);
                     }
                 }
-                final List<IData> list = originalInputData.get(inputValue.getIdentifier());
-                if(list.isEmpty()) {
-                    if(inputValue.isOptional()) {
+                final List<IData> list = originalInputData.get(
+                        inputValue.getIdentifier());
+                if (list.isEmpty()) {
+                    if (inputValue.isOptional()) {
                         // if the value is optional it is fine if there is none
                         continue;
                     } else {
-                        throw new ExceptionReport("There is just an empty list for the identifier '" + identifier + "'", ExceptionReport.MISSING_PARAMETER_VALUE);
+                        throw new ExceptionReport(
+                                "There is just an empty list "
+                                        + "for the identifier '"
+                                        + identifier
+                                        + "'",
+                                ExceptionReport.MISSING_PARAMETER_VALUE);
                     }
                 }
                 final IData firstElement = list.get(0);
 
-                final Class<? extends IData> bindingClass = inputValue.getBindingClass();
-                if(! bindingClass.isInstance(firstElement)) {
-                    throw new ExceptionReport("There is not the expected Binding class for the identifier '" + identifier + "'", ExceptionReport.INVALID_PARAMETER_VALUE);
+                final Class<? extends IData> bindingClass =
+                        inputValue.getBindingClass();
+                if (!bindingClass.isInstance(firstElement)) {
+                    throw new ExceptionReport(
+                            "There is not the expected "
+                                    + "binding class for the identifier '"
+                                    + identifier
+                                    + "'",
+                            ExceptionReport.INVALID_PARAMETER_VALUE);
                 }
-                final Optional<ICheckDataAndGetErrorMessage> optionalValidator = inputValue.getValidator();
-                if(optionalValidator.isPresent()) {
-                    final ICheckDataAndGetErrorMessage validator = optionalValidator.get();
+                final Optional<ICheckDataAndGetErrorMessage> optionalValidator =
+                        inputValue.getValidator();
+                if (optionalValidator.isPresent()) {
+                    final ICheckDataAndGetErrorMessage validator =
+                            optionalValidator.get();
                     @SuppressWarnings("unchecked")
-                    final Optional<String> errorMessage = validator.check(firstElement);
-                    if(errorMessage.isPresent()) {
-                        throw new ExceptionReport("There is invalid input for the identifier '" + identifier + "'. " + errorMessage.get(), ExceptionReport.INVALID_PARAMETER_VALUE);
+                    final Optional<String> errorMessage =
+                            validator.check(firstElement);
+                    if (errorMessage.isPresent()) {
+                        throw new ExceptionReport(
+                                "There is invalid input for the identifier '"
+                                        + identifier
+                                        + "'. "
+                                        + errorMessage.get(),
+                                ExceptionReport.INVALID_PARAMETER_VALUE);
                     }
                 }
 
@@ -324,8 +481,10 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
             return result;
         }
 
-        /*
-         * runs the executable inside a container
+        /**
+         * Runs the executable inside a context / container.
+         * @throws ExceptionReport may throw this exception in case
+         * of an error
          */
         private void runExecutable() throws ExceptionReport {
 
@@ -334,18 +493,27 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
 
             logger.debug("List with cmd-arguments: " + cmd);
 
-            final IExecutionContextManager contextManager = executionContextFactory.createExecutionContext(configuration);
+            final IExecutionContextManager contextManager =
+                    executionContextFactory.createExecutionContext(
+                            configuration);
 
-            try(final IExecutionContext context = contextManager.createExecutionContext(workingDirectory, cmd)) {
+            try (IExecutionContext context =
+                        contextManager.createExecutionContext(
+                                workingDirectory, cmd)) {
                 logger.debug("Context container created");
                 runExecutableInContext(context);
             }
             logger.debug("Context container removed");
         }
 
-        /*
-         * creates a list of the executable and the arguments
-         * uses a list and not a single string argument to make things more safe
+        /**
+         * Creates a list of the executable and the arguments.
+         * Uses a list and not a single string argument to make
+         * things more safe.
+         *
+         * @return list with command line
+         * @throws ExceptionReport exception that is thrown in case of an
+         * error
          */
         private List<String> createCommandToExecute() throws ExceptionReport {
             final List<String> result = new ArrayList<>();
@@ -355,24 +523,40 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
 
             try {
                 for (final IInputParameter inputValue : inputIdentifiers) {
-                    final Optional<IConvertIDataToCommandLineParameter> functionToTransformToCmd = inputValue.getFunctionToTransformToCmd();
-                    if (functionToTransformToCmd.isPresent() && inputData.containsKey(inputValue.getIdentifier())) {
+                    final Optional<IConvertIDataToCommandLineParameter>
+                            functionToTransformToCmd =
+                            inputValue.getFunctionToTransformToCmd();
+                    if (functionToTransformToCmd.isPresent()
+                            && inputData.containsKey(
+                                    inputValue.getIdentifier())) {
                         @SuppressWarnings("unchecked")
-                        final List<String> args = functionToTransformToCmd.get().convertToCommandLineParameter(inputData.get(inputValue.getIdentifier()));
+                        final List<String> args =
+                                functionToTransformToCmd
+                                        .get().convertToCommandLineParameter(
+                                            inputData.get(
+                                                inputValue.getIdentifier()));
                         result.addAll(args);
                     }
                 }
-            } catch(final ConvertToStringCmdException exception) {
-                throw new ExceptionReport("It is not valid to use the command line arguments", ExceptionReport.INVALID_PARAMETER_VALUE, exception);
+            } catch (final ConvertToStringCmdException exception) {
+                throw new ExceptionReport(
+                        "It is not valid to "
+                                + "use the command line arguments",
+                        ExceptionReport.INVALID_PARAMETER_VALUE,
+                        exception);
             }
 
             return result;
         }
 
-        /*
-         * runs the process and handles input and output
+        /**
+         * Runs the process and handles input and output.
+         * @param context execution context to start the run.
+         * @throws ExceptionReport exception that is thrown in case of
+         * an error
          */
-        private void runExecutableInContext(final IExecutionContext context) throws ExceptionReport {
+        private void runExecutableInContext(final IExecutionContext context)
+                throws ExceptionReport {
             copyInput(context);
             logger.debug("Files copied into container");
 
@@ -394,107 +578,173 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
                     handleExitValue(result.getExitValue());
                     handleStdout(result.getStdoutResult());
 
-                    logger.debug("Handling of stderr/exitValue/stdout finished");
+                    logger.debug(
+                            "Handling of stderr/exitValue/stdout finished");
 
                     readFromOutputFiles(context);
 
-                    logger.debug("Getting files out of the container finished");
-                } catch(final InterruptedException interruptedException) {
-                    throw new ExceptionReport("Can't wait for process termination", ExceptionReport.REMOTE_COMPUTATION_ERROR, interruptedException);
+                    logger.debug(
+                            "Getting files out of the container finished");
+                } catch (final InterruptedException interruptedException) {
+                    throw new ExceptionReport(
+                            "Can't wait for process termination",
+                            ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                            interruptedException);
                 }
-            } catch(final IOException ioException) {
-                throw new ExceptionReport("Can't handle input and output", ExceptionReport.REMOTE_COMPUTATION_ERROR, ioException);
+            } catch (final IOException ioException) {
+                throw new ExceptionReport(
+                        "Can't handle input and output",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        ioException);
             }
         }
 
-        /*
-         * copies all the input files into the container
+        /**
+         * Copies all the input files into the context / container.
+         * @param context exeuction context / container
+         * @throws ExceptionReport exception that is thrown in case
+         * of an error
          */
-        private void copyInput(final IExecutionContext context) throws ExceptionReport {
+        private void copyInput(
+                final IExecutionContext context)
+                throws ExceptionReport {
 
             try {
                 for (final IInputParameter inputValue : inputIdentifiers) {
                     // if there is no data for that identifier it was optional
                     // so no need to copy the input
-                    if(inputData.containsKey(inputValue.getIdentifier())) {
-                        final Optional<String> optionalPath = inputValue.getPathToWriteToOrReadFromFile();
-                        final Optional<IWriteIDataToFiles> optionalWriteIDataToFiles = inputValue.getFunctionToWriteIDataToFiles();
+                    if (inputData.containsKey(inputValue.getIdentifier())) {
+                        final Optional<String> optionalPath =
+                                inputValue.getPathToWriteToOrReadFromFile();
+                        final Optional<IWriteIDataToFiles>
+                                optionalWriteIDataToFiles =
+                                inputValue.getFunctionToWriteIDataToFiles();
 
-                        if (optionalPath.isPresent() && optionalWriteIDataToFiles.isPresent()) {
+                        if (optionalPath.isPresent()
+                                && optionalWriteIDataToFiles.isPresent()) {
                             final String path = optionalPath.get();
-                            final IWriteIDataToFiles writeIDataToFiles = optionalWriteIDataToFiles.get();
+                            final IWriteIDataToFiles writeIDataToFiles =
+                                    optionalWriteIDataToFiles.get();
                             //noinspection unchecked
-                            writeIDataToFiles.writeToFiles(inputData.get(inputValue.getIdentifier()), context,
-                                    configuration.getWorkingDirectory(), path);
+                            writeIDataToFiles.writeToFiles(
+                                    inputData.get(
+                                            inputValue.getIdentifier()),
+                                    context,
+                                    configuration.getWorkingDirectory(),
+                                    path);
                         }
                     }
                 }
-            } catch(final IOException ioException) {
-                throw new ExceptionReport("Files could not be copied to the working directory", ExceptionReport.REMOTE_COMPUTATION_ERROR, ioException);
-            } catch(final ConvertToBytesException convertToBytesException) {
-                throw new ExceptionReport("Data could not be converted to an input file", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertToBytesException);
+            } catch (final IOException ioException) {
+                throw new ExceptionReport(
+                        "Files could not be copied to the "
+                                + "working directory",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        ioException);
+            } catch (final ConvertToBytesException convertToBytesException) {
+                throw new ExceptionReport(
+                        "Data could not be "
+                                + "converted to an input file",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        convertToBytesException);
             }
         }
 
-        /*
-         * writes input to the stdin stream
+        /**
+         * Writes the input to the stdin stream.
+         * @param stdin stdin stream
+         * @throws ExceptionReport exception that is thrown in case of
+         * an error
          */
-        private void writeToStdin(final PrintStream stdin) throws ExceptionReport {
+        private void writeToStdin(final PrintStream stdin)
+                throws ExceptionReport {
             try {
                 for (final IInputParameter inputValue : inputIdentifiers) {
-                    if(inputData.containsKey(inputValue.getIdentifier())) {
-                        final Optional<IConvertIDataToByteArray> optionalFunctionToWriteToStdin = inputValue.getFunctionToWriteToStdin();
+                    if (inputData.containsKey(inputValue.getIdentifier())) {
+                        final Optional<IConvertIDataToByteArray>
+                                optionalFunctionToWriteToStdin =
+                                inputValue.getFunctionToWriteToStdin();
                         if (optionalFunctionToWriteToStdin.isPresent()) {
-                            final IConvertIDataToByteArray functionToWriteToStdin = optionalFunctionToWriteToStdin.get();
+                            final IConvertIDataToByteArray
+                                    functionToWriteToStdin =
+                                    optionalFunctionToWriteToStdin.get();
                             @SuppressWarnings("unchecked")
-                            final byte[] content = functionToWriteToStdin.convertToBytes(inputData.get(inputValue.getIdentifier()));
+                            final byte[] content =
+                                    functionToWriteToStdin
+                                        .convertToBytes(
+                                            inputData.get(
+                                                inputValue.getIdentifier()));
                             IOUtils.write(content, stdin);
                         }
                     }
                 }
-            } catch(final IOException exception) {
-                throw new ExceptionReport("Can't write to stdin", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
-            } catch(final ConvertToBytesException convertToBytesException) {
-                throw new ExceptionReport("Data could not be converted to an text for stdin", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertToBytesException);
+            } catch (final IOException exception) {
+                throw new ExceptionReport(
+                        "Can't write to stdin",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        exception);
+            } catch (final ConvertToBytesException convertToBytesException) {
+                throw new ExceptionReport(
+                        "Data could not be converted to an text for stdin",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        convertToBytesException);
             }
         }
 
-        /*
-         * handles the stderr stream output (indicating error, logging, use it as output)
+        /**
+         * Handes the stderr stream output (error, logging, use as output, ...).
+         * @param stderr stderr text
+         * @throws ExceptionReport exception in case of an error
          */
         private void handleStderr(final String stderr) throws ExceptionReport {
 
-            final Optional<IStderrHandler> mainStderrHandler = configuration.getStderrHandler();
+            final Optional<IStderrHandler> mainStderrHandler =
+                    configuration.getStderrHandler();
             if (mainStderrHandler.isPresent()) {
                 try {
                     mainStderrHandler.get().handleStderr(stderr, logger::debug);
                 } catch (final NonEmptyStderrException exception) {
-                    throw new ExceptionReport("There is an error on stderr", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
+                    throw new ExceptionReport(
+                            "There is an error on stderr",
+                            ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                            exception);
                 }
             }
             try {
                 for (final IOutputParameter outputValue : outputIdentifiers) {
-                    final Optional<IConvertByteArrayToIData> stderrHandler = outputValue.getFunctionToHandleStderr();
+                    final Optional<IConvertByteArrayToIData> stderrHandler =
+                            outputValue.getFunctionToHandleStderr();
 
                     try {
                         if (stderrHandler.isPresent()) {
                             final byte[] bytes = stderr.getBytes();
-                            final IConvertByteArrayToIData converter = stderrHandler.get();
+                            final IConvertByteArrayToIData converter =
+                                    stderrHandler.get();
 
                             final IData iData = converter.convertToIData(bytes);
-                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter, outputValue.getBindingClass()));
+                            putIntoOutput(outputValue,
+                                    iData,
+                                    new RecreateFromByteArray(
+                                            bytes,
+                                            converter,
+                                            outputValue.getBindingClass()));
                         }
                     } catch (final ConvertToIDataException convertException) {
-                        if(outputValue.isOptional()) {
+                        if (outputValue.isOptional()) {
                             logger.info("Can't read from stderr.");
-                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                            logger.info("But since '"
+                                    + outputValue.getIdentifier()
+                                    + "' is optional, it can be ignored.");
                         } else {
                             throw convertException;
                         }
                     }
                 }
             } catch (final ConvertToIDataException convertException) {
-                throw new ExceptionReport("Can't read from stderr", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertException);
+                throw new ExceptionReport(
+                        "Can't read from stderr",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        convertException);
             }
 
         }
@@ -503,118 +753,213 @@ public class BaseGfzRiesgosService extends AbstractSelfDescribingAlgorithm imple
          * insert the data into the output map
          * if there is an validator, then it is used here
          */
-        private void putIntoOutput(final IOutputParameter outputValue, final IData iData, final IDataRecreator dataRecreator) throws ExceptionReport {
-            final Optional<ICheckDataAndGetErrorMessage> optionalValidator = outputValue.getValidator();
-            if(optionalValidator.isPresent()) {
-                final ICheckDataAndGetErrorMessage validator = optionalValidator.get();
+
+        /**
+         * Inserts the data to the output map.
+         * If there is a validator, then it is used here.
+         * @param outputValue output parameter for which the data should be
+         *                    inserted in the result map
+         * @param iData data that should be inserted in the result map
+         * @param dataRecreator recreator for the data (for the caching)
+         * @throws ExceptionReport exception in case of an error
+         */
+        private void putIntoOutput(
+                final IOutputParameter outputValue,
+                final IData iData,
+                final IDataRecreator dataRecreator)
+
+                throws ExceptionReport {
+
+            final Optional<ICheckDataAndGetErrorMessage> optionalValidator =
+                    outputValue.getValidator();
+            if (optionalValidator.isPresent()) {
+                final ICheckDataAndGetErrorMessage validator =
+                        optionalValidator.get();
 
                 @SuppressWarnings("unchecked")
-                final Optional<String> optionalErrorMessage = validator.check(iData);
-                if(optionalErrorMessage.isPresent()) {
+                final Optional<String> optionalErrorMessage =
+                        validator.check(iData);
+                if (optionalErrorMessage.isPresent()) {
                     final String errorMessage = optionalErrorMessage.get();
-                    throw new ExceptionReport("The output for '" + outputValue.getIdentifier() + "' is not valid:\n" + errorMessage, ExceptionReport.REMOTE_COMPUTATION_ERROR);
+                    throw new ExceptionReport(
+                            "The output for '"
+                                    + outputValue.getIdentifier()
+                                    + "' is not valid:\n"
+                                    + errorMessage,
+                            ExceptionReport.REMOTE_COMPUTATION_ERROR);
                 }
             }
-            outputData.put(outputValue.getIdentifier(), new Tuple<>(iData, dataRecreator));
+            outputData.put(
+                    outputValue.getIdentifier(),
+                    new Tuple<>(iData, dataRecreator));
         }
 
-        /*
-         * handles the exit value (indicating error, logging, use as output)
+        /**
+         * Handling of the exit value (error, logging, use as output).
+         * @param exitValue exit value from the cmd program
+         * @throws ExceptionReport exception that may be thrown
+         * in case the exitValue indicates an error
          */
-        private void handleExitValue(final int exitValue) throws ExceptionReport {
-            final Optional<IExitValueHandler> mainExitValueHandler = configuration.getExitValueHandler();
+        private void handleExitValue(final int exitValue)
+                throws ExceptionReport {
+            final Optional<IExitValueHandler> mainExitValueHandler =
+                    configuration.getExitValueHandler();
             if (mainExitValueHandler.isPresent()) {
                 try {
-                    mainExitValueHandler.get().handleExitValue(exitValue, logger::debug);
-                } catch( final NonZeroExitValueException exception){
-                    throw new ExceptionReport("There is a non empty exit value", ExceptionReport.REMOTE_COMPUTATION_ERROR, exception);
+                    mainExitValueHandler
+                            .get()
+                            .handleExitValue(exitValue, logger::debug);
+                } catch (final NonZeroExitValueException exception) {
+                    throw new ExceptionReport(
+                            "There is a non empty exit value",
+                            ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                            exception);
                 }
             }
             try {
                 for (final IOutputParameter outputValue : outputIdentifiers) {
                     try {
-                        final Optional<IConvertExitValueToIData> exitValueHandler = outputValue.getFunctionToHandleExitValue();
+                        final Optional<IConvertExitValueToIData>
+                                exitValueHandler =
+                                outputValue.getFunctionToHandleExitValue();
                         if (exitValueHandler.isPresent()) {
-                            final IConvertExitValueToIData converter = exitValueHandler.get();
-                            final IData iData = converter.convertToIData(exitValue);
-                            putIntoOutput(outputValue, iData, new RecreateFromExitValue(exitValue, converter, outputValue.getBindingClass()));
+                            final IConvertExitValueToIData converter =
+                                    exitValueHandler.get();
+                            final IData iData =
+                                    converter.convertToIData(exitValue);
+                            putIntoOutput(
+                                    outputValue,
+                                    iData,
+                                    new RecreateFromExitValue(
+                                            exitValue,
+                                            converter,
+                                            outputValue.getBindingClass()));
                         }
                     } catch (final ConvertToIDataException convertException) {
-                        if(outputValue.isOptional()) {
+                        if (outputValue.isOptional()) {
                             logger.info("Can't read from exit value.");
-                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                            logger.info("But since '"
+                                    + outputValue.getIdentifier()
+                                    + "' is optional, it can be ignored.");
                         } else {
                             throw convertException;
                         }
                     }
 
                 }
-            } catch(final ConvertToIDataException convertException) {
-                throw new ExceptionReport("Can't read from exit value", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertException);
+            } catch (final ConvertToIDataException convertException) {
+                throw new ExceptionReport(
+                        "Can't read from exit value",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        convertException);
             }
         }
 
-        /*
-         * handles stdout stream output (logging, use as output)
+        /**
+         * Handles stdout stream output (logging, use as output).
+         * @param stdout text from stdout
+         * @throws ExceptionReport Exception that may be thrown in case of
+         * an error
          */
         private void handleStdout(final String stdout) throws ExceptionReport {
-            final Optional<IStdoutHandler> mainStdoutHandler = configuration.getStdoutHandler();
-            mainStdoutHandler.ifPresent(handler -> handler.handleStdout(stdout));
+            final Optional<IStdoutHandler> mainStdoutHandler
+                    = configuration.getStdoutHandler();
+            mainStdoutHandler.ifPresent(
+                    handler -> handler.handleStdout(stdout));
 
             try {
                 for (final IOutputParameter outputValue : outputIdentifiers) {
                     try {
-                        final Optional<IConvertByteArrayToIData> stdoutHandler = outputValue.getFunctionToHandleStdout();
+                        final Optional<IConvertByteArrayToIData> stdoutHandler
+                                = outputValue.getFunctionToHandleStdout();
                         if (stdoutHandler.isPresent()) {
                             final byte[] bytes = stdout.getBytes();
-                            final IConvertByteArrayToIData converter = stdoutHandler.get();
+                            final IConvertByteArrayToIData converter =
+                                    stdoutHandler.get();
                             final IData iData = converter.convertToIData(bytes);
-                            putIntoOutput(outputValue, iData, new RecreateFromByteArray(bytes, converter, outputValue.getBindingClass()));
+                            putIntoOutput(
+                                    outputValue,
+                                    iData,
+                                    new RecreateFromByteArray(
+                                            bytes,
+                                            converter,
+                                            outputValue.getBindingClass()));
                         }
-                    } catch(final ConvertToIDataException convertException) {
-                        if(outputValue.isOptional()) {
+                    } catch (final ConvertToIDataException convertException) {
+                        if (outputValue.isOptional()) {
                             logger.info("Can't read from stdout.");
-                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                            logger.info("But since '"
+                                    + outputValue.getIdentifier()
+                                    + "' is optional, it can be ignored.");
                         } else {
                             throw convertException;
                         }
                     }
                 }
-            } catch(final ConvertToIDataException convertException) {
-                throw new ExceptionReport("Can't read from stdout", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertException);
+            } catch (final ConvertToIDataException convertException) {
+                throw new ExceptionReport("Can't read from stdout",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        convertException);
             }
         }
 
-        /*
-         * reads output files from the container
+
+        /**
+         * Reads the output files from the context / container.
+         * @param context execution context / container with the output files
+         * @throws ExceptionReport exception that is thrown in case of an
+         * error
          */
-        private void readFromOutputFiles(final IExecutionContext context) throws ExceptionReport {
+        private void readFromOutputFiles(
+                final IExecutionContext context) throws ExceptionReport {
 
             try {
-                for(final IOutputParameter outputValue : outputIdentifiers) {
+                for (final IOutputParameter outputValue : outputIdentifiers) {
                     try {
-                        final Optional<String> optionalPath = outputValue.getPathToWriteToOrReadFromFile();
-                        final Optional<IReadIDataFromFiles> optionalFunctionToReadFromFiles = outputValue.getFunctionToReadIDataFromFiles();
-                        if(optionalPath.isPresent() && optionalFunctionToReadFromFiles.isPresent()) {
+                        final Optional<String> optionalPath =
+                                outputValue.getPathToWriteToOrReadFromFile();
+                        final Optional<IReadIDataFromFiles>
+                                optionalFunctionToReadFromFiles =
+                                outputValue.getFunctionToReadIDataFromFiles();
+                        if (optionalPath.isPresent()
+                            && optionalFunctionToReadFromFiles.isPresent()) {
+
                             final String path = optionalPath.get();
-                            final IReadIDataFromFiles functionToReadFromFiles = optionalFunctionToReadFromFiles.get();
-                            final Tuple<IData, IDataRecreator> readResult = functionToReadFromFiles.readFromFiles(context, configuration.getWorkingDirectory(), path);
-                            putIntoOutput(outputValue, readResult.getFirst(), readResult.getSecond());
+                            final IReadIDataFromFiles functionToReadFromFiles =
+                                    optionalFunctionToReadFromFiles.get();
+                            final DataWithRecreatorTuple readResult =
+                                    functionToReadFromFiles.readFromFiles(
+                                            context,
+                                            configuration.getWorkingDirectory(),
+                                            path);
+                            putIntoOutput(
+                                    outputValue,
+                                    readResult.getData(),
+                                    readResult.getRecreator());
                         }
-                    } catch(final IOException | ConvertToIDataException exception) {
-                        if(outputValue.isOptional()) {
+                    } catch (final IOException
+                            | ConvertToIDataException exception) {
+                        if (outputValue.isOptional()) {
                             logger.info("Can't read from output file.");
-                            logger.info("But since '" + outputValue.getIdentifier() + "' is optional, we can ignore it.");
+                            logger.info("But since '"
+                                    + outputValue.getIdentifier()
+                                    + "' is optional, it can be ignored.");
                         } else {
                             throw exception;
                         }
                     }
 
                 }
-            } catch(final IOException ioException) {
-                throw new ExceptionReport("Files could not be read", ExceptionReport.REMOTE_COMPUTATION_ERROR, ioException);
-            } catch(final ConvertToIDataException convertException) {
-                throw new ExceptionReport("Data could not be converted", ExceptionReport.REMOTE_COMPUTATION_ERROR, convertException);
+            } catch (final IOException ioException) {
+                throw new ExceptionReport(
+                        "Files could not be read",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        ioException);
+            } catch (final ConvertToIDataException convertException) {
+                throw new ExceptionReport(
+                        "Data could not be converted",
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        convertException);
             }
         }
     }
