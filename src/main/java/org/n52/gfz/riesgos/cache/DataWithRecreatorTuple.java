@@ -18,11 +18,26 @@ package org.n52.gfz.riesgos.cache;
 
 import org.n52.wps.io.data.IData;
 
+/**
+ * Tuple class with the idata and the recreator.
+ * @param <T> explicit binding class
+ */
 public class DataWithRecreatorTuple<T extends IData> {
 
+    /**
+     * Data itself.
+     */
     private final T iData;
+    /**
+     * Recreator for that data.
+     */
     private final IDataRecreator recreator;
 
+    /**
+     * Creates a new Tuple with the data and its recreator.
+     * @param aData data itself
+     * @param aRecreator recreator for that data
+     */
     public DataWithRecreatorTuple(
             final T aData,
             final IDataRecreator aRecreator) {
@@ -30,10 +45,18 @@ public class DataWithRecreatorTuple<T extends IData> {
         this.recreator = aRecreator;
     }
 
+    /**
+     * Returns the data itself.
+     * @return data itself
+     */
     public T getData() {
         return iData;
     }
 
+    /**
+     * Returns the recreator.
+     * @return recreator for the data
+     */
     public IDataRecreator getRecreator() {
         return recreator;
     }

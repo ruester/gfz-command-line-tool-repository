@@ -37,13 +37,21 @@ public class GenerateCacheKeyByConvertToByteArray<T extends IData>
      * Function to convert the data to a byte array.
      */
     private final IConvertIDataToByteArray<T> functionToConvertToByteArray;
+    /**
+     * Path for in input file.
+     */
     private final String path;
+    /**
+     * Boolean if the input is optional or not.
+     */
     private final boolean isOptional;
 
     /**
      * Constructor that takes a function to convert the data to
      * a byte array.
      * @param aFunctionToConvertToByteArray function to convert the data
+     * @param aPath path of an input file
+     * @param aIsOptional value if the input is optional or not
      */
     public GenerateCacheKeyByConvertToByteArray(
             final IConvertIDataToByteArray<T> aFunctionToConvertToByteArray,
@@ -65,9 +73,15 @@ public class GenerateCacheKeyByConvertToByteArray<T extends IData>
         try {
             final byte[] content =
                     functionToConvertToByteArray.convertToBytes(idata);
-            return new InputParameterCacheKeyByByteArray(content, path, isOptional);
+            return new InputParameterCacheKeyByByteArray(
+                    content,
+                    path,
+                    isOptional);
         } catch (final ConvertToBytesException exception) {
-            return new InputParameterCacheKeyByException(exception, path, isOptional);
+            return new InputParameterCacheKeyByException(
+                    exception,
+                    path,
+                    isOptional);
         }
     }
 }

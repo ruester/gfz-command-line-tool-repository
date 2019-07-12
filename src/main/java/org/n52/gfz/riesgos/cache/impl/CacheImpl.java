@@ -31,7 +31,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class CacheImpl implements ICacher {
 
+    /**
+     * Maximum size of the cache map.
+     */
     private static final long MAX_SIZE = 50_000L;
+
+    /**
+     * Maximum duration to store the
+     * data in the cache.
+     */
     private static final long MAX_DURATION_DAYS = 60;
 
     /**
@@ -44,7 +52,10 @@ public class CacheImpl implements ICacher {
      * Constructor without parameters.
      */
     public CacheImpl() {
-        cache = CacheBuilder.newBuilder().maximumSize(MAX_SIZE).expireAfterAccess(MAX_DURATION_DAYS, TimeUnit.DAYS).build();
+        cache = CacheBuilder.newBuilder()
+                .maximumSize(MAX_SIZE)
+                .expireAfterAccess(MAX_DURATION_DAYS, TimeUnit.DAYS)
+                .build();
     }
 
     /**

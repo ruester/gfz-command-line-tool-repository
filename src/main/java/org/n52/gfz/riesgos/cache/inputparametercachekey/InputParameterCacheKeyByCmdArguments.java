@@ -33,11 +33,15 @@ public class InputParameterCacheKeyByCmdArguments
      * List with command line arguments.
      */
     private final List<String> cmds;
+    /**
+     * Value if the input is optional.
+     */
     private final boolean isOptional;
 
     /**
      * Constructor with a list of command line arguments.
      * @param aCmds list of command line arguments
+     * @param aIsOptional value if the input is optional
      */
     public InputParameterCacheKeyByCmdArguments(
             final List<String> aCmds,

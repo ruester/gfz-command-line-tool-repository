@@ -16,10 +16,6 @@
 
 package org.n52.gfz.riesgos.cache;
 
-import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
-import org.n52.gfz.riesgos.util.Tuple;
-import org.n52.wps.io.data.IData;
-
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,13 +26,13 @@ public interface ICacher {
 
     /**
      * This is the method to ask the caching system about if it has data in it.
-     * If there is no data for in the caching system, than it will just give back
-     * Optional.empty
+     * If there is no data for in the caching system, than it will just give
+     * back Optional.empty
      * @param hash hash that is computed from the configuration and the
      *             input data
      * @return optional map with output data
      */
-    Optional<Map<String, IDataRecreator>> getCachedResult(final String hash);
+    Optional<Map<String, IDataRecreator>> getCachedResult(String hash);
 
     /**
      * This is the method to call once the algorithm is done and the
@@ -45,6 +41,7 @@ public interface ICacher {
      *             the input data
      * @param outputData resulting data to store
      */
-    void insertResultIntoCache(final String hash,
+    void insertResultIntoCache(
+            String hash,
             Map<String, IDataRecreator> outputData);
 }

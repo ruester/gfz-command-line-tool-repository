@@ -37,6 +37,9 @@ public enum HasherSingleton implements IHasher {
             new DockerImageIdLookup(),
             new NoWpsVersionHandler()));
 
+    /**
+     * Inner hasher instance.
+     */
     private final IHasher wrappedHasher;
 
     /**
@@ -55,7 +58,9 @@ public enum HasherSingleton implements IHasher {
      * @return hash
      */
     @Override
-    public String hash(IConfiguration configuration, Map<String, List<IData>> inputData) {
+    public String hash(
+            final IConfiguration configuration,
+            final Map<String, List<IData>> inputData) {
         return wrappedHasher.hash(configuration, inputData);
     }
 }

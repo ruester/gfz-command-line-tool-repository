@@ -18,7 +18,6 @@ package org.n52.gfz.riesgos.cache.impl;
 
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cache.IDataRecreator;
-import org.n52.wps.io.data.IData;
 
 import java.util.Map;
 import java.util.Optional;

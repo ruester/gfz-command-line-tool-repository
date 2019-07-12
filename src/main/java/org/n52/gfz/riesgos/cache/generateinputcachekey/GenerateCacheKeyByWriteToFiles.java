@@ -54,12 +54,20 @@ public class GenerateCacheKeyByWriteToFiles<T extends IData>
      * manager.
      */
     private final IWriteIDataToFiles<T> writeIDataToFiles;
+    /**
+     * Path for an input file.
+     */
     private final String path;
+    /**
+     * Value to indicate if the input is optional or not.
+     */
     private final boolean isOptional;
 
     /**
      * Constructor with a IWriteIDataToFiles.
      * @param aWriteIDataToFiles function to write the idata to files
+     * @param aPath path for the input
+     * @param aIsOptional value if the input is optional or not
      */
     public GenerateCacheKeyByWriteToFiles(
             final IWriteIDataToFiles<T> aWriteIDataToFiles,
@@ -86,9 +94,11 @@ public class GenerateCacheKeyByWriteToFiles<T extends IData>
                     context,
                     PSEUDO_WORK_DIR,
                     PSEUDO_PATH);
-            return new InputParameterCacheKeyByByteArrayList(context.contents, path, isOptional);
+            return new InputParameterCacheKeyByByteArrayList(
+                    context.contents, path, isOptional);
         } catch (final IOException | ConvertToBytesException exception) {
-            return new InputParameterCacheKeyByException(exception, path, isOptional);
+            return new InputParameterCacheKeyByException(
+                    exception, path, isOptional);
         }
     }
 
@@ -134,11 +144,11 @@ public class GenerateCacheKeyByWriteToFiles<T extends IData>
         /**
          * Function will not be used.
          *
-         * @param path path of a file
+         * @param aPath path of a file
          * @return useless empty byte array
          */
         @Override
-        public byte[] readFromFile(final String path) {
+        public byte[] readFromFile(final String aPath) {
             // nothing to read here
             return new byte[0];
         }

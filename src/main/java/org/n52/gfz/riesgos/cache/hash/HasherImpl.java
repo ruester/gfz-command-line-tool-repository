@@ -48,17 +48,30 @@ import java.util.Objects;
  */
 public class HasherImpl implements IHasher {
 
+    /**
+     * MD5 algorithm to compute hashes.
+     */
     private static final MessageDigest MESSAGE_DIGEST = getMd5();
 
+    /**
+     * Function to get the md5 algorithm.
+     * @return MessageDigest with md5 algorithm
+     */
     private static MessageDigest getMd5() {
         try {
             return MessageDigest.getInstance("MD5");
-        } catch(final NoSuchAlgorithmException exception) {
+        } catch (final NoSuchAlgorithmException exception) {
             throw new RuntimeException(exception);
         }
     }
 
+    /**
+     * Lookup function for the image id and the docker version.
+     */
     private final IDockerImageIdLookup imageIdLookup;
+    /**
+     * Lookup function for the wps and repository version.
+     */
     private final IWpsVersionHandler wpsVersionHandler;
 
     /**
@@ -72,8 +85,17 @@ public class HasherImpl implements IHasher {
         this.wpsVersionHandler = aWpsVersionHandler;
     }
 
+    /**
+     * Creates a hash from the configuration and the input data.
+     * @param configuration configuration used for the process
+     * @param inputData input data for the process
+     * @return hash for the overall input environment and the
+     * output handling
+     */
     @Override
-    public String hash(IConfiguration configuration, Map<String, List<IData>> inputData) {
+    public String hash(
+            final IConfiguration configuration,
+            final Map<String, List<IData>> inputData) {
 
         final CacheKey key = new CacheKey(
                 configuration,
@@ -83,16 +105,19 @@ public class HasherImpl implements IHasher {
                 wpsVersionHandler.getRepositoryVersion(),
                 wpsVersionHandler.getWpsVersion());
 
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
+        final ByteArrayOutputStream byteArrayOutputStream =
+                new ByteArrayOutputStream();
+        try (ObjectOutputStream objectOutputStream =
+                     new ObjectOutputStream(byteArrayOutputStream)) {
             objectOutputStream.writeObject(key);
 
-            final byte[] md5 = MESSAGE_DIGEST.digest(byteArrayOutputStream.toByteArray());
+            final byte[] md5 =
+                    MESSAGE_DIGEST.digest(byteArrayOutputStream.toByteArray());
 
             MESSAGE_DIGEST.reset();
             return Hex.encodeHexString(md5);
 
-        } catch(final IOException ioException) {
+        } catch (final IOException ioException) {
             throw new RuntimeException(ioException);
         }
     }
@@ -241,11 +266,13 @@ public class HasherImpl implements IHasher {
                 } catch (final Exception exception) {
                     inputCacheKeyMap.add(
                             new Tuple<>(
-                                    inputParameter.getIdentifier(),
-                                    new InputParameterCacheKeyByException(
-                                            exception,
-                                            inputParameter.getPathToWriteToOrReadFromFile().orElse(null),
-                                            inputParameter.isOptional())));
+                                inputParameter.getIdentifier(),
+                                new InputParameterCacheKeyByException(
+                                    exception,
+                                    inputParameter
+                                            .getPathToWriteToOrReadFromFile()
+                                            .orElse(null),
+                                    inputParameter.isOptional())));
                 }
             }
 

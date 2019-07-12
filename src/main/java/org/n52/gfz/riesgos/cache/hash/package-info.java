@@ -15,8 +15,7 @@
  */
 
 /**
- * This is a package with interfaces and classes to
- * handle to lookup of an image id from a given image id
- * or image id label.
+ * This package contains the classes to compute the hashes
+ * that are used as keys for the caching.
  */
-package org.n52.gfz.riesgos.cache.dockerimagehandling;
+package org.n52.gfz.riesgos.cache.hash;

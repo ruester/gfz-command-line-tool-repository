@@ -34,19 +34,28 @@ public class InputParameterCacheKeyByByteArrayList
      * List of keys for all the byte arrays.
      */
     private final List<IInputParameterCacheKey> keys;
+    /**
+     * Path of the input.
+     */
     private final String path;
+    /**
+     * Value if the input is optional.
+     */
     private final boolean isOptional;
 
     /**
      * Constructor with a list of byte arrays.
      * @param aContents list of byte arrays (maybe several files).
+     * @param aPath path of the input
+     * @param aIsOptional value if the input is optional
      */
     public InputParameterCacheKeyByByteArrayList(
             final List<byte[]> aContents,
             final String aPath,
             final boolean aIsOptional) {
         this.keys = aContents.stream()
-                .map(content -> new InputParameterCacheKeyByByteArray(content, aPath, aIsOptional))
+                .map(content -> new InputParameterCacheKeyByByteArray(
+                        content, aPath, aIsOptional))
                 .collect(Collectors.toList());
         this.path = aPath;
         this.isOptional = aIsOptional;

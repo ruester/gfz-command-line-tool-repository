@@ -20,9 +20,26 @@ import org.n52.wps.io.data.IData;
 
 import java.io.Serializable;
 
+/**
+ * This is an interface to recreate the idata.
+ * It is meant for cases on which the idata refers
+ * to a temporary file and the content is read from
+ * the caching system, so that the temporary file
+ * is not there anymore.
+ */
 public interface IDataRecreator extends Serializable {
 
+    /**
+     * Recreates the idata.
+     * @return recreated idata
+     */
     IData recreate();
 
+    /**
+     * Returns the binding class that will be recreated.
+     * This is meant to check the chache if there is content
+     * for a specifc class.
+     * @return binding class
+     */
     Class<? extends IData> getBindingClassToRecreate();
 }

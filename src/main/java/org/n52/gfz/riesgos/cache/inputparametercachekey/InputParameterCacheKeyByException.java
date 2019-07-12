@@ -36,12 +36,20 @@ public class InputParameterCacheKeyByException
      * Exception that is wrapped.
      */
     private final Exception exception;
+    /**
+     * Path of the input.
+     */
     private final String path;
+    /**
+     * Value if the input is optional.
+     */
     private final boolean isOptional;
 
     /**
      * Constructor with the exception.
      * @param aException exception to wrap
+     * @param aPath path of the input
+     * @param aIsOptional value if the input is optional
      */
     public InputParameterCacheKeyByException(
             final Exception aException,

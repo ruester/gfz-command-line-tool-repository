@@ -18,20 +18,43 @@ package org.n52.gfz.riesgos.cache;
 
 import org.n52.wps.io.data.IData;
 
-
+/**
+ * Implementation of the recreator
+ * that just contains the idata itself.
+ *
+ * This is only meant for cases in which there
+ * is no link to a tempoary file (so for literal strings
+ * or xml contents or feature collections).
+ */
 public class RecreateFromBindingClass implements IDataRecreator {
 
+    private static final long serialVersionUID = 4607639669235423099L;
+    /**
+     * Idata to give back.
+     */
     private final IData data;
 
+    /**
+     * Creates the recreator from an existing idata.
+     * @param aData idata to store in
+     */
     public RecreateFromBindingClass(final IData aData) {
         this.data = aData;
     }
 
+    /**
+     *
+     * @return the given idata
+     */
     @Override
     public IData recreate() {
         return data;
     }
 
+    /**
+     *
+     * @return class of the given idata
+     */
     @Override
     public Class<? extends IData> getBindingClassToRecreate() {
         return data.getClass();

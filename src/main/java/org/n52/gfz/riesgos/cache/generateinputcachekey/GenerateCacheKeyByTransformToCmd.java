@@ -40,12 +40,16 @@ public class GenerateCacheKeyByTransformToCmd<T extends IData>
     private final IConvertIDataToCommandLineParameter<T>
             convertIDataToCommandLineParameter;
 
+    /**
+     * True if the input value is optional.
+     */
     private final boolean isOptional;
 
     /**
      * Constructor with a function to convert idata to command line
      * arguments.
      * @param aConvertIDataToCommandLineParameter converter function
+     * @param aIsOptional boolean value that tells it the input is optional
      */
     public GenerateCacheKeyByTransformToCmd(
             final IConvertIDataToCommandLineParameter<T>
@@ -68,9 +72,11 @@ public class GenerateCacheKeyByTransformToCmd<T extends IData>
             final List<String> cmds =
                     convertIDataToCommandLineParameter
                             .convertToCommandLineParameter(idata);
-            return new InputParameterCacheKeyByCmdArguments(cmds, isOptional);
+            return new InputParameterCacheKeyByCmdArguments(
+                    cmds, isOptional);
         } catch (final ConvertToStringCmdException exception) {
-            return new InputParameterCacheKeyByException(exception, null, isOptional);
+            return new InputParameterCacheKeyByException(
+                    exception, null, isOptional);
         }
     }
 }

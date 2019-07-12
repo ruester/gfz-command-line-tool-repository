@@ -32,12 +32,20 @@ public class InputParameterCacheKeyByByteArray
      * Byte array with the content.
      */
     private final byte[] content;
+    /**
+     * Path of the input.
+     */
     private final String path;
+    /**
+     * Value if the input is optional or not.
+     */
     private final boolean isOptional;
 
     /**
      * Constructor with a byte array.
      * @param aContent byte array with the content of an idata.
+     * @param aPath path of the input
+     * @param aIsOptional value if the input is optional
      */
     public InputParameterCacheKeyByByteArray(
             final byte[] aContent,
@@ -54,17 +62,18 @@ public class InputParameterCacheKeyByByteArray
      * @return true if both are equal.
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InputParameterCacheKeyByByteArray that = (InputParameterCacheKeyByByteArray) o;
-        return isOptional == that.isOptional &&
-                Arrays.equals(content, that.content) &&
-                Objects.equals(path, that.path);
+        InputParameterCacheKeyByByteArray that =
+                (InputParameterCacheKeyByByteArray) o;
+        return isOptional == that.isOptional
+                && Arrays.equals(content, that.content)
+                && Objects.equals(path, that.path);
     }
 
     /**
@@ -74,7 +83,8 @@ public class InputParameterCacheKeyByByteArray
     @Override
     public int hashCode() {
         int result = Objects.hash(path, isOptional);
-        result = 31 * result + Arrays.hashCode(content);
+        final int prime = 31;
+        result = prime * result + Arrays.hashCode(content);
         return result;
     }
 }

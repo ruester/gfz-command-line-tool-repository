@@ -22,8 +22,23 @@ import org.n52.wps.io.data.IData;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This is the interface for the computation of the
+ * hash from the configuration and the input data
+ * for a process.
+ * The key that is computed here should be used as
+ * keys for the caching.
+ */
 public interface IHasher {
 
-    String hash(final IConfiguration configuration, final Map<String, List<IData>> inputData);
+    /**
+     * Computes the hash for the configuration and the input data.
+     * @param configuration configuration of the process that should be cached
+     * @param inputData input data for the process
+     * @return hash (unique for the combination of configuration and input data)
+     */
+    String hash(
+            IConfiguration configuration,
+            Map<String, List<IData>> inputData);
 
 }

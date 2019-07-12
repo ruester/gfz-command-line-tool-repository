@@ -20,13 +20,33 @@ import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.wps.io.data.IData;
 
+/**
+ * Implementation of the recreator for
+ * a converter from byte content.
+ */
 public class RecreateFromByteArray implements IDataRecreator {
 
+    private static final long serialVersionUID = 9173992944630769497L;
+    /**
+     * Byte content.
+     */
     private final byte[] content;
+    /**
+     * Converter function.
+     */
     private final IConvertByteArrayToIData converter;
+    /**
+     * Binding class that will be recreated.
+     */
     private final Class<? extends IData> bindingClass;
 
-
+    /**
+     * Creates a new Recreator for a byte array and a function to
+     * convert it into an idata.
+     * @param aContent byte array with the content
+     * @param aConverter converter to convert to idata
+     * @param aBindingClass binding class will be recreated
+     */
     public RecreateFromByteArray(
             final byte[] aContent,
             final IConvertByteArrayToIData aConverter,
@@ -36,6 +56,10 @@ public class RecreateFromByteArray implements IDataRecreator {
         this.bindingClass = aBindingClass;
     }
 
+    /**
+     *
+     * @return idata from the byte array
+     */
     @Override
     public IData recreate() {
         try {
@@ -47,6 +71,10 @@ public class RecreateFromByteArray implements IDataRecreator {
         }
     }
 
+    /**
+     *
+     * @return binding class that will be recreated
+     */
     @Override
     public Class<? extends IData> getBindingClassToRecreate() {
         return bindingClass;
