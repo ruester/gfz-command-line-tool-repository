@@ -42,8 +42,8 @@ public interface IWriteIDataToFiles<T extends IData> {
      * @throws IOException a normal IOException that may happen on writing the files
      */
     void writeToFiles(
-            final T iData,
-            final IExecutionContext context,
-            final String workingDirectory,
-            final String path) throws ConvertToBytesException, IOException;
+            T iData,
+            IExecutionContext context,
+            String workingDirectory,
+            String path) throws ConvertToBytesException, IOException;
 }

@@ -22,5 +22,5 @@ import org.n52.gfz.riesgos.configuration.IConfiguration;
 @FunctionalInterface
 public interface IExecutionContextManagerFactory {
 
-    IExecutionContextManager createExecutionContext(final IConfiguration configuration);
+    IExecutionContextManager createExecutionContext(IConfiguration configuration);
 }

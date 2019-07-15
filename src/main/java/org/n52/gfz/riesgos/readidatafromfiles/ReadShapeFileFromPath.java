@@ -80,7 +80,7 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
     }
 
     private void writeFile(final File file, final byte[] content) throws IOException {
-        try(final FileOutputStream outputStream = new FileOutputStream(file)) {
+        try(FileOutputStream outputStream = new FileOutputStream(file)) {
             IOUtils.write(content, outputStream);
         }
     }

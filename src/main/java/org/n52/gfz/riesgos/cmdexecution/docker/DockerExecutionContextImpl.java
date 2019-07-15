@@ -105,7 +105,7 @@ public class DockerExecutionContextImpl implements IExecutionContext {
         final ThreadedStreamStringReader stderr = new ThreadedStreamStringReader(process.getErrorStream());
         stderr.start();
 
-        try(final TarArchiveInputStream tarInputStream = new TarArchiveInputStream(stdout)) {
+        try(TarArchiveInputStream tarInputStream = new TarArchiveInputStream(stdout)) {
             tarInputStream.getNextEntry();
             final byte[] result = IOUtils.toByteArray(tarInputStream);
 
@@ -147,7 +147,7 @@ public class DockerExecutionContextImpl implements IExecutionContext {
         final ThreadedStreamStringReader stderr = new ThreadedStreamStringReader(process.getErrorStream());
         stderr.start();
 
-        try(final TarArchiveOutputStream tarOutputStream = new TarArchiveOutputStream(stdin)) {
+        try(TarArchiveOutputStream tarOutputStream = new TarArchiveOutputStream(stdin)) {
             final TarArchiveEntry entry = new TarArchiveEntry(fileName);
             entry.setSize((long) content.length);
             tarOutputStream.putArchiveEntry(entry);

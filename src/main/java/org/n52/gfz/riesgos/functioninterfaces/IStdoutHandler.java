@@ -28,5 +28,5 @@ public interface IStdoutHandler extends Serializable {
      * Handles the text on stdout
      * @param stdout text from stdout
      */
-    void handleStdout(final String stdout);
+    void handleStdout(String stdout);
 }

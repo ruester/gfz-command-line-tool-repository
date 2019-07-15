@@ -42,7 +42,7 @@ public interface IExecutionContext extends AutoCloseable {
      * @return byte array content
      * @throws IOException there may be an IOException on reading the file
      */
-    byte[] readFromFile(final String path) throws IOException;
+    byte[] readFromFile(String path) throws IOException;
 
     /**
      * Write the contents of a byte array to a path (maybe in a docker container)
@@ -51,5 +51,5 @@ public interface IExecutionContext extends AutoCloseable {
      * @param fileName filename in the working directory
      * @throws IOException there may be an IOException on writing the file
      */
-    void writeToFile(final byte[] content, final String workingDir, final String fileName) throws IOException;
+    void writeToFile(byte[] content, String workingDir, String fileName) throws IOException;
 }

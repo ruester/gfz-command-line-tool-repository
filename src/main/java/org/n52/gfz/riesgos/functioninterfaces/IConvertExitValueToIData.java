@@ -30,5 +30,5 @@ public interface IConvertExitValueToIData<T extends IData> {
      * @return IData element
      * @throws ConvertToIDataException exception if there is an internal error / exception on conversion
      */
-    T convertToIData(final int exitValue) throws ConvertToIDataException;
+    T convertToIData(int exitValue) throws ConvertToIDataException;
 }
