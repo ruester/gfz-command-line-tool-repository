@@ -17,7 +17,6 @@
 package org.n52.gfz.riesgos.processdescription.impl;
 
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorInputData;
-import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutputData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.webapp.api.FormatEntry;
 
