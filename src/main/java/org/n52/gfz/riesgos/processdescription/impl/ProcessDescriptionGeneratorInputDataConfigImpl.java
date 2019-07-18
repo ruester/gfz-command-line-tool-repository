@@ -44,7 +44,7 @@ public class ProcessDescriptionGeneratorInputDataConfigImpl implements IProcessD
 
     @Override
     public Optional<List<String>> getSupportedCrs() {
-        return inputParameter.getAllowedValues();
+        return inputParameter.getSupportedCRSForBBox();
     }
 
     @Override
