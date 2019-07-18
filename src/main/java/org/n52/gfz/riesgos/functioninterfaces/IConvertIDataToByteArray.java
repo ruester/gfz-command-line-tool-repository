@@ -31,5 +31,5 @@ public interface IConvertIDataToByteArray<T extends IData> {
      * @return byte array
      * @throws ConvertToBytesException exception that indicates that the element could not converted to byte array
      */
-    byte[] convertToBytes(final T iData) throws ConvertToBytesException;
+    byte[] convertToBytes(T iData) throws ConvertToBytesException;
 }

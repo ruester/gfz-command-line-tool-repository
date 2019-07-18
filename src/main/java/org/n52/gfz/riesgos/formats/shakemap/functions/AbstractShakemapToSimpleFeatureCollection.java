@@ -96,7 +96,7 @@ public abstract class AbstractShakemapToSimpleFeatureCollection implements Funct
     protected abstract Class<? extends Geometry> getGeometryClass();
 
     protected abstract Geometry createGeometry(
-            final GeometryFactory geometryFactory,
-            final IShakemapData singleRow,
-            final IShakemapSpecification specification);
+            GeometryFactory geometryFactory,
+            IShakemapData singleRow,
+            IShakemapSpecification specification);
 }

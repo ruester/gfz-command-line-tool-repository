@@ -34,5 +34,5 @@ public interface IConvertFormat<X, Y>  {
      * @return converted data
      * @throws ConvertFormatException exception that is used on this conversion
      */
-    Y convert(final X x) throws ConvertFormatException;
+    Y convert(X x) throws ConvertFormatException;
 }

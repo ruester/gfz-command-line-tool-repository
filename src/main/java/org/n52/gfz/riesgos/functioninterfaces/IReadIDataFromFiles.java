@@ -41,5 +41,5 @@ public interface IReadIDataFromFiles<T extends IData> extends Serializable {
      * @throws ConvertToIDataException if the conversion is not possible this exception will be thrown
      * @throws IOException will be thrown if there is problem on the IO mechanism on java
      */
-    DataWithRecreatorTuple<T> readFromFiles(final IExecutionContext context, final String workingDirectory, final String path) throws ConvertToIDataException, IOException;
+    DataWithRecreatorTuple<T> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException;
 }

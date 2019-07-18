@@ -33,5 +33,5 @@ public interface IConvertByteArrayToIData<T extends IData> extends Serializable 
      * @return IData element
      * @throws ConvertToIDataException exception if there is an internal error / exception on conversion
      */
-    T convertToIData(final byte[] content) throws ConvertToIDataException;
+    T convertToIData(byte[] content) throws ConvertToIDataException;
 }

@@ -31,5 +31,5 @@ public interface IExitValueHandler extends Serializable {
      * @param logger logger from the algorithm class
      * @throws NonZeroExitValueException there may be an exception for non zero exit values
      */
-    void handleExitValue(final int exitValue, final ILogger logger) throws NonZeroExitValueException;
+    void handleExitValue(int exitValue, ILogger logger) throws NonZeroExitValueException;
 }

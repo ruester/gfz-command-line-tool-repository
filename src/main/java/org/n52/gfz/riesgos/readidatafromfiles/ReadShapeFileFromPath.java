@@ -23,11 +23,9 @@ import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
-import org.n52.gfz.riesgos.cache.IDataRecreator;
 import org.n52.gfz.riesgos.cache.RecreateFromBindingClass;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
-import org.n52.gfz.riesgos.util.Tuple;
 import org.n52.gfz.riesgos.writeidatatofiles.WriteShapeFileToPath;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 
@@ -82,7 +80,7 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
     }
 
     private void writeFile(final File file, final byte[] content) throws IOException {
-        try(final FileOutputStream outputStream = new FileOutputStream(file)) {
+        try(FileOutputStream outputStream = new FileOutputStream(file)) {
             IOUtils.write(content, outputStream);
         }
     }

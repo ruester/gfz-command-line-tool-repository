@@ -32,5 +32,5 @@ public interface ICheckDataAndGetErrorMessage<T extends IData> extends Serializa
      * @param data element to check
      * @return empty if there is no problem with the value; else the text of the problem description
      */
-    Optional<String> check(final T data);
+    Optional<String> check(T data);
 }

@@ -16,7 +16,6 @@
 
 package org.n52.gfz.riesgos.processdescription.impl;
 
-import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorData;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorInputData;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutputData;

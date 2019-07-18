@@ -28,5 +28,5 @@ public interface ILogger {
      * Insert the text to a log
      * @param text text to log
      */
-    void log(final String text);
+    void log(String text);
 }
