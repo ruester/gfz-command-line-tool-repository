@@ -226,7 +226,6 @@ public class TransformDataFormatProcess
         processDescription.addProcessDescriptionForVersion(
                 description.getProcessDescriptions()
                         .getProcessDescriptionArray(0), "1.0.0");
-        logger.error(processDescription.toString());
         return processDescription;
     }
 }
