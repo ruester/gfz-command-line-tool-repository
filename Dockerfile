@@ -1,14 +1,14 @@
 FROM tomcat:9-jre8
 
 # you need to have docker installed on the host system and pull all needed images:
-# docker pull ruestergfz/quakeledger:latest
-# docker pull ruestergfz/shakyground:latest
-# docker pull ruestergfz/assetmaster:latest
-# docker pull ruestergfz/modelprop:latest
-# docker pull ruestergfz/flooddamage:latest
+# docker pull gfzriesgos/quakeledger:latest
+# docker pull gfzriesgos/shakyground:latest
+# docker pull gfzriesgos/assetmaster:latest
+# docker pull gfzriesgos/modelprop:latest
+# docker pull gfzriesgos/flooddamage:latest
 
 # start the RIESGOS WPS docker image with:
-# docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ruestergfz/riesgos-wps
+# docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock gfzriesgos/riesgos-wps
 
 # following services can then be accessed at localhost:
 
@@ -36,7 +36,7 @@ RUN apt update && \
     apt install git apt-transport-https ca-certificates maven curl software-properties-common openjdk-8-jdk gnupg2 -y
 
 
-# install nodejs, npm and grunt
+# install nodejs, npm, grunt and bower
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt install nodejs npm -y && \
     npm install -g grunt-cli && \
@@ -103,7 +103,7 @@ WORKDIR /root/git
 RUN git clone -b dev --depth=1 https://github.com/52North/wps-js.git && \
     git clone -b develop --depth=1 https://github.com/52North/wps-js-client.git && \
     git clone https://github.com/52North/WPS.git && \
-    git clone -b master --depth=1 https://github.com/ruester/gfz-command-line-tool-repository.git
+    git clone -b master --depth=1 https://github.com/gfzriesgos/gfz-command-line-tool-repository.git
 
 WORKDIR /root/git/wps-js
 
@@ -131,11 +131,11 @@ RUN git checkout -b current 1d1a7b9abf0e8f0b8c302651f7206f175866c4a8 && \
     sed -i -e 's@base-package="org\.n52\.wps"@base-package="org\.n52"@' /usr/local/tomcat/webapps/wps/WEB-INF/classes/dispatcher-servlet.xml
 
 WORKDIR /root/git/gfz-command-line-tool-repository
-RUN sed -i -e 's@assetmaster:latest@ruestergfz/assetmaster:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json && \
-    sed -i -e 's@flooddamage:latest@ruestergfz/flooddamage:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json && \
-    sed -i -e 's@modelprop:latest@ruestergfz/modelprop:latest@'     src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
-    sed -i -e 's@quakeledger:latest@ruestergfz/quakeledger:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
-    sed -i -e 's@shakyground:latest@ruestergfz/shakyground:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
+RUN sed -i -e 's@assetmaster:latest@gfzriesgos/assetmaster:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json && \
+    sed -i -e 's@flooddamage:latest@gfzriesgos/flooddamage:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json && \
+    sed -i -e 's@modelprop:latest@gfzriesgos/modelprop:latest@'     src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
+    sed -i -e 's@quakeledger:latest@gfzriesgos/quakeledger:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
+    sed -i -e 's@shakyground:latest@gfzriesgos/shakyground:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
     mvn clean install && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
