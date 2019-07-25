@@ -17,7 +17,7 @@
 package org.n52.gfz.riesgos.cache.hash;
 
 import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
-import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.StaticWpsVersionHandler;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.wps.io.data.IData;
 
@@ -35,7 +35,7 @@ public enum HasherSingleton implements IHasher {
      */
     INSTANCE(new HasherImpl(
             new DockerImageIdLookup(),
-            new NoWpsVersionHandler()));
+            new StaticWpsVersionHandler()));
 
     /**
      * Inner hasher instance.
