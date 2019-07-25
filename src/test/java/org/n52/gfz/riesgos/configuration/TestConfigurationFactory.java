@@ -31,12 +31,15 @@ public class TestConfigurationFactory {
 
     @Test
     public void testEquals() {
-        final IConfiguration conf1 = ConfigurationFactory.createQuakeledger();
-        final IConfiguration conf2 = ConfigurationFactory.createQuakeledger();
+
+        final ConfigurationFactory factory = ConfigurationFactory.INSTANCE;
+
+        final IConfiguration conf1 = factory.createQuakeledger();
+        final IConfiguration conf2 = factory.createQuakeledger();
 
         assertEquals("The configurations are the same", conf1, conf2);
 
-        final IConfiguration conf3 = ConfigurationFactory.createShakyground();
+        final IConfiguration conf3 = factory.createShakyground();
 
         assertNotEquals("conf3 is different", conf1, conf3);
         // testing conf3 to be equal to another shakyground config will fail,

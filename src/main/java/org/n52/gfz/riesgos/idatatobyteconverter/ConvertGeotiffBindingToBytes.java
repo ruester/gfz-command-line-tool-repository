@@ -38,7 +38,7 @@ public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray<Ge
 
         final File file = binding.getPayload();
 
-        try(final FileReader fileReader = new FileReader(file)) {
+        try(FileReader fileReader = new FileReader(file)) {
             return IOUtils.toByteArray(fileReader);
         } catch(final IOException exception) {
             throw new ConvertToBytesException(exception);

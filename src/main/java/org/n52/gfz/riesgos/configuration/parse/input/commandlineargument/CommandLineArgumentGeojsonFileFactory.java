@@ -59,19 +59,21 @@ public class CommandLineArgumentGeojsonFileFactory
 
             throws ParseConfigurationException {
 
-        if (ParseUtils.strHasValue(defaultValue)) {
+        final ParseUtils parseUtils = ParseUtils.INSTANCE;
+
+        if (parseUtils.strHasValue(defaultValue)) {
             throw new ParseConfigurationException(
                     "default is not supported for geojson");
         }
-        if (ParseUtils.listHasValue(allowedValues)) {
+        if (parseUtils.listHasValue(allowedValues)) {
             throw new ParseConfigurationException(
                     "allowed values are not supported for geojson");
         }
-        if (ParseUtils.listHasValue(supportedCrs)) {
+        if (parseUtils.listHasValue(supportedCrs)) {
             throw new ParseConfigurationException(
                     "crs are not supported for geojson");
         }
-        if (ParseUtils.strHasValue(schema)) {
+        if (parseUtils.strHasValue(schema)) {
             throw new ParseConfigurationException(
                     "schema is not supported for geojson");
         }

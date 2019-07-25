@@ -19,6 +19,10 @@ package org.n52.gfz.riesgos.cmdexecution.docker;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
+import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.hash.HasherImpl;
+import org.n52.gfz.riesgos.cache.impl.CacheImpl;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
 import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.wps.io.data.IData;
@@ -95,9 +99,13 @@ public class TestContainerIdCreation {
     private static class StartQueryRunnable implements Runnable {
         @Override
         public void run() {
-            final IConfiguration conf = ConfigurationFactory.createQuakeledger();
+            final IConfiguration conf = ConfigurationFactory.INSTANCE.createQuakeledger();
 
-            final IAlgorithm algorithm = new BaseGfzRiesgosService(conf, LoggerFactory.getLogger(TestContainerIdCreation.class));
+            final IAlgorithm algorithm = new BaseGfzRiesgosService(conf, LoggerFactory.getLogger(TestContainerIdCreation.class),
+                    // caching should not be involved in this test
+                    // but the docker image id lookup can be done
+                    new HasherImpl(new DockerImageIdLookup(), new NoWpsVersionHandler()),
+                    new CacheImpl(), new DockerExecutionContextManagerFactory());
 
             final Map<String, List<IData>> inputData = new HashMap<>();
 

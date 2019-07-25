@@ -29,6 +29,7 @@ import org.n52.gfz.riesgos.configuration.OutputParameterFactory;
 import org.n52.gfz.riesgos.functioninterfaces.IExitValueHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStderrHandler;
 import org.n52.gfz.riesgos.functioninterfaces.IStdoutHandler;
+import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorDataConfigImpl;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
 import org.n52.wps.io.IGenerator;
 import org.n52.wps.io.IParser;
@@ -61,7 +62,10 @@ public class TestProcessDescriptionGenerator {
         // there is no direct access to the ParserFactory and GeneratorFactory classes
         // it only uses a Supplier to get the the parsers and generators
         final IConfiguration configuration = new QuakeledgerConfig();
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(configuration, createParserSupplier(), createGeneratorSupplier());
+        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorImpl(
+                new ProcessDescriptionGeneratorDataConfigImpl(configuration),
+                createParserSupplier(),
+                createGeneratorSupplier());
 
         final ProcessDescriptionsDocument processDescription = generator.generateProcessDescription();
 

@@ -43,7 +43,7 @@ public class TestFileToStringCmd {
     public void testValid() {
         final String filename = "test.xml";
 
-        final IConvertIDataToCommandLineParameter<IData> converter = new FileToStringCmd(filename);
+        final IConvertIDataToCommandLineParameter<IData> converter = new FileToStringCmd<>(filename);
 
 
         // the converter just care about the filename
@@ -68,7 +68,7 @@ public class TestFileToStringCmd {
         final String filename = "test.xml";
         final String flag = "--test-file";
 
-        final IConvertIDataToCommandLineParameter<IData> converter = new FileToStringCmd(filename, flag);
+        final IConvertIDataToCommandLineParameter<IData> converter = new FileToStringCmd<>(filename, flag);
 
         try {
             final List<String> result = converter.convertToCommandLineParameter(null);
@@ -88,7 +88,7 @@ public class TestFileToStringCmd {
     @Test
     public void testNonValid() {
 
-        final IConvertIDataToCommandLineParameter<IData> converter = new FileToStringCmd(null);
+        final IConvertIDataToCommandLineParameter<IData> converter = new FileToStringCmd<>(null);
 
         try {
             converter.convertToCommandLineParameter(null);
@@ -103,18 +103,18 @@ public class TestFileToStringCmd {
      */
     @Test
     public void testEquals() {
-        final IConvertIDataToCommandLineParameter<IData> converter1 = new FileToStringCmd("file1.txt");
-        final IConvertIDataToCommandLineParameter<IData> converter2 = new FileToStringCmd("file1.txt");
-        final IConvertIDataToCommandLineParameter<IData> converter3 = new FileToStringCmd("file3.txt");
+        final IConvertIDataToCommandLineParameter<IData> converter1 = new FileToStringCmd<>("file1.txt");
+        final IConvertIDataToCommandLineParameter<IData> converter2 = new FileToStringCmd<>("file1.txt");
+        final IConvertIDataToCommandLineParameter<IData> converter3 = new FileToStringCmd<>("file3.txt");
 
-        final IConvertIDataToCommandLineParameter<IData> converter4 = new FileToStringCmd("file1.txt", "--file");
+        final IConvertIDataToCommandLineParameter<IData> converter4 = new FileToStringCmd<>("file1.txt", "--file");
 
         assertEquals("1 and 2 are equal", converter1, converter2);
         assertNotEquals("1 and 3 are different", converter1, converter3);
 
         assertNotEquals("1 and 4 are different", converter1, converter4);
 
-        final IConvertIDataToCommandLineParameter<IData> converter5 = new FileToStringCmd("file1.txt", "--file");
+        final IConvertIDataToCommandLineParameter<IData> converter5 = new FileToStringCmd<>("file1.txt", "--file");
         assertEquals("4 and 5 are equal", converter4, converter5);
     }
 }

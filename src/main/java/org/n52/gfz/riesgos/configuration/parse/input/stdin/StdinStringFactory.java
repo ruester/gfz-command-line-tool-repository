@@ -52,7 +52,7 @@ public class StdinStringFactory implements IAsStdinInputFactory {
             final String schema)
 
             throws ParseConfigurationException {
-        if (ParseUtils.strHasValue(schema)) {
+        if (ParseUtils.INSTANCE.strHasValue(schema)) {
             throw new ParseConfigurationException(
                     "schema is not supported for string");
         }

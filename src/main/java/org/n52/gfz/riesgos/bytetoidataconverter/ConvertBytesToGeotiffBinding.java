@@ -30,35 +30,55 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Function to create a GeotiffBinding from a byte array
+ * Function to create a GeotiffBinding from a byte array.
  */
-public class ConvertBytesToGeotiffBinding implements IConvertByteArrayToIData<GeotiffBinding> {
+public class ConvertBytesToGeotiffBinding
+        implements IConvertByteArrayToIData<GeotiffBinding> {
 
+    private static final long serialVersionUID = 5174079061385019321L;
+
+    /**
+     * Creates an GeotiffBinding instance from the byte array.
+     * @param content byte array to convert
+     * @return GeotiffBinding
+     * @throws ConvertToIDataException exception on an io exception
+     */
     @Override
-    public GeotiffBinding convertToIData(final byte[] content) throws ConvertToIDataException {
+    public GeotiffBinding convertToIData(
+            final byte[] content) throws ConvertToIDataException {
 
         try {
-            final File tempFile = File.createTempFile("convertBytesToIData", ".tiff");
+            final File tempFile = File.createTempFile(
+                    "convertBytesToIData", ".tiff");
             tempFile.deleteOnExit();
 
-            try (final FileWriter writer = new FileWriter(tempFile)) {
+            try (FileWriter writer = new FileWriter(tempFile)) {
                 IOUtils.write(content, writer);
             }
 
             return new GeotiffBinding(tempFile);
-        } catch(final IOException ioException) {
+        } catch (final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the instance
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

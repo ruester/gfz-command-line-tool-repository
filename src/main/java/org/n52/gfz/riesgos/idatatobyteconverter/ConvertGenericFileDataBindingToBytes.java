@@ -38,7 +38,7 @@ public class ConvertGenericFileDataBindingToBytes implements IConvertIDataToByte
 
         final File file = binding.getPayload().getBaseFile(false);
 
-        try(final FileInputStream inputStream = new FileInputStream(file)) {
+        try(FileInputStream inputStream = new FileInputStream(file)) {
             return IOUtils.toByteArray(inputStream);
         } catch(final IOException exception) {
             throw new ConvertToBytesException(exception);

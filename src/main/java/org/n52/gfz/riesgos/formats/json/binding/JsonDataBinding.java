@@ -18,7 +18,6 @@
 
 package org.n52.gfz.riesgos.formats.json.binding;
 
-import org.json.simple.JSONObject;
 import org.n52.wps.io.data.IComplexData;
 
 /**

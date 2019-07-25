@@ -184,7 +184,7 @@ public class WriteShapeFileToPath
          */
         @Override
         public String getSpecificPathByShapeFilePath(final String path) {
-            return FileEndingReplacer.replaceFileEnding(path, ".shp", ending);
+            return FileEndingReplacer.INSTANCE.replaceFileEnding(path, ".shp", ending);
         }
     }
 

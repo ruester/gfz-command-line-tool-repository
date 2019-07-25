@@ -19,6 +19,10 @@
 
 package org.n52.gfz.riesgos.configuration.impl;
 
+import org.n52.gfz.riesgos.cache.generateinputcachekey.GenerateCacheKeyByConvertToByteArray;
+import org.n52.gfz.riesgos.cache.generateinputcachekey.GenerateCacheKeyByTransformToCmd;
+import org.n52.gfz.riesgos.cache.generateinputcachekey.GenerateCacheKeyByWriteToFiles;
+import org.n52.gfz.riesgos.cache.IFunctionToGenerateCacheKey;
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
@@ -155,6 +159,27 @@ public class InputParameterImpl<T extends IData> implements IInputParameter {
     @Override
     public Optional<FormatEntry> getDefaultFormat() {
         return Optional.ofNullable(defaultFormat);
+    }
+
+    @Override
+    public IFunctionToGenerateCacheKey<T> getFunctionToGenerateCacheKey() {
+        if(functionToWriteToStdin != null) {
+            return new GenerateCacheKeyByConvertToByteArray<>(functionToWriteToStdin, path, isOptional);
+        } else if(functionToWriteToFiles != null) {
+            // this is necessary for files that should be written to files
+            // and should be mentioned as command line arguments
+            // --> those have random file names to give them to the program
+            // --> path should not be included
+            if(functionToTransformToCmd != null) {
+                return new GenerateCacheKeyByWriteToFiles<>(functionToWriteToFiles, null, isOptional);
+            }
+
+            return new GenerateCacheKeyByWriteToFiles<>(functionToWriteToFiles, path, isOptional);
+        } else if(functionToTransformToCmd != null) {
+            return new GenerateCacheKeyByTransformToCmd<>(functionToTransformToCmd, isOptional);
+        } else {
+            throw new RuntimeException("There must be a mechanism to handle the input parameter");
+        }
     }
 
     @Override

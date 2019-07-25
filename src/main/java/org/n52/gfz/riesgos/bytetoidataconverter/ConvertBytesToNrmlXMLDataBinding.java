@@ -33,6 +33,7 @@ import java.util.Objects;
 public class ConvertBytesToNrmlXMLDataBinding
         implements IConvertByteArrayToIData<NrmlXmlDataBinding> {
 
+    private static final long serialVersionUID = -1627684954251040854L;
     /**
      * Converts the byte array to an NrmlXmlDataBinding.
      * @param content byte array to convert

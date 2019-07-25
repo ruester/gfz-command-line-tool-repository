@@ -24,6 +24,7 @@ import org.n52.gfz.riesgos.formats.shakemap.impl.ShakemapXmlImpl;
 /**
  * Static Factory class
  */
+@SuppressWarnings({"UtilityClassCanBeEnum", "UtilityClass"})
 public class Shakemap {
 
     private Shakemap() {

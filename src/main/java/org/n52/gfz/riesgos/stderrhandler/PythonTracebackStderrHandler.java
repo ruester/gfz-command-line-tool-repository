@@ -31,6 +31,8 @@ import java.util.Objects;
  */
 public class PythonTracebackStderrHandler implements IStderrHandler  {
 
+    private static final long serialVersionUID = -5613519173718964960L;
+
     /**
      * Pattern for a python traceback.
      */

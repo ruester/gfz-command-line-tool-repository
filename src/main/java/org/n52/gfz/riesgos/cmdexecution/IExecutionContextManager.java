@@ -29,5 +29,5 @@ public interface IExecutionContextManager {
      * @param cmd string list with the command to execute (for example ["python3", "script.py", "arg1", "arg2"]
      * @return execution context to start the process
      */
-    IExecutionContext createExecutionContext(final String workingDirectory, final List<String> cmd);
+    IExecutionContext createExecutionContext(String workingDirectory, List<String> cmd);
 }

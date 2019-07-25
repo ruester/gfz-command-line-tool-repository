@@ -27,6 +27,8 @@ import java.util.Objects;
  */
 public class ExceptionIfStderrIsNotEmptyHandler implements IStderrHandler {
 
+    private static final long serialVersionUID = 775455431436144636L;
+
     /**
      * Handles stderr text.
      * @param stderr text to handle

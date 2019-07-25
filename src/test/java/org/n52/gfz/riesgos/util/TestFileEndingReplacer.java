@@ -38,7 +38,7 @@ public class TestFileEndingReplacer {
 
         final String expected = "feature.shx";
 
-        final String out = FileEndingReplacer.replaceFileEnding(filename, ending, replacement);
+        final String out = FileEndingReplacer.INSTANCE.replaceFileEnding(filename, ending, replacement);
 
         assertEquals("The output matches the expected shx filename", expected, out);
     }
@@ -54,7 +54,7 @@ public class TestFileEndingReplacer {
 
         final String expected = "feature.shx";
 
-        final String out = FileEndingReplacer.replaceFileEnding(filename, ending, replacement);
+        final String out = FileEndingReplacer.INSTANCE.replaceFileEnding(filename, ending, replacement);
 
         assertEquals("The output matches the expected shx filename", expected, out);
     }

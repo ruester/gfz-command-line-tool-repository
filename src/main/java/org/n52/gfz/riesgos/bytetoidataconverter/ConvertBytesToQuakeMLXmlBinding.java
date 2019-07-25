@@ -29,28 +29,52 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * This class works as ConvertBytesToGenericXMLDataBinding but it returns a QuakeMLXmlDataBinding
- * It reads the bytes to an xml object and wraps it with a QuakeMLXmlDataBinding
+ * This class works as ConvertBytesToGenericXMLDataBinding
+ * but it returns a QuakeMLXmlDataBinding.
+ * It reads the bytes to an xml object and wraps it with
+ * a QuakeMLXmlDataBinding.
  */
-public class ConvertBytesToQuakeMLXmlBinding implements IConvertByteArrayToIData<QuakeMLXmlDataBinding> {
+public class ConvertBytesToQuakeMLXmlBinding
+        implements IConvertByteArrayToIData<QuakeMLXmlDataBinding> {
 
+    private static final long serialVersionUID = -7540093149844123664L;
+
+    /**
+     * Returns a QuakeMLXmlDataBinding from the byte array.
+     * @param content byte array to convert
+     * @return QuakeMLXmlDataBinding
+     * @throws ConvertToIDataException exception in case of an io exception
+     * or an xml exception
+     */
     @Override
-    public QuakeMLXmlDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
-        try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
-            return QuakeMLXmlDataBinding.fromValidatedXml(XmlObject.Factory.parse(byteArrayInputStream));
-        } catch(final XmlException | IOException exception) {
+    public QuakeMLXmlDataBinding convertToIData(
+            final byte[] content) throws ConvertToIDataException {
+        try (ByteArrayInputStream byteArrayInputStream =
+                     new ByteArrayInputStream(content)) {
+            return QuakeMLXmlDataBinding.fromValidatedXml(
+                    XmlObject.Factory.parse(byteArrayInputStream));
+        } catch (final XmlException | IOException exception) {
             throw new ConvertToIDataException(exception);
         }
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the instance
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

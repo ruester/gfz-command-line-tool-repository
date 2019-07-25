@@ -24,23 +24,40 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import java.util.Objects;
 
 /**
- * Function to convert bytes to a literal string binding
+ * Function to convert bytes to a literal string binding.
  */
-public class ConvertBytesToLiteralStringBinding implements IConvertByteArrayToIData<LiteralStringBinding> {
+public class ConvertBytesToLiteralStringBinding
+        implements IConvertByteArrayToIData<LiteralStringBinding> {
 
+    private static final long serialVersionUID = 8298315810379102433L;
+
+    /**
+     * Returns an LiteralStringBinding from the byte array.
+     * @param content byte array to convert
+     * @return LiteralStringBinding
+     */
     @Override
     public LiteralStringBinding convertToIData(final byte[] content) {
         return new LiteralStringBinding(new String(content));
     }
 
+    /**
+     * Tests for equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the instance
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

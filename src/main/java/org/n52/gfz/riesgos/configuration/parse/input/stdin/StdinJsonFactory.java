@@ -50,15 +50,18 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
             final String defaultValue,
             final List<String> allowedValues,
             final String schema) throws ParseConfigurationException {
-        if (ParseUtils.strHasValue(schema)) {
+
+        final ParseUtils parseUtils = ParseUtils.INSTANCE;
+
+        if (parseUtils.strHasValue(schema)) {
             throw new ParseConfigurationException(
                     "schema is not supported for json");
         }
-        if (ParseUtils.strHasValue(defaultValue)) {
+        if (parseUtils.strHasValue(defaultValue)) {
             throw new ParseConfigurationException(
                     "defaultValue is not supported for json");
         }
-        if (ParseUtils.listHasValue(allowedValues)) {
+        if (parseUtils.listHasValue(allowedValues)) {
             throw new ParseConfigurationException(
                     "allowedValues are not supported for json");
         }
