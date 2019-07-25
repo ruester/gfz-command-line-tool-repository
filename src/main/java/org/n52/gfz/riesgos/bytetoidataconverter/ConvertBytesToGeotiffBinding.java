@@ -52,7 +52,8 @@ public class ConvertBytesToGeotiffBinding
                     "convertBytesToIData", ".tiff");
             tempFile.deleteOnExit();
 
-            try (FileOutputStream fileOutputStream = new FileOutputStream(tempFile)) {
+            try (FileOutputStream fileOutputStream =
+                         new FileOutputStream(tempFile)) {
                 IOUtils.write(content, fileOutputStream);
             }
 

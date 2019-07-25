@@ -37,13 +37,24 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Generator that takes the IQuakeMLXmlDataBinding and returns GeoJson
+ * Generator that takes the IQuakeMLXmlDataBinding and returns GeoJson.
  */
 public class QuakeMLGeoJsonGenerator extends AbstractGenerator {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonGenerator.class);
-    private final static FormatEntry GEOJSON = DefaultFormatOption.GEOJSON.getFormat();
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLGeoJsonGenerator.class);
+    /**
+     * Format entry for geojson.
+     */
+    private static final FormatEntry GEOJSON =
+            DefaultFormatOption.GEOJSON.getFormat();
 
+    /**
+     * Default constructor.
+     */
     public QuakeMLGeoJsonGenerator() {
         super();
 
@@ -53,23 +64,44 @@ public class QuakeMLGeoJsonGenerator extends AbstractGenerator {
         formats.add(GEOJSON);
     }
 
+    /**
+     * Gives back the input stream for the data.
+     * @param data data to read as input stream
+     * @param mimeType mimetype of the data
+     * @param schema schema of the data
+     * @return input stream ot read the data afterwards
+     * @throws IOException exception that may be thrown on problems regarding
+     * to IO
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) throws IOException {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
 
             try {
                 final IQuakeML quakeML = binding.getPayloadQuakeML();
-                final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
+                final FeatureCollection<SimpleFeatureType, SimpleFeature>
+                        featureCollection =
+                        quakeML.toSimpleFeatureCollection();
 
-                return new GeoJSONGenerator().generateStream(new GTVectorDataBinding(featureCollection), GEOJSON.getEncoding(), null);
-            } catch(final ConvertFormatException convertFormatException) {
-                LOGGER.error("Can't convert the validated quakeml format to geojson");
+                return new GeoJSONGenerator().generateStream(
+                        new GTVectorDataBinding(featureCollection),
+                        GEOJSON.getEncoding(),
+                        null);
+            } catch (final ConvertFormatException convertFormatException) {
+                LOGGER.error(
+                        "Can't convert the validated quakeml "
+                                + "format to geojson");
                 LOGGER.error(convertFormatException.toString());
-                throw new RuntimeException(convertFormatException);
+                throw new IOException(convertFormatException);
             }
         } else {
-            LOGGER.error("Can't convert another data binding as QuakeMLXmlDataBinding");
+            LOGGER.error(
+                    "Can't convert another data "
+                            + "binding as QuakeMLXmlDataBinding");
         }
         return null;
     }

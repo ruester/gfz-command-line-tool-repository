@@ -30,21 +30,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Generator implementation that takes the QuakeMLXmlDataBinding and its validated xml format
- * and converts it into the original format from the original quakeledger (that is not valid
+ * Generator implementation that takes the QuakeMLXmlDataBinding and
+ * its validated xml format
+ * and converts it into the original format from the original
+ * quakeledger (that is not valid
  * according to the schema).
  */
 public class QuakeMLOriginalXmlGenerator extends AbstractGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLOriginalXmlGenerator.class);
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLOriginalXmlGenerator.class);
 
+    /**
+     * Default constructor.
+     */
     public QuakeMLOriginalXmlGenerator() {
         super();
 
-        final FormatEntry quakeml = DefaultFormatOption.NON_VALID_QUAKEML.getFormat();
+        final FormatEntry quakeml =
+                DefaultFormatOption.NON_VALID_QUAKEML.getFormat();
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(quakeml.getMimeType());
         supportedSchemas.add(quakeml.getSchema());
@@ -52,8 +63,20 @@ public class QuakeMLOriginalXmlGenerator extends AbstractGenerator {
         formats.add(quakeml);
     }
 
+    /**
+     * Generates the input stream to read the data afterwards.
+     * @param data data for the input stream
+     * @param mimeType mime type of the data
+     * @param schema schema of the data
+     * @return input stream
+     * @throws IOException exception that may be thrown in case of an
+     * IO problem
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) {
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) throws IOException {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
 
@@ -61,14 +84,19 @@ public class QuakeMLOriginalXmlGenerator extends AbstractGenerator {
                 final IQuakeML quakeML = binding.getPayloadQuakeML();
                 final XmlObject originalQuakeML = quakeML.toOriginalXmlObject();
 
-                return new ByteArrayInputStream(originalQuakeML.xmlText().getBytes());
-            } catch(final ConvertFormatException convertFormatException) {
-                LOGGER.error("Can't convert the validated quakeml format to the original quakeml xml");
-                LOGGER.error(convertFormatException.toString());
-                throw new RuntimeException(convertFormatException);
+                return new ByteArrayInputStream(
+                        originalQuakeML.xmlText().getBytes());
+            } catch (final ConvertFormatException convertFormatException) {
+                LOGGER.error(
+                        "Can't convert the validated quakeml format to "
+                                + "the original quakeml xml",
+                        convertFormatException);
+                throw new IOException(convertFormatException);
             }
         } else {
-            LOGGER.error("Can't convert another data binding as QuakeMLXmlDataBinding");
+            LOGGER.error(
+                    "Can't convert another data "
+                            + "binding as QuakeMLXmlDataBinding");
         }
         return null;
     }

@@ -26,19 +26,33 @@ import org.n52.gfz.riesgos.formats.shakemap.IShakemapData;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapSpecification;
 
 /**
- * This function provides a way to transform the data in a Shakemap to a simpleFeatureCollection
+ * This function provides a way to transform the
+ * data in a Shakemap to a simpleFeatureCollection.
  */
-public class ShakemapToSimpleFeatureCollection extends AbstractShakemapToSimpleFeatureCollection {
+public class ShakemapToSimpleFeatureCollection
+        extends AbstractShakemapToSimpleFeatureCollection {
 
+    /**
+     *
+     * @return Point geometry
+     */
     @Override
     protected Class<? extends Geometry> getGeometryClass() {
         return Point.class;
     }
 
+    /**
+     * Factory methode to create the geometry.
+     * @param geometryFactory a geometry factory
+     * @param singleRow a point with data
+     * @param specification the grid specification
+     * @return Point geometry of the data
+     */
     @Override
-    protected Geometry createGeometry(final GeometryFactory geometryFactory,
-                                      final IShakemapData singleRow,
-                                      final IShakemapSpecification specification) {
+    protected Geometry createGeometry(
+            final GeometryFactory geometryFactory,
+            final IShakemapData singleRow,
+            final IShakemapSpecification specification) {
         return geometryFactory.createPoint(
                 new Coordinate(
                         singleRow.getLon(),

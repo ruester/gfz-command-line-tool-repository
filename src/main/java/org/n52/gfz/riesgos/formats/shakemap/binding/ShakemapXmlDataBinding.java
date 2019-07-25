@@ -24,14 +24,15 @@ import org.n52.gfz.riesgos.formats.shakemap.Shakemap;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 
 /**
- * Binding class for Shakemaps (XML)
+ * Binding class for Shakemaps (XML).
  */
-public class ShakemapXmlDataBinding extends GenericXMLDataBinding {
+public final class ShakemapXmlDataBinding extends GenericXMLDataBinding {
 
     private static final long serialVersionUID = -2049159915689920061L;
 
-    /*
-     * creates a new shakemap binding object
+    /**
+     * Creates a new shakemap binding object.
+     * @param shakemap internal used xml data structure
      */
     private ShakemapXmlDataBinding(final XmlObject shakemap) {
         super(shakemap);
@@ -46,7 +47,7 @@ public class ShakemapXmlDataBinding extends GenericXMLDataBinding {
     }
 
     /**
-     * Creates a new shakemap binding from a xml object
+     * Creates a new shakemap binding from a xml object.
      * @param shakemap xml with the data of the shakemap
      * @return ShakemapXmlDataBinding
      */

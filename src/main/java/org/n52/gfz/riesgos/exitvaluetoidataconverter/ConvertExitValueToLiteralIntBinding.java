@@ -23,21 +23,41 @@ import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 
 import java.util.Objects;
 
-public class ConvertExitValueToLiteralIntBinding implements IConvertExitValueToIData<LiteralIntBinding> {
+/**
+ * Converts the exit value to a literal int binding.
+ */
+public class ConvertExitValueToLiteralIntBinding
+        implements IConvertExitValueToIData<LiteralIntBinding> {
 
+    private static final long serialVersionUID = -2553000258199944504L;
+
+    /**
+     *
+     * @param exitValue integer value to convert
+     * @return literal int binding
+     */
     @Override
-    public LiteralIntBinding convertToIData(int exitValue) {
+    public LiteralIntBinding convertToIData(final int exitValue) {
         return new LiteralIntBinding(exitValue);
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

@@ -20,79 +20,145 @@ package org.n52.gfz.riesgos.formats.shakemap.impl;
 
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapSpecification;
 
+/**
+ * Implementation of the IShakemapSpecification interface.
+ */
 public class ShakemapSpecificationImpl implements IShakemapSpecification {
 
-    private final double latMax;
-    private final double latMin;
-    private final double lonMax;
-    private final double lonMin;
+    /**
+     * Range for the latitude.
+     */
+    private final LatLonRange latRange;
+    /**
+     * Range for the longitude.
+     */
+    private final LatLonRange lonRange;
+
+    /**
+     * Number of the different latitude values.
+     */
     private final int nLat;
+    /**
+     * Number of the different longitude values.
+     */
     private final int nLon;
+    /**
+     * Spacing between the latitude values.
+     */
     private final double nominalLatSpacing;
+    /**
+     * Spacing between the longitude values.
+     */
     private final double nominalLonSpacing;
+    /**
+     * Value to hold if the grid is regular.
+     */
     private final boolean regularGrid;
 
+
+    /**
+     * Default constructor.
+     * @param aLatRange range for the latitude
+     * @param aLonRange range for the longitude
+     * @param aNLat count of different lat values
+     * @param aNLon count of different lon values
+     * @param aNominalLatSpacing spacing between lat values
+     * @param aNominalLonSpacing spacing between lon values
+     * @param aRegularGrid boolean if regular grid
+     */
     public ShakemapSpecificationImpl(
-            final double latMax,
-            final double latMin,
-            final double lonMax,
-            final double lonMin,
-            final int nLat,
-            final int nLon,
-            final double nominalLatSpacing,
-            final double nominalLonSpacing,
-            final boolean regularGrid) {
-        this.latMax = latMax;
-        this.latMin = latMin;
-        this.lonMax = lonMax;
-        this.lonMin = lonMin;
-        this.nLat = nLat;
-        this.nLon = nLon;
-        this.nominalLatSpacing = nominalLatSpacing;
-        this.nominalLonSpacing = nominalLonSpacing;
-        this.regularGrid = regularGrid;
+            final LatLonRange aLatRange,
+            final LatLonRange aLonRange,
+            final int aNLat,
+            final int aNLon,
+            final double aNominalLatSpacing,
+            final double aNominalLonSpacing,
+            final boolean aRegularGrid) {
+        this.latRange = aLatRange;
+        this.lonRange = aLonRange;
+        this.nLat = aNLat;
+        this.nLon = aNLon;
+        this.nominalLatSpacing = aNominalLatSpacing;
+        this.nominalLonSpacing = aNominalLonSpacing;
+        this.regularGrid = aRegularGrid;
     }
 
+    /**
+     *
+     * @return maximum latitude
+     */
     @Override
     public double getLatMax() {
-        return latMax;
+        return latRange.getMax();
     }
 
+    /**
+     *
+     * @return minimum latitude
+     */
     @Override
     public double getLatMin() {
-        return latMin;
+        return latRange.getMin();
     }
 
+    /**
+     *
+     * @return maximum longitude
+     */
     @Override
     public double getLonMax() {
-        return lonMax;
+        return lonRange.getMax();
     }
 
+    /**
+     *
+     * @return minimum longitude
+     */
     @Override
     public double getLonMin() {
-        return lonMin;
+        return lonRange.getMin();
     }
 
+    /**
+     *
+     * @return number of different latitude values
+     */
     @Override
     public int getNLat() {
         return nLat;
     }
 
+    /**
+     *
+     * @return number of different longitude values
+     */
     @Override
     public int getNLon() {
         return nLon;
     }
 
+    /**
+     *
+     * @return spacing between the latitude values
+     */
     @Override
     public double getNominalLatSpacing() {
         return nominalLatSpacing;
     }
 
+    /**
+     *
+     * @return spacing between the longitude values
+     */
     @Override
     public double getNominalLonSpacing() {
         return nominalLonSpacing;
     }
 
+    /**
+     *
+     * @return true if the grid is regular
+     */
     @Override
     public boolean isRegular() {
         return regularGrid;

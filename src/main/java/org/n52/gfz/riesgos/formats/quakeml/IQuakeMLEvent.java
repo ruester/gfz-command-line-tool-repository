@@ -20,6 +20,12 @@ package org.n52.gfz.riesgos.formats.quakeml;
 
 import java.util.Optional;
 
+/**
+ * Interface for an quakeml event.
+ * Used for allowing different formats (xml, simple feature collection) to
+ * give quakeml data back and to convert any implementation in the other
+ * formats.
+ */
 public interface IQuakeMLEvent {
 
     /**
@@ -30,13 +36,16 @@ public interface IQuakeMLEvent {
     /**
      *
      * @return optional public id of the origin of the event. In the cases here
-     * always the same as the event id (something like quakeml:quakeledger/84945)
+     * always the same as the event id
+     * (something like quakeml:quakeledger/84945)
      */
     Optional<String> getPreferredOriginID();
     /**
      *
-     * @return optional public id of the magnitude of the event. In the cases here
-     * always the same as the event id (something like quakeml:quakeledger/84945)
+     * @return optional public id of the magnitude of the event.
+     * In the cases here
+     * always the same as the event id
+     * (something like quakeml:quakeledger/84945)
      */
     Optional<String> getPreferredMagnitudeID();
     /**
@@ -50,7 +59,7 @@ public interface IQuakeMLEvent {
      */
     Optional<String> getDescription();
 
-    /*==========================================================================================================*/
+    /*========================================================================*/
 
     /**
      *
@@ -59,13 +68,14 @@ public interface IQuakeMLEvent {
     Optional<String> getOriginPublicID();
     /**
      *
-     * @return time the event happened (something like 16773-01-01T00:00:00.000000Z)
+     * @return time the event happened
+     * (something like 16773-01-01T00:00:00.000000Z)
      */
     Optional<String> getOriginTimeValue();
     /**
      *
-     * @return Optional value for the uncertainty of the time value (in the cases
-     * handled here always empty)
+     * @return Optional value for the uncertainty of the time value
+     * (in the cases handled here always empty)
      */
     Optional<String> getOriginTimeUncertainty();
     /**
@@ -121,7 +131,8 @@ public interface IQuakeMLEvent {
     Optional<String> getOriginEpicenterFixed();
     /**
      *
-     * @return optional value for a changed origin reference system id (in the cases handled
+     * @return optional value for a changed origin reference system id
+     * (in the cases handled
      * here always empty)
      */
     Optional<String> getOriginReferenceSystemID();
@@ -133,7 +144,8 @@ public interface IQuakeMLEvent {
     Optional<String> getOriginType();
     /**
      *
-     * @return optional info for the creation (in the cases handled here always GFZ)
+     * @return optional info for the creation
+     * (in the cases handled here always GFZ)
      */
     Optional<String> getOriginCreationInfoValue();
     /**
@@ -185,8 +197,8 @@ public interface IQuakeMLEvent {
      */
     Optional<String> getOriginEvaluationStatus();
 
+    /*========================================================================*/
 
-    /*==========================================================================================================*/
 
     /**
      *
@@ -213,7 +225,8 @@ public interface IQuakeMLEvent {
      */
     Optional<String> getOriginUncertaintyAzimuthMaxHorizontalUncertainty();
 
-    /*==========================================================================================================*/
+    /*========================================================================*/
+
 
     /**
      *
@@ -261,11 +274,12 @@ public interface IQuakeMLEvent {
      */
     Optional<String> getMagnitudeCreationInfoValue();
 
-    /*==========================================================================================================*/
+    /*========================================================================*/
 
     /**
      *
-     * @return id of the focal mechanism (something like quakeml:quakeledger/84945)
+     * @return id of the focal mechanism
+     * (something like quakeml:quakeledger/84945)
      */
     Optional<String> getFocalMechanismPublicID();
     /**
@@ -308,11 +322,12 @@ public interface IQuakeMLEvent {
      */
     Optional<String> getFocalMechanismNodalPlanesPreferredNodalPlane();
 
-    /*==========================================================================================================*/
+    /*========================================================================*/
 
     /**
      *
-     * @return optional id of the amplitude (in the cases handled here always empty)
+     * @return optional id of the amplitude
+     * (in the cases handled here always empty)
      */
     Optional<String> getAmplitudePublicID();
     /**

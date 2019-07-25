@@ -25,36 +25,73 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ProcessDescriptionGeneratorDataConfigImpl implements IProcessDescriptionGeneratorData {
+/**
+ * Implementation that wraps a configuration to provide
+ * the data for the process description generation.
+ */
+public class ProcessDescriptionGeneratorDataConfigImpl
+        implements IProcessDescriptionGeneratorData {
 
+    /**
+     * Configuration to wrap.
+     */
     private final IConfiguration configuration;
 
-    public ProcessDescriptionGeneratorDataConfigImpl(final IConfiguration configuration) {
-        this.configuration = configuration;
+    /**
+     * Default constructor.
+     * @param aConfiguration configuration to wrap
+     */
+    public ProcessDescriptionGeneratorDataConfigImpl(
+            final IConfiguration aConfiguration) {
+        this.configuration = aConfiguration;
     }
 
+    /**
+     *
+     * @return identifier of the process of this configuration
+     */
     @Override
     public String getIdentifier() {
         return configuration.getIdentifier();
     }
 
+    /**
+     *
+     * @return full qualified identifier of the process of this configuration
+     */
     @Override
     public String getFullQualifiedIdentifier() {
         return configuration.getFullQualifiedIdentifier();
     }
 
+    /**
+     *
+     * @return abstract from the configuration
+     */
     @Override
     public Optional<String> getProcessAbstract() {
         return configuration.getAbstract();
     }
 
+    /**
+     *
+     * @return inputs of the configuration
+     */
     @Override
     public List<IProcessDescriptionGeneratorInputData> getInputData() {
-        return configuration.getInputIdentifiers().stream().map(ProcessDescriptionGeneratorInputDataConfigImpl::new).collect(Collectors.toList());
+        return configuration.getInputIdentifiers().stream()
+                .map(ProcessDescriptionGeneratorInputDataConfigImpl::new)
+                .collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @return outputs of the configuration
+     */
     @Override
     public List<IProcessDescriptionGeneratorOutputData> getOutputData() {
-        return configuration.getOutputIdentifiers().stream().map(ProcessDescriptionGeneratorOutputDataConfigImpl::new).collect(Collectors.toList());
+        return configuration.getOutputIdentifiers().stream()
+                .map(ProcessDescriptionGeneratorOutputDataConfigImpl::new)
+                .collect(Collectors.toList());
     }
 }

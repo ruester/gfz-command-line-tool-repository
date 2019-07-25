@@ -28,40 +28,55 @@ import java.io.InputStreamReader;
  */
 public class ThreadedStreamStringReader extends Thread {
 
+    /**
+     * Input stream to read from.
+     */
     private final InputStream inputStream;
+    /**
+     * String builder to concat the text from the stream.
+     */
     private final StringBuilder resultBuilder;
+    /**
+     * Storage for any exception that may happen on reading.
+     */
     private IOException optionalException;
 
     /**
-     *
-     * @param inputStream input stream to read from
+     * Default constructor.
+     * @param aInputStream input stream to read from
      */
-    public ThreadedStreamStringReader(final InputStream inputStream) {
-        this.inputStream = inputStream;
+    public ThreadedStreamStringReader(final InputStream aInputStream) {
+        this.inputStream = aInputStream;
         this.resultBuilder = new StringBuilder();
         this.optionalException = null;
     }
 
+    /**
+     * Runs the reading from the input stream.
+     * (Should run in a seperate thread).
+     */
     @Override
     public void run() {
 
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(inputStream))) {
             String line;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 resultBuilder.append(line);
                 resultBuilder.append(System.lineSeparator());
             }
-        } catch(final IOException exception) {
+        } catch (final IOException exception) {
             optionalException = exception;
         }
     }
 
     /**
-     * throws an io exception if there was an exception on reading
-     * @throws IOException io exception that may happen on reading from the stream
+     * Throws an io exception if there was an exception on reading.
+     * @throws IOException io exception that may happen
+     * on reading from the stream
      */
     public void throwExceptionIfNecessary() throws IOException {
-        if(optionalException != null) {
+        if (optionalException != null) {
             throw optionalException;
         }
     }

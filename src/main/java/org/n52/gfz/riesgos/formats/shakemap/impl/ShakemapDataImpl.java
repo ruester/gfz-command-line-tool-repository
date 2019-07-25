@@ -30,36 +30,57 @@ import java.util.Map;
  * additional values (that are defined as Fields).
  */
 public class ShakemapDataImpl implements IShakemapData {
+    /**
+     * Longitude value of the point.
+     */
     private final double lon;
+    /**
+     * Latitude value of the point.
+     */
     private final double lat;
 
+    /**
+     * Map with all the custom values on the point.
+     */
     private final Map<String, Double> customValues;
 
     /**
-     * Creates the ShakemapDataImpl
-     * @param lon the longitude value of the point
-     * @param lat the latitude value of the point
-     * @param customValues a map with custom values (*that will not be copied*)
+     * Creates the ShakemapDataImpl.
+     * @param aLon the longitude value of the point
+     * @param aLat the latitude value of the point
+     * @param aCustomValues a map with custom values (*that will not be copied*)
      */
     public ShakemapDataImpl(
-            final double lon,
-            final double lat,
-            final Map<String, Double> customValues) {
-        this.lon = lon;
-        this.lat = lat;
-        this.customValues = customValues;
+            final double aLon,
+            final double aLat,
+            final Map<String, Double> aCustomValues) {
+        this.lon = aLon;
+        this.lat = aLat;
+        this.customValues = aCustomValues;
     }
 
+    /**
+     * Returns the latitude value of the point.
+     * @return lat value of the point
+     */
     @Override
     public double getLat() {
         return lat;
     }
 
+    /**
+     * Returns the longitude value of the point.
+     * @return lon value of the point
+     */
     @Override
     public double getLon() {
         return lon;
     }
 
+    /**
+     * Returns the map with the custom values.
+     * @return custom values of the point.
+     */
     @Override
     public Map<String, Double> getCustomValues() {
         return customValues;

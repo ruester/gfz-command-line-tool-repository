@@ -74,16 +74,19 @@ public class JsonGenerator
             final JsonDataBinding binding = (JsonDataBinding) data;
             final JsonObjectOrArray jsonObject = binding.getPayload();
 
-            final Optional<JSONObject> asJsonObject = jsonObject.getJsonObject();
+            final Optional<JSONObject> asJsonObject =
+                    jsonObject.getJsonObject();
 
-            if(asJsonObject.isPresent()) {
-                return new ByteArrayInputStream(asJsonObject.get().toJSONString().getBytes());
+            if (asJsonObject.isPresent()) {
+                return new ByteArrayInputStream(
+                        asJsonObject.get().toJSONString().getBytes());
             }
 
             final Optional<JSONArray> asJsonArray = jsonObject.getJsonArray();
 
-            if(asJsonArray.isPresent()) {
-                return new ByteArrayInputStream(asJsonArray.get().toJSONString().getBytes());
+            if (asJsonArray.isPresent()) {
+                return new ByteArrayInputStream(
+                        asJsonArray.get().toJSONString().getBytes());
             }
 
             LOGGER.error("JSON not an object nor an array");

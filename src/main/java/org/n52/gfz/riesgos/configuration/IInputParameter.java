@@ -48,5 +48,15 @@ public interface IInputParameter extends IIOParameter {
      */
     Optional<String> getDefaultValue();
 
+    /**
+     * Gives back a function to generate the key from
+     * the input parameter to have the configuration of the
+     * input parameter and the actual value of the input.
+     *
+     * This is necassary because for complex inputs
+     * that we can give as a command line argument (those
+     * are written to temporary files with a random file name).
+     * @return IFunctionToGenerateCacheKey
+     */
     IFunctionToGenerateCacheKey getFunctionToGenerateCacheKey();
 }

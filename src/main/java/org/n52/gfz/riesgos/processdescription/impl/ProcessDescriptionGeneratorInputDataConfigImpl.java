@@ -24,49 +24,94 @@ import org.n52.wps.webapp.api.FormatEntry;
 import java.util.List;
 import java.util.Optional;
 
-public class ProcessDescriptionGeneratorInputDataConfigImpl implements IProcessDescriptionGeneratorInputData {
+/**
+ * Implementation that just wraps in input parameter of
+ * the configuration.
+ */
+public class ProcessDescriptionGeneratorInputDataConfigImpl
+        implements IProcessDescriptionGeneratorInputData {
 
+    /**
+     * Input parameter to get all the information.
+     */
     private final IInputParameter inputParameter;
 
-    public ProcessDescriptionGeneratorInputDataConfigImpl(final IInputParameter inputParameter) {
-        this.inputParameter = inputParameter;
+    /**
+     * Default constructor.
+     * @param aInputParameter input parameter to wrap and to read from
+     */
+    public ProcessDescriptionGeneratorInputDataConfigImpl(
+            final IInputParameter aInputParameter) {
+        this.inputParameter = aInputParameter;
     }
 
+    /**
+     *
+     * @return identifier
+     */
     @Override
     public String getIdentifier() {
         return inputParameter.getIdentifier();
     }
 
+    /**
+     *
+     * @return binding class
+     */
     @Override
     public Class<? extends IData> getBindingClass() {
         return inputParameter.getBindingClass();
     }
 
+    /**
+     *
+     * @return supported crs
+     */
     @Override
     public Optional<List<String>> getSupportedCrs() {
         return inputParameter.getSupportedCRSForBBox();
     }
 
+    /**
+     *
+     * @return allowed values
+     */
     @Override
     public Optional<List<String>> getAllowedValues() {
         return inputParameter.getAllowedValues();
     }
 
+    /**
+     *
+     * @return default value
+     */
     @Override
     public Optional<String> getDefaultValue() {
         return inputParameter.getDefaultValue();
     }
 
+    /**
+     *
+     * @return default format
+     */
     @Override
     public Optional<FormatEntry> getDefaultFormat() {
         return inputParameter.getDefaultFormat();
     }
 
+    /**
+     *
+     * @return flag if the input is optional
+     */
     @Override
     public boolean isOptional() {
         return inputParameter.isOptional();
     }
 
+    /**
+     *
+     * @return abstract
+     */
     @Override
     public Optional<String> getAbstract() {
         return inputParameter.getAbstract();

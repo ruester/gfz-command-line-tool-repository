@@ -19,36 +19,60 @@ package org.n52.gfz.riesgos.cmdexecution.common;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionRunResult;
 
 /**
- * Implementation of the result of running a process
+ * Implementation of the result of running a process.
  */
 public class ExecutionRunResultImpl implements IExecutionRunResult {
 
+    /**
+     * Exit value of the run.
+     */
     private final int exitValue;
+    /**
+     * Stderr output of the run.
+     */
     private final String stderr;
+    /**
+     * Stdout output of the run.
+     */
     private final String stdout;
 
     /**
-     *
-     * @param exitValue exit value of the process
-     * @param stderr joined stderr text
-     * @param stdout joined stdout text
+     * Default constructor.
+     * @param aExitValue exit value of the process
+     * @param aStderr joined stderr text
+     * @param aStdout joined stdout text
      */
-    ExecutionRunResultImpl(final int exitValue, final String stderr, final String stdout) {
-        this.exitValue = exitValue;
-        this.stderr = stderr;
-        this.stdout = stdout;
+    ExecutionRunResultImpl(
+            final int aExitValue,
+            final String aStderr,
+            final String aStdout) {
+        this.exitValue = aExitValue;
+        this.stderr = aStderr;
+        this.stdout = aStdout;
     }
 
+    /**
+     *
+     * @return exit value of the run
+     */
     @Override
     public int getExitValue() {
         return exitValue;
     }
 
+    /**
+     *
+     * @return stderr output of the run
+     */
     @Override
     public String getStderrResult() {
         return stderr;
     }
 
+    /**
+     *
+     * @return stdout output of the run
+     */
     @Override
     public String getStdoutResult() {
         return stdout;

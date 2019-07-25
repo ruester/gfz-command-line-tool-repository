@@ -21,59 +21,101 @@ package org.n52.gfz.riesgos.formats.shakemap.impl;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapField;
 
 /**
- * Implementation for a field entry
+ * Implementation for a field entry.
  */
 public class ShakemapFieldImpl implements IShakemapField {
 
+    /**
+     * String with LON to check if the data is
+     * the longitude column.
+     */
     private static final String LON = "LON";
+    /**
+     * String with LAT to check if the data
+     * is the latitude column.
+     */
     private static final String LAT = "LAT";
 
+    /**
+     * Stores the index of the column (one-based).
+     */
     private final int index;
+    /**
+     * Stores the name of the column.
+     */
     private final String name;
+    /**
+     * Stores the unit of the column.
+     */
     private final String units;
 
     /**
-     * Creates a new field-record
-     * @param index index of the field (one-based)
-     * @param name name of the field
-     * @param units units of the field
+     * Creates a new field-record.
+     * @param aIndex index of the field (one-based)
+     * @param aName name of the field
+     * @param aUnits units of the field
      */
     public ShakemapFieldImpl(
-            final int index,
-            final String name,
-            final String units) {
-        this.index = index;
-        this.name = name;
-        this.units = units;
+            final int aIndex,
+            final String aName,
+            final String aUnits) {
+        this.index = aIndex;
+        this.name = aName;
+        this.units = aUnits;
     }
 
+    /**
+     * Returns the index (one based).
+     * @return index of the column (one based)
+     */
     @Override
     public int getIndex() {
         return index;
     }
 
+    /**
+     * Returns the name of the column.
+     * @return name of the column
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the unit of the column.
+     * @return unit of the column
+     */
     @Override
-    public String getUnits() {
+    public String getUnit() {
         return units;
     }
 
+    /**
+     *
+     * @return true if it is the longitude column
+     */
     @Override
     public boolean isLon() {
         return LON.equals(name);
     }
 
+    /**
+     *
+     * @return true if it is the latitude column
+     */
     @Override
     public boolean isLat() {
         return LAT.equals(name);
     }
 
+    /**
+     *
+     * @return true if it is neither a longitude nor
+     * a latitude column
+     */
     @Override
     public boolean isCustom() {
-        return (! isLat() && ! isLon());
+        return (!isLat() && (!isLon()));
     }
 }

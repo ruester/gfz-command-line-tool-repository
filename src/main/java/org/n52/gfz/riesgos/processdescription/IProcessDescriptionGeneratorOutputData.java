@@ -22,18 +22,46 @@ import org.n52.wps.webapp.api.FormatEntry;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface for a output element for the process description
+ * generation.
+ */
 public interface IProcessDescriptionGeneratorOutputData {
 
+    /**
+     * Identifier of the output.
+     * @return identifier of the output
+     */
     String getIdentifier();
 
+    /**
+     * Binding class of the output.
+     * @return binding class of the output
+     */
     Class<? extends IData> getBindingClass();
 
+    /**
+     * Optional list with supported crs.
+     * @return optional list with supported crs
+     */
     Optional<List<String>> getSupportedCrs();
 
+    /**
+     * Optional default format.
+     * @return optional default format
+     */
     Optional<FormatEntry> getDefaultFormat();
 
+    /**
+     * True if the output is optional.
+     * @return true of the output is optional
+     */
     boolean isOptional();
 
+    /**
+     * Optional text with the abstract for the identifier.
+     * @return optional text with the abstrac for the identifier
+     */
     Optional<String> getAbstract();
 
 

@@ -22,25 +22,40 @@ import org.n52.gfz.riesgos.functioninterfaces.ILogger;
 import java.util.Objects;
 
 /**
- * Handler for the exit value that logs the value
+ * Handler for the exit value that logs the value.
  */
 public class LogExitValueHandler implements IExitValueHandler {
 
     private static final long serialVersionUID = 1896475898072071171L;
 
+    /**
+     * Handles the exit value.
+     * @param exitValue value to handle
+     * @param logger logger from the algorithm class
+     */
     @Override
-    public void handleExitValue(int exitValue, final ILogger logger) {
+    public void handleExitValue(
+            final int exitValue, final ILogger logger) {
         logger.log("Exit value: " + exitValue);
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

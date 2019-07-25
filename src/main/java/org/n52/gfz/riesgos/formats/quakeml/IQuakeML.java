@@ -24,26 +24,34 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Extended interface for QuakeML that also contains some conversion methods
+ * Extended interface for QuakeML that also contains some conversion methods.
  */
 public interface IQuakeML extends IQuakeMLDataProvider {
 
     /**
-     *
-     * @return xml representation of quakeml (original one from quakeledger process; is not valid according to the xml schema)
+     * Transforms it to the "original" quakeml data,
+     * that was used before carring about the validation
+     * against the xsd file.
+     * @return xml representation of quakeml
+     * (original one from quakeledger process;
+     * is not valid according to the xml schema)
      */
     XmlObject toOriginalXmlObject();
 
     /**
      *
-     * @return xml representation of quakeml that is valid according to the xsd
+     * Transforms it to the validated xml data.
+     * @return xml representation of quakeml
+     * that is valid according to the xsd
      */
     XmlObject toValidatedXmlObject();
 
     /**
+     * Transforms it to a feature collection.
      *
      * @return simple feature collection representation of quakeml
      */
-    FeatureCollection<SimpleFeatureType, SimpleFeature> toSimpleFeatureCollection();
+    FeatureCollection<SimpleFeatureType, SimpleFeature>
+    toSimpleFeatureCollection();
 
 }
