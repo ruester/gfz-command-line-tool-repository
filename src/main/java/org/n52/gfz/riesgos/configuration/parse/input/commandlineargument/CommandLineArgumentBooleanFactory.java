@@ -56,19 +56,22 @@ public class CommandLineArgumentBooleanFactory
             final List<String> allowedValues,
             final List<String> supportedCrs,
             final String schema) throws ParseConfigurationException {
-        if (ParseUtils.listHasValue(supportedCrs)) {
+
+        final ParseUtils parseUtils = ParseUtils.INSTANCE;
+
+        if (parseUtils.listHasValue(supportedCrs)) {
             throw new ParseConfigurationException(
                     "crs are not supported for boolean types");
         }
-        if (ParseUtils.listHasValue(allowedValues)) {
+        if (parseUtils.listHasValue(allowedValues)) {
             throw new ParseConfigurationException(
                     "allowed values are not supported for booleans");
         }
-        if (ParseUtils.strHasValue(schema)) {
+        if (parseUtils.strHasValue(schema)) {
             throw new ParseConfigurationException(
                     "schema is not supported for booleans");
         }
-        if (ParseUtils.strHasNoValue(defaultCommandLineFlag)) {
+        if (parseUtils.strHasNoValue(defaultCommandLineFlag)) {
             throw new ParseConfigurationException(
                     "flag is necessary for boolean type");
         }

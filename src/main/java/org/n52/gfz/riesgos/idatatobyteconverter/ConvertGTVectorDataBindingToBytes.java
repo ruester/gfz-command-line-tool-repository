@@ -45,7 +45,7 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
     public byte[] convertToBytes(GTVectorDataBinding binding) throws ConvertToBytesException {
 
         final FeatureCollection<?, ?> featureCollection = binding.getPayload();
-        try(final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             format.writeFeatures(featureCollection, out);
             return out.toByteArray();
         } catch(final IOException ioException) {
@@ -73,7 +73,7 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
 
     @FunctionalInterface
     private interface IFeatureWriter {
-        void writeFeatures(final FeatureCollection<?, ?> featureCollection, final OutputStream out) throws IOException;
+        void writeFeatures(FeatureCollection<?, ?> featureCollection, OutputStream out) throws IOException;
     }
 
     /**

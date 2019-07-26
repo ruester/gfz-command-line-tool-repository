@@ -22,7 +22,9 @@ import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.functioninterfaces.ICheckDataAndGetErrorMessage;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
-import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorForTransformationImpl;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorData;
+import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorDataImpl;
+import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
 import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
@@ -40,68 +42,129 @@ import java.util.Optional;
  * This is skeleton to provide processes that just takes the input as it is.
  * It it the job of the parsers and generators to transform the data formats.
  */
-public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm {
+public class TransformDataFormatProcess
+        extends AbstractSelfDescribingAlgorithm {
 
+    /**
+     * Input identifier.
+     */
     private static final String INPUT_IDENTIFIER = "input";
-    private static final String INPUT_ABSTRACT = "This is the input parameter to transform to other formats";
+    /**
+     * Abstract for the input.
+     */
+    private static final String INPUT_ABSTRACT =
+            "This is the input parameter to transform to other formats";
+    /**
+     * Output identifier.
+     */
     private static final String OUTPUT_IDENTIFIER = "output";
-    private static final String OUTPUT_ABSTRACT = "This is the output parameter to transform to other formats";
+    /**
+     * Abstract for the output.
+     */
+    private static final String OUTPUT_ABSTRACT =
+            "This is the output parameter to transform to other formats";
 
+    /**
+     * Identifier for the process.
+     */
     private final String identifier;
+    /**
+     * Supported class for the transformation processes.
+     */
     private final Class<? extends IComplexData> clazz;
+    /**
+     * Logger for the instance.
+     */
     private final Logger logger;
+    /**
+     * Optional validator for the data.
+     */
     private final ICheckDataAndGetErrorMessage validator;
+    /**
+     * Optional abstract for the process.
+     */
     private final String optionalAbstract;
 
     /**
-     * Creates a new process to transform the binding class data
+     * Creates a new process to transform the binding class data.
      *
-     * @param identifier identifier of the process
-     * @param clazz binding class the process uses
-     * @param logger logger to write information to
+     * @param aIdentifier identifier of the process
+     * @param aClazz binding class the process uses
+     * @param aLogger logger to write information to
+     * @param aValidator validator to check the input data
+     * @param aOptionalAbstract optional abstract of the process
      */
     public TransformDataFormatProcess(
-            final String identifier,
-            final Class<? extends IComplexData> clazz,
-            final Logger logger,
-            final ICheckDataAndGetErrorMessage validator,
-            final String optionalAbstract) {
-        this.identifier = identifier;
-        this.clazz = clazz;
-        this.logger = logger;
-        this.validator = validator;
-        this.optionalAbstract = optionalAbstract;
+            final String aIdentifier,
+            final Class<? extends IComplexData> aClazz,
+            final Logger aLogger,
+            final ICheckDataAndGetErrorMessage aValidator,
+            final String aOptionalAbstract) {
+        this.identifier = aIdentifier;
+        this.clazz = aClazz;
+        this.logger = aLogger;
+        this.validator = aValidator;
+        this.optionalAbstract = aOptionalAbstract;
     }
 
+    /**
+     *
+     * @return list with the input identifiers
+     */
     @Override
     public List<String> getInputIdentifiers() {
         return Collections.singletonList(INPUT_IDENTIFIER);
     }
 
+    /**
+     *
+     * @return list with the output identifiers
+     */
     @Override
     public List<String> getOutputIdentifiers() {
         return Collections.singletonList(OUTPUT_IDENTIFIER);
     }
 
+    /**
+     * Runs the process.
+     * Just reads one input data, validates it if necessary
+     * and returns it.
+     *
+     * (The task of changing the input data is done by generators and
+     * parsers).
+     *
+     * @param inputData input data for the process
+     * @return map with the output data of the processes
+     * @throws ExceptionReport exception that may be thrown in case of an error
+     */
     @Override
-    public Map<String, IData> run(final Map<String, List<IData>> inputData) throws ExceptionReport {
+    public Map<String, IData> run(
+            final Map<String, List<IData>> inputData) throws ExceptionReport {
 
         final Map<String, IData> result = new HashMap<>();
 
         final List<IData> value = inputData.get(INPUT_IDENTIFIER);
 
-        if(value.isEmpty()) {
-            throw new ExceptionReport("Empty inputData list", ExceptionReport.OPERATION_NOT_SUPPORTED);
+        if (value.isEmpty()) {
+            throw new ExceptionReport(
+                    "Empty inputData list",
+                    ExceptionReport.OPERATION_NOT_SUPPORTED);
         } else {
             if (value.size() > 1) {
-                logger.warn("Too many entries in inputData. Additional elements are ignored");
+                logger.warn(
+                        "Too many entries in inputData. "
+                        + "Additional elements are ignored");
             }
             final IData data = value.get(0);
 
-            if(validator != null) {
-                final Optional<String> optionalErrorMessage = validator.check(data);
-                if(optionalErrorMessage.isPresent()) {
-                    throw new ExceptionReport(optionalErrorMessage.get(), ExceptionReport.INVALID_PARAMETER_VALUE);
+            if (validator != null) {
+                @SuppressWarnings("unchecked")
+                final Optional<String> optionalErrorMessage =
+                        validator.check(data);
+                if (optionalErrorMessage.isPresent()) {
+                    throw new ExceptionReport(
+                            optionalErrorMessage.get(),
+                            ExceptionReport.INVALID_PARAMETER_VALUE);
                 }
             }
             // if there is an error -> the exception is thrown before
@@ -112,27 +175,57 @@ public class TransformDataFormatProcess extends AbstractSelfDescribingAlgorithm 
         return result;
     }
 
+    /**
+     * Queries the class of the input data.
+     * @param id identifier of the input data
+     * @return always only the supported class
+     */
     @Override
     public Class<?> getInputDataType(final String id) {
         return clazz;
     }
 
+    /**
+     * Queries the class of the output data.
+     * @param id identifier of the output data
+     * @return always only the supported class
+     */
     @Override
     public Class<?> getOutputDataType(final String id) {
         return clazz;
     }
 
+    /**
+     * Generates the process description.
+     * @return process description
+     */
     @Override
     public ProcessDescription getDescription() {
-        final IProcessDescriptionGenerator generator = new ProcessDescriptionGeneratorForTransformationImpl(
-                identifier, IConfiguration.PATH_FULL_QUALIFIED + identifier, clazz,
-                optionalAbstract,
-                INPUT_IDENTIFIER, INPUT_ABSTRACT,
-                OUTPUT_IDENTIFIER, OUTPUT_ABSTRACT);
-        final ProcessDescriptionsDocument description = generator.generateProcessDescription();
+
+        final IProcessDescriptionGeneratorData generatorData =
+                new ProcessDescriptionGeneratorDataImpl.Builder(
+                        identifier,
+                        IConfiguration.PATH_FULL_QUALIFIED
+                                + identifier)
+                .withProcessAbstract(optionalAbstract)
+                .withRequiredComplexInput(
+                        INPUT_IDENTIFIER,
+                        INPUT_ABSTRACT,
+                        clazz)
+                .withRequiredComplexOutput(
+                        OUTPUT_IDENTIFIER,
+                        OUTPUT_ABSTRACT,
+                        clazz)
+                .build();
+
+        final IProcessDescriptionGenerator generator =
+                new ProcessDescriptionGeneratorImpl(generatorData);
+        final ProcessDescriptionsDocument description =
+                generator.generateProcessDescription();
         ProcessDescription processDescription = new ProcessDescription();
-        processDescription.addProcessDescriptionForVersion(description.getProcessDescriptions().getProcessDescriptionArray(0), "1.0.0");
-        logger.error(processDescription.toString());
+        processDescription.addProcessDescriptionForVersion(
+                description.getProcessDescriptions()
+                        .getProcessDescriptionArray(0), "1.0.0");
         return processDescription;
     }
 }

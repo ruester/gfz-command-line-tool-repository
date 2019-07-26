@@ -56,11 +56,13 @@ public class CommandLineArgumentStringFactory
             final List<String> supportedCrs,
             final String schema) throws ParseConfigurationException {
 
-        if (ParseUtils.listHasValue(supportedCrs)) {
+        final ParseUtils parseUtils = ParseUtils.INSTANCE;
+
+        if (parseUtils.listHasValue(supportedCrs)) {
             throw new ParseConfigurationException(
                     "crs are not supported for string types");
         }
-        if (ParseUtils.strHasValue(schema)) {
+        if (parseUtils.strHasValue(schema)) {
             throw new ParseConfigurationException(
                     "schema is not supported for string types");
         }

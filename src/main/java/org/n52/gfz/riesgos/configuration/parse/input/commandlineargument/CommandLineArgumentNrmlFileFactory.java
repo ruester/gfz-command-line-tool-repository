@@ -56,15 +56,18 @@ public class CommandLineArgumentNrmlFileFactory
             final List<String> allowedValues,
             final List<String> supportedCrs,
             final String schema) throws ParseConfigurationException {
-        if (ParseUtils.strHasValue(defaultValue)) {
+
+        final ParseUtils parseUtils = ParseUtils.INSTANCE;
+
+        if (parseUtils.strHasValue(defaultValue)) {
             throw new ParseConfigurationException(
                     "default is not supported for nrml");
         }
-        if (ParseUtils.listHasValue(allowedValues)) {
+        if (parseUtils.listHasValue(allowedValues)) {
             throw new ParseConfigurationException(
                     "allowed values are not supported for nrml");
         }
-        if (ParseUtils.listHasValue(supportedCrs)) {
+        if (parseUtils.listHasValue(supportedCrs)) {
             throw new ParseConfigurationException(
                     "crs are not supported for nrml");
         }

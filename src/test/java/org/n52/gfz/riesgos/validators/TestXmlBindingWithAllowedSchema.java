@@ -52,7 +52,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testValidQuakeml() throws XmlException, IOException {
-        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema<>(schemaQuakeml);
         final String filecontent = new String(Files.readAllBytes(quakemlfile));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
@@ -68,7 +68,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testInvalidQuakeml() throws XmlException {
-        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaQuakeml);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema<>(schemaQuakeml);
         final XmlObject content = XmlObject.Factory.parse("<test></test>");
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);
@@ -82,7 +82,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testValidShakemap() throws XmlException, IOException {
-        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaShakemap);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema<>(schemaShakemap);
         final String filecontent = new String(Files.readAllBytes(shakemapfile));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
@@ -113,7 +113,7 @@ public class TestXmlBindingWithAllowedSchema {
         // skip test if no internet connection available or URL broken
         assumeTrue(connected);
 
-        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(externalSchema);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema<>(externalSchema);
         final String filecontent = new String(Files.readAllBytes(quakemlfile));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
@@ -144,7 +144,7 @@ public class TestXmlBindingWithAllowedSchema {
         // skip test if no internet connection available or URL broken
         assumeTrue(connected);
 
-        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(externalSchema);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema<>(externalSchema);
         final String filecontent = new String(Files.readAllBytes(shakemapfilegithub));
         final XmlObject content = XmlObject.Factory.parse(filecontent);
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
@@ -160,7 +160,7 @@ public class TestXmlBindingWithAllowedSchema {
      */
     @Test
     public void testInvalidShakemap() throws XmlException {
-        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema(schemaShakemap);
+        final ICheckDataAndGetErrorMessage<GenericXMLDataBinding> validator = new XmlBindingWithAllowedSchema<>(schemaShakemap);
         final XmlObject content = XmlObject.Factory.parse("<test></test>");
         final GenericXMLDataBinding value = new GenericXMLDataBinding(content);
         final Optional<String> errorMessage = validator.check(value);

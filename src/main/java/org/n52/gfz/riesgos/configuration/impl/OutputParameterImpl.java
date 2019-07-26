@@ -14,6 +14,8 @@ import java.util.Optional;
 
 public class OutputParameterImpl<T extends IData> implements IOutputParameter {
 
+    private static final long serialVersionUID = -740693169389170577L;
+
     private final String identifier;
     private final Class<T> bindingClass;
     private final boolean isOptional;

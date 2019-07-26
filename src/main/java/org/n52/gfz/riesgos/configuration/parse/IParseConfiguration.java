@@ -33,5 +33,5 @@ public interface IParseConfiguration {
      * @throws ParseConfigurationException exception that is thrown
      * in case of a problem on parsing
      */
-    IConfiguration parse(final String inputText) throws ParseConfigurationException;
+    IConfiguration parse(String inputText) throws ParseConfigurationException;
 }

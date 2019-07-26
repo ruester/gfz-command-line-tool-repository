@@ -261,6 +261,8 @@ import java.util.regex.Pattern;
  * of R scripts.
  */
 public class RErrorMessageStderrHandler implements IStderrHandler {
+    
+    private static final long serialVersionUID = 6766008892229228194L;
 
     /**
      * Pattern that will search for the term "Error" on the beginning of a line.

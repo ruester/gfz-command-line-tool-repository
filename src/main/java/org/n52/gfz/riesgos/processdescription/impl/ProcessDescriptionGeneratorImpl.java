@@ -30,9 +30,11 @@ import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import net.opengis.wps.x100.SupportedCRSsType;
 import net.opengis.wps.x100.SupportedComplexDataInputType;
 import net.opengis.wps.x100.SupportedComplexDataType;
-import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.gfz.riesgos.configuration.IInputParameter;
-import org.n52.gfz.riesgos.configuration.IOutputParameter;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorData;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorInputData;
+import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutputData;
+import org.n52.gfz.riesgos.processdescription.impl.addformats.IAddTypeDataForInput;
+import org.n52.gfz.riesgos.processdescription.impl.addformats.IAddTypeDataForOutput;
 import org.n52.wps.io.GeneratorFactory;
 import org.n52.wps.io.IGenerator;
 import org.n52.wps.io.IParser;
@@ -58,32 +60,32 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessDescriptionGeneratorImpl.class);
 
-    private final IConfiguration configuration;
+    private final IProcessDescriptionGeneratorData data;
 
     private final Supplier<List<IParser>> parserSupplier;
     private final Supplier<List<IGenerator>> generatorSupplier;
 
     /**
      * Constructor (for testing purpose)
-     * @param configuration the configuration for which the process description should be generated
+     * @param data the configuration for which the process description should be generated
      * @param parserSupplier supplier for getting all the parsers
      * @param generatorSupplier supplier for getting all the generators
      */
     public ProcessDescriptionGeneratorImpl(
-            final IConfiguration configuration,
+            final IProcessDescriptionGeneratorData data,
             final Supplier<List<IParser>> parserSupplier,
             final Supplier<List<IGenerator>> generatorSupplier) {
-        this.configuration = configuration;
+        this.data = data;
         this.parserSupplier = parserSupplier;
         this.generatorSupplier = generatorSupplier;
     }
 
     /**
      *
-     * @param configuration configuration for which the description should be generated
+     * @param data configuration for which the description should be generated
      */
-    public ProcessDescriptionGeneratorImpl(final IConfiguration configuration) {
-        this(configuration, () -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
+    public ProcessDescriptionGeneratorImpl(final IProcessDescriptionGeneratorData data) {
+        this(data, () -> ParserFactory.getInstance().getAllParsers(), () -> GeneratorFactory.getInstance().getAllGenerators());
     }
 
     @Override
@@ -97,12 +99,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         final ProcessDescriptionType processDescriptionType = processDescriptions.addNewProcessDescription();
 
         final CodeType processIdentifier = processDescriptionType.addNewIdentifier();
-        processIdentifier.setStringValue(configuration.getFullQualifiedIdentifier());
+        processIdentifier.setStringValue(data.getFullQualifiedIdentifier());
 
         final LanguageStringType processTitle = processDescriptionType.addNewTitle();
-        processTitle.setStringValue(configuration.getIdentifier());
+        processTitle.setStringValue(data.getIdentifier());
 
-        final Optional<String> optionalAbstract = configuration.getAbstract();
+        final Optional<String> optionalAbstract = data.getProcessAbstract();
         if(optionalAbstract.isPresent()) {
             final LanguageStringType abstractType = processDescriptionType.addNewAbstract();
             abstractType.setStringValue(optionalAbstract.get());
@@ -112,11 +114,11 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         processDescriptionType.setStoreSupported(true);
         processDescriptionType.setProcessVersion("1.0.0");
 
-        final List<IInputParameter> inputIdentifiers = configuration.getInputIdentifiers();
+        final List<IProcessDescriptionGeneratorInputData> inputIdentifiers = data.getInputData();
         if(! inputIdentifiers.isEmpty()) {
             final ProcessDescriptionType.DataInputs dataInputs = processDescriptionType.addNewDataInputs();
 
-            for (final IInputParameter input : configuration.getInputIdentifiers()) {
+            for (final IProcessDescriptionGeneratorInputData input : inputIdentifiers) {
                 final InputDescriptionType inputDescriptionType = dataInputs.addNewInput();
                 if(input.isOptional()) {
                     inputDescriptionType.setMinOccurs(BigInteger.ZERO);
@@ -144,7 +146,7 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         }
 
         final ProcessDescriptionType.ProcessOutputs processOutputs = processDescriptionType.addNewProcessOutputs();
-        for(final IOutputParameter output : configuration.getOutputIdentifiers()) {
+        for(final IProcessDescriptionGeneratorOutputData output : data.getOutputData()) {
             final OutputDescriptionType outputDescriptionType = processOutputs.addNewOutput();
 
             final CodeType outputIdentifier = outputDescriptionType.addNewIdentifier();
@@ -166,17 +168,12 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
     }
 
 
-
-    private interface IAddTypeDataForInput {
-        void addTypeData(final InputDescriptionType inputDescriptionType);
-    }
-
     private class AddTypeForInputLiteralImpl implements IAddTypeDataForInput {
 
-        private IInputParameter inputParameter;
+        private final IProcessDescriptionGeneratorInputData inputParameter;
 
         AddTypeForInputLiteralImpl(
-                final IInputParameter aInputParameter
+                final IProcessDescriptionGeneratorInputData aInputParameter
         ) {
             this.inputParameter = aInputParameter;
         }
@@ -209,10 +206,10 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
     }
 
     private class AddTypeForInputBBoxImpl implements IAddTypeDataForInput {
-        private final IInputParameter inputParameter;
+        private final IProcessDescriptionGeneratorInputData inputParameter;
 
         AddTypeForInputBBoxImpl(
-                final IInputParameter aInputParameter
+                final IProcessDescriptionGeneratorInputData aInputParameter
         ) {
             this.inputParameter = aInputParameter;
         }
@@ -220,7 +217,7 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         @Override
         public void addTypeData(final InputDescriptionType inputDescriptionType) {
             final SupportedCRSsType bboxData = inputDescriptionType.addNewBoundingBoxData();
-            final Optional<List<String>> optionalSupportedCrsList = inputParameter.getSupportedCRSForBBox();
+            final Optional<List<String>> optionalSupportedCrsList = inputParameter.getSupportedCrs();
             if(optionalSupportedCrsList.isPresent()) {
                 final List<String> supportedCrsList = optionalSupportedCrsList.get();
                 for(int i = 0; i < supportedCrsList.size(); i++) {
@@ -240,10 +237,10 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
     }
 
     private class AddTypeForInputComplexImpl implements IAddTypeDataForInput {
-        private final IInputParameter inputParameter;
+        private final IProcessDescriptionGeneratorInputData inputParameter;
 
         AddTypeForInputComplexImpl(
-                final IInputParameter aInputParameter
+                final IProcessDescriptionGeneratorInputData aInputParameter
         ) {
             this.inputParameter = aInputParameter;
         }
@@ -264,10 +261,10 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
     private class AddTypeForInputUnknownImpl implements IAddTypeDataForInput {
 
-        private IInputParameter inputParameter;
+        private final IProcessDescriptionGeneratorInputData inputParameter;
 
         AddTypeForInputUnknownImpl(
-                final IInputParameter aInputParameter
+                final IProcessDescriptionGeneratorInputData aInputParameter
         ) {
             this.inputParameter = aInputParameter;
         }
@@ -278,7 +275,7 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         }
     }
 
-    private IAddTypeDataForInput dispatchAddInputType(final IInputParameter inputParameter) {
+    private IAddTypeDataForInput dispatchAddInputType(final IProcessDescriptionGeneratorInputData inputParameter) {
         final Class<? extends IData> inputDataTypeClass = inputParameter.getBindingClass();
         final List<Class<?>> interfaces = findInterfaces(inputDataTypeClass);
 
@@ -293,7 +290,7 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         }
     }
 
-    private IAddTypeDataForOutput dispatchAddOutputType(final IOutputParameter outputParameter) {
+    private IAddTypeDataForOutput dispatchAddOutputType(final IProcessDescriptionGeneratorOutputData outputParameter) {
         final Class<?> outputDataTypeClass = outputParameter.getBindingClass();
         final List<Class<?>> interfaces = findInterfaces(outputDataTypeClass);
 
@@ -308,16 +305,13 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
         }
     }
 
-    private interface IAddTypeDataForOutput {
-        void addTypeData(final OutputDescriptionType outputDescriptionType);
-    }
 
     private class AddTypeForOutputLiteralImpl implements IAddTypeDataForOutput {
 
-        private final IOutputParameter outputParameter;
+        private final IProcessDescriptionGeneratorOutputData outputParameter;
 
         AddTypeForOutputLiteralImpl(
-                final IOutputParameter aOutputParameter
+                final IProcessDescriptionGeneratorOutputData aOutputParameter
         ) {
             this.outputParameter = aOutputParameter;
         }
@@ -335,17 +329,17 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
     private class AddTypeForOutputBBoxImpl implements IAddTypeDataForOutput {
 
-        private final IOutputParameter outputParameter;
+        private final IProcessDescriptionGeneratorOutputData outputParameter;
 
         AddTypeForOutputBBoxImpl(
-                final IOutputParameter aOutputParameter
+                final IProcessDescriptionGeneratorOutputData aOutputParameter
         ) {
             this.outputParameter = aOutputParameter;
         }
         @Override
         public void addTypeData(OutputDescriptionType outputDescriptionType) {
             final SupportedCRSsType bboxData = outputDescriptionType.addNewBoundingBoxOutput();
-            final Optional<List<String>> optionalSupportedCrsList = outputParameter.getSupportedCRSForBBox();
+            final Optional<List<String>> optionalSupportedCrsList = outputParameter.getSupportedCrs();
             boolean isFirst = true;
             if(optionalSupportedCrsList.isPresent()) {
                 for (final String supportedCrs : optionalSupportedCrsList.get()) {
@@ -365,10 +359,10 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
     }
 
     private class AddTypeForOutputComplexImpl implements IAddTypeDataForOutput {
-        private final IOutputParameter outputParameter;
+        private final IProcessDescriptionGeneratorOutputData outputParameter;
 
         AddTypeForOutputComplexImpl(
-                final IOutputParameter aOutputParameter
+                final IProcessDescriptionGeneratorOutputData aOutputParameter
         ) {
             this.outputParameter = aOutputParameter;
         }
@@ -388,10 +382,10 @@ public class ProcessDescriptionGeneratorImpl extends AbstractProcessDescriptionG
 
     private static class AddTypeForOutputUnknownImpl implements IAddTypeDataForOutput {
 
-        private final IOutputParameter outputParameter;
+        private final IProcessDescriptionGeneratorOutputData outputParameter;
 
         AddTypeForOutputUnknownImpl(
-                final IOutputParameter aOutputParameter
+                final IProcessDescriptionGeneratorOutputData aOutputParameter
         ) {
             this.outputParameter = aOutputParameter;
         }

@@ -38,9 +38,9 @@ public class TestWriteSingleByteStreamToPath {
      */
     @Test
     public void testEquals() {
-        final IWriteIDataToFiles<LiteralStringBinding> writer1 = new WriteSingleByteStreamToPath(new ConvertLiteralStringToBytes());
-        final IWriteIDataToFiles<LiteralStringBinding> writer2 = new WriteSingleByteStreamToPath(new ConvertLiteralStringToBytes());
-        final IWriteIDataToFiles<GeotiffBinding> writer3 = new WriteSingleByteStreamToPath(new ConvertGeotiffBindingToBytes());
+        final IWriteIDataToFiles<LiteralStringBinding> writer1 = new WriteSingleByteStreamToPath<>(new ConvertLiteralStringToBytes());
+        final IWriteIDataToFiles<LiteralStringBinding> writer2 = new WriteSingleByteStreamToPath<>(new ConvertLiteralStringToBytes());
+        final IWriteIDataToFiles<GeotiffBinding> writer3 = new WriteSingleByteStreamToPath<>(new ConvertGeotiffBindingToBytes());
 
         assertEquals("1 and 2 are equal", writer1, writer2);
         assertNotEquals("1 and 3 are different", writer1, writer3);

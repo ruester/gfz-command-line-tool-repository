@@ -60,27 +60,29 @@ public class CommandLineArgumentBBoxFactory
 
             throws ParseConfigurationException {
 
-        if (ParseUtils.strHasValue(defaultCommandLineFlag)) {
+        final ParseUtils parseUtils = ParseUtils.INSTANCE;
+
+        if (parseUtils.strHasValue(defaultCommandLineFlag)) {
             throw new ParseConfigurationException(
                     "commandLineFlag is not supported for bbox");
         }
 
-        if (ParseUtils.strHasValue(defaultValue)) {
+        if (parseUtils.strHasValue(defaultValue)) {
             throw new ParseConfigurationException(
                     "default is not supported for bbox");
         }
 
-        if (ParseUtils.listHasValue(allowedValues)) {
+        if (parseUtils.listHasValue(allowedValues)) {
             throw new ParseConfigurationException(
                     "allowed values are not supported for bbox");
         }
 
-        if (ParseUtils.listHasNoValues(supportedCrs)) {
+        if (parseUtils.listHasNoValues(supportedCrs)) {
             throw new ParseConfigurationException(
                     "The element 'crs' for is necessary for bbox");
         }
 
-        if (ParseUtils.strHasValue(schema)) {
+        if (parseUtils.strHasValue(schema)) {
             throw new ParseConfigurationException(
                     "schema is not supported for bbox");
         }

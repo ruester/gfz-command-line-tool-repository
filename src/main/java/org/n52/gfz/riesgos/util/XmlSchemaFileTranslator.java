@@ -29,7 +29,7 @@ import java.util.Map;
 public class XmlSchemaFileTranslator {
     public static final String quakemlSchemaResource = "/org/n52/gfz/riesgos/validators/xml/QuakeML-BED-1.2.xsd";
     public static final String shakemapSchemaResource = "/org/n52/gfz/riesgos/validators/xml/shakemap.xsd";
-    Map<String, URI> translator;
+    final Map<String, URI> translator;
 
     public XmlSchemaFileTranslator() {
         translator = new HashMap<>();

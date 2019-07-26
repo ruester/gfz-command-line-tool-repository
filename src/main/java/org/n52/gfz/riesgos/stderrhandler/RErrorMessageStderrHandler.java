@@ -32,12 +32,15 @@ import java.util.regex.Pattern;
  */
 public class RErrorMessageStderrHandler implements IStderrHandler {
 
+    private static final long serialVersionUID = -5137011204658974325L;
+
     /**
      * Pattern that will search for the term "Error" on the beginning of a line.
      * Takes the Multiline flag to test the beginning (^) at every line.
      */
     private static final Pattern ERROR_PATTERN =
             Pattern.compile("^Error", Pattern.MULTILINE);
+
 
     /**
      * Handles stderr text for output of a R script.

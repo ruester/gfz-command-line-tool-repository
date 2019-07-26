@@ -18,11 +18,13 @@ package org.n52.gfz.riesgos.functioninterfaces;
 
 import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
 
+import java.io.Serializable;
+
 /**
  * Handler for text from stderr
  */
 @FunctionalInterface
-public interface IStderrHandler {
+public interface IStderrHandler extends Serializable {
 
     /**
      * Handles stderr text.
@@ -30,5 +32,5 @@ public interface IStderrHandler {
      * @param logger logger of the algorithm
      * @throws NonEmptyStderrException there may be an exception on non empty stderr
      */
-    void handleStderr(final String stderr, final ILogger logger) throws NonEmptyStderrException;
+    void handleStderr(String stderr, ILogger logger) throws NonEmptyStderrException;
 }

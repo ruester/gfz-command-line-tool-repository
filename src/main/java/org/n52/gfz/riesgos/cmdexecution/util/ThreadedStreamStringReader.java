@@ -45,7 +45,7 @@ public class ThreadedStreamStringReader extends Thread {
     @Override
     public void run() {
 
-        try(final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while((line = reader.readLine()) != null) {
                 resultBuilder.append(line);

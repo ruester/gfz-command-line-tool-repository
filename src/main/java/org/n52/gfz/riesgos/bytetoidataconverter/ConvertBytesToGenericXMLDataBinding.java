@@ -28,27 +28,49 @@ import java.util.Objects;
 
 /**
  * This is an implementation to convert a byte[] array of xml information into
- * a GenericXMLDataBinding
+ * a GenericXMLDataBinding.
  */
-public class ConvertBytesToGenericXMLDataBinding implements IConvertByteArrayToIData<GenericXMLDataBinding> {
+public class ConvertBytesToGenericXMLDataBinding
+        implements IConvertByteArrayToIData<GenericXMLDataBinding> {
 
+    private static final long serialVersionUID = -6568169758753772163L;
+
+    /**
+     * Generates the GenericXMLDataBinding from byte array.
+     * @param content byte array to convert
+     * @return GenericXMLDataBinding
+     * @throws ConvertToIDataException exception that is thrown
+     * in case of an io exception or an xml exception
+     */
     @Override
-    public GenericXMLDataBinding convertToIData(final byte[] content) throws ConvertToIDataException {
-        try(final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
-            return new GenericXMLDataBinding(XmlObject.Factory.parse(byteArrayInputStream));
-        } catch(final XmlException | IOException exception) {
+    public GenericXMLDataBinding convertToIData(
+            final byte[] content) throws ConvertToIDataException {
+        try (ByteArrayInputStream byteArrayInputStream =
+                     new ByteArrayInputStream(content)) {
+            return new GenericXMLDataBinding(
+                    XmlObject.Factory.parse(byteArrayInputStream));
+        } catch (final XmlException | IOException exception) {
             throw new ConvertToIDataException(exception);
         }
     }
 
+    /**
+     * Tests equality.
+     * @param o other object
+     * @return true if both are equal.
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         return o != null && getClass() == o.getClass();
     }
 
+    /**
+     *
+     * @return hashcode of the instance
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getClass().getName());

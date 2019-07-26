@@ -28,6 +28,8 @@ import java.util.Objects;
  */
 public class ExceptionIfExitValueIsNotEmptyHandler implements IExitValueHandler {
 
+    private static final long serialVersionUID = 3241823280037086332L;
+
     @Override
     public void handleExitValue(int exitValue, final ILogger logger) throws NonZeroExitValueException {
         if(exitValue != 0) {

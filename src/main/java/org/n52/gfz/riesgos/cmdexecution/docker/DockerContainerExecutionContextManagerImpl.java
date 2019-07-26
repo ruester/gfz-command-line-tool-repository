@@ -28,30 +28,51 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Context manager implementation that uses docker
+ * Context manager implementation that uses docker.
  */
-public class DockerContainerExecutionContextManagerImpl implements IExecutionContextManager {
+public class DockerContainerExecutionContextManagerImpl
+        implements IExecutionContextManager {
 
+    /**
+     * Image id that should be used to create containers.
+     */
     private final String imageId;
 
     /**
-     *
-     * @param imageId id of the docker image to use
+     * Constructor with the image id.
+     * @param aImageId id of the docker image to use
      */
-    public DockerContainerExecutionContextManagerImpl(final String imageId) {
-        this.imageId = imageId;
+    public DockerContainerExecutionContextManagerImpl(
+            final String aImageId) {
+        this.imageId = aImageId;
     }
 
+    /**
+     * Creates a docker container for running the cmd in.
+     * @param workingDirectory directory to run the code inside
+     * @param cmd string list with the command to execute (for example
+     *            ["python3", "script.py", "arg1", "arg2"]
+     * @return DockerExecutionContextImpl
+     */
     @Override
-    public IExecutionContext createExecutionContext(String workingDirectory, List<String> cmd) {
-        final String containerId = runCreateContainerProcess(workingDirectory, cmd);
+    public IExecutionContext createExecutionContext(
+            final String workingDirectory,
+            final List<String> cmd) {
+        final String containerId = runCreateContainerProcess(
+                workingDirectory,
+                cmd);
         return new DockerExecutionContextImpl(containerId);
     }
 
-    /*
-     * creates an container and gives back the id of it
+    /**
+     * Creates an container and gives back the id of it.
+     * @param workingDirectory directory to run the cmd in
+     * @param cmd command to run (as a string list)
+     * @return String with the docker container id
      */
-    private String runCreateContainerProcess(final String workingDirectory, final List<String> cmd) {
+    private String runCreateContainerProcess(
+            final String workingDirectory,
+            final List<String> cmd) {
         final ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command(createCommand(workingDirectory, cmd));
 
@@ -62,25 +83,39 @@ public class DockerContainerExecutionContextManagerImpl implements IExecutionCon
             final IExecutionRunResult result = run.waitForCompletion();
 
             final String errorText = result.getStderrResult();
-            if(! errorText.isEmpty()) {
-                throw new RuntimeException("Can't create the container:"  + errorText);
+            if (!errorText.isEmpty()) {
+                throw new RuntimeException(
+                        "Can't create the container:"  + errorText);
             }
             final int exitValue = result.getExitValue();
-            if(exitValue != 0) {
-                throw new RuntimeException("Can't create the container. Exit value != 0: " + exitValue);
+            if (exitValue != 0) {
+                throw new RuntimeException(
+                        "Can't create the container. Exit value != 0: "
+                                + exitValue);
             }
 
-            return result.getStdoutResult().trim();
+            final String containerId = result.getStdoutResult().trim();
 
-        } catch(final IOException | InterruptedException ioException) {
+            if (containerId.isEmpty()) {
+                throw new RuntimeException("Can't read the container id.");
+            }
+            return containerId;
+
+        } catch (final IOException | InterruptedException ioException) {
             throw new RuntimeException(ioException);
         }
     }
 
-    /*
-     * command to create a container
+
+    /**
+     * Creates the cmd to create the docker container.
+     * @param workingDirectory directory to run the cmd in
+     * @param cmd command to run inside of the docker container
+     * @return command to create the docker container to run the cmd
      */
-    private List<String> createCommand(final String workingDirectory, final List<String> cmd) {
+    private List<String> createCommand(
+            final String workingDirectory,
+            final List<String> cmd) {
         final List<String> result = new ArrayList<>();
 
         result.add("docker");
@@ -106,14 +141,18 @@ public class DockerContainerExecutionContextManagerImpl implements IExecutionCon
         return result;
     }
 
-    /*
-     * drop all capabilities
-     * it should use as less capabilities as possible
+
+    /**
+     * Creates a list to drop all the capabilities
+     * that are not necessary to run the commands inside
+     * of the container.
+     *
+     * @return list with the flags to drop all capabilities.
      */
     private List<String> createFlagsForDroppingAllTheCapabilities() {
         final List<String> result = new ArrayList<>();
 
-        for(final String cap : Arrays.asList(
+        for (final String cap : Arrays.asList(
                 "chown",       "dac_override", "fowner",
                 "fsetid",      "kill",         "setgid",
                 "setuid",      "setpcap",      "net_bind_service",

@@ -26,6 +26,8 @@ import java.util.Objects;
  */
 public class LogStderrHandler implements IStderrHandler {
 
+    private static final long serialVersionUID = 5182131022195093309L;
+
     /**
      * Handles stderr text.
      * @param stderr text to handle

@@ -16,15 +16,17 @@ package org.n52.gfz.riesgos.functioninterfaces;
  * limitations under the Licence.
  */
 
+import java.io.Serializable;
+
 /**
  * Handler for stdout text
  */
 @FunctionalInterface
-public interface IStdoutHandler {
+public interface IStdoutHandler extends Serializable {
 
     /**
      * Handles the text on stdout
      * @param stdout text from stdout
      */
-    void handleStdout(final String stdout);
+    void handleStdout(String stdout);
 }

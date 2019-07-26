@@ -18,6 +18,8 @@ package org.n52.gfz.riesgos.readidatafromfiles;
  *
  */
 
+import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
+import org.n52.gfz.riesgos.cache.RecreateFromByteArray;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
@@ -34,7 +36,10 @@ import java.util.Objects;
  */
 public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIDataFromFiles<T> {
 
+    private static final long serialVersionUID = 7014190269474895564L;
+
     private final IConvertByteArrayToIData<T> converter;
+    private final Class<? extends IData> bindingClass;
 
     /**
      * Implementation that just uses a function to convert the
@@ -42,15 +47,18 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
      *
      * Can be used in all situations where one file produces the iData
      */
-    public ReadSingleByteStreamFromPath(final IConvertByteArrayToIData<T> converter) {
+    public ReadSingleByteStreamFromPath(
+            final IConvertByteArrayToIData<T> converter,
+            final Class<T> bindingClass) {
         this.converter = converter;
+        this.bindingClass = bindingClass;
     }
 
     @Override
-    public T readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
+    public DataWithRecreatorTuple<T> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
 
         final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
-        return converter.convertToIData(content);
+        return new DataWithRecreatorTuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter, bindingClass));
     }
 
     @Override
@@ -62,11 +70,12 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
             return false;
         }
         ReadSingleByteStreamFromPath that = (ReadSingleByteStreamFromPath) o;
-        return Objects.equals(converter, that.converter);
+        return Objects.equals(converter, that.converter)
+                && Objects.equals(bindingClass, that.bindingClass);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(converter);
+        return Objects.hash(converter, bindingClass);
     }
 }

@@ -39,12 +39,12 @@ public class TestReadSingleByteStreamFromPath {
      */
     @Test
     public void testEquals() {
-        final IReadIDataFromFiles<LiteralStringBinding> reader1 = new ReadSingleByteStreamFromPath<>(new ConvertBytesToLiteralStringBinding());
-        final IReadIDataFromFiles<LiteralStringBinding> reader2 = new ReadSingleByteStreamFromPath<>(new ConvertBytesToLiteralStringBinding());
+        final IReadIDataFromFiles<LiteralStringBinding> reader1 = new ReadSingleByteStreamFromPath<>(new ConvertBytesToLiteralStringBinding(), LiteralStringBinding.class);
+        final IReadIDataFromFiles<LiteralStringBinding> reader2 = new ReadSingleByteStreamFromPath<>(new ConvertBytesToLiteralStringBinding(), LiteralStringBinding.class);
 
         assertEquals("Both are equal", reader1, reader2);
 
-        final IReadIDataFromFiles<GeotiffBinding> reader3 = new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding());
+        final IReadIDataFromFiles<GeotiffBinding> reader3 = new ReadSingleByteStreamFromPath<>(new ConvertBytesToGeotiffBinding(), GeotiffBinding.class);
 
         assertNotEquals("The third one is different", reader1, reader3);
     }

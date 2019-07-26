@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractProcessDescriptionGenerator implements IProcessDescriptionGenerator {
 
+    private static final String EMPTY = "";
+
     /*
      * takes all the constructors and searches for one constructor getting a single element
      * the class of this element is the name to search for.
@@ -141,12 +143,12 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
             final ComplexDataDescriptionType supportedFormat = defaultInputFormat.addNewFormat();
             supportedFormat.setMimeType(defaultFormat.getMimeType());
             final String encoding = defaultFormat.getEncoding();
-            if (encoding != null && !encoding.equals("")) {
+            if (encoding != null && !encoding.equals(EMPTY)) {
                 supportedFormat.setEncoding(encoding);
             }
 
             final String schema = defaultFormat.getSchema();
-            if (schema != null && !schema.equals("")) {
+            if (schema != null && !schema.equals(EMPTY)) {
                 supportedFormat.setSchema(schema);
             }
         }
@@ -156,11 +158,11 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
             final ComplexDataDescriptionType supportedFormat = complexDataCombinationsType.addNewFormat();
             supportedFormat.setMimeType(formatEntry.getMimeType());
             final String encoding = formatEntry.getEncoding();
-            if (encoding != null && !encoding.equals("")) {
+            if (encoding != null && !encoding.equals(EMPTY)) {
                 supportedFormat.setEncoding(encoding);
             }
             final String schema = formatEntry.getSchema();
-            if (schema != null && !schema.equals("")) {
+            if (schema != null && !schema.equals(EMPTY)) {
                 supportedFormat.setSchema(schema);
             }
         }

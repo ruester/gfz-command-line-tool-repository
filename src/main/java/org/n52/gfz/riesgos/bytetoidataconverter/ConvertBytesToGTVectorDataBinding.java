@@ -31,69 +31,123 @@ import java.io.InputStream;
 import java.util.Objects;
 
 /**
- * Function to create a GTVectorDataBinding from a byte array
+ * Function to create a GTVectorDataBinding from a byte array.
  */
-public class ConvertBytesToGTVectorDataBinding implements IConvertByteArrayToIData<GTVectorDataBinding> {
+public class ConvertBytesToGTVectorDataBinding
+        implements IConvertByteArrayToIData<GTVectorDataBinding> {
 
+    private static final long serialVersionUID = 7638158856073948956L;
+
+    /**
+     * Format for the conversion.
+     */
     private final Format format;
 
     /**
-     * Constructor with the format to read the data in
-     * @param format format to read from bytes
+     * Constructor with the format to read the data in.
+     * @param aFormat format to read from bytes
      */
-    public ConvertBytesToGTVectorDataBinding(final Format format) {
-        this.format = format;
+    public ConvertBytesToGTVectorDataBinding(final Format aFormat) {
+        this.format = aFormat;
     }
 
+    /**
+     * Returns a GTVectorDataBinding from the byte array.
+     * @param content byte array to convert
+     * @return GTVectorDataBinding
+     * @throws ConvertToIDataException exception that is thrown on
+     * an io exception
+     */
     @Override
-    public GTVectorDataBinding convertToIData(byte[] content) throws ConvertToIDataException {
+    public GTVectorDataBinding convertToIData(
+            final byte[] content) throws ConvertToIDataException {
 
-        try(final ByteArrayInputStream in = new ByteArrayInputStream(content)) {
-            final FeatureCollection<?, ?> featureCollection = format.readFeatures(in);
+        try (ByteArrayInputStream inStream =
+                     new ByteArrayInputStream(content)) {
+            final FeatureCollection<?, ?> featureCollection =
+                    format.readFeatures(inStream);
             return new GTVectorDataBinding(featureCollection);
-        } catch(final IOException ioException) {
+        } catch (final IOException ioException) {
             throw new ConvertToIDataException(ioException);
         }
     }
 
 
+    /**
+     * Tests for equality.
+     * @param o other object
+     * @return true if both are equal
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConvertBytesToGTVectorDataBinding that = (ConvertBytesToGTVectorDataBinding) o;
+        ConvertBytesToGTVectorDataBinding that =
+                (ConvertBytesToGTVectorDataBinding) o;
         return format == that.format;
     }
 
+    /**
+     *
+     * @return hashcode of the instance
+     */
     @Override
     public int hashCode() {
         return Objects.hash(format);
     }
 
+    /**
+     * Interface for reading features.
+     */
     @FunctionalInterface
     private interface IFeatureReader {
-        FeatureCollection<?, ?> readFeatures(final InputStream inputStream) throws IOException;
+        /**
+         * Reads the features.
+         * @param inputStream input stream to read from
+         * @return feature collection
+         * @throws IOException exception in case of a problem handling io
+         */
+        FeatureCollection<?, ?> readFeatures(
+                InputStream inputStream) throws IOException;
     }
 
 
     /**
-     * Format options to read features from bytes
+     * Format options to read features from bytes.
      */
     public enum Format implements IFeatureReader {
+        /**
+         * Json format.
+         */
         JSON((in) -> new FeatureJSON().readFeatureCollection(in));
 
+        /**
+         * Reader implementation to use.
+         */
         private final IFeatureReader featureReader;
 
-        Format(final IFeatureReader featureReader) {
-            this.featureReader = featureReader;
+        /**
+         * Sets the reader for the format.
+         * @param aFeatureReader reader implementation
+         */
+        Format(final IFeatureReader aFeatureReader) {
+            this.featureReader = aFeatureReader;
         }
 
+        /**
+         * Reads the features into the feature collection.
+         * @param inputStream input stream to read from
+         * @return feature collection
+         * @throws IOException io exception in case of trouble on handling
+         * files and io
+         */
         @Override
-        public FeatureCollection<?, ?> readFeatures(final InputStream inputStream) throws IOException {
+        public FeatureCollection<?, ?> readFeatures(
+                final InputStream inputStream) throws IOException {
             return featureReader.readFeatures(inputStream);
         }
 

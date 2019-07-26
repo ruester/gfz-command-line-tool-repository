@@ -52,7 +52,7 @@ public class InputFileGenericFactory implements IAsFileInputFactory {
 
             throws ParseConfigurationException {
 
-        if (ParseUtils.strHasValue(schema)) {
+        if (ParseUtils.INSTANCE.strHasValue(schema)) {
             throw new ParseConfigurationException(
                     "schema is not supported for file");
         }

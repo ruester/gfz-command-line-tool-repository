@@ -384,6 +384,8 @@ import java.util.Objects;
 public class ConvertBytesToJsonDataBinding
         implements IConvertByteArrayToIData<JsonDataBinding> {
 
+    private static final long serialVersionUID = -643297229677437705L; 
+    
     /**
      * Converts the byte array to an IData element.
      * @param content byte array to convert

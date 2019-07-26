@@ -93,7 +93,7 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToGenericXMLDataBinding()));
+                        new ConvertBytesToGenericXMLDataBinding(), GenericXMLDataBinding.class));
         builder.withSchema(schema);
         builder.withValidator(validator);
         builder.withDefaultFormat(defaultFormat);
@@ -128,7 +128,7 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToNrmlXMLDataBinding()));
+                        new ConvertBytesToNrmlXMLDataBinding(), NrmlXmlDataBinding.class));
         builder.withSchema(schema);
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
@@ -163,7 +163,7 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToQuakeMLXmlBinding()));
+                        new ConvertBytesToQuakeMLXmlBinding(), QuakeMLXmlDataBinding.class));
         builder.withSchema(schema);
         builder.withValidator(new XmlBindingWithAllowedSchema<>(schema));
         builder.withDefaultFormat(defaultFormat);
@@ -200,7 +200,7 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToShakemapXmlBinding()));
+                        new ConvertBytesToShakemapXmlBinding(), ShakemapXmlDataBinding.class));
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
@@ -233,7 +233,7 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToJsonDataBinding()));
+                        new ConvertBytesToJsonDataBinding(), JsonDataBinding.class));
         builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
@@ -266,7 +266,7 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToGeotiffBinding()));
+                        new ConvertBytesToGeotiffBinding(), GeotiffBinding.class));
         builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
@@ -298,7 +298,7 @@ public enum OutputParameterFactory {
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToGTVectorDataBinding(
-                            ConvertBytesToGTVectorDataBinding.Format.JSON)));
+                            ConvertBytesToGTVectorDataBinding.Format.JSON), GTVectorDataBinding.class));
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
@@ -328,7 +328,7 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToGenericFileDataBinding()));
+                        new ConvertBytesToGenericFileDataBinding(), GenericFileDataBinding.class));
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }

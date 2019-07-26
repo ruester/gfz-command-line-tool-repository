@@ -18,26 +18,28 @@ package org.n52.gfz.riesgos.functioninterfaces;
  *
  */
 
+import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContext;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.wps.io.data.IData;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Interface to read the idata from one or moore files
  * (maybe on a container)
  */
-public interface IReadIDataFromFiles<T extends IData> {
+public interface IReadIDataFromFiles<T extends IData> extends Serializable {
 
     /**
      * Reads the idata from the filesystem (maybe multiple files, maybe from a container)
      * @param context context (maybe the container)
      * @param workingDirectory the working directory in which the file is / the files are
      * @param path basic path of a single file / the main file if there are several
-     * @return IData
+     * @return IData with the recreator (for a caching mechanism)
      * @throws ConvertToIDataException if the conversion is not possible this exception will be thrown
      * @throws IOException will be thrown if there is problem on the IO mechanism on java
      */
-    T readFromFiles(final IExecutionContext context, final String workingDirectory, final String path) throws ConvertToIDataException, IOException;
+    DataWithRecreatorTuple<T> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException;
 }

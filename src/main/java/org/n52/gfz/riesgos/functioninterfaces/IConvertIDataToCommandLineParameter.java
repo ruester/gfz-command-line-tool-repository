@@ -36,6 +36,6 @@ public interface IConvertIDataToCommandLineParameter<T extends IData> {
      * handled by the function
      */
     List<String> convertToCommandLineParameter(
-            final T iData)
+            T iData)
             throws ConvertToStringCmdException;
 }

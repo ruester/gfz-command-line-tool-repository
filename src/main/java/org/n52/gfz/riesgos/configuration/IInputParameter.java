@@ -1,5 +1,6 @@
 package org.n52.gfz.riesgos.configuration;
 
+import org.n52.gfz.riesgos.cache.IFunctionToGenerateCacheKey;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.gfz.riesgos.functioninterfaces.IWriteIDataToFiles;
@@ -46,4 +47,6 @@ public interface IInputParameter extends IIOParameter {
      * @return optional default value
      */
     Optional<String> getDefaultValue();
+
+    IFunctionToGenerateCacheKey getFunctionToGenerateCacheKey();
 }

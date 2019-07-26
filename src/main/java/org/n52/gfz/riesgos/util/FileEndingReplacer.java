@@ -21,13 +21,17 @@ package org.n52.gfz.riesgos.util;
 /**
  * Utility class to replace file endings.
  */
-public final class FileEndingReplacer {
+public enum FileEndingReplacer {
 
+    /**
+     * Singleton.
+     */
+    INSTANCE;
     /**
      * Private constructor, so this class should only by used
      * from a static context.
      */
-    private FileEndingReplacer() {
+    FileEndingReplacer() {
         // static
     }
 
@@ -39,7 +43,7 @@ public final class FileEndingReplacer {
      * @param replacement replacement
      * @return String with a replaced ending
      */
-    public static String replaceFileEnding(
+    public String replaceFileEnding(
             final String filename,
             final String endingToReplace,
             final String replacement) {

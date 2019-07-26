@@ -4,12 +4,13 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertExitValueToIData;
 import org.n52.gfz.riesgos.functioninterfaces.IReadIDataFromFiles;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
  * Configuration of an output parameter.
  */
-public interface IOutputParameter extends IIOParameter {
+public interface IOutputParameter extends IIOParameter, Serializable {
 
     /**
      *

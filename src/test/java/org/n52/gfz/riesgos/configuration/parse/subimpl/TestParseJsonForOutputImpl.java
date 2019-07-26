@@ -252,7 +252,7 @@ public class TestParseJsonForOutputImpl {
                 "}";
 
         final ParseJsonForOutputImpl parser = new ParseJsonForOutputImpl();
-        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGenericXMLDataBinding());
+        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath<>(new ConvertBytesToGenericXMLDataBinding(), GenericXMLDataBinding.class);
 
         try {
             final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
@@ -285,7 +285,7 @@ public class TestParseJsonForOutputImpl {
                 "}";
 
         final ParseJsonForOutputImpl parser = new ParseJsonForOutputImpl();
-        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGenericXMLDataBinding());
+        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath<>(new ConvertBytesToGenericXMLDataBinding(), GenericXMLDataBinding.class);
 
         try {
             final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
@@ -348,7 +348,7 @@ public class TestParseJsonForOutputImpl {
                 "}";
 
         final ParseJsonForOutputImpl parser = new ParseJsonForOutputImpl();
-        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGenericFileDataBinding());
+        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath<>(new ConvertBytesToGenericFileDataBinding(), GenericFileDataBinding.class);
 
         try {
             final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
@@ -379,7 +379,7 @@ public class TestParseJsonForOutputImpl {
                 "}";
 
         final ParseJsonForOutputImpl parser = new ParseJsonForOutputImpl();
-        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON));
+        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath<>(new ConvertBytesToGTVectorDataBinding(ConvertBytesToGTVectorDataBinding.Format.JSON), GTVectorDataBinding.class);
 
         try {
             final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
@@ -410,7 +410,7 @@ public class TestParseJsonForOutputImpl {
                 "}";
 
         final ParseJsonForOutputImpl parser = new ParseJsonForOutputImpl();
-        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath(new ConvertBytesToGeotiffBinding());
+        final IReadIDataFromFiles reader = new ReadSingleByteStreamFromPath<>(new ConvertBytesToGeotiffBinding(), GeotiffBinding.class);
 
         try {
             final IOutputParameter outputIdentifier = parser.parseOutput(parseJson(text));
