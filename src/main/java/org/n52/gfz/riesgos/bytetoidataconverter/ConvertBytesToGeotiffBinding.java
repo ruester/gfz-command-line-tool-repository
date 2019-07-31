@@ -25,7 +25,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -52,8 +52,8 @@ public class ConvertBytesToGeotiffBinding
                     "convertBytesToIData", ".tiff");
             tempFile.deleteOnExit();
 
-            try (FileWriter writer = new FileWriter(tempFile)) {
-                IOUtils.write(content, writer);
+            try (FileOutputStream fileOutputStream = new FileOutputStream(tempFile)) {
+                IOUtils.write(content, fileOutputStream);
             }
 
             return new GeotiffBinding(tempFile);
