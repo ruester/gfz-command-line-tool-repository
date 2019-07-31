@@ -85,6 +85,22 @@ issue on reading geojson files created by geopandas in java.
 Also at the moment there are no input parameter which will change with
 the next versions.
 
+## Flooddamage-Tiff-Downloader
+
+This process is to download tiff files from the geomer web coverage service.
+It supports only those files that are given there at the time of writing
+(2019-07-31):
+
+- rain_cotopaxi:duration_latacunga_city
+- rain_cotopaxi:duration_latacunga_north
+- rain_cotopaxi:v_at_wdmax_latacunga_city
+- rain_cotopaxi:v_at_wdmax_latacunga_north
+- rain_cotopaxi:wd_max_latacunga_city
+- rain_cotopaxi:wd_max_latacunga_north
+
+You can take a look at the source code on 
+https://github.com/gfzriesgos/flooddamage-tiff-downloader
+
 ## Assetmaster
 
 Assetmaster is a process to provide exposure models in the riesgos

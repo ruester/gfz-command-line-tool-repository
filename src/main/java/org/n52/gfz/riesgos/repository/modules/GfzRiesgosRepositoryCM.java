@@ -277,6 +277,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 factory.createQuakeledger(),
                 factory.createShakyground(),
                 factory.createFlooddamage(),
+                factory.createFlooddamageTiffDownloader(),
                 factory.createAssetmaster(),
                 factory.createModelprop()
         );

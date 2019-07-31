@@ -1,0 +1,22 @@
+{
+  "title": "FloodDamageTiffDownloader",
+  "imageId": "gfzriesgos/flooddamage-tiff-downloader:latest",
+  "workingDirectory": "/usr/share/git/flooddamage-tiff-downloader",
+  "commandToExecute": "python3 download_tiff.py",
+  "exitValueHandler": "errorIfNotZero",
+  "stderrHandler": "pythonTraceback",
+  "input": [
+    { "title" : "base-url", "useAs": "commandLineArgument", "type": "string", "default": "https://www.sd-kama.de/geoserver/rain_cotopaxi/wcs"},
+    { "title": "coverage-id", "useAs": "commandLineArgument", "type": "string", "allowed": [
+      "rain_cotopaxi:duration_latacunga_city",
+      "rain_cotopaxi:duration_latacunga_north",
+      "rain_cotopaxi:v_at_wdmax_latacunga_city",
+      "rain_cotopaxi:v_at_wdmax_latacunga_north",
+      "rain_cotopaxi:wd_max_latacunga_city",
+      "rain_cotopaxi:wd_max_latacunga_north"
+    ] }
+  ],
+  "output": [
+    { "title": "output-tiff", "readFrom": "file", "path": "output.tiff", "type": "geotiff"}
+  ]
+}
