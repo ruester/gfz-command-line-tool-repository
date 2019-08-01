@@ -16,6 +16,7 @@ package org.n52.gfz.riesgos.repository;
  * limitations under the Licence.
  */
 
+import org.n52.gfz.riesgos.formats.geotiff.parsers.GeotiffParser;
 import org.n52.gfz.riesgos.formats.json.generators.JsonGenerator;
 import org.n52.gfz.riesgos.formats.json.parsers.JsonParser;
 import org.n52.gfz.riesgos.formats.nrml.generators.NrmlGeoJsonGenerator;
@@ -114,6 +115,8 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository {
      */
     private void registerParsers() {
         Stream.of(
+                // geotiff
+                new GeotiffParser(),
                 // quakeml
                 new QuakeMLValidatedXmlParser(),
                 new QuakeMLOriginalXmlParser(),
