@@ -24,7 +24,7 @@ import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -38,7 +38,7 @@ public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray<Ge
 
         final File file = binding.getPayload();
 
-        try(FileReader fileReader = new FileReader(file)) {
+        try(FileInputStream fileReader = new FileInputStream(file)) {
             return IOUtils.toByteArray(fileReader);
         } catch(final IOException exception) {
             throw new ConvertToBytesException(exception);

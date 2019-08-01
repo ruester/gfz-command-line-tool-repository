@@ -704,6 +704,7 @@ public class BaseGfzRiesgosService
                 try {
                     mainStderrHandler.get().handleStderr(stderr, logger::debug);
                 } catch (final NonEmptyStderrException exception) {
+                    logger.error("Error on handling stderr", exception);
                     throw new ExceptionReport(
                             "There is an error on stderr",
                             ExceptionReport.REMOTE_COMPUTATION_ERROR,
