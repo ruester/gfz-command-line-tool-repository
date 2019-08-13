@@ -129,7 +129,7 @@ public class QuakeMLSimpleFeatureCollectionImpl
          */
         @Override
         public String getPublicID() {
-            return feature.getID();
+            return readFromField(Fields.PUBLIC_ID).orElse(feature.getID());
         }
 
         /**
@@ -632,7 +632,13 @@ public class QuakeMLSimpleFeatureCollectionImpl
         for (final IQuakeMLEvent event : events) {
 
             final SimpleFeature feature = getFeatureFromEvent(event, sft);
-
+            // explicit set the public id
+            // for cases where the parser/generator overwrites
+            // the id of the feature
+            // (as it is in the GML Generator)
+            feature.setAttribute(
+                    Fields.PUBLIC_ID.getFieldForFeatureCollection(),
+                    event.getPublicID());
             setFeatureProperties(feature, event);
 
             featureCollection.add(feature);
@@ -1028,6 +1034,10 @@ public class QuakeMLSimpleFeatureCollectionImpl
      * implementation for quakeml.
      */
     private enum Fields {
+        /**
+         * The public id.
+         */
+        PUBLIC_ID("publicID"),
         /**
          * Preferred origin id.
          */
