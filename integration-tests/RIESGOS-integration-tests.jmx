@@ -16,7 +16,7 @@
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
         <stringProp name="HTTPSampler.domain">localhost</stringProp>
-        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.port">8080</stringProp>
         <stringProp name="HTTPSampler.protocol"></stringProp>
         <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
         <stringProp name="HTTPSampler.path">/wps/WebProcessingService</stringProp>
@@ -2329,7 +2329,6 @@
               <stringProp name="-11762371">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[</stringProp>
               <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
               <stringProp name="1396262544">&quot;description.text&quot;:&quot;stochastic&quot;</stringProp>
-              <stringProp name="-1297312076">&quot;properties&quot;:{&quot;preferredOriginID&quot;</stringProp>
               <stringProp name="-1139426382">&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger</stringProp>
               <stringProp name="-2112307394">&quot;preferredMagnitudeID&quot;:&quot;quakeml:quakeledger</stringProp>
               <stringProp name="1622007623">&quot;type&quot;:&quot;earthquake&quot;</stringProp>
@@ -2344,6 +2343,9 @@
               <stringProp name="-159928895">&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;</stringProp>
               <stringProp name="939949005">&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-124005002">&quot;publicID&quot;:&quot;quakeml:quakeledger\/105601&quot;</stringProp>
+              <stringProp name="1329739188">&quot;properties&quot;:{&quot;</stringProp>
+              <stringProp name="1546290972">&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/105601&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3342,7 +3344,7 @@
               <stringProp name="-129447952">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/vnd.geo+json&quot;&gt;</stringProp>
               <stringProp name="-1938268896">&lt;wps:Output id=&quot;output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-              <stringProp name="-137847810">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4987,-30.9227]},&quot;properties&quot;:{&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredMagnitudeID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;type&quot;:&quot;earthquake&quot;,&quot;description.text&quot;:&quot;stochastic&quot;,&quot;origin.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;origin.time.value&quot;:&quot;2019-01-01T00:00:00.000000Z&quot;,&quot;origin.depth.value&quot;:&quot;34.75117&quot;,&quot;origin.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;magnitude.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;magnitude.mag.value&quot;:&quot;8.35&quot;,&quot;magnitude.type&quot;:&quot;MW&quot;,&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;focalMechanism.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.strike.value&quot;:&quot;7.310981&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.dip.value&quot;:&quot;16.352970000000003&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.rake.value&quot;:&quot;90.0&quot;,&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;},&quot;id&quot;:&quot;quakeml:quakeledger\/84945&quot;}]}</stringProp>
+              <stringProp name="1650827515">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4987,-30.9227]},&quot;properties&quot;:{&quot;publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredMagnitudeID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;type&quot;:&quot;earthquake&quot;,&quot;description.text&quot;:&quot;stochastic&quot;,&quot;origin.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;origin.time.value&quot;:&quot;2019-01-01T00:00:00.000000Z&quot;,&quot;origin.depth.value&quot;:&quot;34.75117&quot;,&quot;origin.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;magnitude.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;magnitude.mag.value&quot;:&quot;8.35&quot;,&quot;magnitude.type&quot;:&quot;MW&quot;,&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;focalMechanism.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.strike.value&quot;:&quot;7.310981&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.dip.value&quot;:&quot;16.352970000000003&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.rake.value&quot;:&quot;90.0&quot;,&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;},&quot;id&quot;:&quot;quakeml:quakeledger\/84945&quot;}]}</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3465,7 +3467,7 @@
               <stringProp name="-1938268896">&lt;wps:Output id=&quot;output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1429770921">&lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;</stringProp>
-              <stringProp name="1446076245">            &lt;gml:boundedBy&gt;
+              <stringProp name="-1419715969">            &lt;gml:boundedBy&gt;
               &lt;gml:Envelope srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;
                 &lt;gml:lowerCorner&gt;-71.49875 -30.9227&lt;/gml:lowerCorner&gt;
                 &lt;gml:upperCorner&gt;-71.49875 -30.9227&lt;/gml:upperCorner&gt;
@@ -3480,6 +3482,7 @@
                 &lt;/gml:pointMember&gt;
               &lt;/gml:MultiPoint&gt;
             &lt;/n52:the_geom&gt;
+            &lt;n52:publicID&gt;quakeml:quakeledger/84945&lt;/n52:publicID&gt;
             &lt;n52:preferredOriginID&gt;quakeml:quakeledger/84945&lt;/n52:preferredOriginID&gt;
             &lt;n52:preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/n52:preferredMagnitudeID&gt;
             &lt;n52:type&gt;earthquake&lt;/n52:type&gt;
@@ -3622,7 +3625,7 @@
               <stringProp name="-1938268896">&lt;wps:Output id=&quot;output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1429770921">&lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;</stringProp>
-              <stringProp name="1588092820">            &lt;gml:boundedBy&gt;
+              <stringProp name="1922758112">            &lt;gml:boundedBy&gt;
               &lt;gml:Envelope srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;
                 &lt;gml:lowerCorner&gt;-71.4987 -30.9227&lt;/gml:lowerCorner&gt;
                 &lt;gml:upperCorner&gt;-71.4987 -30.9227&lt;/gml:upperCorner&gt;
@@ -3637,6 +3640,7 @@
                 &lt;/gml:pointMember&gt;
               &lt;/gml:MultiPoint&gt;
             &lt;/n52:the_geom&gt;
+            &lt;n52:publicID&gt;quakeml:quakeledger/84945&lt;/n52:publicID&gt;
             &lt;n52:preferredOriginID&gt;quakeml:quakeledger/84945&lt;/n52:preferredOriginID&gt;
             &lt;n52:preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/n52:preferredMagnitudeID&gt;
             &lt;n52:type&gt;earthquake&lt;/n52:type&gt;
@@ -3672,24 +3676,25 @@
     &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLTransformationProcess&lt;/ows:Identifier&gt;&#xd;
     &lt;wps:Input id=&quot;input&quot;&gt;&#xd;
     &lt;wps:Data schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;&#xd;
-      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/91ec4e50-7335-4a32-b62c-f364476a4b23&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/91ec4e50-7335-4a32-b62c-f364476a4b23 http://rz-vm140.gfz-potsdam.de:80/wps/static/schemas/91ec4e50-7335-4a32-b62c-f364476a4b23.xsd&quot;&gt;&#xd;
+      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb http://localhost:8080/wps/static/schemas/2957590d-6aad-4398-8bc3-9099594483bb.xsd&quot;&gt;&#xd;
         &lt;gml:featureMembers&gt;&#xd;
-          &lt;n52:Feature-91ec4e50-7335-4a32-b62c-f364476a4b23 gml:id=&quot;ID0&quot;&gt;&#xd;
+          &lt;n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb gml:id=&quot;ID0&quot;&gt;&#xd;
             &lt;gml:boundedBy&gt;&#xd;
               &lt;gml:Envelope srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;&#xd;
-                &lt;gml:lowerCorner&gt;-71.49875 -30.9227&lt;/gml:lowerCorner&gt;&#xd;
-                &lt;gml:upperCorner&gt;-71.49875 -30.9227&lt;/gml:upperCorner&gt;&#xd;
+                &lt;gml:lowerCorner&gt;-71.4987 -30.9227&lt;/gml:lowerCorner&gt;&#xd;
+                &lt;gml:upperCorner&gt;-71.4987 -30.9227&lt;/gml:upperCorner&gt;&#xd;
               &lt;/gml:Envelope&gt;&#xd;
             &lt;/gml:boundedBy&gt;&#xd;
             &lt;n52:the_geom&gt;&#xd;
               &lt;gml:MultiPoint srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;&#xd;
                 &lt;gml:pointMember&gt;&#xd;
                   &lt;gml:Point srsDimension=&quot;2&quot;&gt;&#xd;
-                    &lt;gml:pos&gt;-71.49875 -30.9227&lt;/gml:pos&gt;&#xd;
+                    &lt;gml:pos&gt;-71.4987 -30.9227&lt;/gml:pos&gt;&#xd;
                   &lt;/gml:Point&gt;&#xd;
                 &lt;/gml:pointMember&gt;&#xd;
               &lt;/gml:MultiPoint&gt;&#xd;
             &lt;/n52:the_geom&gt;&#xd;
+            &lt;n52:publicID&gt;quakeml:quakeledger/84945&lt;/n52:publicID&gt;&#xd;
             &lt;n52:preferredOriginID&gt;quakeml:quakeledger/84945&lt;/n52:preferredOriginID&gt;&#xd;
             &lt;n52:preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/n52:preferredMagnitudeID&gt;&#xd;
             &lt;n52:type&gt;earthquake&lt;/n52:type&gt;&#xd;
@@ -3707,7 +3712,7 @@
             &lt;n52:focalMechanism.nodalPlanes.nodalPlane1.dip.value&gt;16.352970000000003&lt;/n52:focalMechanism.nodalPlanes.nodalPlane1.dip.value&gt;&#xd;
             &lt;n52:focalMechanism.nodalPlanes.nodalPlane1.rake.value&gt;90.0&lt;/n52:focalMechanism.nodalPlanes.nodalPlane1.rake.value&gt;&#xd;
             &lt;n52:focalMechanism.nodalPlanes.preferredPlane&gt;nodalPlane1&lt;/n52:focalMechanism.nodalPlanes.preferredPlane&gt;&#xd;
-          &lt;/n52:Feature-91ec4e50-7335-4a32-b62c-f364476a4b23&gt;&#xd;
+          &lt;/n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb&gt;&#xd;
         &lt;/gml:featureMembers&gt;&#xd;
       &lt;/gml:FeatureCollection&gt;&#xd;
     &lt;/wps:Data&gt;&#xd;
@@ -3776,24 +3781,25 @@
     &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLTransformationProcess&lt;/ows:Identifier&gt;&#xd;
     &lt;wps:Input id=&quot;input&quot;&gt;&#xd;
     &lt;wps:Data schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;&#xd;
-      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/91ec4e50-7335-4a32-b62c-f364476a4b23&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/91ec4e50-7335-4a32-b62c-f364476a4b23 http://rz-vm140.gfz-potsdam.de:80/wps/static/schemas/91ec4e50-7335-4a32-b62c-f364476a4b23.xsd&quot;&gt;&#xd;
+      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb http://localhost:8080/wps/static/schemas/2957590d-6aad-4398-8bc3-9099594483bb.xsd&quot;&gt;&#xd;
         &lt;gml:featureMembers&gt;&#xd;
-          &lt;n52:Feature-91ec4e50-7335-4a32-b62c-f364476a4b23 gml:id=&quot;ID0&quot;&gt;&#xd;
+          &lt;n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb gml:id=&quot;ID0&quot;&gt;&#xd;
             &lt;gml:boundedBy&gt;&#xd;
               &lt;gml:Envelope srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;&#xd;
-                &lt;gml:lowerCorner&gt;-71.49875 -30.9227&lt;/gml:lowerCorner&gt;&#xd;
-                &lt;gml:upperCorner&gt;-71.49875 -30.9227&lt;/gml:upperCorner&gt;&#xd;
+                &lt;gml:lowerCorner&gt;-71.4987 -30.9227&lt;/gml:lowerCorner&gt;&#xd;
+                &lt;gml:upperCorner&gt;-71.4987 -30.9227&lt;/gml:upperCorner&gt;&#xd;
               &lt;/gml:Envelope&gt;&#xd;
             &lt;/gml:boundedBy&gt;&#xd;
             &lt;n52:the_geom&gt;&#xd;
               &lt;gml:MultiPoint srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;&#xd;
                 &lt;gml:pointMember&gt;&#xd;
                   &lt;gml:Point srsDimension=&quot;2&quot;&gt;&#xd;
-                    &lt;gml:pos&gt;-71.49875 -30.9227&lt;/gml:pos&gt;&#xd;
+                    &lt;gml:pos&gt;-71.4987 -30.9227&lt;/gml:pos&gt;&#xd;
                   &lt;/gml:Point&gt;&#xd;
                 &lt;/gml:pointMember&gt;&#xd;
               &lt;/gml:MultiPoint&gt;&#xd;
             &lt;/n52:the_geom&gt;&#xd;
+            &lt;n52:publicID&gt;quakeml:quakeledger/84945&lt;/n52:publicID&gt;&#xd;
             &lt;n52:preferredOriginID&gt;quakeml:quakeledger/84945&lt;/n52:preferredOriginID&gt;&#xd;
             &lt;n52:preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/n52:preferredMagnitudeID&gt;&#xd;
             &lt;n52:type&gt;earthquake&lt;/n52:type&gt;&#xd;
@@ -3811,7 +3817,7 @@
             &lt;n52:focalMechanism.nodalPlanes.nodalPlane1.dip.value&gt;16.352970000000003&lt;/n52:focalMechanism.nodalPlanes.nodalPlane1.dip.value&gt;&#xd;
             &lt;n52:focalMechanism.nodalPlanes.nodalPlane1.rake.value&gt;90.0&lt;/n52:focalMechanism.nodalPlanes.nodalPlane1.rake.value&gt;&#xd;
             &lt;n52:focalMechanism.nodalPlanes.preferredPlane&gt;nodalPlane1&lt;/n52:focalMechanism.nodalPlanes.preferredPlane&gt;&#xd;
-          &lt;/n52:Feature-91ec4e50-7335-4a32-b62c-f364476a4b23&gt;&#xd;
+          &lt;/n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb&gt;&#xd;
         &lt;/gml:featureMembers&gt;&#xd;
       &lt;/gml:FeatureCollection&gt;&#xd;
     &lt;/wps:Data&gt;&#xd;
@@ -3852,7 +3858,7 @@
               <stringProp name="-129447952">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/vnd.geo+json&quot;&gt;</stringProp>
               <stringProp name="-1938268896">&lt;wps:Output id=&quot;output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-              <stringProp name="-137847810">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4987,-30.9227]},&quot;properties&quot;:{&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredMagnitudeID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;type&quot;:&quot;earthquake&quot;,&quot;description.text&quot;:&quot;stochastic&quot;,&quot;origin.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;origin.time.value&quot;:&quot;2019-01-01T00:00:00.000000Z&quot;,&quot;origin.depth.value&quot;:&quot;34.75117&quot;,&quot;origin.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;magnitude.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;magnitude.mag.value&quot;:&quot;8.35&quot;,&quot;magnitude.type&quot;:&quot;MW&quot;,&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;focalMechanism.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.strike.value&quot;:&quot;7.310981&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.dip.value&quot;:&quot;16.352970000000003&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.rake.value&quot;:&quot;90.0&quot;,&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;},&quot;id&quot;:&quot;quakeml:quakeledger\/84945&quot;}]}</stringProp>
+              <stringProp name="1650827515">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4987,-30.9227]},&quot;properties&quot;:{&quot;publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredMagnitudeID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;type&quot;:&quot;earthquake&quot;,&quot;description.text&quot;:&quot;stochastic&quot;,&quot;origin.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;origin.time.value&quot;:&quot;2019-01-01T00:00:00.000000Z&quot;,&quot;origin.depth.value&quot;:&quot;34.75117&quot;,&quot;origin.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;magnitude.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;magnitude.mag.value&quot;:&quot;8.35&quot;,&quot;magnitude.type&quot;:&quot;MW&quot;,&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;focalMechanism.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.strike.value&quot;:&quot;7.310981&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.dip.value&quot;:&quot;16.352970000000003&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.rake.value&quot;:&quot;90.0&quot;,&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;},&quot;id&quot;:&quot;quakeml:quakeledger\/84945&quot;}]}</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
