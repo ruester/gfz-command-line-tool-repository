@@ -29,6 +29,9 @@ FROM tomcat:9-jre8
 # just mount your .jar file to /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
+ARG WPS_VERSION=4.0.0-beta.8
+
+ENV DEBIAN_FRONTEND noninteractive
 
 VOLUME [ "/usr/share/riesgos/json-configurations" ]
 
@@ -93,8 +96,6 @@ RUN wget https://datapacket.dl.sourceforge.net/project/geoserver/GeoServer/2.10.
     unzip geoserver.war && \
     rm -f geoserver.war
 
-RUN mkdir -pv /root/git
-
 WORKDIR /root/git
 
 # if you want to use the master branch from wps-js you need the complete history:
@@ -102,8 +103,7 @@ WORKDIR /root/git
 
 RUN git clone -b dev --depth=1 https://github.com/52North/wps-js.git && \
     git clone -b develop --depth=1 https://github.com/52North/wps-js-client.git && \
-    git clone https://github.com/52North/WPS.git && \
-    git clone -b master --depth=1 https://github.com/gfzriesgos/gfz-command-line-tool-repository.git
+    git clone https://github.com/52North/WPS.git
 
 WORKDIR /root/git/wps-js
 
@@ -124,20 +124,14 @@ RUN npm install && \
     cp -vr dist /usr/local/tomcat/webapps/wps-js-client
 
 WORKDIR /root/git/WPS
-# checkout last tested commit to work with gfz-command-line-tool-repository
-RUN git checkout -b current 1d1a7b9abf0e8f0b8c302651f7206f175866c4a8 && \
-    mvn clean install -P with-geotools && \
-    cp -vr 52n-wps-webapp/target/52n-wps-webapp-*-SNAPSHOT/ /usr/local/tomcat/webapps/wps && \
+RUN git checkout -b current v${WPS_VERSION} && \
+    mvn clean package -B -P with-geotools && \
+    mkdir -pv /usr/local/tomcat/webapps/wps && \
+    cp -v 52n-wps-webapp/target/52n-wps-webapp-${WPS_VERSION}.war /usr/local/tomcat/webapps/wps/wps.war && \
+    cd /usr/local/tomcat/webapps/wps && \
+    unzip wps.war && \
+    rm /usr/local/tomcat/webapps/wps/wps.war && \
     sed -i -e 's@base-package="org\.n52\.wps"@base-package="org\.n52"@' /usr/local/tomcat/webapps/wps/WEB-INF/classes/dispatcher-servlet.xml
-
-WORKDIR /root/git/gfz-command-line-tool-repository
-RUN sed -i -e 's@assetmaster:latest@gfzriesgos/assetmaster:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json && \
-    sed -i -e 's@flooddamage:latest@gfzriesgos/flooddamage:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json && \
-    sed -i -e 's@modelprop:latest@gfzriesgos/modelprop:latest@'     src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
-    sed -i -e 's@quakeledger:latest@gfzriesgos/quakeledger:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
-    sed -i -e 's@shakyground:latest@gfzriesgos/shakyground:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
-    mvn clean install && \
-    cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
 # add missing libraries needed by gfz-command-line-tool-repository:
 RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/commons-compress-1.9.jar && \
@@ -146,3 +140,13 @@ RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/
     wget http://repo.boundlessgeo.com/main/org/geotools/gt-process/13.5/gt-process-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-13.5.jar && \
     wget https://repo1.maven.org/maven2/org/jaitools/jt-contour/1.3.1/jt-contour-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-contour-1.3.1.jar && \
     wget https://repo1.maven.org/maven2/org/jaitools/jt-attributeop/1.3.1/jt-attributeop-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-attributeop-1.3.1.jar
+
+WORKDIR /root/git/gfz-command-line-tool-repository
+COPY . .
+RUN sed -i -e 's@assetmaster:latest@gfzriesgos/assetmaster:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json && \
+    sed -i -e 's@flooddamage:latest@gfzriesgos/flooddamage:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json && \
+    sed -i -e 's@modelprop:latest@gfzriesgos/modelprop:latest@'     src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
+    sed -i -e 's@quakeledger:latest@gfzriesgos/quakeledger:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
+    sed -i -e 's@shakyground:latest@gfzriesgos/shakyground:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
+    mvn clean package -B && \
+    cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
