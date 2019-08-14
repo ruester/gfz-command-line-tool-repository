@@ -9,16 +9,16 @@ automatically build and uploaded to Docker Hub if there is a new commit.
 
 You need to have docker installed on the host system and pull all needed images:
 ```
-docker pull ruestergfz/quakeledger:latest
-docker pull ruestergfz/shakyground:latest
-docker pull ruestergfz/assetmaster:latest
-docker pull ruestergfz/modelprop:latest
-docker pull ruestergfz/flooddamage:latest
+docker pull gfzriesgos/quakeledger:latest
+docker pull gfzriesgos/shakyground:latest
+docker pull gfzriesgos/assetmaster:latest
+docker pull gfzriesgos/modelprop:latest
+docker pull gfzriesgos/flooddamage:latest
 ```
 
 Start the RIESGOS WPS docker image with:
 ```
-docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ruestergfz/riesgos-wps
+docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock gfzriesgos/riesgos-wps
 ```
 
 Following services can then be accessed at localhost:
