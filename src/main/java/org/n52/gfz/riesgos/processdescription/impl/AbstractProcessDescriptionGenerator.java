@@ -21,7 +21,6 @@ package org.n52.gfz.riesgos.processdescription.impl;
 import net.opengis.wps.x100.ComplexDataCombinationType;
 import net.opengis.wps.x100.ComplexDataCombinationsType;
 import net.opengis.wps.x100.ComplexDataDescriptionType;
-import net.opengis.wps.x100.SupportedComplexDataInputType;
 import net.opengis.wps.x100.SupportedComplexDataType;
 import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGenerator;
 import org.n52.wps.io.IGenerator;
@@ -35,13 +34,21 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class AbstractProcessDescriptionGenerator implements IProcessDescriptionGenerator {
+/**
+ * Abstract class for IProcessDescriptionGenerator implementations.
+ */
+public abstract class AbstractProcessDescriptionGenerator
+        implements IProcessDescriptionGenerator {
 
+    /**
+     * Empty string.
+     */
     private static final String EMPTY = "";
 
-    /*
-     * takes all the constructors and searches for one constructor getting a single element
-     * the class of this element is the name to search for.
+    /**
+     * Takes all the constructors and searches for one constructor
+     * getting a single element the class of this element is the
+     * name to search for.
      *
      * Example:
      * I search in the constructors of LiteralStringBinding
@@ -49,61 +56,72 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
      * --> the result is string
      *
      * Same for LiteralDoubleBinding and so on
+     *
+     * @param constructors constructors of a class
+     * @return optional simple name of a class
      */
-    protected Optional<String> findSimpleNameOfFirstConstructorParameter(final Constructor<?>[] constructors) {
+    protected Optional<String> findSimpleNameOfFirstConstructorParameter(
+            final Constructor<?>[] constructors) {
         Optional<String> result = Optional.empty();
-        for(final Constructor<?> constructor : constructors) {
+        for (final Constructor<?> constructor : constructors) {
             final Class<?>[] supportedClasses = constructor.getParameterTypes();
-            if(supportedClasses.length == 1) {
+            if (supportedClasses.length == 1) {
                 result = Optional.of(supportedClasses[0].getSimpleName());
             }
         }
         return result;
     }
 
-    /*
-     * searches for all the interfaces a class implements
+    /**
+     * Searches for all the interfaces a class implements.
      * It is used to search for IData implementations that are using
      * the classes for LiteralData and ComplexData.
      * If the current class has no interfaces the search will be extended
-     * to the super class
+     * to the super class.
+     *
+     * @param clazz class to search the interfaces for
+     * @return list with interfaces
      */
     protected List<Class<?>> findInterfaces(final Class<?> clazz) {
         final List<Class<?>> result = Arrays.asList(clazz.getInterfaces());
         final Class<?> superClass = clazz.getSuperclass();
-        if(result.isEmpty() && superClass != null) {
+        if (result.isEmpty() && superClass != null) {
             return findInterfaces(superClass);
         }
         return result;
     }
 
-    /*
-     * searches for a parser that supports a specific binding class
+    /**
+     * Searches for a parser that supports a specific binding class.
+     * @param allParsers list with all parsers
+     * @param clazz class to search if the parser supports it
+     * @return list with parsers that support the class
      */
-    protected List<IParser> findParser(final List<IParser> allParsers, final Class<?> clazz) {
-        return allParsers.stream().filter(new ParserSupportsClass(clazz)).collect(Collectors.toList());
+    protected List<IParser> findParser(
+            final List<IParser> allParsers, final Class<?> clazz) {
+        return allParsers.stream().filter(
+                new ParserSupportsClass(clazz)).collect(Collectors.toList());
     }
 
-    /*
-     * searches for a generator that supports a specific binding class
+    /**
+     * Searches for a generator that supports a specific binding clas.
+     * @param allGenerators list with all generators
+     * @param clazz class that must be supported
+     * @return list with the generators that support the class
      */
-    protected List<IGenerator> findGenerators(final List<IGenerator> allGenerators, final Class<?> clazz) {
-        return allGenerators.stream().filter(new GeneratorSupportsClass(clazz)).collect(Collectors.toList());
+    protected List<IGenerator> findGenerators(
+            final List<IGenerator> allGenerators, final Class<?> clazz) {
+        return allGenerators.stream().filter(
+                new GeneratorSupportsClass(clazz)).collect(Collectors.toList());
     }
 
-    /*
-     * adds a complex input format to the description of the data input
-     * uses all the parsers that support the given class
-     *
-     * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
+    /**
+     * Extracts the formats for the parsers.
+     * @param foundParsers list with parsers
+     * @return list with formats
      */
-    protected void addInputFormats(final SupportedComplexDataInputType complexData, final List<IParser> foundParsers) {
-
-        final List<FormatEntry> supportedFullFormats = extractFormatsFromParsers(foundParsers);
-        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
-    }
-
-    protected List<FormatEntry> extractFormatsFromParsers(final List<IParser> foundParsers) {
+    protected List<FormatEntry> extractFormatsFromParsers(
+            final List<IParser> foundParsers) {
         return foundParsers.stream()
                 .map(IParser::getSupportedFullFormats)
                 .flatMap(List::stream)
@@ -111,18 +129,13 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
     }
 
 
-    /*
-     * adds a complex output format to the description of the process outputs
-     * uses all the generators that support the given class
-     *
-     * The code may add a schema to text/xml to provide a schema even for the GenericXMLDataBinding class
+    /**
+     * Extracts the formats for the generators.
+     * @param foundGenerators list with generators
+     * @return list with formats
      */
-    protected void addOutputFormats(SupportedComplexDataType complexData, List<IGenerator> foundGenerators) {
-        final List<FormatEntry> supportedFullFormats = extractFormatsFromGenerators(foundGenerators);
-        addFormats(complexData, supportedFullFormats.get(0), supportedFullFormats);
-    }
-
-    protected List<FormatEntry> extractFormatsFromGenerators(final List<IGenerator> foundGenerators) {
+    protected List<FormatEntry> extractFormatsFromGenerators(
+            final List<IGenerator> foundGenerators) {
         return foundGenerators.stream()
                 .map(IGenerator::getSupportedFullFormats)
                 .flatMap(List::stream)
@@ -130,17 +143,25 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
     }
 
     /**
-     * Adds the complex output formats from the given defaultFormat and the format entries.
+     * Adds the complex output formats from the given defaultFormat
+     * and the format entries.
      * @param complexData supported complex data type to add the formats
-     * @param defaultFormat default format (must also be included in the the list with format entries
+     * @param defaultFormat default format (must also be included in the the
+     *                      list with format entries
      * @param formatEntries iterable with formats
      */
-    protected void addFormats(final SupportedComplexDataType complexData, final FormatEntry defaultFormat, final Iterable<FormatEntry> formatEntries) {
-        final ComplexDataCombinationsType complexDataCombinationsType = complexData.addNewSupported();
+    protected void addFormats(
+            final SupportedComplexDataType complexData,
+            final FormatEntry defaultFormat,
+            final Iterable<FormatEntry> formatEntries) {
+        final ComplexDataCombinationsType complexDataCombinationsType =
+                complexData.addNewSupported();
 
         if (complexData.getDefault() == null) {
-            final ComplexDataCombinationType defaultInputFormat = complexData.addNewDefault();
-            final ComplexDataDescriptionType supportedFormat = defaultInputFormat.addNewFormat();
+            final ComplexDataCombinationType defaultInputFormat =
+                    complexData.addNewDefault();
+            final ComplexDataDescriptionType supportedFormat =
+                    defaultInputFormat.addNewFormat();
             supportedFormat.setMimeType(defaultFormat.getMimeType());
             final String encoding = defaultFormat.getEncoding();
             if (encoding != null && !encoding.equals(EMPTY)) {
@@ -153,9 +174,10 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
             }
         }
 
-        for(final FormatEntry formatEntry : formatEntries) {
+        for (final FormatEntry formatEntry : formatEntries) {
 
-            final ComplexDataDescriptionType supportedFormat = complexDataCombinationsType.addNewFormat();
+            final ComplexDataDescriptionType supportedFormat =
+                    complexDataCombinationsType.addNewFormat();
             supportedFormat.setMimeType(formatEntry.getMimeType());
             final String encoding = formatEntry.getEncoding();
             if (encoding != null && !encoding.equals(EMPTY)) {
@@ -169,35 +191,63 @@ public abstract class AbstractProcessDescriptionGenerator implements IProcessDes
 
     }
 
-    /*
-     * Predicate to filter parser that support the class
+    /**
+     * Predicate to filter parser that support the class.
      */
     private static class ParserSupportsClass implements Predicate<IParser> {
+        /**
+         * Clazz that must be supported.
+         */
         private final Class<?> clazz;
 
-        ParserSupportsClass(final Class<?> clazz) {
-            this.clazz = clazz;
+        /**
+         * Default constructor.
+         * @param aClazz binding class to test
+         */
+        ParserSupportsClass(final Class<?> aClazz) {
+            this.clazz = aClazz;
         }
 
+        /**
+         * True if the parser supports this binding class.
+         * @param parser parser to test
+         * @return true if the parser supports the class
+         */
         @Override
         public boolean test(final IParser parser) {
-            return Arrays.asList(parser.getSupportedDataBindings()).contains(clazz);
+            return Arrays.asList(
+                    parser.getSupportedDataBindings()).contains(clazz);
         }
     }
 
-    /*
-     * Predicate to filter generators that support the class
+    /**
+     * Predicate to filter generators that support the class.
      */
-    private static class GeneratorSupportsClass implements Predicate<IGenerator> {
+    private static class GeneratorSupportsClass
+            implements Predicate<IGenerator> {
+
+        /**
+         * Clazz that must be supported.
+         */
         private final Class<?> clazz;
 
-        GeneratorSupportsClass(final Class<?> clazz) {
-            this.clazz = clazz;
+        /**
+         * Default constructor.
+         * @param aClazz binding class to test
+         */
+        GeneratorSupportsClass(final Class<?> aClazz) {
+            this.clazz = aClazz;
         }
 
+        /**
+         * Tests the generator if it support the clazz.
+         * @param generator generator to test
+         * @return true if the generator supports this clazz
+         */
         @Override
         public boolean test(final IGenerator generator) {
-            return Arrays.asList(generator.getSupportedDataBindings()).contains(clazz);
+            return Arrays.asList(
+                    generator.getSupportedDataBindings()).contains(clazz);
         }
     }
 }

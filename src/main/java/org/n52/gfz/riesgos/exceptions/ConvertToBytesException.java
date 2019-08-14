@@ -19,7 +19,7 @@ package org.n52.gfz.riesgos.exceptions;
  */
 
 /**
- * Exception on converting to bytes
+ * Exception on converting to bytes.
  */
 public class ConvertToBytesException extends Exception {
 

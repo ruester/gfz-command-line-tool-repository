@@ -35,9 +35,20 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
+/**
+ * Parser for gml to quakeml binding.
+ */
 public class QuakeMLGML3Parser extends AbstractParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Parser.class);
 
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLGML3Parser.class);
+
+    /**
+     * Default constructor.
+     */
     public QuakeMLGML3Parser() {
         super();
 
@@ -50,28 +61,46 @@ public class QuakeMLGML3Parser extends AbstractParser {
         formats.add(gml);
     }
 
+    /**
+     * Parses the input stream to a Idata binding.
+     * @param stream input stream with the data
+     * @param mimeType mimeType of the data
+     * @param schema schema of the data
+     * @return QuakeMLXmlDataBinding
+     */
     @Override
-    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+    public IData parse(
+            final InputStream stream,
+            final String mimeType,
+            final String schema) {
 
         try {
             final GML3BasicParser gmlParser = new GML3BasicParser();
 
-            final GTVectorDataBinding bindingClass = gmlParser.parse(stream, null, null);
-            final FeatureCollection<?, ?> featureCollection = bindingClass.getPayload();
+            final GTVectorDataBinding bindingClass = gmlParser.parse(
+                    stream,
+                    null,
+                    null);
+            final FeatureCollection<?, ?> featureCollection =
+                    bindingClass.getPayload();
 
-            if(featureCollection instanceof SimpleFeatureCollection) {
-                final SimpleFeatureCollection simpleFeatureCollection = (SimpleFeatureCollection) featureCollection;
+            if (featureCollection instanceof SimpleFeatureCollection) {
+                final SimpleFeatureCollection simpleFeatureCollection =
+                        (SimpleFeatureCollection) featureCollection;
 
-                final IQuakeML quakeML = QuakeML.fromFeatureCollection(simpleFeatureCollection);
+                final IQuakeML quakeML = QuakeML.fromFeatureCollection(
+                        simpleFeatureCollection);
                 return QuakeMLXmlDataBinding.fromQuakeML(quakeML);
 
             } else {
-                throw new ConvertFormatException("No simplefeature collection provided");
+                throw new ConvertFormatException(
+                        "No simple feature collection provided");
             }
 
-        } catch(final ConvertFormatException convertFormatException) {
-            LOGGER.error("Can't parse the provided gml to xml");
-            LOGGER.error(convertFormatException.toString());
+        } catch (final ConvertFormatException convertFormatException) {
+            LOGGER.error(
+                    "Can't parse the provided gml to xml",
+                    convertFormatException);
             throw new RuntimeException(convertFormatException);
         }
     }

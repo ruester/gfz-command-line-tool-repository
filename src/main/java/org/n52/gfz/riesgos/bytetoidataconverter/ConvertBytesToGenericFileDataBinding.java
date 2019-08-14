@@ -79,7 +79,8 @@ public class ConvertBytesToGenericFileDataBinding
                     "convertBytesToIData", ".dat");
             tempFile.deleteOnExit();
 
-            try (FileOutputStream fileOutputStream = new FileOutputStream(tempFile)) {
+            try (FileOutputStream fileOutputStream =
+                         new FileOutputStream(tempFile)) {
                 IOUtils.write(content, fileOutputStream);
             }
 

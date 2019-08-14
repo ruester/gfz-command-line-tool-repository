@@ -23,7 +23,9 @@ import java.util.List;
 /**
  * This is the interface for all shakemap implementations.
  *
- * All shakemaps are a regular grid (there are plans to provide irregular grids, but this is future development).
+ * All shakemaps are a regular grid
+ * (there are plans to provide irregular grids,
+ * but this is future development).
  */
 public interface IShakemap {
 

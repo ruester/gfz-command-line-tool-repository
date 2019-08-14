@@ -37,15 +37,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Generator to transform the validated xml from the QuakeMLXmlDataBinding to gml
+ * Generator to transform the validated xml
+ * from the QuakeMLXmlDataBinding to gml.
  */
 public class QuakeMLGML3Generator extends AbstractGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLGML3Generator.class);
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLGML3Generator.class);
+    /**
+     * Format entry for gml.
+     */
     private static final FormatEntry GML = DefaultFormatOption.GML.getFormat();
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public QuakeMLGML3Generator() {
         super();
@@ -57,23 +65,43 @@ public class QuakeMLGML3Generator extends AbstractGenerator {
         formats.add(GML);
     }
 
+    /**
+     * Generates an input stream to read the given data afterwards.
+     * @param data data for the input stream
+     * @param mimeType mime type of the data
+     * @param schema schema of the data
+     * @return input stream
+     * @throws IOException exception that may be thrown in case of a problem
+     * with IO
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) throws IOException {
         if (data instanceof QuakeMLXmlDataBinding) {
             final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
 
             try {
                 final IQuakeML quakeML = binding.getPayloadQuakeML();
-                final FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection =  quakeML.toSimpleFeatureCollection();
+                final FeatureCollection<SimpleFeatureType, SimpleFeature>
+                        featureCollection =
+                        quakeML.toSimpleFeatureCollection();
 
-                return new GML3BasicGenerator().generateStream(new GTVectorDataBinding(featureCollection), GML.getMimeType(), GML.getSchema());
-            } catch(final ConvertFormatException convertFormatException) {
-                LOGGER.error("Can't convert the validated quakeml format to gml3");
-                LOGGER.error(convertFormatException.toString());
-                throw new RuntimeException(convertFormatException);
+                return new GML3BasicGenerator().generateStream(
+                        new GTVectorDataBinding(featureCollection),
+                        GML.getMimeType(),
+                        GML.getSchema());
+            } catch (final ConvertFormatException convertFormatException) {
+                LOGGER.error(
+                        "Can't convert the validated quakeml format to gml3",
+                        convertFormatException);
+                throw new IOException(convertFormatException);
             }
         } else {
-            LOGGER.error("Can't convert another data binding as QuakeMLXmlDataBinding");
+            LOGGER.error(
+                    "Can't convert another data binding "
+                            + "as QuakeMLXmlDataBinding");
         }
         return null;
     }

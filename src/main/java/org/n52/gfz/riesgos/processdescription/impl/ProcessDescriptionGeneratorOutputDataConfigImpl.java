@@ -24,39 +24,76 @@ import org.n52.wps.webapp.api.FormatEntry;
 import java.util.List;
 import java.util.Optional;
 
-public class ProcessDescriptionGeneratorOutputDataConfigImpl implements IProcessDescriptionGeneratorOutputData {
+/**
+ * Implementation that just wraps the output parameter from
+ * the configuration.
+ */
+public class ProcessDescriptionGeneratorOutputDataConfigImpl
+        implements IProcessDescriptionGeneratorOutputData {
 
+    /**
+     * Output parameter.
+     */
     private final IOutputParameter outputParameter;
 
-    public ProcessDescriptionGeneratorOutputDataConfigImpl(final IOutputParameter aOutputParameter) {
+    /**
+     * Default constructor.
+     * @param aOutputParameter output parameter of a configuration
+     */
+    public ProcessDescriptionGeneratorOutputDataConfigImpl(
+            final IOutputParameter aOutputParameter) {
         this.outputParameter = aOutputParameter;
     }
 
+    /**
+     *
+     * @return identifier of the output parameter
+     */
     @Override
     public String getIdentifier() {
         return outputParameter.getIdentifier();
     }
 
+    /**
+     *
+     * @return binding class of the output parameter
+     */
     @Override
     public Class<? extends IData> getBindingClass() {
         return outputParameter.getBindingClass();
     }
 
+    /**
+     *
+     * @return supported crs of the output parameter
+     */
     @Override
     public Optional<List<String>> getSupportedCrs() {
         return outputParameter.getSupportedCRSForBBox();
     }
 
+    /**
+     *
+     * @return default format of the output parameter
+     */
     @Override
     public Optional<FormatEntry> getDefaultFormat() {
         return outputParameter.getDefaultFormat();
     }
 
+    /**
+     *
+     * @return true if the output parameter is optional
+     */
     @Override
     public boolean isOptional() {
         return outputParameter.isOptional();
     }
 
+    /**
+     *
+     * @return abstract of the output parameter
+     */
     @Override
     public Optional<String> getAbstract() {
         return outputParameter.getAbstract();

@@ -17,7 +17,7 @@ package org.n52.gfz.riesgos.exceptions;
  */
 
 /**
- * Exception for a non zero exit value
+ * Exception for a non zero exit value.
  */
 public class NonZeroExitValueException extends Exception {
 

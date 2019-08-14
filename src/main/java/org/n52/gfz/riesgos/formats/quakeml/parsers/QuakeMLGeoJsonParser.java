@@ -37,14 +37,18 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 
 /**
- * Parser to convert geojson to validated quakeml
+ * Parser to convert geojson to validated quakeml.
  */
 public class QuakeMLGeoJsonParser extends AbstractParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLGeoJsonParser.class);
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLGeoJsonParser.class);
 
     /**
-     * default constructor
+     * Default constructor.
      */
     public QuakeMLGeoJsonParser() {
         super();
@@ -56,32 +60,51 @@ public class QuakeMLGeoJsonParser extends AbstractParser {
         formats.add(geojson);
     }
 
+    /**
+     * Generates the QuakeMLXmlDataBinding from the stream.
+     * @param stream stream with geojson data
+     * @param mimeType mimetype of the data
+     * @param schema schema of the data
+     * @return QuakeMLXmlDataBinding
+     */
     @Override
-    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+    public IData parse(
+            final InputStream stream,
+            final String mimeType,
+            final String schema) {
 
         try {
             final GeoJSONParser geoJsonParser = new GeoJSONParser();
 
-            final IData geoJson = geoJsonParser.parse(stream, null, null);
-            if(geoJson instanceof GTVectorDataBinding) {
-                final GTVectorDataBinding bindingClass = (GTVectorDataBinding) geoJson;
-                final FeatureCollection<?, ?> featureCollection = bindingClass.getPayload();
+            final IData geoJson = geoJsonParser.parse(
+                    stream,
+                    null,
+                    null);
+            if (geoJson instanceof GTVectorDataBinding) {
+                final GTVectorDataBinding bindingClass =
+                        (GTVectorDataBinding) geoJson;
+                final FeatureCollection<?, ?> featureCollection =
+                        bindingClass.getPayload();
 
-                if(featureCollection instanceof SimpleFeatureCollection) {
-                    final SimpleFeatureCollection simpleFeatureCollection = (SimpleFeatureCollection) featureCollection;
+                if (featureCollection instanceof SimpleFeatureCollection) {
+                    final SimpleFeatureCollection simpleFeatureCollection =
+                            (SimpleFeatureCollection) featureCollection;
 
-                    final IQuakeML quakeML = QuakeML.fromFeatureCollection(simpleFeatureCollection);
+                    final IQuakeML quakeML = QuakeML.fromFeatureCollection(
+                            simpleFeatureCollection);
                     return QuakeMLXmlDataBinding.fromQuakeML(quakeML);
 
                 } else {
-                    throw new ConvertFormatException("No simplefeature collection provided");
+                    throw new ConvertFormatException(
+                            "No simplefeature collection provided");
                 }
             } else {
-                throw new ConvertFormatException("No GTVectorDataBinding provided");
+                throw new ConvertFormatException(
+                        "No GTVectorDataBinding provided");
             }
-        } catch(final ConvertFormatException convertFormatException) {
-            LOGGER.error("Can't parse the provided geojson to xml");
-            LOGGER.error(convertFormatException.toString());
+        } catch (final ConvertFormatException convertFormatException) {
+            LOGGER.error("Can't parse the provided geojson to xml",
+                    convertFormatException);
             throw new RuntimeException(convertFormatException);
         }
     }

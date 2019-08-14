@@ -19,13 +19,14 @@ package org.n52.gfz.riesgos.processdescription;
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 
 /**
- * Interface to generate the process description out of the configuration
+ * Interface to generate the process description out of the configuration.
  */
 public interface IProcessDescriptionGenerator {
 
     /**
-     * Generates the process description
-     * @return process description (xml) for the service based on the configuration
+     * Generates the process description.
+     * @return process description (xml) for the
+     * service based on the configuration
      */
     ProcessDescriptionsDocument generateProcessDescription();
 }

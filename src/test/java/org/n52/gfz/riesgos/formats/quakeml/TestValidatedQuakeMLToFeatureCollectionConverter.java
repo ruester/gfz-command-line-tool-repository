@@ -22,15 +22,40 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.gml3.ApplicationSchemaConfiguration;
+import org.geotools.gml3.GMLConfiguration;
+import org.geotools.xml.Configuration;
 import org.junit.Test;
+import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
+import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
+import org.n52.gfz.riesgos.formats.quakeml.generators.QuakeMLGML3Generator;
+import org.n52.gfz.riesgos.formats.quakeml.parsers.QuakeMLGML3Parser;
 import org.n52.gfz.riesgos.util.StringUtils;
+import org.n52.wps.io.GTHelper;
+import org.n52.wps.io.SchemaRepository;
+import org.n52.wps.io.data.IData;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
+import org.n52.wps.io.datahandler.generator.GML3BasicGenerator;
+import org.n52.wps.webapp.api.FormatEntry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.FeatureType;
 
+import javax.xml.namespace.QName;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -38,6 +63,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
+import static org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption.GML;
 
 /**
  * This are the tests for the conversion of the quakeml xml to a feature collection
@@ -128,6 +154,13 @@ public class TestValidatedQuakeMLToFeatureCollectionConverter {
             // latitude
             assertTrue("The y coordinate is near to expected", Math.abs(y - (-30.9227)) < 0.01);
 
+            assertEquals("The simple feature has the right id", "quakeml:quakeledger/84945", simpleFeature.getID());
+
+            // but because it the id can be overwritten in the gml generator
+            // it is necessary to have a extra field for the public id
+            assertEquals("The additional field for the public id is the same", "quakeml:quakeledger/84945", simpleFeature.getAttribute("publicID"));
+
+
 
         } catch (final XmlException e) {
             fail("There should be no XmlException");
@@ -135,4 +168,6 @@ public class TestValidatedQuakeMLToFeatureCollectionConverter {
             fail("There should be no exception on converting");
         }
     }
+
+
 }

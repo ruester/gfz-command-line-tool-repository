@@ -34,22 +34,26 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Implementation of an execution context that runs inside of an docker container
+ * Implementation of an execution context that runs
+ * inside of an docker container.
  */
 public class DockerExecutionContextImpl implements IExecutionContext {
 
+    /**
+     * Container id to use for the processing in docker.
+     */
     private final String containerId;
 
     /**
-     *
-     * @param containerId Id of the docker container
+     * Default constructor.
+     * @param aContainerId Id of the docker container
      */
-    DockerExecutionContextImpl(final String containerId) {
-        this.containerId = containerId;
+    DockerExecutionContextImpl(final String aContainerId) {
+        this.containerId = aContainerId;
     }
 
-    /*
-     * removes the docker container after use
+    /**
+     * Removes the docker container after use.
      */
     @Override
     public void close() {
@@ -63,22 +67,36 @@ public class DockerExecutionContextImpl implements IExecutionContext {
             final String errorText = result.getStderrResult();
             final int exitValue = result.getExitValue();
 
-            if(! errorText.isEmpty()) {
-                throw new RuntimeException("The command to remove the docker container failed:\n" + errorText);
+            if (!errorText.isEmpty()) {
+                throw new RuntimeException(
+                        "The command to remove the docker container failed:\n"
+                                + errorText);
             }
-            if(exitValue != 0) {
-                throw new RuntimeException("The command to remove the docker container failed with exit value " + exitValue);
+            if (exitValue != 0) {
+                throw new RuntimeException(
+                        "The command to remove the docker container "
+                                + "failed with exit value " + exitValue);
             }
 
-        } catch(final InterruptedException | IOException exception) {
+        } catch (final InterruptedException | IOException exception) {
             throw new RuntimeException(exception);
         }
     }
 
+    /**
+     * Method to create the list of Strings to execute the deletion
+     * of the docker container.
+     * @return list of strings to execute
+     */
     private List<String> createRemoveCommand() {
         return Arrays.asList("docker", "container", "rm", containerId);
     }
 
+    /**
+     * Runs the inner program.
+     * @return ExecutionRunImpl
+     * @throws IOException starting the process can thrown an IO exception
+     */
     @Override
     public IExecutionRun run() throws IOException {
         final ProcessBuilder processBuilder = new ProcessBuilder();
@@ -87,25 +105,36 @@ public class DockerExecutionContextImpl implements IExecutionContext {
         return new ExecutionRunImpl(process);
     }
 
+    /**
+     * Creates the command to start the container.
+     * @return command to start the container
+     */
     private List<String> createRunCommand() {
-        return Arrays.asList("docker", "container", "start", "--interactive", "--attach", containerId);
+        return Arrays.asList("docker", "container", "start",
+                "--interactive", "--attach", containerId);
     }
 
-    /*
-     * uses a tar stream to read files from the container
+
+    /**
+     * Uses a tar stream to read files from the container.
+     * @param path path of a file
+     * @return byte array with the content of the file
+     * @throws IOException reading can thrown an io exception
      */
     @Override
-    public byte[] readFromFile(String path) throws IOException {
+    public byte[] readFromFile(final String path) throws IOException {
         final ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command(createCopyToHostCommand(path));
 
         final Process process = processBuilder.start();
         final InputStream stdout = process.getInputStream();
 
-        final ThreadedStreamStringReader stderr = new ThreadedStreamStringReader(process.getErrorStream());
+        final ThreadedStreamStringReader stderr =
+                new ThreadedStreamStringReader(process.getErrorStream());
         stderr.start();
 
-        try(TarArchiveInputStream tarInputStream = new TarArchiveInputStream(stdout)) {
+        try (TarArchiveInputStream tarInputStream =
+                     new TarArchiveInputStream(stdout)) {
             tarInputStream.getNextEntry();
             final byte[] result = IOUtils.toByteArray(tarInputStream);
 
@@ -116,38 +145,56 @@ public class DockerExecutionContextImpl implements IExecutionContext {
             stderr.throwExceptionIfNecessary();
             final String errorText = stderr.getResult();
 
-            if(! errorText.isEmpty()) {
+            if (!errorText.isEmpty()) {
                 throw new IOException(errorText);
             }
-            if(exitValue != 0) {
-                throw new IOException("Exit value for copying to host is not zero: " + exitValue);
+            if (exitValue != 0) {
+                throw new IOException(
+                        "Exit value for copying to host is not zero: "
+                                + exitValue);
             }
 
             return result;
-        } catch(final InterruptedException interruptedException) {
+        } catch (final InterruptedException interruptedException) {
             throw new IOException(interruptedException);
         }
     }
 
+
+    /**
+     * Creates the command (as list of strings) to copy a file from
+     * the host to the container.
+     * @param path path in the container to read
+     * @return command to copy file to a container
+     */
     private List<String> createCopyToHostCommand(final String path) {
         final String src = containerId + ":" + path;
         return Arrays.asList("docker", "container", "cp", src, "-");
     }
 
-    /*
-     * uses a tar stream to write data as a file to the container
+    /**
+     * Uses a tar stream to write data as a file into the container.
+     * @param content byte array with the data
+     * @param workingDir working directory to write to
+     * @param fileName filename in the working directory
+     * @throws IOException writing to a file can throw an io exception
      */
     @Override
-    public void writeToFile(byte[] content, String workingDir, String fileName) throws IOException {
+    public void writeToFile(
+            final byte[] content,
+            final String workingDir,
+            final String fileName) throws IOException {
         final ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command(createCopyFromContainerCommand(workingDir));
+        processBuilder.command(createCopyToContainerCommand(workingDir));
 
         final Process process = processBuilder.start();
         final OutputStream stdin = process.getOutputStream();
-        final ThreadedStreamStringReader stderr = new ThreadedStreamStringReader(process.getErrorStream());
+        final ThreadedStreamStringReader stderr =
+                new ThreadedStreamStringReader(process.getErrorStream());
         stderr.start();
 
-        try(TarArchiveOutputStream tarOutputStream = new TarArchiveOutputStream(stdin)) {
+        try (TarArchiveOutputStream tarOutputStream =
+                     new TarArchiveOutputStream(stdin)) {
             final TarArchiveEntry entry = new TarArchiveEntry(fileName);
             entry.setSize((long) content.length);
             tarOutputStream.putArchiveEntry(entry);
@@ -165,18 +212,25 @@ public class DockerExecutionContextImpl implements IExecutionContext {
             final String errorText = stderr.getResult();
 
 
-            if(! errorText.isEmpty()) {
+            if (!errorText.isEmpty()) {
                 throw new IOException(errorText);
             }
-            if(exitValue != 0) {
-                throw new IOException("Exit value for copying to container is not zero " + exitValue);
+            if (exitValue != 0) {
+                throw new IOException(
+                        "Exit value for copying to container is not zero "
+                                + exitValue);
             }
-        } catch(final InterruptedException interruptedException) {
+        } catch (final InterruptedException interruptedException) {
             throw new IOException(interruptedException);
         }
     }
 
-    private List<String> createCopyFromContainerCommand(final String path) {
+    /**
+     * Creates the command (as list of strings) to copy data to a container.
+     * @param path path to write the data to
+     * @return command as list of strings
+     */
+    private List<String> createCopyToContainerCommand(final String path) {
         final String dest = containerId + ":" + path;
         return Arrays.asList("docker", "container", "cp", "-", dest);
     }

@@ -21,7 +21,7 @@ package org.n52.gfz.riesgos.formats.shakemap;
 import java.util.Map;
 
 /**
- * Interface for a row in the shakemap grid_data section
+ * Interface for a row in the shakemap grid_data section.
  */
 public interface IShakemapData {
     /**

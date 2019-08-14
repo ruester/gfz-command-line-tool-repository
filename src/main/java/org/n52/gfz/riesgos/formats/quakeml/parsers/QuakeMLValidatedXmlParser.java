@@ -36,10 +36,14 @@ import java.io.InputStream;
  */
 public class QuakeMLValidatedXmlParser extends AbstractParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLValidatedXmlParser.class);
+    /**
+     * Logger to log unexpected hehaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLValidatedXmlParser.class);
 
     /**
-     * default constructor
+     * Default constructor.
      */
     public QuakeMLValidatedXmlParser() {
         super();
@@ -52,19 +56,31 @@ public class QuakeMLValidatedXmlParser extends AbstractParser {
         formats.add(quakeml);
     }
 
+    /**
+     * Generates the QuakeMLXmlDataBinding from the input stream.
+     * @param stream input stream with the data
+     * @param mimeType mime type of the data
+     * @param schema schema of the data
+     * @return QuakeMLXmlDataBinding
+     */
     @Override
-    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+    public IData parse(
+            final InputStream stream,
+            final String mimeType,
+            final String schema) {
 
         try {
             final XmlObject xmlObject = XmlObject.Factory.parse(stream);
             return QuakeMLXmlDataBinding.fromValidatedXml(xmlObject);
-        } catch(final XmlException xmlException) {
-            LOGGER.error("Can't parse the provided xml because of a XMLException");
-            LOGGER.error(xmlException.toString());
+        } catch (final XmlException xmlException) {
+            LOGGER.error(
+                    "Can't parse the provided xml because of a XMLException",
+                    xmlException);
             throw new RuntimeException(xmlException);
-        } catch(final IOException ioException) {
-            LOGGER.error("Can't parse the provided xml because of an IOException");
-            LOGGER.error(ioException.toString());
+        } catch (final IOException ioException) {
+            LOGGER.error(
+                    "Can't parse the provided xml because of an IOException",
+                    ioException);
             throw new RuntimeException(ioException);
         }
     }

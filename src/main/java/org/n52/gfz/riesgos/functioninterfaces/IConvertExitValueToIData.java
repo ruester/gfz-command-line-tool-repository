@@ -19,10 +19,12 @@ package org.n52.gfz.riesgos.functioninterfaces;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.wps.io.data.IData;
 
+import java.io.Serializable;
+
 /**
  * Interface for converting the exit value to an IData element
  */
-public interface IConvertExitValueToIData<T extends IData> {
+public interface IConvertExitValueToIData<T extends IData> extends Serializable {
 
     /**
      * converts the exit value to an IData element

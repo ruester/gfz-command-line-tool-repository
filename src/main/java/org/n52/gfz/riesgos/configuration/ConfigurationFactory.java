@@ -118,7 +118,8 @@ public enum ConfigurationFactory {
 
     /**
      * Creates the configuration for flooddmage tiff downloader.
-     * It uses a predefined docker image (gfzriesgos/flooddamage-tiff-downloader:latest)
+     * It uses a predefined docker image
+     * (gfzriesgos/flooddamage-tiff-downloader:latest)
      * @return IConfiguration
      */
     public IConfiguration createFlooddamageTiffDownloader() {
@@ -127,7 +128,9 @@ public enum ConfigurationFactory {
                     .class
                     .getClassLoader()
                     .getResourceAsStream(
-                            "org/n52/gfz/riesgos/configuration/flooddamage-tiff-downloader.json");
+                            "org/n52/gfz/"
+                                    + "riesgos/configuration/"
+                                    + "flooddamage-tiff-downloader.json");
             if (inputStream == null) {
                 throw new IOException("Input stream is null");
             }
@@ -150,7 +153,8 @@ public enum ConfigurationFactory {
                     .class
                     .getClassLoader()
                     .getResourceAsStream(
-                            "org/n52/gfz/riesgos/configuration/assetmaster.json");
+                            "org/n52/gfz/riesgos/"
+                                    + "configuration/assetmaster.json");
             if (inputStream == null) {
                 throw new IOException("Input stream is null");
             }

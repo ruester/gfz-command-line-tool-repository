@@ -20,10 +20,23 @@ import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.cmdexecution.util.IExecutionContextManagerFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 
-public class DockerExecutionContextManagerFactory implements IExecutionContextManagerFactory {
+/**
+ * Factory for the IExecutionContextManager (that creates the image in case
+ * of docker).
+ */
+public class DockerExecutionContextManagerFactory
+        implements IExecutionContextManagerFactory {
 
+    /**
+     * Creates a DockerContainerExecutionContextManager (so a class
+     * that can create a new docker container).
+     * @param configuration configuration for the creation
+     * @return DockerContainerExecutionContextManagerImpl
+     */
     @Override
-    public IExecutionContextManager createExecutionContext(final IConfiguration configuration) {
-        return new DockerContainerExecutionContextManagerImpl(configuration.getImageId());
+    public IExecutionContextManager createExecutionContext(
+            final IConfiguration configuration) {
+        return new DockerContainerExecutionContextManagerImpl(
+                configuration.getImageId());
     }
 }

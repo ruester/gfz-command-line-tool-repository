@@ -30,6 +30,18 @@ public interface IMimeTypeAndSchemaConstants {
     String DEFAULT_ENCODING = "UTF-8";
 
     /**
+     * Method to get the default encoding.
+     * @return DEFAULT_ENCODING
+     */
+    default String getDefaultEncoding() {
+        /*
+        Mainly used to conform to the checkstyle
+        rules so that interfaces should have methods.
+         */
+        return DEFAULT_ENCODING;
+    }
+
+    /**
      * Base64-Encoding.
      */
     String ENCODING_BASE64 = "base64";

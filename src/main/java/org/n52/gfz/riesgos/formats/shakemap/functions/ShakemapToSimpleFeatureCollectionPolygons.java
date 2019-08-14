@@ -26,20 +26,34 @@ import org.n52.gfz.riesgos.formats.shakemap.IShakemapData;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemapSpecification;
 
 /**
- * This is the same as ShakemapToSimpleFeatureCollection but the outputs are Polygons instead of points
+ * This is the same as ShakemapToSimpleFeatureCollection
+ * but the outputs are Polygons instead of points.
  */
-public class ShakemapToSimpleFeatureCollectionPolygons extends AbstractShakemapToSimpleFeatureCollection {
+public class ShakemapToSimpleFeatureCollectionPolygons
+        extends AbstractShakemapToSimpleFeatureCollection {
 
+    /**
+     *
+     * @return Polygon class
+     */
     @Override
     protected Class<? extends Geometry> getGeometryClass() {
         return Polygon.class;
     }
 
 
+    /**
+     *
+     * @param geometryFactory geomtry factory to create the data
+     * @param singleRow data point
+     * @param specification specification of the grid.
+     * @return polygon from the data point
+     */
     @Override
-    protected Geometry createGeometry(final GeometryFactory geometryFactory,
-                                      final IShakemapData singleRow,
-                                      final IShakemapSpecification specification) {
+    protected Geometry createGeometry(
+            final GeometryFactory geometryFactory,
+            final IShakemapData singleRow,
+            final IShakemapSpecification specification) {
 
         final double addLon = specification.getNominalLonSpacing() / 2.0;
         final double addLat = specification.getNominalLatSpacing() / 2.0;

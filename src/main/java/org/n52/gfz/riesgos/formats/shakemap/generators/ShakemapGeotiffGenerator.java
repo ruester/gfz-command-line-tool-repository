@@ -43,18 +43,27 @@ import java.util.function.Function;
  */
 public class ShakemapGeotiffGenerator extends AbstractGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapGeotiffGenerator.class);
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(ShakemapGeotiffGenerator.class);
+    /**
+     * Function to convert the shakemap to a grid.
+     */
     private static final Function<IShakemap, GridCoverage2D> TO_GRID =
             new ShakemapToGridCoverageForRegularGrid();
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public ShakemapGeotiffGenerator() {
         super();
 
-        final FormatEntry geotiff = DefaultFormatOption.GEOTIFF.getFormat();
-        final FormatEntry geotiff64 = DefaultFormatOption.GEOTIFF_BASE_64.getFormat();
+        final FormatEntry geotiff =
+                DefaultFormatOption.GEOTIFF.getFormat();
+        final FormatEntry geotiff64 =
+                DefaultFormatOption.GEOTIFF_BASE_64.getFormat();
 
         supportedIDataTypes.add(ShakemapXmlDataBinding.class);
         supportedEncodings.add(geotiff.getEncoding());
@@ -64,17 +73,37 @@ public class ShakemapGeotiffGenerator extends AbstractGenerator {
         formats.add(geotiff64);
     }
 
+    /**
+     * Generates the stream to give back the data.
+     * @param data data to give back
+     * @param mimeType mimetype of the data
+     * @param schema schema of the data
+     * @return input stream with the data
+     * @throws IOException can throw an IOException on handling the
+     * input stream
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) throws IOException {
-        if(data instanceof ShakemapXmlDataBinding) {
-            final ShakemapXmlDataBinding binding = (ShakemapXmlDataBinding) data;
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) throws IOException {
+
+        if (data instanceof ShakemapXmlDataBinding) {
+            final ShakemapXmlDataBinding binding =
+                    (ShakemapXmlDataBinding) data;
             final IShakemap shakemap = binding.getPayloadShakemap();
 
             final GridCoverage2D gridCoverage = TO_GRID.apply(shakemap);
 
-            return new GeotiffGenerator().generateStream(new GTRasterDataBinding(gridCoverage), mimeType, schema);
+            return new GeotiffGenerator()
+                    .generateStream(
+                            new GTRasterDataBinding(gridCoverage),
+                            mimeType,
+                            schema);
         } else {
-            LOGGER.error("Can't convert another data binding as ShakemapXmlDataBinding");
+            LOGGER.error(
+                    "Can't convert another data binding "
+                            + "as ShakemapXmlDataBinding");
         }
         return null;
     }
