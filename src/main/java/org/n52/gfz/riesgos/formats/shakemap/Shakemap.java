@@ -22,21 +22,26 @@ import org.apache.xmlbeans.XmlObject;
 import org.n52.gfz.riesgos.formats.shakemap.impl.ShakemapXmlImpl;
 
 /**
- * Static Factory class
+ * Static Factory class.
  */
-@SuppressWarnings({"UtilityClassCanBeEnum", "UtilityClass"})
-public class Shakemap {
+@SuppressWarnings({"UtilityClassCanBeEnum"})
+public final class Shakemap {
 
+    /**
+     * This is a private constructor, so just
+     * use the static methods of this class.
+     */
     private Shakemap() {
         // static class
     }
 
     /**
-     * Creates a new Shakemap object
+     * Creates a new Shakemap object.
      * @param xmlObject xml with the data of the shakemap
      * @return IShakemap
      */
-    public static IShakemap fromOriginalXml(final XmlObject xmlObject) {
+    public static IShakemap fromOriginalXml(
+            final XmlObject xmlObject) {
         return new ShakemapXmlImpl(xmlObject);
     }
 }

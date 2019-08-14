@@ -226,11 +226,12 @@ are in the right folder for each command)
 docker build . --tag assetmaster
 # in the modelprop folder
 docker build . --tag modelprop
+# in the flooddamage folder
+docker build . --tag flooddamage
 ```
 
-You can also install the image for the flooddamage process.
-There is a special howto in 
-[here](../assistance/dockerfiles/flooddamage/howto_create_the_dockerfile,md).
+For the flooddamage tiff downloader you can use the download script
+that loads a predefined docker image from dockerhub.
 
 At the moment there is a 1:1 mapping of the processes and the docker images.
 This is mostly for handling the dependencies seperate for each process.

@@ -21,7 +21,7 @@ package org.n52.gfz.riesgos.exceptions;
 
 /**
  * Exception that indicates an error on the conversion of the
- * IData value to a command line argument
+ * IData value to a command line argument.
  */
 public class ConvertToStringCmdException extends Exception {
 

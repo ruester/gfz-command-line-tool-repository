@@ -40,7 +40,16 @@ import java.awt.image.DataBuffer;
 import java.util.function.Function;
 //import java.util.stream.Collectors;
 
-public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, GridCoverage2D> {
+/**
+ * Class to interpolate the grid in case of
+ * irregular points.
+ *
+ * This class is not used at the moment, because
+ * the grid of the shakemaps are regular at the moment,
+ * so there is no need to interpolate the points.
+ */
+public class ShakemapToGridCoverageIrregularGrid
+        implements Function<IShakemap, GridCoverage2D> {
 
     /**
      * Name for the coverage.
@@ -51,12 +60,18 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
      */
     private static final int DATA_TYPE = DataBuffer.TYPE_DOUBLE;
 
+    /**
+     *
+     * @param shakemap
+     * @return interpolated grid
+     */
     @Override
     public GridCoverage2D apply(final IShakemap shakemap) {
 
         throw new UnsupportedOperationException(
                 "Please delete the comments that hide the code if you want"
-                + "to use the interpolation function");
+                        + "to use the interpolation function");
+    }
         /*
         final IInterpolator interp = new InterpolateViaKriging(shakemap);
 
@@ -74,7 +89,8 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
         final int width = 1000;
         // -> compute the height by using the aspect ratio of the
         // bounding box
-        final int height = (int) (width * (Math.abs(maxY - minY) / Math.abs(maxX - minX)));
+        final int height = (int) (width * (Math.abs(maxY - minY) /
+        Math.abs(maxX - minX)));
 
 
 
@@ -101,13 +117,19 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
         ) {
 
             for(int indexWidth = 0; indexWidth < width; indexWidth += 1) {
-                final double lon = transformWidthToLon(indexWidth, width, minX, maxX);
+                final double lon = transformWidthToLon(
+                indexWidth, width, minX, maxX);
 
-                for(int indexHeight = 0; indexHeight < height; indexHeight += 1) {
-                    final double lat = transformHeightToLat(indexHeight, height, minY, maxY);
+                for(int indexHeight = 0;
+                indexHeight < height;
+                indexHeight += 1) {
+                    final double lat = transformHeightToLat(
+                    indexHeight, height, minY, maxY);
 
-                    final double value = interp.interpolate(lon, lat, bandIndex);
-                    raster.setSample(indexWidth, indexHeight, bandIndex, value);
+                    final double value =
+                    interp.interpolate(lon, lat, bandIndex);
+                    raster.setSample(indexWidth, indexHeight,
+                    bandIndex, value);
                 }
             }
         }
@@ -146,46 +168,60 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
                 final IShakemap shakemap) {
 
             final List<IShakemapData> shakemapData = shakemap.getData();
-            final List<IShakemapField> customFields = shakemap.getFields().stream().filter(IShakemapField::isCustom).collect(Collectors.toList());
+            final List<IShakemapField> customFields = shakemap.getFields()
+            .stream()
+            .filter(IShakemapField::isCustom).collect(Collectors.toList());
 
-            final double[][] pointCoordinates = new double[shakemapData.size()][2];
+            final double[][] pointCoordinates =
+            new double[shakemapData.size()][2];
             final List<double[]> valuesOnThatPoints = new ArrayList<>();
 
             for(final IShakemapField customField : customFields) {
                 valuesOnThatPoints.add(new double[shakemapData.size()]);
             }
 
-            for(int pointIndex = 0; pointIndex < shakemapData.size(); pointIndex += 1) {
+            for(int pointIndex = 0;
+            pointIndex < shakemapData.size();
+            pointIndex += 1) {
 
                 final IShakemapData singlePoint = shakemapData.get(pointIndex);
 
                 pointCoordinates[pointIndex][0] = singlePoint.getLon();
                 pointCoordinates[pointIndex][1] = singlePoint.getLat();
 
-                final Map<String, Double> customValues = singlePoint.getCustomValues();
+                final Map<String, Double> customValues =
+                singlePoint.getCustomValues();
 
-                for(int customIndex = 0; customIndex < customFields.size(); customIndex += 1) {
-                    final IShakemapField customField = customFields.get(customIndex);
-                    final double customValue = customValues.get(customField.getName());
-                    valuesOnThatPoints.get(customIndex)[pointIndex] = customValue;
+                for(int customIndex = 0;
+                customIndex < customFields.size();
+                customIndex += 1) {
+                    final IShakemapField customField =
+                    customFields.get(customIndex);
+                    final double customValue =
+                    customValues.get(customField.getName());
+                    valuesOnThatPoints.get(customIndex)[pointIndex] =
+                    customValue;
                 }
             }
 
             interp = new ArrayList<>();
 
             for(final double[] values : valuesOnThatPoints) {
-                interp.add(new KrigingInterpolation(pointCoordinates, values));
+                interp.add(
+                new KrigingInterpolation(pointCoordinates, values));
             }
         }
 
         @Override
-        public double interpolate(final double lon, final double lat, final int band) {
+        public double interpolate(
+        final double lon, final double lat, final int band) {
             return interp.get(band).interpolate(lon, lat);
         }
     }
 
     private double transformWidthToLon(
-            final int widthPosition, final int overallWidth, final double lonMin, final double lonMax) {
+            final int widthPosition, final int overallWidth,
+            final double lonMin, final double lonMax) {
 
         // this is a number between zero and one
         final double pos = 1.0 * widthPosition / overallWidth;
@@ -196,7 +232,8 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
     }
 
     private double transformHeightToLat(
-            final int heightPosition, final int overallHeight, final double latMin, final double latMax) {
+            final int heightPosition, final int overallHeight,
+            final double latMin, final double latMax) {
         // this is a number between zero and one
         final double pos = 1.0 * heightPosition / overallHeight;
         final double overallDist = latMax - latMin;
@@ -216,7 +253,8 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
         }
     }
 
-    private static class EstimateSpecification implements IShakemapSpecification {
+    private static class EstimateSpecification
+    implements IShakemapSpecification {
 
         private final double latMax;
         private final double latMin;
@@ -233,20 +271,24 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
                 // one block for lat
                 {
                     final double pointLat = shakemapData.getLat();
-                    if ((!optionalLatMax.isPresent()) || optionalLatMax.getAsDouble() < pointLat) {
+                    if ((!optionalLatMax.isPresent()) ||
+                    optionalLatMax.getAsDouble() < pointLat) {
                         optionalLatMax = OptionalDouble.of(pointLat);
                     }
-                    if ((!optionalLatMin.isPresent()) || optionalLatMin.getAsDouble() > pointLat) {
+                    if ((!optionalLatMin.isPresent()) ||
+                    optionalLatMin.getAsDouble() > pointLat) {
                         optionalLatMin = OptionalDouble.of(pointLat);
                     }
                 }
                 // one block for lon
                 {
                     final double pointLon = shakemapData.getLon();
-                    if ((!optionalLonMax.isPresent()) || optionalLonMax.getAsDouble() < pointLon) {
+                    if ((!optionalLonMax.isPresent()) ||
+                    optionalLonMax.getAsDouble() < pointLon) {
                         optionalLonMax = OptionalDouble.of(pointLon);
                     }
-                    if ((!optionalLonMin.isPresent()) || optionalLonMin.getAsDouble() > pointLon) {
+                    if ((!optionalLonMin.isPresent()) ||
+                    optionalLonMin.getAsDouble() > pointLon) {
                         optionalLonMin = OptionalDouble.of(pointLon);
                     }
                 }
@@ -280,27 +322,30 @@ public class ShakemapToGridCoverageIrregularGrid implements Function<IShakemap, 
 
         @Override
         public int getNLat() {
-            throw new UnsupportedOperationException("getNLat is not supported here");
+            throw new UnsupportedOperationException(
+            "getNLat is not supported here");
         }
 
         @Override
         public int getNLon() {
-            throw new UnsupportedOperationException("getNLon is not supported here");
+            throw new UnsupportedOperationException(
+            "getNLon is not supported here");
         }
 
         @Override
         public double getNominalLatSpacing() {
-            throw new UnsupportedOperationException("getNominalLatSpacing is not supported here");
+            throw new UnsupportedOperationException(
+            "getNominalLatSpacing is not supported here");
         }
 
         @Override
         public double getNominalLonSpacing() {
-            throw new UnsupportedOperationException("getNominalLonSpacing is not supported here");
+            throw new UnsupportedOperationException(
+            "getNominalLonSpacing is not supported here");
         }
 
         @Override
         public boolean isRegular() {
             return false;
         }*/
-    }
 }

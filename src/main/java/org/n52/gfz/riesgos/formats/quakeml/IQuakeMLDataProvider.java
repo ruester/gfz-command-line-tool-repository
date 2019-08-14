@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface to provide quakeml data
+ * Interface to provide quakeml data.
  */
 public interface IQuakeMLDataProvider {
 
@@ -36,5 +36,5 @@ public interface IQuakeMLDataProvider {
      *
      * @return Returns a public ID (something like quakeml:quakeledger/0
      */
-    Optional<String > getPublicId();
+    Optional<String> getPublicId();
 }

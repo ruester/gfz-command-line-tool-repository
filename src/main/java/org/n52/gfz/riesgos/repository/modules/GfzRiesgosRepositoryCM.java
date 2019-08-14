@@ -277,6 +277,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 factory.createQuakeledger(),
                 factory.createShakyground(),
                 factory.createFlooddamage(),
+                factory.createFlooddamageTiffDownloader(),
                 factory.createAssetmaster(),
                 factory.createModelprop()
         );
@@ -322,7 +323,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
                 .forEach(result::addAll);
 
         // and add all for reading cached data
-        result.addAll(createCacheReaderProcesses(configurationProcesses.values()));
+        result.addAll(createCacheReaderProcesses(
+                configurationProcesses.values()));
 
         return result;
     }
@@ -423,7 +425,8 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     private List<AlgorithmData> configurationToAlgorithm(
             final IConfiguration configuration) {
 
-        final BaseGfzRiesgosService baseService = new BaseGfzRiesgosService(configuration,
+        final BaseGfzRiesgosService baseService = new BaseGfzRiesgosService(
+                configuration,
                 LoggerFactory.getLogger(
                         configuration.getFullQualifiedIdentifier()),
                 HasherSingleton.INSTANCE,
@@ -433,18 +436,20 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         final AlgorithmData algorithmDataForBaseService = new AlgorithmData(
                 configuration.getFullQualifiedIdentifier(), baseService);
 
-        final Optional<String> baseServiceAbstract = configuration.getAbstract();
-
-        final String cachedProcessIdentifier = "Cached" + configuration.getIdentifier();
-        final CachedProcess cachedService = new CachedProcess(baseService, cachedProcessIdentifier,
-                "Process to read from the cache for the process " + configuration.getIdentifier());
+        final String cachedProcessIdentifier =
+                "Cached" + configuration.getIdentifier();
+        final CachedProcess cachedService =
+                new CachedProcess(baseService, cachedProcessIdentifier,
+                "Process to read from the cache for the process "
+                        + configuration.getIdentifier());
 
         final AlgorithmData algorithmDataForCachedService = new AlgorithmData(
                 cachedService.getFullQualifiedIdentifier(), cachedService);
 
 
 
-        return Arrays.asList(algorithmDataForBaseService, algorithmDataForCachedService);
+        return Arrays.asList(
+                algorithmDataForBaseService, algorithmDataForCachedService);
     }
 
     /**

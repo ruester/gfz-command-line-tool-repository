@@ -19,8 +19,18 @@ package org.n52.gfz.riesgos.cmdexecution.util;
 import org.n52.gfz.riesgos.cmdexecution.IExecutionContextManager;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 
+/**
+ * Interface for creating IExecutionContextManager
+ * (so that they can use docker or not).
+ */
 @FunctionalInterface
 public interface IExecutionContextManagerFactory {
 
-    IExecutionContextManager createExecutionContext(IConfiguration configuration);
+    /**
+     * Creates an IExecutionContextManager depending on the configuration.
+     * @param configuration configuration of the process
+     * @return IExecutionContextManager
+     */
+    IExecutionContextManager createExecutionContext(
+            IConfiguration configuration);
 }

@@ -25,7 +25,7 @@ import org.n52.wps.io.data.GenericFileData;
 import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -79,8 +79,9 @@ public class ConvertBytesToGenericFileDataBinding
                     "convertBytesToIData", ".dat");
             tempFile.deleteOnExit();
 
-            try (FileWriter writer = new FileWriter(tempFile)) {
-                IOUtils.write(content, writer);
+            try (FileOutputStream fileOutputStream =
+                         new FileOutputStream(tempFile)) {
+                IOUtils.write(content, fileOutputStream);
             }
 
             return new GenericFileDataBinding(

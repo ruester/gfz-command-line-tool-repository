@@ -35,19 +35,25 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Parser that parses the original quakeml (the non valid one) to the validated quakeml
+ * Parser that parses the original quakeml
+ * (the non valid one) to the validated quakeml.
  */
 public class QuakeMLOriginalXmlParser extends AbstractParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLOriginalXmlParser.class);
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLOriginalXmlParser.class);
 
     /**
-     * default constructor
+     * Default constructor.
      */
     public QuakeMLOriginalXmlParser() {
         super();
 
-        final FormatEntry quakeml = DefaultFormatOption.NON_VALID_QUAKEML.getFormat();
+        final FormatEntry quakeml =
+                DefaultFormatOption.NON_VALID_QUAKEML.getFormat();
 
         supportedIDataTypes.add(QuakeMLXmlDataBinding.class);
         supportedFormats.add(quakeml.getMimeType());
@@ -56,25 +62,39 @@ public class QuakeMLOriginalXmlParser extends AbstractParser {
         formats.add(quakeml);
     }
 
+    /**
+     * Generates the QuakeMLXmlDataBinding from the stream.
+     * @param stream stream with xml data
+     * @param mimeType mimetype of the data
+     * @param schema schema of the data
+     * @return QuakeMLXmlDataBinding
+     */
     @Override
-    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+    public IData parse(
+            final InputStream stream,
+            final String mimeType,
+            final String schema) {
 
         try {
             final XmlObject xmlObject = XmlObject.Factory.parse(stream);
 
             final IQuakeML quakeML = QuakeML.fromOriginalXml(xmlObject);
             return QuakeMLXmlDataBinding.fromQuakeML(quakeML);
-        } catch(final XmlException xmlException) {
-            LOGGER.error("Can't parse the provided xml because of a XMLException");
-            LOGGER.error(xmlException.toString());
+        } catch (final XmlException xmlException) {
+            LOGGER.error(
+                    "Can't parse the provided xml "
+                            + "because of a XMLException",
+                    xmlException);
             throw new RuntimeException(xmlException);
-        } catch(final IOException ioException) {
-            LOGGER.error("Can't parse the provided xml because of an IOException");
-            LOGGER.error(ioException.toString());
+        } catch (final IOException ioException) {
+            LOGGER.error("Can't parse the provided xml "
+                    + "because of an IOException",
+                    ioException);
             throw new RuntimeException(ioException);
-        } catch(final ConvertFormatException convertFormatException) {
-            LOGGER.error("Can't convert the provided xml to validated quakeml");
-            LOGGER.error(convertFormatException.toString());
+        } catch (final ConvertFormatException convertFormatException) {
+            LOGGER.error(
+                    "Can't convert the provided xml to validated quakeml",
+                    convertFormatException);
             throw new RuntimeException(convertFormatException);
         }
     }

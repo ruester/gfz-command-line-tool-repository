@@ -19,16 +19,40 @@ package org.n52.gfz.riesgos.processdescription;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface for all the data for the process description generation.
+ */
 public interface IProcessDescriptionGeneratorData {
 
+    /**
+     * Identifier of the process.
+     * @return identifier of the process
+     */
     String getIdentifier();
 
+    /**
+     * Full qualified identifier of the process (something like
+     * a package name + class name).
+     * @return full qualified identifier of the process
+     */
     String getFullQualifiedIdentifier();
 
+    /**
+     * Optional text with the abstract for the process.
+     * @return optional text with the abstract of the process.
+     */
     Optional<String> getProcessAbstract();
 
+    /**
+     * List with inputs.
+     * @return list with inputs
+     */
     List<IProcessDescriptionGeneratorInputData> getInputData();
 
+    /**
+     * List with outputs.
+     * @return list with outputs.
+     */
     List<IProcessDescriptionGeneratorOutputData> getOutputData();
 
 }

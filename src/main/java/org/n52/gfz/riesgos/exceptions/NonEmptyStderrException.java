@@ -17,7 +17,7 @@ package org.n52.gfz.riesgos.exceptions;
  */
 
 /**
- * Exception on non empty stderr
+ * Exception on non empty stderr.
  */
 public class NonEmptyStderrException extends Exception {
     private static final long serialVersionUID = -4762077161109633144L;

@@ -42,24 +42,38 @@ import java.util.stream.Collectors;
  * Abstract base class for all the functions that convert the shakemap to a
  * simple feature collection (no matter if points or polygons).
  */
-public abstract class AbstractShakemapToSimpleFeatureCollection implements Function<IShakemap, SimpleFeatureCollection> {
+public abstract class AbstractShakemapToSimpleFeatureCollection
+        implements Function<IShakemap, SimpleFeatureCollection> {
+    /**
+     * Name of the geometry column.
+     */
     private static final String GEOM_COLUMN = "the_geom";
+    /**
+     * Name of the features that will be created.
+     */
     private static final String FEATURE_NAME = "Shakemap";
 
+    /**
+     * Function to transform into a simple feature collection.
+     * @param shakemap shakemap to transform
+     * @return SimpleFeatureCollection
+     */
     @Override
     public SimpleFeatureCollection apply(final IShakemap shakemap) {
 
-        final IShakemapSpecification specification = shakemap.getSpecification();
+        final IShakemapSpecification specification =
+                shakemap.getSpecification();
 
         final List<IShakemapField> fields = shakemap.getFields();
         final List<IShakemapField> customFields = fields.stream()
                 .filter(IShakemapField::isCustom)
                 .collect(Collectors.toList());
 
-        final SimpleFeatureTypeBuilder simpleFeatureTypeBuilder = new SimpleFeatureTypeBuilder();
+        final SimpleFeatureTypeBuilder simpleFeatureTypeBuilder =
+                new SimpleFeatureTypeBuilder();
         simpleFeatureTypeBuilder.setName(FEATURE_NAME);
 
-        for(final IShakemapField field : customFields) {
+        for (final IShakemapField field : customFields) {
             simpleFeatureTypeBuilder.add(field.getName(), Double.class);
         }
 
@@ -68,20 +82,26 @@ public abstract class AbstractShakemapToSimpleFeatureCollection implements Funct
         simpleFeatureTypeBuilder.setDefaultGeometry(GEOM_COLUMN);
 
         final GeometryFactory geometryFactory = new GeometryFactory();
-        final SimpleFeatureType simpleFeatureType = simpleFeatureTypeBuilder.buildFeatureType();
-        final SimpleFeatureBuilder simpleFeatureBuilder = new SimpleFeatureBuilder(simpleFeatureType);
+        final SimpleFeatureType simpleFeatureType =
+                simpleFeatureTypeBuilder.buildFeatureType();
+        final SimpleFeatureBuilder simpleFeatureBuilder =
+                new SimpleFeatureBuilder(simpleFeatureType);
 
-        final DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        final DefaultFeatureCollection collection =
+                new DefaultFeatureCollection();
 
         final Sequence seq = new Sequence();
 
         final List<IShakemapData> data = shakemap.getData();
-        for(final IShakemapData singleRow : data) {
+        for (final IShakemapData singleRow : data) {
             simpleFeatureBuilder.set(
                     GEOM_COLUMN,
                     createGeometry(geometryFactory, singleRow, specification));
-            for(final Map.Entry<String, Double> customValue : singleRow.getCustomValues().entrySet()) {
-                simpleFeatureBuilder.set(customValue.getKey(), customValue.getValue());
+            for (final Map.Entry<String, Double> customValue
+                    : singleRow.getCustomValues().entrySet()) {
+                simpleFeatureBuilder.set(
+                        customValue.getKey(),
+                        customValue.getValue());
             }
 
             final SimpleFeature feature = simpleFeatureBuilder.buildFeature(
@@ -93,8 +113,19 @@ public abstract class AbstractShakemapToSimpleFeatureCollection implements Funct
         return collection;
     }
 
+    /**
+     * Abstract method to reaturn the geometry class.
+     * @return geometry class to use for the actual implementation
+     */
     protected abstract Class<? extends Geometry> getGeometryClass();
 
+    /**
+     * Creation of the geomtry from the data point.
+     * @param geometryFactory geomtry factory to create the data
+     * @param singleRow data point
+     * @param specification specification of the grid.
+     * @return geometry
+     */
     protected abstract Geometry createGeometry(
             GeometryFactory geometryFactory,
             IShakemapData singleRow,

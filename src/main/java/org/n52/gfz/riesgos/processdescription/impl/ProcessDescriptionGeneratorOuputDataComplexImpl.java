@@ -23,50 +23,98 @@ import org.n52.wps.webapp.api.FormatEntry;
 import java.util.List;
 import java.util.Optional;
 
-public class ProcessDescriptionGeneratorOuputDataComplexImpl implements IProcessDescriptionGeneratorOutputData {
+/**
+ * Implementation of IProcessDescriptionGeneratorOutputData for an complex
+ * output.
+ */
+public class ProcessDescriptionGeneratorOuputDataComplexImpl
+        implements IProcessDescriptionGeneratorOutputData {
 
+    /**
+     * Identifier of the output.
+     */
     private final String identifier;
+    /**
+     * Abstract of the output.
+     */
     private final String outputAbstract;
+    /**
+     * Flag if the output is optional.
+     */
     private final boolean isOptional;
+    /**
+     * Binding class of the output.
+     */
     private final Class<? extends IData> bindingClass;
 
+    /**
+     * Default constructor.
+     * @param aIdentifier identifier of the output
+     * @param aOutputAbstract abstract of the output
+     * @param aIsOptional flag if the output is optional
+     * @param aBindingClass binding class of the output
+     */
     public ProcessDescriptionGeneratorOuputDataComplexImpl(
-            final String identifier,
-            final String outputAbstract,
-            final boolean isOptional,
-            final Class<? extends IData> bindingClass
+            final String aIdentifier,
+            final String aOutputAbstract,
+            final boolean aIsOptional,
+            final Class<? extends IData> aBindingClass
     ) {
-        this.identifier = identifier;
-        this.outputAbstract = outputAbstract;
-        this.isOptional = isOptional;
-        this.bindingClass = bindingClass;
+        this.identifier = aIdentifier;
+        this.outputAbstract = aOutputAbstract;
+        this.isOptional = aIsOptional;
+        this.bindingClass = aBindingClass;
     }
 
+    /**
+     *
+     * @return identifier of the output
+     */
     @Override
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     *
+     * @return binding class of the output
+     */
     @Override
     public Class<? extends IData> getBindingClass() {
         return bindingClass;
     }
 
+    /**
+     *
+     * @return no supported crs
+     */
     @Override
     public Optional<List<String>> getSupportedCrs() {
         return Optional.empty();
     }
 
+    /**
+     *
+     * @return no default format
+     */
     @Override
     public Optional<FormatEntry> getDefaultFormat() {
         return Optional.empty();
     }
 
+    /**
+     *
+     * @return true if optional
+     */
     @Override
     public boolean isOptional() {
         return isOptional;
     }
 
+    /**
+     *
+     * @return abstract of the output
+     */
     @Override
     public Optional<String> getAbstract() {
         return Optional.ofNullable(outputAbstract);

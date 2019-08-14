@@ -31,12 +31,20 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
- * Generator that takes the validated quakeml xml from the QuakeMLXmlDataBinding class
+ * Generator that takes the validated quakeml xml
+ * from the QuakeMLXmlDataBinding class.
  */
 public class QuakeMLValidatedXmlGenerator extends AbstractGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMLValidatedXmlGenerator.class);
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuakeMLValidatedXmlGenerator.class);
 
+    /**
+     * Default constructor.
+     */
     public QuakeMLValidatedXmlGenerator() {
         super();
 
@@ -49,14 +57,27 @@ public class QuakeMLValidatedXmlGenerator extends AbstractGenerator {
         formats.add(quakeml);
     }
 
+    /**
+     * Generates an input stream to read the data afterwards.
+     * @param data data for the input stream
+     * @param mimeType mimetype of the data
+     * @param schema schema of the data
+     * @return input stream
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) {
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) {
         if (data instanceof QuakeMLXmlDataBinding) {
-                final QuakeMLXmlDataBinding binding = (QuakeMLXmlDataBinding) data;
+                final QuakeMLXmlDataBinding binding =
+                        (QuakeMLXmlDataBinding) data;
                 final XmlObject xmlObject = binding.getPayload();
                 return new ByteArrayInputStream(xmlObject.xmlText().getBytes());
         } else {
-            LOGGER.error("Can't convert another data binding as QuakeMLXmlDataBinding");
+            LOGGER.error(
+                    "Can't convert another data "
+                            + "binding as QuakeMLXmlDataBinding");
         }
         return null;
     }

@@ -93,7 +93,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToGenericXMLDataBinding(), GenericXMLDataBinding.class));
+                        new ConvertBytesToGenericXMLDataBinding(),
+                        GenericXMLDataBinding.class));
         builder.withSchema(schema);
         builder.withValidator(validator);
         builder.withDefaultFormat(defaultFormat);
@@ -128,7 +129,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToNrmlXMLDataBinding(), NrmlXmlDataBinding.class));
+                        new ConvertBytesToNrmlXMLDataBinding(),
+                        NrmlXmlDataBinding.class));
         builder.withSchema(schema);
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
@@ -163,7 +165,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToQuakeMLXmlBinding(), QuakeMLXmlDataBinding.class));
+                        new ConvertBytesToQuakeMLXmlBinding(),
+                        QuakeMLXmlDataBinding.class));
         builder.withSchema(schema);
         builder.withValidator(new XmlBindingWithAllowedSchema<>(schema));
         builder.withDefaultFormat(defaultFormat);
@@ -200,7 +203,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToShakemapXmlBinding(), ShakemapXmlDataBinding.class));
+                        new ConvertBytesToShakemapXmlBinding(),
+                        ShakemapXmlDataBinding.class));
         builder.withSchema(schema);
         builder.withValidator(
                 new XmlBindingWithAllowedSchema<>(schema));
@@ -233,7 +237,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToJsonDataBinding(), JsonDataBinding.class));
+                        new ConvertBytesToJsonDataBinding(),
+                        JsonDataBinding.class));
         builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
@@ -266,7 +271,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToGeotiffBinding(), GeotiffBinding.class));
+                        new ConvertBytesToGeotiffBinding(),
+                        GeotiffBinding.class));
         builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
@@ -298,7 +304,8 @@ public enum OutputParameterFactory {
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
                         new ConvertBytesToGTVectorDataBinding(
-                            ConvertBytesToGTVectorDataBinding.Format.JSON), GTVectorDataBinding.class));
+                            ConvertBytesToGTVectorDataBinding.Format.JSON),
+                        GTVectorDataBinding.class));
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
@@ -328,7 +335,8 @@ public enum OutputParameterFactory {
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToGenericFileDataBinding(), GenericFileDataBinding.class));
+                        new ConvertBytesToGenericFileDataBinding(),
+                        GenericFileDataBinding.class));
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }

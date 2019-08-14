@@ -20,11 +20,15 @@ package org.n52.gfz.riesgos.exceptions;
 
 
 /**
- * Exception that will be thrown if converting the format fails
+ * Exception that will be thrown if converting the format fails.
  */
 public class ConvertFormatException extends Exception {
     private static final long serialVersionUID = -3821429957623410749L;
 
+    /**
+     * Default constructor with a message.
+     * @param message cause of the exception
+     */
     public ConvertFormatException(final String message) {
         super(message);
     }

@@ -28,19 +28,24 @@ import org.n52.wps.webapp.api.FormatEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
  * Xml Generator for shakemaps.
  * This is the default format for shakemaps.
  */
-public class ShakemapXmlGenerator extends AbstractGenerator implements IMimeTypeAndSchemaConstants {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapXmlDataBinding.class);
+public class ShakemapXmlGenerator
+        extends AbstractGenerator
+        implements IMimeTypeAndSchemaConstants {
 
     /**
-     * Default constructor
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(ShakemapXmlDataBinding.class);
+
+    /**
+     * Default constructor.
      */
     public ShakemapXmlGenerator() {
         super();
@@ -54,14 +59,27 @@ public class ShakemapXmlGenerator extends AbstractGenerator implements IMimeType
         formats.add(shakemap);
     }
 
+    /**
+     * Generates in input stream with the given data.
+     * @param data data to give back
+     * @param mimeType mime type for the data
+     * @param schema schema for the data
+     * @return input stream with the data
+     */
     @Override
-    public InputStream generateStream(final IData data, final String mimeType, final String schema) {
-        if(data instanceof ShakemapXmlDataBinding) {
-            final ShakemapXmlDataBinding binding = (ShakemapXmlDataBinding) data;
+    public InputStream generateStream(
+            final IData data,
+            final String mimeType,
+            final String schema) {
+        if (data instanceof ShakemapXmlDataBinding) {
+            final ShakemapXmlDataBinding binding =
+                    (ShakemapXmlDataBinding) data;
             final XmlObject xmlObject = binding.getPayload();
-            return new ByteArrayInputStream(xmlObject.xmlText().getBytes());
+            return xmlObject.newInputStream();
         } else {
-            LOGGER.error("Can't convert another data binding as ShakemapXmlDataBinding");
+            LOGGER.error(
+                    "Can't convert another data binding "
+                            + "as ShakemapXmlDataBinding");
         }
         return null;
     }

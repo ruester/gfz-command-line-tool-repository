@@ -60,6 +60,7 @@ public class TestFeatureCollectionToOriginalQuakeMLConverter {
         typeBuilder.add("the_geom", Point.class);
 
         for(final String fieldToAdd : Arrays.asList(
+                "publicID",
                 "preferredOriginID",
                 "preferredMagnitudeID",
                 "type",
@@ -122,6 +123,7 @@ public class TestFeatureCollectionToOriginalQuakeMLConverter {
         final Point point = JTSFactoryFinder.getGeometryFactory().createPoint(new Coordinate(x, y));
 
         featureBuilder.set("the_geom", point);
+        featureBuilder.set("publicID", "quakeml:quakeledger/84945");
         featureBuilder.set("preferredOriginID", "quakeml:quakeledger/84945");
         featureBuilder.set("preferredMagnitudeID", "quakeml:quakeledger/84945");
         featureBuilder.set("type", "earthquake");

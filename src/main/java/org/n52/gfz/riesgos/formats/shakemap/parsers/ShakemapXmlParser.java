@@ -36,10 +36,19 @@ import java.io.InputStream;
  * Xml Parser for shakemaps.
  * This is the default format.
  */
-public class ShakemapXmlParser extends AbstractParser implements IMimeTypeAndSchemaConstants {
+public class ShakemapXmlParser
+        extends AbstractParser
+        implements IMimeTypeAndSchemaConstants {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShakemapXmlParser.class);
+    /**
+     * Logger to log unexpected behaviour.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(ShakemapXmlParser.class);
 
+    /**
+     * Default constructor.
+     */
     public ShakemapXmlParser() {
         super();
 
@@ -52,17 +61,29 @@ public class ShakemapXmlParser extends AbstractParser implements IMimeTypeAndSch
         formats.add(shakemap);
     }
 
+    /**
+     * Generates the data from the input stream.
+     * @param stream input stream with the data
+     * @param mimeType mime type of the data
+     * @param schema schema of the data
+     * @return data with the shakemap
+     */
     @Override
-    public IData parse(final InputStream stream, final String mimeType, final String schema) {
+    public IData parse(
+            final InputStream stream,
+            final String mimeType,
+            final String schema) {
         try {
             final XmlObject xmlObject = XmlObject.Factory.parse(stream);
             return ShakemapXmlDataBinding.fromXml(xmlObject);
-        } catch(final XmlException xmlException) {
-            LOGGER.error("Can't parse the provided xml because of a XMLException");
+        } catch (final XmlException xmlException) {
+            LOGGER.error(
+                    "Can't parse the provided xml because of a XMLException");
             LOGGER.error(xmlException.toString());
             throw new RuntimeException(xmlException);
-        } catch(final IOException ioException) {
-            LOGGER.error("Can't parse the provided xml because of an IOException");
+        } catch (final IOException ioException) {
+            LOGGER.error(
+                    "Can't parse the provided xml because of an IOException");
             LOGGER.error(ioException.toString());
             throw new RuntimeException(ioException);
         }

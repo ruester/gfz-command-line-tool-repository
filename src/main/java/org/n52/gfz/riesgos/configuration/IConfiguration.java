@@ -24,10 +24,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface for the configuration of the services that access command line tools inside of docker
+ * Interface for the configuration of the services
+ * that access command line tools inside of docker.
  */
 public interface IConfiguration {
 
+    /**
+     * Pseudo path for a full qualified identifier.
+     */
     String PATH_FULL_QUALIFIED = "org.n52.gfz.riesgos.algorithm.impl.";
 
     /**
@@ -53,7 +57,8 @@ public interface IConfiguration {
 
     /**
      *
-     * @return ID of the docker imaged used to create a container for running the process
+     * @return ID of the docker imaged used to create a
+     * container for running the process
      */
     String getImageId();
 
@@ -65,13 +70,15 @@ public interface IConfiguration {
 
     /**
      *
-     * @return list with the command line command (for example ["python3", "script.py"]
+     * @return list with the command line command
+     * (for example ["python3", "script.py"]
      */
     List<String> getCommandToExecute();
 
     /**
      *
-     * @return list with default command line flags that should always be provided
+     * @return list with default command line flags that
+     * should always be provided
      */
     List<String> getDefaultCommandLineFlags();
 
