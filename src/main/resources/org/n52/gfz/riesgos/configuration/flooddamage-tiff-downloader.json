@@ -1,6 +1,6 @@
 {
   "title": "FlooddamageTiffDownloader",
-  "imageId": "gfzriesgos/flooddamage-tiff-downloader:latest",
+  "imageId": "flooddamage-tiff-downloader:latest",
   "workingDirectory": "/usr/share/git/flooddamage-tiff-downloader",
   "commandToExecute": "python3 download_tiff.py",
   "exitValueHandler": "errorIfNotZero",
