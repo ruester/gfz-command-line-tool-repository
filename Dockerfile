@@ -30,6 +30,12 @@ FROM tomcat:9-jre8
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
 ARG WPS_VERSION=4.0.0-beta.8
+ARG QUAKELEDGER_VERSION=latest
+ARG SHAKYGROUND_VERSION=latest
+ARG ASSETMASTER_VERSION=latest
+ARG MODELPROP_VERSION=latest
+ARG FLOODDAMAGE_VERSION=latest
+ARG FLOODDAMAGE_TIFF_VERSION=latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -143,11 +149,17 @@ RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/
 
 WORKDIR /root/git/gfz-command-line-tool-repository
 COPY . .
-RUN sed -i -e 's@assetmaster:latest@gfzriesgos/assetmaster:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json && \
-    sed -i -e 's@flooddamage:latest@gfzriesgos/flooddamage:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json && \
-    sed -i -e 's@modelprop:latest@gfzriesgos/modelprop:latest@'     src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
-    sed -i -e 's@quakeledger:latest@gfzriesgos/quakeledger:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
-    sed -i -e 's@shakyground:latest@gfzriesgos/shakyground:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
-    sed -i -e 's@flooddamage-tiff-downloader:latest@gfzriesgos/flooddamage-tiff-downloader:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage-tiff-downloader.json && \
+RUN sed -i -e "s@assetmaster:latest@gfzriesgos/assetmaster:${ASSETMASTER_VERSION}@" \
+        src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json && \
+    sed -i -e "s@flooddamage:latest@gfzriesgos/flooddamage:${FLOODDAMAGE_VERSION}@" \
+        src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json && \
+    sed -i -e "s@flooddamage-tiff-downloader:latest@gfzriesgos/flooddamage-tiff-downloader:${FLOODDAMAGE_TIFF_VERSION}@" \
+        src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage-tiff-downloader.json && \
+    sed -i -e "s@modelprop:latest@gfzriesgos/modelprop:${MODELPROP_VERSION}@" \
+        src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
+    sed -i -e "s@quakeledger:latest@gfzriesgos/quakeledger:${QUAKELEDGER_VERSION}@" \
+        src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
+    sed -i -e "s@shakyground:latest@gfzriesgos/shakyground:${SHAKYGROUND_VERSION}@" \
+        src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
     mvn clean package -B && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
