@@ -148,5 +148,6 @@ RUN sed -i -e 's@assetmaster:latest@gfzriesgos/assetmaster:latest@' src/main/res
     sed -i -e 's@modelprop:latest@gfzriesgos/modelprop:latest@'     src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
     sed -i -e 's@quakeledger:latest@gfzriesgos/quakeledger:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
     sed -i -e 's@shakyground:latest@gfzriesgos/shakyground:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
+    sed -i -e 's@flooddamage-tiff-downloader:latest@gfzriesgos/flooddamage-tiff-downloader:latest@' src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage-tiff-downloader.json && \
     mvn clean package -B && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
