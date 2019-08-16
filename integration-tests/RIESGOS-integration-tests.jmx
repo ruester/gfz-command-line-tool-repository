@@ -2284,7 +2284,7 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Quakeledger with JSON output" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Quakeledger with GeoJSON output" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -2708,7 +2708,7 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with JSON output" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with GeoJSON output" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -2994,7 +2994,7 @@
         <stringProp name="ThreadGroup.delay">5</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with NRML + GeoJSON output" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with NRML + JSON output" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -3075,9 +3075,9 @@
               <stringProp name="912014172">&lt;wps:Output id=&quot;selectedRowsXml&quot;&gt;</stringProp>
               <stringProp name="864558672">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:[[[[</stringProp>
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
-              <stringProp name="-191235131">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{&quot;name&quot;:&quot;vina del mar&quot;,&quot;expo&quot;:{</stringProp>
+              <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
               <stringProp name="-945402052">&quot;crs&quot;:{&quot;type&quot;:&quot;name&quot;,&quot;properties&quot;:{&quot;name&quot;:&quot;urn:ogc:def:crs:OGC:1.3:CRS84&quot;}},&quot;type&quot;:&quot;FeatureCollection&quot;}</stringProp>
-              <stringProp name="1549051845">&lt;nrml xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns=&quot;http://openquake.org/xmlns/nrml/0.5&quot;&gt;</stringProp>
+              <stringProp name="58801311">&lt;nrml</stringProp>
               <stringProp name="684322147">&lt;exposureModel id=&quot;SARA_v1.0&quot; category=&quot;buildings&quot; taxonomySource=&quot;GEM&quot;&gt;</stringProp>
               <stringProp name="1949336062">&lt;description&gt;</stringProp>
               <stringProp name="323087357">&lt;conversions&gt;</stringProp>
@@ -3087,6 +3087,10 @@
               <stringProp name="355983860">&lt;costs&gt;</stringProp>
               <stringProp name="-1412283615">&lt;location lon=&quot;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
+              <stringProp name="-908696175">xmlns:gml=&quot;http://www.opengis.net/gml&quot;</stringProp>
+              <stringProp name="-1073580409">xmlns=&quot;http://openquake.org/xmlns/nrml/0.5&quot;</stringProp>
+              <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -3095,7 +3099,7 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with GeoJSON + GeoJSON output" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with GeoJSON + JSON output" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -3175,7 +3179,7 @@
               <stringProp name="912014172">&lt;wps:Output id=&quot;selectedRowsXml&quot;&gt;</stringProp>
               <stringProp name="864558672">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:[[[[</stringProp>
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
-              <stringProp name="-191235131">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{&quot;name&quot;:&quot;vina del mar&quot;,&quot;expo&quot;:{</stringProp>
+              <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
               <stringProp name="-945402052">&quot;crs&quot;:{&quot;type&quot;:&quot;name&quot;,&quot;properties&quot;:{&quot;name&quot;:&quot;urn:ogc:def:crs:OGC:1.3:CRS84&quot;}},&quot;type&quot;:&quot;FeatureCollection&quot;}</stringProp>
               <stringProp name="1977390381">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/vnd.geo+json&quot;&gt;{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[</stringProp>
               <stringProp name="374488183">&quot;taxonomy&quot;:&quot;</stringProp>
@@ -3183,6 +3187,8 @@
               <stringProp name="1342733926">&quot;occupanciesInday&quot;:</stringProp>
               <stringProp name="1064397507">&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
+              <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
