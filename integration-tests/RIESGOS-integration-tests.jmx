@@ -150,6 +150,18 @@
               <stringProp name="-966461479">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.AssetmasterProcess&lt;/ows:Identifier&gt;</stringProp>
               <stringProp name="-1609810899">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlTransformationProcess&lt;/ows:Identifier&gt;</stringProp>
               <stringProp name="-1558235309">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ModelpropProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-307387943">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.FlooddamageTiffDownloader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-629903794">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-1607924863">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakemapCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-577644921">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-1895295721">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedAssetmasterProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-3896303">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedModelpropProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="1648935643">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageTiffDownloader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-499620726">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.GeotiffBindingCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="1172982579">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.JSONCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-256302106">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedShakygroundProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="1386138546">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="878428869">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedQuakeledgerProcess&lt;/ows:Identifier&gt;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -360,6 +372,94 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedQuakeledger" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.CachedQuakeledgerProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1902448068">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedQuakeledgerProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process QuakeledgerProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedQuakeledgerProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRows&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;resulting quakeml&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;selectedRows&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess Shakyground" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
             <collectionProp name="Arguments.arguments">
@@ -423,6 +523,96 @@
           &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
         &lt;/wps:ComplexData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;shakeMapFile&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;resulting shakemap&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;shakeMapFile&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedShakyground" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.CachedShakygroundProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1008927485">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedShakygroundProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process ShakygroundProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedShakygroundProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;shakeMapFile&lt;/ows:Title&gt;
@@ -624,6 +814,98 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedAssetmaster" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.CachedAssetmasterProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="89231442">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedAssetmasterProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process AssetmasterProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedAssetmasterProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRowsXml&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;selectedRowsXml&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://openquake.org/xmlns/nrml/0.5&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRowsGeoJson&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;selectedRowsGeoJson&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess Modelprop" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
             <collectionProp name="Arguments.arguments">
@@ -751,6 +1033,90 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedModelprop" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.CachedModelpropProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1177298089">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedModelpropProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process ModelpropProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedModelpropProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRows&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;selectedRows&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess Flooddamage" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
             <collectionProp name="Arguments.arguments">
@@ -840,6 +1206,700 @@
         &lt;ows:Title&gt;damage_buildings&lt;/ows:Title&gt;
         &lt;ows:Abstract&gt;geojson with the damage on the buildings&lt;/ows:Abstract&gt;
         &lt;ows:Identifier&gt;damage_buildings&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedFlooddamage" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1751847644">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedFlooddamageProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process FlooddamageProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;damage_manzanas&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;geojson with the damage of the manzanas&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;damage_manzanas&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;damage_buildings&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;geojson with the damage on the buildings&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;damage_buildings&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess FlooddamageTiffDownloader" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.FlooddamageTiffDownloader</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1225054905">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;FlooddamageTiffDownloader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.FlooddamageTiffDownloader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;base-url&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;base-url&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+            &lt;ows:DefaultValue&gt;https://www.sd-kama.de/geoserver/rain_cotopaxi/wcs&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;coverage-id&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;coverage-id&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:duration_latacunga_city&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:duration_latacunga_north&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:v_at_wdmax_latacunga_city&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:v_at_wdmax_latacunga_north&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:wd_max_latacunga_city&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:wd_max_latacunga_north&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;output-tiff&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;output-tiff&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WFS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess QuakeMLCacheReader" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.QuakeMLCacheReader</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1468353126">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;QuakeMLCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess ShakemapCacheReader" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.ShakemapCacheReader</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1479652778">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;ShakemapCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakemapCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess NrmlCacheReader" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.NrmlCacheReader</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="765075702">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;NrmlCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://openquake.org/xmlns/nrml/0.5&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess GeotiffBindingCacheReader" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.GeotiffBindingCacheReader</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1383551241">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;GeotiffBindingCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.GeotiffBindingCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WFS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess JSONCacheReader" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">describeProcess</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+              <elementProp name="identifier" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">org.n52.gfz.riesgos.algorithm.impl.JSONCacheReader</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">identifier</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="278424825">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;JSONCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.JSONCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -1187,6 +2247,18 @@
               <stringProp name="-966461479">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.AssetmasterProcess&lt;/ows:Identifier&gt;</stringProp>
               <stringProp name="-1609810899">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlTransformationProcess&lt;/ows:Identifier&gt;</stringProp>
               <stringProp name="-1558235309">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ModelpropProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-307387943">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.FlooddamageTiffDownloader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-629903794">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-1607924863">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakemapCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-577644921">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-1895295721">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedAssetmasterProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-3896303">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedModelpropProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="1648935643">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageTiffDownloader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-499620726">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.GeotiffBindingCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="1172982579">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.JSONCacheReader&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="-256302106">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedShakygroundProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="1386138546">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageProcess&lt;/ows:Identifier&gt;</stringProp>
+              <stringProp name="878428869">&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedQuakeledgerProcess&lt;/ows:Identifier&gt;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1397,6 +2469,94 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedQuakeledger" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedQuakeledgerProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1902448068">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedQuakeledgerProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process QuakeledgerProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedQuakeledgerProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRows&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;resulting quakeml&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;selectedRows&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess Shakyground" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -1460,6 +2620,96 @@
           &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
         &lt;/wps:ComplexData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;shakeMapFile&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;resulting shakemap&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;shakeMapFile&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedShakyground" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1008927485">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedShakygroundProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process ShakygroundProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedShakygroundProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;shakeMapFile&lt;/ows:Title&gt;
@@ -1661,6 +2911,98 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedAssetmaster" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedAssetmasterProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="89231442">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedAssetmasterProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process AssetmasterProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedAssetmasterProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRowsXml&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;selectedRowsXml&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://openquake.org/xmlns/nrml/0.5&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRowsGeoJson&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;selectedRowsGeoJson&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess Modelprop" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -1788,6 +3130,90 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedModelprop" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedModelpropProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1177298089">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedModelpropProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process ModelpropProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedModelpropProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;selectedRows&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;selectedRows&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess Flooddamage" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -1877,6 +3303,700 @@
         &lt;ows:Title&gt;damage_buildings&lt;/ows:Title&gt;
         &lt;ows:Abstract&gt;geojson with the damage on the buildings&lt;/ows:Abstract&gt;
         &lt;ows:Identifier&gt;damage_buildings&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess CachedFlooddamage" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1751847644">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;CachedFlooddamageProcess&lt;/ows:Title&gt;
+      &lt;ows:Abstract&gt;Process to read from the cache for the process FlooddamageProcess&lt;/ows:Abstract&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.CachedFlooddamageProcess&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to lookup the existing results for the process&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;damage_manzanas&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;geojson with the damage of the manzanas&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;damage_manzanas&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;damage_buildings&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;geojson with the damage on the buildings&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;damage_buildings&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess FlooddamageTiffDownloader" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.FlooddamageTiffDownloader&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1225054905">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;FlooddamageTiffDownloader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.FlooddamageTiffDownloader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;base-url&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;base-url&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+            &lt;ows:DefaultValue&gt;https://www.sd-kama.de/geoserver/rain_cotopaxi/wcs&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;coverage-id&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;coverage-id&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:duration_latacunga_city&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:duration_latacunga_north&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:v_at_wdmax_latacunga_city&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:v_at_wdmax_latacunga_north&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:wd_max_latacunga_city&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;rain_cotopaxi:wd_max_latacunga_north&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;output-tiff&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;output-tiff&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WFS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess QuakeMLCacheReader" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLCacheReader&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1468353126">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;QuakeMLCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd (original; not conform to schema)&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess ShakemapCacheReader" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakemapCacheReader&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1479652778">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;ShakemapCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakemapCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess NrmlCacheReader" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlCacheReader&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="765075702">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;NrmlCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://openquake.org/xmlns/nrml/0.5&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess GeotiffBindingCacheReader" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.GeotiffBindingCacheReader&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1383551241">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;GeotiffBindingCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.GeotiffBindingCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;image/tiff&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WFS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+    &lt;/wps:Process&gt;
+  &lt;/wps:ProcessOffering&gt;
+&lt;/wps:ProcessOfferings&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DescribeProcess JSONCacheReader" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:DescribeProcess&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.JSONCacheReader&lt;/ows:Identifier&gt;&#xd;
+&lt;/wps:DescribeProcess&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="278424825">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
+  &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
+    &lt;wps:Process&gt;
+      &lt;ows:Title&gt;JSONCacheReader&lt;/ows:Title&gt;
+      &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.JSONCacheReader&lt;/ows:Identifier&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Cache-Key&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the key for the cache to read the data out&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Cache-Key&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;Output-Name&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;This is the name of the data for which the cached dataset contains the dataset&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;Output-Name&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AnyValue/&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;Output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;Output&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
