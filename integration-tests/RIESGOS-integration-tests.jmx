@@ -2842,6 +2842,408 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with GeoTIFF output" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot;&#xd;
+	response=&quot;document&quot;&#xd;
+	mode=&quot;sync&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;wps:Input id=&quot;quakeMLFile&quot;&gt;&#xd;
+&lt;wps:Data schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&#xd;
+&lt;eventParameters publicID=&quot;quakeml:quakeledger/0&quot; xmlns=&quot;http://quakeml.org/xmlns/bed/1.2&quot;&gt;&#xd;
+  &lt;event publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+    &lt;preferredOriginID&gt;quakeml:quakeledger/84945&lt;/preferredOriginID&gt;&#xd;
+    &lt;preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/preferredMagnitudeID&gt;&#xd;
+    &lt;type&gt;earthquake&lt;/type&gt;&#xd;
+    &lt;description&gt;&#xd;
+      &lt;text&gt;stochastic&lt;/text&gt;&#xd;
+    &lt;/description&gt;&#xd;
+    &lt;origin publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;time&gt;&#xd;
+        &lt;value&gt;2019-01-01T00:00:00.000000Z&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/time&gt;&#xd;
+      &lt;latitude&gt;&#xd;
+        &lt;value&gt;-30.9227&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/latitude&gt;&#xd;
+      &lt;longitude&gt;&#xd;
+        &lt;value&gt;-71.49875&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/longitude&gt;&#xd;
+      &lt;depth&gt;&#xd;
+        &lt;value&gt;34.75117&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/depth&gt;&#xd;
+      &lt;creationInfo&gt;&#xd;
+        &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+      &lt;/creationInfo&gt;&#xd;
+      &lt;originUncertainty&gt;&#xd;
+        &lt;horizontalUncertainty&gt;NaN&lt;/horizontalUncertainty&gt;&#xd;
+        &lt;minHorizontalUncertainty&gt;NaN&lt;/minHorizontalUncertainty&gt;&#xd;
+        &lt;maxHorizontalUncertainty&gt;NaN&lt;/maxHorizontalUncertainty&gt;&#xd;
+        &lt;azimuthMaxHorizontalUncertainty&gt;NaN&lt;/azimuthMaxHorizontalUncertainty&gt;&#xd;
+      &lt;/originUncertainty&gt;&#xd;
+    &lt;/origin&gt;&#xd;
+    &lt;magnitude publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;mag&gt;&#xd;
+        &lt;value&gt;8.35&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/mag&gt;&#xd;
+      &lt;type&gt;MW&lt;/type&gt;&#xd;
+      &lt;creationInfo&gt;&#xd;
+        &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+      &lt;/creationInfo&gt;&#xd;
+    &lt;/magnitude&gt;&#xd;
+    &lt;focalMechanism publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;nodalPlanes preferredPlane=&quot;1&quot;&gt;&#xd;
+        &lt;nodalPlane1&gt;&#xd;
+          &lt;strike&gt;&#xd;
+            &lt;value&gt;7.310981&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/strike&gt;&#xd;
+          &lt;dip&gt;&#xd;
+            &lt;value&gt;16.352970000000003&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/dip&gt;&#xd;
+          &lt;rake&gt;&#xd;
+            &lt;value&gt;90.0&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/rake&gt;&#xd;
+        &lt;/nodalPlane1&gt;&#xd;
+      &lt;/nodalPlanes&gt;&#xd;
+    &lt;/focalMechanism&gt;&#xd;
+  &lt;/event&gt;&#xd;
+&lt;/eventParameters&gt;&#xd;
+&lt;/wps:Data&gt;&#xd;
+&lt;/wps:Input&gt;&#xd;
+&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1391814457">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;image/geotiff&quot;&gt;&lt;![CDATA[</stringProp>
+              <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with GeoTIFF output (Base64)" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot;&#xd;
+	response=&quot;document&quot;&#xd;
+	mode=&quot;sync&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;wps:Input id=&quot;quakeMLFile&quot;&gt;&#xd;
+&lt;wps:Data schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&#xd;
+&lt;eventParameters publicID=&quot;quakeml:quakeledger/0&quot; xmlns=&quot;http://quakeml.org/xmlns/bed/1.2&quot;&gt;&#xd;
+  &lt;event publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+    &lt;preferredOriginID&gt;quakeml:quakeledger/84945&lt;/preferredOriginID&gt;&#xd;
+    &lt;preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/preferredMagnitudeID&gt;&#xd;
+    &lt;type&gt;earthquake&lt;/type&gt;&#xd;
+    &lt;description&gt;&#xd;
+      &lt;text&gt;stochastic&lt;/text&gt;&#xd;
+    &lt;/description&gt;&#xd;
+    &lt;origin publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;time&gt;&#xd;
+        &lt;value&gt;2019-01-01T00:00:00.000000Z&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/time&gt;&#xd;
+      &lt;latitude&gt;&#xd;
+        &lt;value&gt;-30.9227&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/latitude&gt;&#xd;
+      &lt;longitude&gt;&#xd;
+        &lt;value&gt;-71.49875&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/longitude&gt;&#xd;
+      &lt;depth&gt;&#xd;
+        &lt;value&gt;34.75117&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/depth&gt;&#xd;
+      &lt;creationInfo&gt;&#xd;
+        &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+      &lt;/creationInfo&gt;&#xd;
+      &lt;originUncertainty&gt;&#xd;
+        &lt;horizontalUncertainty&gt;NaN&lt;/horizontalUncertainty&gt;&#xd;
+        &lt;minHorizontalUncertainty&gt;NaN&lt;/minHorizontalUncertainty&gt;&#xd;
+        &lt;maxHorizontalUncertainty&gt;NaN&lt;/maxHorizontalUncertainty&gt;&#xd;
+        &lt;azimuthMaxHorizontalUncertainty&gt;NaN&lt;/azimuthMaxHorizontalUncertainty&gt;&#xd;
+      &lt;/originUncertainty&gt;&#xd;
+    &lt;/origin&gt;&#xd;
+    &lt;magnitude publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;mag&gt;&#xd;
+        &lt;value&gt;8.35&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/mag&gt;&#xd;
+      &lt;type&gt;MW&lt;/type&gt;&#xd;
+      &lt;creationInfo&gt;&#xd;
+        &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+      &lt;/creationInfo&gt;&#xd;
+    &lt;/magnitude&gt;&#xd;
+    &lt;focalMechanism publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;nodalPlanes preferredPlane=&quot;1&quot;&gt;&#xd;
+        &lt;nodalPlane1&gt;&#xd;
+          &lt;strike&gt;&#xd;
+            &lt;value&gt;7.310981&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/strike&gt;&#xd;
+          &lt;dip&gt;&#xd;
+            &lt;value&gt;16.352970000000003&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/dip&gt;&#xd;
+          &lt;rake&gt;&#xd;
+            &lt;value&gt;90.0&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/rake&gt;&#xd;
+        &lt;/nodalPlane1&gt;&#xd;
+      &lt;/nodalPlanes&gt;&#xd;
+    &lt;/focalMechanism&gt;&#xd;
+  &lt;/event&gt;&#xd;
+&lt;/eventParameters&gt;&#xd;
+&lt;/wps:Data&gt;&#xd;
+&lt;/wps:Input&gt;&#xd;
+&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1446657372">&lt;wps:Data encoding=&quot;base64&quot; mimeType=&quot;image/geotiff&quot;&gt;</stringProp>
+              <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-1540314476">TU0AKgAAAAgAEAEAAAMAAAABAesAAAEBAAMAAAABAjwAAAECAAMAAAACAEAAQAEDAAMAAAABAAUA</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with WMS output" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot;&#xd;
+	response=&quot;document&quot;&#xd;
+	mode=&quot;sync&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;wps:Input id=&quot;quakeMLFile&quot;&gt;&#xd;
+&lt;wps:Data schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&#xd;
+&lt;eventParameters publicID=&quot;quakeml:quakeledger/0&quot; xmlns=&quot;http://quakeml.org/xmlns/bed/1.2&quot;&gt;&#xd;
+  &lt;event publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+    &lt;preferredOriginID&gt;quakeml:quakeledger/84945&lt;/preferredOriginID&gt;&#xd;
+    &lt;preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/preferredMagnitudeID&gt;&#xd;
+    &lt;type&gt;earthquake&lt;/type&gt;&#xd;
+    &lt;description&gt;&#xd;
+      &lt;text&gt;stochastic&lt;/text&gt;&#xd;
+    &lt;/description&gt;&#xd;
+    &lt;origin publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;time&gt;&#xd;
+        &lt;value&gt;2019-01-01T00:00:00.000000Z&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/time&gt;&#xd;
+      &lt;latitude&gt;&#xd;
+        &lt;value&gt;-30.9227&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/latitude&gt;&#xd;
+      &lt;longitude&gt;&#xd;
+        &lt;value&gt;-71.49875&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/longitude&gt;&#xd;
+      &lt;depth&gt;&#xd;
+        &lt;value&gt;34.75117&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/depth&gt;&#xd;
+      &lt;creationInfo&gt;&#xd;
+        &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+      &lt;/creationInfo&gt;&#xd;
+      &lt;originUncertainty&gt;&#xd;
+        &lt;horizontalUncertainty&gt;NaN&lt;/horizontalUncertainty&gt;&#xd;
+        &lt;minHorizontalUncertainty&gt;NaN&lt;/minHorizontalUncertainty&gt;&#xd;
+        &lt;maxHorizontalUncertainty&gt;NaN&lt;/maxHorizontalUncertainty&gt;&#xd;
+        &lt;azimuthMaxHorizontalUncertainty&gt;NaN&lt;/azimuthMaxHorizontalUncertainty&gt;&#xd;
+      &lt;/originUncertainty&gt;&#xd;
+    &lt;/origin&gt;&#xd;
+    &lt;magnitude publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;mag&gt;&#xd;
+        &lt;value&gt;8.35&lt;/value&gt;&#xd;
+        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+      &lt;/mag&gt;&#xd;
+      &lt;type&gt;MW&lt;/type&gt;&#xd;
+      &lt;creationInfo&gt;&#xd;
+        &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+      &lt;/creationInfo&gt;&#xd;
+    &lt;/magnitude&gt;&#xd;
+    &lt;focalMechanism publicID=&quot;quakeml:quakeledger/84945&quot;&gt;&#xd;
+      &lt;nodalPlanes preferredPlane=&quot;1&quot;&gt;&#xd;
+        &lt;nodalPlane1&gt;&#xd;
+          &lt;strike&gt;&#xd;
+            &lt;value&gt;7.310981&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/strike&gt;&#xd;
+          &lt;dip&gt;&#xd;
+            &lt;value&gt;16.352970000000003&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/dip&gt;&#xd;
+          &lt;rake&gt;&#xd;
+            &lt;value&gt;90.0&lt;/value&gt;&#xd;
+            &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+          &lt;/rake&gt;&#xd;
+        &lt;/nodalPlane1&gt;&#xd;
+      &lt;/nodalPlanes&gt;&#xd;
+    &lt;/focalMechanism&gt;&#xd;
+  &lt;/event&gt;&#xd;
+&lt;/eventParameters&gt;&#xd;
+&lt;/wps:Data&gt;&#xd;
+&lt;/wps:Input&gt;&#xd;
+&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/WMS&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="113455863">&lt;wps:Data mimeType=&quot;application/WMS&quot;&gt;&lt;![CDATA[</stringProp>
+              <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="538597085">geoserver/wms?</stringProp>
+              <stringProp name="-261220619">Service=WMS</stringProp>
+              <stringProp name="204802932">Request=GetMap</stringProp>
+              <stringProp name="879824658">Version=1.1.1</stringProp>
+              <stringProp name="2061578968">layers=N52:primary</stringProp>
+              <stringProp name="1485219">.tif</stringProp>
+              <stringProp name="-788034761">width=</stringProp>
+              <stringProp name="802788342">height=</stringProp>
+              <stringProp name="1540830991">format=image/png</stringProp>
+              <stringProp name="93535028">bbox=</stringProp>
+              <stringProp name="-1172649803">srs=EPSG:4326</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with GML output" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -2969,6 +3371,184 @@
               <stringProp name="604893337">&lt;gml:MultiCurve srsDimension=&quot;2&quot; srsName=&quot;http://www.opengis.net/gml/srs/epsg.xml#4326&quot;&gt;</stringProp>
               <stringProp name="1520905033">&lt;n52:the_geom&gt;</stringProp>
               <stringProp name="-1537390344">&lt;n52:value&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with GeoJSON input" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot;&#xd;
+	response=&quot;document&quot;&#xd;
+	mode=&quot;sync&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+	&lt;wps:Input id=&quot;quakeMLFile&quot;&gt;&#xd;
+	&lt;wps:Data mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&#xd;
+{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4987,-30.9227]},&quot;properties&quot;:{&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredMagnitudeID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;type&quot;:&quot;earthquake&quot;,&quot;description.text&quot;:&quot;stochastic&quot;,&quot;origin.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;origin.time.value&quot;:&quot;2019-01-01T00:00:00.000000Z&quot;,&quot;origin.depth.value&quot;:&quot;34.75117&quot;,&quot;origin.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;magnitude.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;magnitude.mag.value&quot;:&quot;8.35&quot;,&quot;magnitude.type&quot;:&quot;MW&quot;,&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;focalMechanism.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.strike.value&quot;:&quot;7.310981&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.dip.value&quot;:&quot;16.352970000000003&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.rake.value&quot;:&quot;90.0&quot;,&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;},&quot;id&quot;:&quot;quakeml:quakeledger\/84945&quot;}]}&#xd;
+	&lt;/wps:Data&gt;&#xd;
+	&lt;/wps:Input&gt;&#xd;
+	&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-129447952">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/vnd.geo+json&quot;&gt;</stringProp>
+              <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
+              <stringProp name="-314080051">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;LineString&quot;,&quot;coordinates&quot;:[[</stringProp>
+              <stringProp name="417969493">&quot;properties&quot;:{&quot;value&quot;:</stringProp>
+              <stringProp name="-1832309772">{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;LineString&quot;,&quot;coordinates&quot;:[[</stringProp>
+              <stringProp name="1073374445">&quot;id&quot;:&quot;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with GML input" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot;&#xd;
+	response=&quot;document&quot;&#xd;
+	mode=&quot;sync&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+	&lt;wps:Input id=&quot;quakeMLFile&quot;&gt;&#xd;
+     &lt;wps:Data schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;&#xd;
+      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb https://raw.githubusercontent.com/riesgos/gfz-command-line-tool-repository/master/integration-tests/wps_static_schemas_quakeml_gml.xsd&quot;&gt;&#xd;
+        &lt;gml:featureMembers&gt;&#xd;
+          &lt;n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb gml:id=&quot;ID0&quot;&gt;&#xd;
+            &lt;gml:boundedBy&gt;&#xd;
+              &lt;gml:Envelope srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;&#xd;
+                &lt;gml:lowerCorner&gt;-71.4987 -30.9227&lt;/gml:lowerCorner&gt;&#xd;
+                &lt;gml:upperCorner&gt;-71.4987 -30.9227&lt;/gml:upperCorner&gt;&#xd;
+              &lt;/gml:Envelope&gt;&#xd;
+            &lt;/gml:boundedBy&gt;&#xd;
+            &lt;n52:the_geom&gt;&#xd;
+              &lt;gml:MultiPoint srsDimension=&quot;2&quot; srsName=&quot;WGS84(DD)&quot;&gt;&#xd;
+                &lt;gml:pointMember&gt;&#xd;
+                  &lt;gml:Point srsDimension=&quot;2&quot;&gt;&#xd;
+                    &lt;gml:pos&gt;-71.4987 -30.9227&lt;/gml:pos&gt;&#xd;
+                  &lt;/gml:Point&gt;&#xd;
+                &lt;/gml:pointMember&gt;&#xd;
+              &lt;/gml:MultiPoint&gt;&#xd;
+            &lt;/n52:the_geom&gt;&#xd;
+            &lt;n52:publicID&gt;quakeml:quakeledger/84945&lt;/n52:publicID&gt;&#xd;
+            &lt;n52:preferredOriginID&gt;quakeml:quakeledger/84945&lt;/n52:preferredOriginID&gt;&#xd;
+            &lt;n52:preferredMagnitudeID&gt;quakeml:quakeledger/84945&lt;/n52:preferredMagnitudeID&gt;&#xd;
+            &lt;n52:type&gt;earthquake&lt;/n52:type&gt;&#xd;
+            &lt;n52:description.text&gt;stochastic&lt;/n52:description.text&gt;&#xd;
+            &lt;n52:origin.publicID&gt;quakeml:quakeledger/84945&lt;/n52:origin.publicID&gt;&#xd;
+            &lt;n52:origin.time.value&gt;2019-01-01T00:00:00.000000Z&lt;/n52:origin.time.value&gt;&#xd;
+            &lt;n52:origin.depth.value&gt;34.75117&lt;/n52:origin.depth.value&gt;&#xd;
+            &lt;n52:origin.creationInfo.value&gt;GFZ&lt;/n52:origin.creationInfo.value&gt;&#xd;
+            &lt;n52:magnitude.publicID&gt;quakeml:quakeledger/84945&lt;/n52:magnitude.publicID&gt;&#xd;
+            &lt;n52:magnitude.mag.value&gt;8.35&lt;/n52:magnitude.mag.value&gt;&#xd;
+            &lt;n52:magnitude.type&gt;MW&lt;/n52:magnitude.type&gt;&#xd;
+            &lt;n52:magnitude.creationInfo.value&gt;GFZ&lt;/n52:magnitude.creationInfo.value&gt;&#xd;
+            &lt;n52:focalMechanism.publicID&gt;quakeml:quakeledger/84945&lt;/n52:focalMechanism.publicID&gt;&#xd;
+            &lt;n52:focalMechanism.nodalPlanes.nodalPlane1.strike.value&gt;7.310981&lt;/n52:focalMechanism.nodalPlanes.nodalPlane1.strike.value&gt;&#xd;
+            &lt;n52:focalMechanism.nodalPlanes.nodalPlane1.dip.value&gt;16.352970000000003&lt;/n52:focalMechanism.nodalPlanes.nodalPlane1.dip.value&gt;&#xd;
+            &lt;n52:focalMechanism.nodalPlanes.nodalPlane1.rake.value&gt;90.0&lt;/n52:focalMechanism.nodalPlanes.nodalPlane1.rake.value&gt;&#xd;
+            &lt;n52:focalMechanism.nodalPlanes.preferredPlane&gt;nodalPlane1&lt;/n52:focalMechanism.nodalPlanes.preferredPlane&gt;&#xd;
+          &lt;/n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb&gt;&#xd;
+        &lt;/gml:featureMembers&gt;&#xd;
+      &lt;/gml:FeatureCollection&gt;&#xd;
+	&lt;/wps:Data&gt;&#xd;
+	&lt;/wps:Input&gt;&#xd;
+	&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-129447952">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/vnd.geo+json&quot;&gt;</stringProp>
+              <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
+              <stringProp name="-314080051">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;LineString&quot;,&quot;coordinates&quot;:[[</stringProp>
+              <stringProp name="417969493">&quot;properties&quot;:{&quot;value&quot;:</stringProp>
+              <stringProp name="-1832309772">{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;LineString&quot;,&quot;coordinates&quot;:[[</stringProp>
+              <stringProp name="1073374445">&quot;id&quot;:&quot;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
