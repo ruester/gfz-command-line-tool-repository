@@ -2661,21 +2661,45 @@
             <collectionProp name="Asserion.test_strings">
               <stringProp name="767787856">&lt;wps:Data schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;</stringProp>
               <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
-              <stringProp name="-1918976039">&lt;shakemap_grid xmlns=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; code_version=&quot;shakyground 0.1&quot; event_id=&quot;quakeml:quakeledger/84945&quot; map_status=&quot;RELEASED&quot; process_timestamp=&quot;</stringProp>
-              <stringProp name="1298428174">&lt;grid_specification lat_max=&quot;-28.5416666667&quot; lat_min=&quot;-33.3&quot; lon_max=&quot;-69.4583333333&quot; lon_min=&quot;-73.5416666667&quot; nlat=&quot;572&quot; nlon=&quot;491&quot; nominal_lat_spacing=&quot;0.008333&quot; nominal_lon_spacing=&quot;0.008333&quot; regular_grid=&quot;1&quot;/&gt;</stringProp>
-              <stringProp name="-1549841122">&lt;event_specific_uncertainty name=&quot;pga&quot; numsta=&quot;&quot; value=&quot;0.0&quot;/&gt;</stringProp>
-              <stringProp name="-898425175">&lt;event_specific_uncertainty name=&quot;pgv&quot; numsta=&quot;&quot; value=&quot;0.0&quot;/&gt;</stringProp>
-              <stringProp name="808385456">&lt;event_specific_uncertainty name=&quot;mi&quot; numsta=&quot;&quot; value=&quot;0.0&quot;/&gt;</stringProp>
-              <stringProp name="-1628842617">&lt;event_specific_uncertainty name=&quot;psa03&quot; numsta=&quot;&quot; value=&quot;0.0&quot;/&gt;</stringProp>
-              <stringProp name="-760288021">&lt;event_specific_uncertainty name=&quot;psa10&quot; numsta=&quot;&quot; value=&quot;0.0&quot;/&gt;</stringProp>
-              <stringProp name="1162940013">&lt;event_specific_uncertainty name=&quot;psa30&quot; numsta=&quot;&quot; value=&quot;0.0&quot;/&gt;</stringProp>
+              <stringProp name="-2039662432">&lt;shakemap_grid xmlns=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot;</stringProp>
+              <stringProp name="-200846074">&lt;grid_specification</stringProp>
+              <stringProp name="-1929777566">&lt;event_specific_uncertainty</stringProp>
               <stringProp name="-607592229">&lt;grid_field index=&quot;1&quot; name=&quot;LON&quot; units=&quot;dd&quot;/&gt;</stringProp>
               <stringProp name="-1563652274">&lt;grid_field index=&quot;2&quot; name=&quot;LAT&quot; units=&quot;dd&quot;/&gt;</stringProp>
               <stringProp name="-620494557">&lt;grid_field index=&quot;3&quot; name=&quot;PGA&quot; units=&quot;g&quot;/&gt;</stringProp>
               <stringProp name="-288287413">&lt;grid_field index=&quot;4&quot; name=&quot;STDPGA&quot; units=&quot;g&quot;/&gt;</stringProp>
               <stringProp name="582339799">&lt;grid_data&gt;</stringProp>
-              <stringProp name="764879257">&lt;event depth=&quot;34.75117&quot; event_description=&quot;&quot; event_id=&quot;quakeml:quakeledger/84945&quot; event_network=&quot;nan&quot; event_timestamp=&quot;2019-01-01T00:00:00.000000Z&quot; lat=&quot;-30.9227&quot; lon=&quot;-71.49875&quot; magnitude=&quot;8.35&quot;/&gt;</stringProp>
+              <stringProp name="1814640606">&lt;event</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="2119520441">code_version=&quot;shakyground 0.1&quot;</stringProp>
+              <stringProp name="-1948737220">event_id=&quot;quakeml:quakeledger/84945&quot;</stringProp>
+              <stringProp name="-209153717">map_status=&quot;RELEASED&quot;</stringProp>
+              <stringProp name="-131100341">process_timestamp=&quot;</stringProp>
+              <stringProp name="-1432414247">lat_max=&quot;-28.5416666667&quot;</stringProp>
+              <stringProp name="-809963001">lat_min=&quot;-33.3&quot;</stringProp>
+              <stringProp name="-1714381709">lon_max=&quot;-69.4583333333&quot;</stringProp>
+              <stringProp name="312025621">lon_min=&quot;-73.5416666667&quot;</stringProp>
+              <stringProp name="1126298376">nlat=&quot;572&quot;</stringProp>
+              <stringProp name="-1274243400">nlon=&quot;491&quot;</stringProp>
+              <stringProp name="1950760580">nominal_lat_spacing=&quot;0.008333&quot;</stringProp>
+              <stringProp name="-1227315880">nominal_lon_spacing=&quot;0.008333&quot;</stringProp>
+              <stringProp name="1396742623">regular_grid=&quot;1&quot;</stringProp>
+              <stringProp name="-1453499544">name=&quot;pga&quot;</stringProp>
+              <stringProp name="-2145032669">numsta=&quot;&quot;</stringProp>
+              <stringProp name="-2132198874">value=&quot;0.0&quot;</stringProp>
+              <stringProp name="-1453498893">name=&quot;pgv&quot;</stringProp>
+              <stringProp name="1200036022">name=&quot;mi&quot;</stringProp>
+              <stringProp name="-937593263">name=&quot;psa03&quot;</stringProp>
+              <stringProp name="-937592395">name=&quot;psa10&quot;</stringProp>
+              <stringProp name="-937590473">name=&quot;psa30&quot;</stringProp>
+              <stringProp name="116906094">depth=&quot;34.75117&quot;</stringProp>
+              <stringProp name="253642758">event_description=&quot;&quot;</stringProp>
+              <stringProp name="-1948737220">event_id=&quot;quakeml:quakeledger/84945&quot;</stringProp>
+              <stringProp name="-1520343499">event_network=&quot;nan&quot;</stringProp>
+              <stringProp name="-699622978">event_timestamp=&quot;2019-01-01T00:00:00.000000Z&quot;</stringProp>
+              <stringProp name="280840252">lat=&quot;-30.9227&quot;</stringProp>
+              <stringProp name="2060103144">lon=&quot;-71.49875&quot;</stringProp>
+              <stringProp name="2004087509">magnitude=&quot;8.35&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
