@@ -3748,7 +3748,7 @@
     &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLTransformationProcess&lt;/ows:Identifier&gt;&#xd;
     &lt;wps:Input id=&quot;input&quot;&gt;&#xd;
     &lt;wps:Data schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;&#xd;
-      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb http://localhost:8080/wps/static/schemas/2957590d-6aad-4398-8bc3-9099594483bb.xsd&quot;&gt;&#xd;
+      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb https://raw.githubusercontent.com/riesgos/gfz-command-line-tool-repository/master/integration-tests/wps_static_schemas_quakeml_gml.xsd&quot;&gt;&#xd;
         &lt;gml:featureMembers&gt;&#xd;
           &lt;n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb gml:id=&quot;ID0&quot;&gt;&#xd;
             &lt;gml:boundedBy&gt;&#xd;
@@ -3853,7 +3853,7 @@
     &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeMLTransformationProcess&lt;/ows:Identifier&gt;&#xd;
     &lt;wps:Input id=&quot;input&quot;&gt;&#xd;
     &lt;wps:Data schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;&#xd;
-      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb http://localhost:8080/wps/static/schemas/2957590d-6aad-4398-8bc3-9099594483bb.xsd&quot;&gt;&#xd;
+      &lt;gml:FeatureCollection xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot; xmlns:n52=&quot;http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb&quot; xsi:schemaLocation=&quot;http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/feature.xsd http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb https://raw.githubusercontent.com/riesgos/gfz-command-line-tool-repository/master/integration-tests/wps_static_schemas_quakeml_gml.xsd&quot;&gt;&#xd;
         &lt;gml:featureMembers&gt;&#xd;
           &lt;n52:Feature-2957590d-6aad-4398-8bc3-9099594483bb gml:id=&quot;ID0&quot;&gt;&#xd;
             &lt;gml:boundedBy&gt;&#xd;
