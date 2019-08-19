@@ -4644,6 +4644,316 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Quakeledger with QuakeML output (reference)" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeledgerProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;mmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;6.6&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;mmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;8.5&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;zmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;5&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;zmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;140&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;p&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;0.1&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;etype&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;deaggregation&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;tlon&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-71.5730623712764&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;tlat&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-33.1299174879672&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;input-boundingbox&quot;&gt;&#xd;
+        &lt;wps:Data&gt;&#xd;
+            &lt;ows:BoundingBox crs=&quot;EPSG:4326&quot; dimensions=&quot;2&quot;&gt;&#xd;
+                &lt;ows:LowerCorner&gt;-33.56886118255556 -72.1142578125&lt;/ows:LowerCorner&gt;&#xd;
+                &lt;ows:UpperCorner&gt;-32.6671247331203 -70.938720703125&lt;/ows:UpperCorner&gt;&#xd;
+            &lt;/ows:BoundingBox&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;selectedRows&quot; transmission=&quot;reference&quot; mimeType=&quot;text/xml&quot; schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="-1221343490">schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot;</stringProp>
+              <stringProp name="1840897800">encoding=&quot;UTF-8&quot;</stringProp>
+              <stringProp name="-733823398">mimeType=&quot;text/xml&quot;</stringProp>
+              <stringProp name="18458481">xlin:href=&quot;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Quakeledger with GeoJSON output (reference)" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeledgerProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;mmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;6.6&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;mmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;8.5&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;zmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;5&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;zmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;140&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;p&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;0.1&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;etype&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;deaggregation&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;tlon&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-71.5730623712764&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;tlat&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-33.1299174879672&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;input-boundingbox&quot;&gt;&#xd;
+        &lt;wps:Data&gt;&#xd;
+            &lt;ows:BoundingBox crs=&quot;EPSG:4326&quot; dimensions=&quot;2&quot;&gt;&#xd;
+                &lt;ows:LowerCorner&gt;-33.56886118255556 -72.1142578125&lt;/ows:LowerCorner&gt;&#xd;
+                &lt;ows:UpperCorner&gt;-32.6671247331203 -70.938720703125&lt;/ows:UpperCorner&gt;&#xd;
+            &lt;/ows:BoundingBox&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;selectedRows&quot; transmission=&quot;reference&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="1840897800">encoding=&quot;UTF-8&quot;</stringProp>
+              <stringProp name="-911219188">mimeType=&quot;application/vnd.geo+json&quot;</stringProp>
+              <stringProp name="18458481">xlin:href=&quot;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Quakeledger with GML output (reference)" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.QuakeledgerProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;mmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;6.6&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;mmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;8.5&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;zmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;5&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;zmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;140&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;p&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;0.1&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;etype&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;deaggregation&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;tlon&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-71.5730623712764&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;tlat&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-33.1299174879672&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;input-boundingbox&quot;&gt;&#xd;
+        &lt;wps:Data&gt;&#xd;
+            &lt;ows:BoundingBox crs=&quot;EPSG:4326&quot; dimensions=&quot;2&quot;&gt;&#xd;
+                &lt;ows:LowerCorner&gt;-33.56886118255556 -72.1142578125&lt;/ows:LowerCorner&gt;&#xd;
+                &lt;ows:UpperCorner&gt;-32.6671247331203 -70.938720703125&lt;/ows:UpperCorner&gt;&#xd;
+            &lt;/ows:BoundingBox&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;selectedRows&quot; transmission=&quot;reference&quot; mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="1840897800">encoding=&quot;UTF-8&quot;</stringProp>
+              <stringProp name="-1086326384">schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;</stringProp>
+              <stringProp name="18458481">xlin:href=&quot;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="AssetmasterProcess" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -5848,6 +6158,74 @@
         &lt;/gml:featureMembers&gt;&#xd;
       &lt;/gml:FeatureCollection&gt;&#xd;
 	&lt;/wps:Data&gt;&#xd;
+	&lt;/wps:Input&gt;&#xd;
+	&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-129447952">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/vnd.geo+json&quot;&gt;</stringProp>
+              <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
+              <stringProp name="-314080051">{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;LineString&quot;,&quot;coordinates&quot;:[[</stringProp>
+              <stringProp name="417969493">&quot;properties&quot;:{&quot;value&quot;:</stringProp>
+              <stringProp name="-1832309772">{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;LineString&quot;,&quot;coordinates&quot;:[[</stringProp>
+              <stringProp name="1073374445">&quot;id&quot;:&quot;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with QuakeML reference input" enabled="false">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot;&#xd;
+	response=&quot;document&quot;&#xd;
+	mode=&quot;sync&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+	&lt;wps:Input id=&quot;quakeMLFile&quot;&gt;&#xd;
+		&lt;wps:Reference schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot; xlink:href=&quot;INSERT-URL-HERE&quot;/&gt;&#xd;
 	&lt;/wps:Input&gt;&#xd;
 	&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
@@ -7347,6 +7725,133 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="ShakemapTransformation to WMS" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0      http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakemapTransformationProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;input&quot;&gt;&#xd;
+        &lt;wps:Data schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;&#xd;
+${__FileToString(./example_shakemap.xml,,)}&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;output&quot; transmission=&quot;value&quot; mimeType=&quot;application/WMS&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-2103239141">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/WMS&quot;&gt;&lt;![CDATA[</stringProp>
+              <stringProp name="-1938268896">&lt;wps:Output id=&quot;output&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="538597085">geoserver/wms?</stringProp>
+              <stringProp name="-261220619">Service=WMS</stringProp>
+              <stringProp name="204802932">Request=GetMap</stringProp>
+              <stringProp name="879824658">Version=1.1.1</stringProp>
+              <stringProp name="2061578968">layers=N52:primary</stringProp>
+              <stringProp name="1485219">.tif</stringProp>
+              <stringProp name="-788034761">width=</stringProp>
+              <stringProp name="802788342">height=</stringProp>
+              <stringProp name="1540830991">format=image/png</stringProp>
+              <stringProp name="93535028">bbox=</stringProp>
+              <stringProp name="-1172649803">srs=EPSG:4326</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="ShakemapTransformation to WMS (reference)" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0      http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakemapTransformationProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;input&quot;&gt;&#xd;
+        &lt;wps:Data schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;&#xd;
+${__FileToString(./example_shakemap.xml,,)}&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;output&quot; transmission=&quot;reference&quot; mimeType=&quot;application/WMS&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1938268896">&lt;wps:Output id=&quot;output&quot;&gt;</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="-1317857161">mimeType=&quot;application/WMS&quot;</stringProp>
+              <stringProp name="18458481">xlin:href=&quot;</stringProp>
+              <stringProp name="1840897800">encoding=&quot;UTF-8&quot;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="NrmlTransformationProcess" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -8107,74 +8612,6 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
               <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.custom_message"></stringProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">16</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="NrmlTransformation to NRML" enabled="true">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
-    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.NrmlTransformationProcess&lt;/ows:Identifier&gt;&#xd;
-    &lt;wps:Input id=&quot;input&quot;&gt;&#xd;
-    &lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/vnd.geo+json&quot;&gt;&#xd;
-{&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:92,&quot;taxonomy&quot;:&quot;CR+PC\/LWAL\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:985250.0},&quot;id&quot;:&quot;1&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:3208,&quot;taxonomy&quot;:&quot;MCF\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:2337500.0},&quot;id&quot;:&quot;10&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:192,&quot;occupanciesInday&quot;:96,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:641,&quot;taxonomy&quot;:&quot;MCF\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;11&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:862,&quot;taxonomy&quot;:&quot;MR\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:676800.0},&quot;id&quot;:&quot;12&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:302,&quot;taxonomy&quot;:&quot;MR\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:1168750.0},&quot;id&quot;:&quot;13&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:52,&quot;taxonomy&quot;:&quot;MUR+ADO\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:32000.0},&quot;id&quot;:&quot;14&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:20,&quot;occupanciesInday&quot;:10,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:712,&quot;taxonomy&quot;:&quot;MUR+ADO\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:80000.0},&quot;id&quot;:&quot;15&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:5,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:88,&quot;taxonomy&quot;:&quot;MUR+STDRE\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:105000.0},&quot;id&quot;:&quot;16&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:4,&quot;taxonomy&quot;:&quot;MUR\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:26250.0},&quot;id&quot;:&quot;17&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:1959,&quot;taxonomy&quot;:&quot;MUR\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:26250.0},&quot;id&quot;:&quot;18&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:2519,&quot;taxonomy&quot;:&quot;UNK&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;19&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:454,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;2&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:746,&quot;taxonomy&quot;:&quot;W+WLI\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;20&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:3902,&quot;taxonomy&quot;:&quot;W+WLI\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;21&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:192,&quot;occupanciesInday&quot;:96,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:1160,&quot;taxonomy&quot;:&quot;W+WS\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;22&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:1215,&quot;taxonomy&quot;:&quot;W+WS\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;23&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:203,&quot;taxonomy&quot;:&quot;CR+PC\/LWAL\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:985250.0},&quot;id&quot;:&quot;24&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:1097,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;25&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:288,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DNO\/H:4,7&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:51500.0},&quot;id&quot;:&quot;26&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:366,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;27&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:138,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:4,7&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:51765.0},&quot;id&quot;:&quot;28&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:35,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:8,19&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:1168750.0},&quot;id&quot;:&quot;29&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:89,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DNO\/H:4,7&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:51500.0},&quot;id&quot;:&quot;3&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:268,&quot;taxonomy&quot;:&quot;ER+ETR\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:850000.0},&quot;id&quot;:&quot;30&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:55,&quot;occupanciesInday&quot;:25,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:1669,&quot;taxonomy&quot;:&quot;ER+ETR\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;31&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:878,&quot;taxonomy&quot;:&quot;MCF\/DNO\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:2762500.0},&quot;id&quot;:&quot;32&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:3980,&quot;taxonomy&quot;:&quot;MCF\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:2337500.0},&quot;id&quot;:&quot;33&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:192,&quot;occupanciesInday&quot;:96,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:1126,&quot;taxonomy&quot;:&quot;MCF\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;34&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:931,&quot;taxonomy&quot;:&quot;MR\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:676800.0},&quot;id&quot;:&quot;35&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:416,&quot;taxonomy&quot;:&quot;MR\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:1168750.0},&quot;id&quot;:&quot;36&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:620,&quot;taxonomy&quot;:&quot;MUR+ADO\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:32000.0},&quot;id&quot;:&quot;37&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:20,&quot;occupanciesInday&quot;:10,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:6677,&quot;taxonomy&quot;:&quot;MUR+ADO\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:80000.0},&quot;id&quot;:&quot;38&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:5,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:194,&quot;taxonomy&quot;:&quot;MUR+STDRE\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:105000.0},&quot;id&quot;:&quot;39&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:278,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;4&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:1,&quot;taxonomy&quot;:&quot;MUR\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:26250.0},&quot;id&quot;:&quot;40&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:1824,&quot;taxonomy&quot;:&quot;MUR\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:26250.0},&quot;id&quot;:&quot;41&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:3649,&quot;taxonomy&quot;:&quot;UNK&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;42&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:1472,&quot;taxonomy&quot;:&quot;W+WLI\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;43&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:10897,&quot;taxonomy&quot;:&quot;W+WLI\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;44&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:192,&quot;occupanciesInday&quot;:96,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:1668,&quot;taxonomy&quot;:&quot;W+WS\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;45&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.5834,-33.0836]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05101&quot;,&quot;number&quot;:3327,&quot;taxonomy&quot;:&quot;W+WS\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;46&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:185,&quot;taxonomy&quot;:&quot;CR+PC\/LWAL\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:985250.0},&quot;id&quot;:&quot;47&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:1440,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;48&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:487,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DNO\/H:4,7&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:51500.0},&quot;id&quot;:&quot;49&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:35,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:4,7&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:51765.0},&quot;id&quot;:&quot;5&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:499,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;50&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:364,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:4,7&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:51765.0},&quot;id&quot;:&quot;51&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:94,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:8,19&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:1168750.0},&quot;id&quot;:&quot;52&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:58,&quot;taxonomy&quot;:&quot;ER+ETR\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:850000.0},&quot;id&quot;:&quot;53&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:55,&quot;occupanciesInday&quot;:25,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:341,&quot;taxonomy&quot;:&quot;ER+ETR\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;54&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:1763,&quot;taxonomy&quot;:&quot;MCF\/DNO\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:2762500.0},&quot;id&quot;:&quot;55&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:5417,&quot;taxonomy&quot;:&quot;MCF\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:2337500.0},&quot;id&quot;:&quot;56&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:192,&quot;occupanciesInday&quot;:96,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:1586,&quot;taxonomy&quot;:&quot;MCF\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;57&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:1343,&quot;taxonomy&quot;:&quot;MR\/DNO\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:676800.0},&quot;id&quot;:&quot;58&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:508,&quot;taxonomy&quot;:&quot;MR\/DUC\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:1168750.0},&quot;id&quot;:&quot;59&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:8,&quot;taxonomy&quot;:&quot;CR\/LWAL\/DUC\/H:8,19&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:1168750.0},&quot;id&quot;:&quot;6&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:134,&quot;taxonomy&quot;:&quot;MUR+ADO\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:32000.0},&quot;id&quot;:&quot;60&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:20,&quot;occupanciesInday&quot;:10,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:1363,&quot;taxonomy&quot;:&quot;MUR+ADO\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:80000.0},&quot;id&quot;:&quot;61&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:5,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:258,&quot;taxonomy&quot;:&quot;MUR+STDRE\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:105000.0},&quot;id&quot;:&quot;62&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:10,&quot;occupanciesInday&quot;:5,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:2898,&quot;taxonomy&quot;:&quot;MUR\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:26250.0},&quot;id&quot;:&quot;63&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:4931,&quot;taxonomy&quot;:&quot;UNK&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;64&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:1380,&quot;taxonomy&quot;:&quot;W+WLI\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;65&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:7883,&quot;taxonomy&quot;:&quot;W+WLI\/H:1,3&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;66&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:192,&quot;occupanciesInday&quot;:96,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:2229,&quot;taxonomy&quot;:&quot;W+WS\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;67&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4887,-32.9192]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:6,&quot;occupanciesInday&quot;:3,&quot;assetId&quot;:&quot;AREA # 05109&quot;,&quot;number&quot;:2385,&quot;taxonomy&quot;:&quot;W+WS\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:10740.0},&quot;id&quot;:&quot;68&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:31,&quot;taxonomy&quot;:&quot;ER+ETR\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:850000.0},&quot;id&quot;:&quot;7&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:55,&quot;occupanciesInday&quot;:25,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:178,&quot;taxonomy&quot;:&quot;ER+ETR\/H:1,2&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:4037500.0},&quot;id&quot;:&quot;8&quot;},{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.289,-33.0533]},&quot;properties&quot;:{&quot;exposureModelId&quot;:&quot;SARA_v1.0&quot;,&quot;exposureModelCategory&quot;:&quot;buildings&quot;,&quot;exposureModelTaxonomySource&quot;:&quot;GEM&quot;,&quot;description&quot;:&quot;GEM-SARA Model, project RIESGOS&quot;,&quot;costTypeName&quot;:&quot;structural&quot;,&quot;costTypeType&quot;:&quot;per_asset&quot;,&quot;costTypeUnit&quot;:&quot;USD&quot;,&quot;occupanciesInnight&quot;:12,&quot;occupanciesInday&quot;:6,&quot;assetId&quot;:&quot;AREA # 05106&quot;,&quot;number&quot;:1363,&quot;taxonomy&quot;:&quot;MCF\/DNO\/H:1&quot;,&quot;costType&quot;:&quot;structural&quot;,&quot;cost&quot;:2762500.0},&quot;id&quot;:&quot;9&quot;}]}&#xd;
-    &lt;/wps:Data&gt;&#xd;
-    &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;output&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-&lt;/wps:Execute&gt;</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">8</intProp>
-            <stringProp name="Assertion.custom_message"></stringProp>
-          </ResponseAssertion>
-          <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="1529634306">&lt;wps:Data schema=&quot;http://openquake.org/xmlns/nrml/0.5&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;</stringProp>
-              <stringProp name="-1938268896">&lt;wps:Output id=&quot;output&quot;&gt;</stringProp>
-              <stringProp name="58801311">&lt;nrml</stringProp>
-              <stringProp name="684322147">&lt;exposureModel id=&quot;SARA_v1.0&quot; category=&quot;buildings&quot; taxonomySource=&quot;GEM&quot;&gt;</stringProp>
-              <stringProp name="1949336062">&lt;description&gt;</stringProp>
-              <stringProp name="323087357">&lt;conversions&gt;</stringProp>
-              <stringProp name="784630111">&lt;assets&gt;</stringProp>
-              <stringProp name="1628338764">&lt;asset id=&quot;</stringProp>
-              <stringProp name="1274305071">&lt;occupancies&gt;</stringProp>
-              <stringProp name="355983860">&lt;costs&gt;</stringProp>
-              <stringProp name="-1412283615">&lt;location lon=&quot;</stringProp>
-              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-              <stringProp name="-908696175">xmlns:gml=&quot;http://www.opengis.net/gml&quot;</stringProp>
-              <stringProp name="-1073580409">xmlns=&quot;http://openquake.org/xmlns/nrml/0.5&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
