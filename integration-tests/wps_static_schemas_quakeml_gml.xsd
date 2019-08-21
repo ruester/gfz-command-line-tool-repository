@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb" xmlns:n52="http://www.52north.org/2957590d-6aad-4398-8bc3-9099594483bb" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" version="1.0">
+    <xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+    <xs:element name="Feature-2957590d-6aad-4398-8bc3-9099594483bb" type="n52:FeatureType" substitutionGroup="gml:_Feature" />
+    <xs:complexType name="FeatureType">
+        <xs:complexContent>
+            <xs:extension base="gml:AbstractFeatureType">
+                <xs:sequence>
+                    <xs:element name="the_geom" type="gml:MultiPointPropertyType"></xs:element>
+                    <xs:element name="publicID" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="preferredOriginID" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="preferredMagnitudeID" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="type" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="description.text" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="origin.publicID" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="origin.time.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="origin.depth.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="origin.creationInfo.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="magnitude.publicID" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="magnitude.mag.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="magnitude.type" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="magnitude.creationInfo.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="focalMechanism.publicID" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="focalMechanism.nodalPlanes.nodalPlane1.strike.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="focalMechanism.nodalPlanes.nodalPlane1.dip.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="focalMechanism.nodalPlanes.nodalPlane1.rake.value" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="focalMechanism.nodalPlanes.preferredPlane" minOccurs="0" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"></xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
