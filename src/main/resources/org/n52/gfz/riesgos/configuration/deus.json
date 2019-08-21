@@ -32,7 +32,6 @@
             "title": "loss",
             "useAs": "commandLineArgument",
             "type": "string",
-            "optional": true,
             "default": "testinputs/loss_sara.json"
         }
     ],

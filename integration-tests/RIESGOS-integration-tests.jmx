@@ -7101,7 +7101,7 @@
         <stringProp name="ThreadGroup.delay">5</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Deus with JSON/JSON output" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Deus with JSON outputs" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -10341,6 +10341,11 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
         &#xd;
     ]&#xd;
 }&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+        &lt;wps:Input id=&quot;loss&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;testinputs/loss_sara.json&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
     &lt;wps:Output id=&quot;updated_exposure&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
