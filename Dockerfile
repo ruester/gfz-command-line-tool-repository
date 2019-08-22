@@ -6,6 +6,7 @@ FROM tomcat:9-jre8
 # docker pull gfzriesgos/assetmaster:latest
 # docker pull gfzriesgos/modelprop:latest
 # docker pull gfzriesgos/flooddamage:latest
+# docker pull gfzriesgos/deus:latest
 
 # start the RIESGOS WPS docker image with:
 # docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock gfzriesgos/riesgos-wps
@@ -36,6 +37,7 @@ ARG ASSETMASTER_VERSION=latest
 ARG MODELPROP_VERSION=latest
 ARG FLOODDAMAGE_VERSION=latest
 ARG FLOODDAMAGE_TIFF_VERSION=latest
+ARG DEUS_VERSION=latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -161,5 +163,7 @@ RUN sed -i -e "s@assetmaster:latest@gfzriesgos/assetmaster:${ASSETMASTER_VERSION
         src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
     sed -i -e "s@shakyground:latest@gfzriesgos/shakyground:${SHAKYGROUND_VERSION}@" \
         src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
+    sed -i -e "s@deus:latest@gfzriesgos/deus:${DEUS_VERSION}@" \
+        src/main/resources/org/n52/gfz/riesgos/configuration/deus.json && \
     mvn clean package -B && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
