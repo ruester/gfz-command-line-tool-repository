@@ -6,6 +6,7 @@ FROM tomcat:9-jre8
 # docker pull gfzriesgos/assetmaster:latest
 # docker pull gfzriesgos/modelprop:latest
 # docker pull gfzriesgos/flooddamage:latest
+# docker pull gfzriesgos/flooddamage-tiff-downloader:latest
 # docker pull gfzriesgos/deus:latest
 
 # start the RIESGOS WPS docker image with:
