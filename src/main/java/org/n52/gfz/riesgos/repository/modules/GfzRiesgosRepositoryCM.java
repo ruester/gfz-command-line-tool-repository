@@ -274,12 +274,13 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     private List<IConfiguration> createPredefinedConfigurations() {
         final ConfigurationFactory factory = ConfigurationFactory.INSTANCE;
         return Arrays.asList(
-                factory.createQuakeledger(),
-                factory.createShakyground(),
-                factory.createFlooddamage(),
-                factory.createFlooddamageTiffDownloader(),
-                factory.createAssetmaster(),
-                factory.createModelprop()
+                factory.create("quakeledger.json"),
+                factory.create("shakyground.json"),
+                factory.create("flooddamage.json"),
+                factory.create("flooddamage-tiff-downloader.json"),
+                factory.create("assetmaster.json"),
+                factory.create("modelprop.json"),
+                factory.create("deus.json")
         );
     }
 
