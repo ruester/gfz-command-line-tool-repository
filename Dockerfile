@@ -1,13 +1,13 @@
 FROM tomcat:9-jre8
 
 # you need to have docker installed on the host system and pull all needed images:
-# docker pull gfzriesgos/quakeledger:latest
-# docker pull gfzriesgos/shakyground:latest
-# docker pull gfzriesgos/assetmaster:latest
-# docker pull gfzriesgos/modelprop:latest
-# docker pull gfzriesgos/flooddamage:latest
-# docker pull gfzriesgos/flooddamage-tiff-downloader:latest
-# docker pull gfzriesgos/deus:latest
+# docker pull gfzriesgos/quakeledger:20190815
+# docker pull gfzriesgos/shakyground:20190815
+# docker pull gfzriesgos/assetmaster:20190814
+# docker pull gfzriesgos/modelprop:20190815
+# docker pull gfzriesgos/flooddamage:20190814
+# docker pull gfzriesgos/floodamage-tiff-downloader:20190815
+# docker pull gfzriesgos/deus:20190822
 
 # start the RIESGOS WPS docker image with:
 # docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock gfzriesgos/riesgos-wps
@@ -32,13 +32,13 @@ FROM tomcat:9-jre8
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
 ARG WPS_VERSION=4.0.0-beta.8
-ARG QUAKELEDGER_VERSION=latest
-ARG SHAKYGROUND_VERSION=latest
-ARG ASSETMASTER_VERSION=latest
-ARG MODELPROP_VERSION=latest
-ARG FLOODDAMAGE_VERSION=latest
-ARG FLOODDAMAGE_TIFF_VERSION=latest
-ARG DEUS_VERSION=latest
+ARG QUAKELEDGER_VERSION=20190815
+ARG SHAKYGROUND_VERSION=20190815
+ARG ASSETMASTER_VERSION=20190814
+ARG MODELPROP_VERSION=20190815
+ARG FLOODDAMAGE_VERSION=20190814
+ARG FLOODDAMAGE_TIFF_VERSION=20190815
+ARG DEUS_VERSION=20190822
 
 ENV DEBIAN_FRONTEND noninteractive
 
