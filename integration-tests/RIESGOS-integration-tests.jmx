@@ -1361,7 +1361,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1603142110">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-543866397">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -1400,7 +1400,7 @@
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Input&gt;
-      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
         &lt;ows:Title&gt;loss&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;loss&lt;/ows:Identifier&gt;
         &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
@@ -3696,7 +3696,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1603142110">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-543866397">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3735,7 +3735,7 @@
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Input&gt;
-      &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
         &lt;ows:Title&gt;loss&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;loss&lt;/ows:Identifier&gt;
         &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
