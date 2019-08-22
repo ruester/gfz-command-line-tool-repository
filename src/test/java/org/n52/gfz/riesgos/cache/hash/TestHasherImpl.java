@@ -117,7 +117,7 @@ public class TestHasherImpl {
 
         final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
-        final IConfiguration quakeledgerConfig = ConfigurationFactory.INSTANCE.createQuakeledger();
+        final IConfiguration quakeledgerConfig = ConfigurationFactory.INSTANCE.create("quakeledger.json");
 
         final Map<String, List<IData>> inputData = createQuakeledgerInputData();
 
@@ -136,7 +136,7 @@ public class TestHasherImpl {
 
         assertNotEquals("The hashes must be different", hash, otherHash);
 
-        final IConfiguration changedQuakeledgerConfig = ConfigurationFactory.INSTANCE.createQuakeledger();
+        final IConfiguration changedQuakeledgerConfig = ConfigurationFactory.INSTANCE.create("quakeledger.json");
         changedQuakeledgerConfig.getDefaultCommandLineFlags().add("-v");
 
         final String againOtherHash = hasher.hash(changedQuakeledgerConfig, inputData);
@@ -252,7 +252,7 @@ public class TestHasherImpl {
 
     @Test
     public void testDifferentXmlInput() {
-        final IConfiguration shakygroundConfig = ConfigurationFactory.INSTANCE.createShakyground();
+        final IConfiguration shakygroundConfig = ConfigurationFactory.INSTANCE.create("shakyground.json");
 
         try {
             final Map<String, List<IData>> inputData1 = new HashMap<>();
@@ -479,7 +479,7 @@ public class TestHasherImpl {
             // the tricky point here is that the quakeml argument gets a temporary
             // file path
             // --> this temporary file path should not be taken into account
-            final IConfiguration shakygroundConf2 = ConfigurationFactory.INSTANCE.createShakyground();
+            final IConfiguration shakygroundConf2 = ConfigurationFactory.INSTANCE.create("shakyground.json");
 
             final String hash5 = otherHasher.hash(shakygroundConf2, inputData3);
 

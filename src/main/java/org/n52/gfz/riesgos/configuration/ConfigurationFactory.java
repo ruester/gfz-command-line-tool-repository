@@ -48,136 +48,18 @@ public enum ConfigurationFactory {
     }
 
     /**
-     * Creates the configuration for Quakeledger.
-     * It uses a predefined docker image (quakeledger:latest)
+     * Creates the configuration for a given json filename.
+     * @param filename filename of json configuration within resources
      * @return IConfiguration
      */
-    public IConfiguration createQuakeledger() {
+    public IConfiguration create(final String filename) {
         try {
             final InputStream inputStream = ConfigurationFactory
                     .class
                     .getClassLoader()
                     .getResourceAsStream(
-                        "org/n52/gfz/riesgos/configuration/quakeledger.json");
-            if (inputStream == null) {
-                throw new IOException("Input stream is null");
-            }
-            final String content = new String(IOUtils.toByteArray(inputStream));
-            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
-            return parser.parse(content);
-        } catch (final IOException | ParseConfigurationException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    /**
-     * Creates the configuration for shakyground.
-     * It uses a predefined docker image (shakyground:latest)
-     * @return IConfiguration
-     */
-    public IConfiguration createShakyground() {
-        try {
-            final InputStream inputStream = ConfigurationFactory
-                    .class
-                    .getClassLoader()
-                    .getResourceAsStream(
-                        "org/n52/gfz/riesgos/configuration/shakyground.json");
-            if (inputStream == null) {
-                throw new IOException("Input stream is null");
-            }
-            final String content = new String(IOUtils.toByteArray(inputStream));
-            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
-            return parser.parse(content);
-        } catch (final IOException | ParseConfigurationException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    /**
-     * Creates the configuration for flooddmage.
-     * It uses a predefined docker image (flooddamage:latest)
-     * @return IConfiguration
-     */
-    public IConfiguration createFlooddamage() {
-        try {
-            final InputStream inputStream = ConfigurationFactory
-                    .class
-                    .getClassLoader()
-                    .getResourceAsStream(
-                        "org/n52/gfz/riesgos/configuration/flooddamage.json");
-            if (inputStream == null) {
-                throw new IOException("Input stream is null");
-            }
-            final String content = new String(IOUtils.toByteArray(inputStream));
-            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
-            return parser.parse(content);
-        } catch (final IOException | ParseConfigurationException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    /**
-     * Creates the configuration for flooddmage tiff downloader.
-     * It uses a predefined docker image
-     * (gfzriesgos/flooddamage-tiff-downloader:latest)
-     * @return IConfiguration
-     */
-    public IConfiguration createFlooddamageTiffDownloader() {
-        try {
-            final InputStream inputStream = ConfigurationFactory
-                    .class
-                    .getClassLoader()
-                    .getResourceAsStream(
-                            "org/n52/gfz/"
-                                    + "riesgos/configuration/"
-                                    + "flooddamage-tiff-downloader.json");
-            if (inputStream == null) {
-                throw new IOException("Input stream is null");
-            }
-            final String content = new String(IOUtils.toByteArray(inputStream));
-            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
-            return parser.parse(content);
-        } catch (final IOException | ParseConfigurationException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    /**
-     * Creates the configuration for shakyground.
-     * It uses a predefined docker image (assetmaster:latest)
-     * @return IConfiguration
-     */
-    public IConfiguration createAssetmaster() {
-        try {
-            final InputStream inputStream = ConfigurationFactory
-                    .class
-                    .getClassLoader()
-                    .getResourceAsStream(
-                            "org/n52/gfz/riesgos/"
-                                    + "configuration/assetmaster.json");
-            if (inputStream == null) {
-                throw new IOException("Input stream is null");
-            }
-            final String content = new String(IOUtils.toByteArray(inputStream));
-            final IParseConfiguration parser = new ParseJsonConfigurationImpl();
-            return parser.parse(content);
-        } catch (final IOException | ParseConfigurationException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    /**
-     * Creates the configuration for modelprop.
-     * It uses a predefined docker image (modelprop:latest)
-     * @return IConfiguration
-     */
-    public IConfiguration createModelprop() {
-        try {
-            final InputStream inputStream = ConfigurationFactory
-                    .class
-                    .getClassLoader()
-                    .getResourceAsStream(
-                            "org/n52/gfz/riesgos/configuration/modelprop.json");
+                        "org/n52/gfz/riesgos/configuration/" + filename
+                    );
             if (inputStream == null) {
                 throw new IOException("Input stream is null");
             }

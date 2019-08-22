@@ -34,12 +34,12 @@ public class TestConfigurationFactory {
 
         final ConfigurationFactory factory = ConfigurationFactory.INSTANCE;
 
-        final IConfiguration conf1 = factory.createQuakeledger();
-        final IConfiguration conf2 = factory.createQuakeledger();
+        final IConfiguration conf1 = factory.create("quakeledger.json");
+        final IConfiguration conf2 = factory.create("quakeledger.json");
 
         assertEquals("The configurations are the same", conf1, conf2);
 
-        final IConfiguration conf3 = factory.createShakyground();
+        final IConfiguration conf3 = factory.create("shakyground.json");
 
         assertNotEquals("conf3 is different", conf1, conf3);
         // testing conf3 to be equal to another shakyground config will fail,

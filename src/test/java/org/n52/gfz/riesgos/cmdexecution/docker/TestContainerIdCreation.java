@@ -66,7 +66,8 @@ public class TestContainerIdCreation {
     public void runNQueries() {
         final int n = 100;
 
-        final List<Thread> threads = IntStream.range(0, n).mapToObj(this::createRunThread).collect(Collectors.toList());
+        final List<Thread> threads = IntStream.range(0, n)
+            .mapToObj(this::createRunThread).collect(Collectors.toList());
 
         threads.forEach(Thread::start);
 
@@ -77,7 +78,7 @@ public class TestContainerIdCreation {
                 .map(Optional::get)
                 .findFirst();
 
-        if(optionalInterruptedException.isPresent()) {
+        if (optionalInterruptedException.isPresent()) {
             optionalInterruptedException.get().printStackTrace();
             fail("There should be no interrupted exception");
         }
@@ -99,29 +100,74 @@ public class TestContainerIdCreation {
     private static class StartQueryRunnable implements Runnable {
         @Override
         public void run() {
-            final IConfiguration conf = ConfigurationFactory.INSTANCE.createQuakeledger();
+            final IConfiguration conf = ConfigurationFactory.INSTANCE
+                .create("quakeledger.json");
 
-            final IAlgorithm algorithm = new BaseGfzRiesgosService(conf, LoggerFactory.getLogger(TestContainerIdCreation.class),
-                    // caching should not be involved in this test
-                    // but the docker image id lookup can be done
-                    new HasherImpl(new DockerImageIdLookup(), new NoWpsVersionHandler()),
-                    new CacheImpl(), new DockerExecutionContextManagerFactory());
+            final IAlgorithm algorithm = new BaseGfzRiesgosService(
+                conf,
+                LoggerFactory.getLogger(TestContainerIdCreation.class),
+                // caching should not be involved in this test
+                // but the docker image id lookup can be done
+                new HasherImpl(
+                    new DockerImageIdLookup(), new NoWpsVersionHandler()
+                ),
+                new CacheImpl(), new DockerExecutionContextManagerFactory()
+            );
 
             final Map<String, List<IData>> inputData = new HashMap<>();
 
-            inputData.put("input-boundingbox", Collections.singletonList(new BoundingBoxData(new double[] {-71.8, -33.2}, new double[]{ -71.4, -33.0}, "EPSG:4326")));
-            inputData.put("mmin", Collections.singletonList(new LiteralDoubleBinding(6.6)));
-            inputData.put("mmax", Collections.singletonList(new LiteralDoubleBinding(8.5)));
-            inputData.put("zmin", Collections.singletonList(new LiteralDoubleBinding(5.0)));
-            inputData.put("zmax", Collections.singletonList(new LiteralDoubleBinding(140.0)));
-            inputData.put("p", Collections.singletonList(new LiteralDoubleBinding(0.1)));
-            inputData.put("etype", Collections.singletonList(new LiteralStringBinding("deaggregation")));
-            inputData.put("tlon", Collections.singletonList(new LiteralDoubleBinding(-71.5730623712764)));
-            inputData.put("tlat", Collections.singletonList(new LiteralDoubleBinding(-33.1299174879672)));
+            inputData.put(
+                "input-boundingbox",
+                Collections.singletonList(
+                    new BoundingBoxData(
+                        new double[] {-71.8, -33.2},
+                        new double[] { -71.4, -33.0},
+                        "EPSG:4326"
+                    )
+                )
+            );
+            inputData.put(
+                "mmin",
+                Collections.singletonList(new LiteralDoubleBinding(6.6))
+            );
+            inputData.put(
+                "mmax",
+                Collections.singletonList(new LiteralDoubleBinding(8.5))
+            );
+            inputData.put(
+                "zmin",
+                Collections.singletonList(new LiteralDoubleBinding(5.0))
+            );
+            inputData.put(
+                "zmax",
+                Collections.singletonList(new LiteralDoubleBinding(140.0))
+            );
+            inputData.put(
+                "p",
+                Collections.singletonList(new LiteralDoubleBinding(0.1))
+            );
+            inputData.put(
+                "etype",
+                Collections.singletonList(
+                    new LiteralStringBinding("deaggregation")
+                )
+            );
+            inputData.put(
+                "tlon",
+                Collections.singletonList(
+                    new LiteralDoubleBinding(-71.5730623712764)
+                )
+            );
+            inputData.put(
+                "tlat",
+                Collections.singletonList(
+                    new LiteralDoubleBinding(-33.1299174879672)
+                )
+            );
 
             try {
                 algorithm.run(inputData);
-            } catch(final ExceptionReport exceptionReport) {
+            } catch (final ExceptionReport exceptionReport) {
                 exceptionReport.printStackTrace();
 
                 fail("There should be no exception on running the process");
