@@ -21,7 +21,7 @@ import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOptio
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
 import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
-import org.n52.gfz.riesgos.formats.shakemap.functions.PgaShakemapToIntensityRgbGrid;
+import org.n52.gfz.riesgos.formats.shakemap.functions.DoubleGridToFloat;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverageForRegularGrid;
 import org.n52.gfz.riesgos.formats.wms.generators.WMSGeneratorFactory;
 import org.n52.wps.io.data.IData;
@@ -61,7 +61,7 @@ public class ShakemapWMSGenerator extends AbstractGenerator {
      */
     private static final Function<IShakemap, GridCoverage2D> TO_GRID =
             new ShakemapToGridCoverageForRegularGrid().andThen(
-                    new PgaShakemapToIntensityRgbGrid());
+                    new DoubleGridToFloat());
 
     /**
      * The basic wms format.
