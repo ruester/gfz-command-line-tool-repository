@@ -267,20 +267,15 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     }
 
     /**
-     *
+     * Get a list of predefined configurations.
      * @return list with the predefined configurations
      * that are integrated by default
      */
     private List<IConfiguration> createPredefinedConfigurations() {
-        final ConfigurationFactory factory = ConfigurationFactory.INSTANCE;
+        // final ConfigurationFactory factory = ConfigurationFactory.INSTANCE;
         return Arrays.asList(
-                factory.create("quakeledger.json"),
-                factory.create("shakyground.json"),
-                factory.create("flooddamage.json"),
-                factory.create("flooddamage-tiff-downloader.json"),
-                factory.create("assetmaster.json"),
-                factory.create("modelprop.json"),
-                factory.create("deus.json")
+                // add your configuration here, for example:
+                // factory.create("quakeledger.json")
         );
     }
 
