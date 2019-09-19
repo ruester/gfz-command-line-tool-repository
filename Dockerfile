@@ -96,6 +96,11 @@ RUN printf '[url "https://github"]\n\
     insteadOf = git://github\n\
 ' > /etc/gitconfig
 
+# change the default tomcat front page
+RUN mv /usr/local/tomcat/webapps/ROOT/index.jsp /usr/local/tomcat/webapps/ROOT/_index.jsp && \
+    printf '<html><body><a href="/wps-js-client">WPS JS Client</a><br><a href="/wps/WebProcessingService?Request=GetCapabilities&Service=WPS">WebProcessingService</a></body></html>\
+' > /usr/local/tomcat/webapps/ROOT/index.html
+
 RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar
 
 
