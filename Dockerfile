@@ -43,7 +43,7 @@ FROM tomcat:9-jre8
 # for example with a volume:
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
-ARG WPS_VERSION=4.0.0-beta.8
+ARG WPS_VERSION=4.0.0-beta.9
 
 ENV DEBIAN_FRONTEND noninteractive
 
