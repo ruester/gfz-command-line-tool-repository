@@ -1,6 +1,6 @@
 {
     "title": "FlooddamageTiffDownloader",
-    "imageId": "gfzriesgos/floodamage-tiff-downloader:20190815",
+    "imageId": "gfzriesgos/flooddamage-tiff-downloader:20190815",
     "workingDirectory": "/usr/share/git/flooddamage-tiff-downloader",
     "commandToExecute": "python3 download_tiff.py",
     "exitValueHandler": "errorIfNotZero",
