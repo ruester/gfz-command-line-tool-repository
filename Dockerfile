@@ -1,18 +1,17 @@
 FROM tomcat:9-jre8
 
-# you need to have docker installed on the host system and pull all needed images:
-# docker pull gfzriesgos/quakeledger:latest
-# docker pull gfzriesgos/shakyground:latest
-# docker pull gfzriesgos/assetmaster:latest
-# docker pull gfzriesgos/modelprop:latest
-# docker pull gfzriesgos/flooddamage:latest
-# docker pull gfzriesgos/flooddamage-tiff-downloader:latest
-# docker pull gfzriesgos/deus:latest
+# You need to have docker installed on the host system and pull all needed
+# images as configured by the repository or the configuration directory
+# /usr/share/riesgos/json-configurations
 
-# start the RIESGOS WPS docker image with:
+# Start the RIESGOS WPS docker image with:
 # docker run -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock gfzriesgos/riesgos-wps
+# (or any other port like for example -p80:8080)
 
-# following services can then be accessed at localhost:
+# To manage the configured processes add a volume parameter for /usr/share/riesgos/json-configurations
+# for example: -v /path/to/my/json-configs:/usr/share/riesgos/json-configurations
+
+# Following services can then be accessed at localhost:
 
 # RIESGOS WPS:
 # http://localhost:8080/wps/WebProcessingService?Request=GetCapabilities&Service=WPS
@@ -26,19 +25,25 @@ FROM tomcat:9-jre8
 # Tomcat manager with login admin/admin:
 # http://localhost:8080/manager
 
-# developer hint:
-# if you want to use your own version of the gfz-command-line-tool-repository
-# just mount your .jar file to /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
+# GeoServer instance with login admin/geoserver:
+# http://localhost:8080/geoserver
+
+# For production environments do not forget to change those default passwords!
+# For persisting the changed passwords you can use volumes for the following files:
+# /usr/local/tomcat/conf/tomcat-users.xml
+# /usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml
+
+# If you changed the GeoServer password you have to change the passwords also
+# for the WMS and WFS generator configurations at the WPS server admin console.
+# To persist all the configurations of the WPS server you need to use a volume for:
+# /usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data
+
+# If you want to use your own version of the gfz-command-line-tool-repository
+# just mount the built jar file to /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
+# for example with a volume:
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
 ARG WPS_VERSION=4.0.0-beta.8
-ARG QUAKELEDGER_VERSION=latest
-ARG SHAKYGROUND_VERSION=latest
-ARG ASSETMASTER_VERSION=latest
-ARG MODELPROP_VERSION=latest
-ARG FLOODDAMAGE_VERSION=latest
-ARG FLOODDAMAGE_TIFF_VERSION=latest
-ARG DEUS_VERSION=latest
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -86,7 +91,7 @@ RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
 </Context>\n\
 ' > /usr/local/tomcat/webapps/manager/META-INF/context.xml
 
-# do not use the git protocol for GitHub dependencies
+# do not use the git protocol for GitHub dependencies as it may cause problems
 RUN printf '[url "https://github"]\n\
     insteadOf = git://github\n\
 ' > /etc/gitconfig
@@ -152,19 +157,5 @@ RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/
 
 WORKDIR /root/git/gfz-command-line-tool-repository
 COPY . .
-RUN sed -i -e "s@assetmaster:latest@gfzriesgos/assetmaster:${ASSETMASTER_VERSION}@" \
-        src/main/resources/org/n52/gfz/riesgos/configuration/assetmaster.json && \
-    sed -i -e "s@flooddamage:latest@gfzriesgos/flooddamage:${FLOODDAMAGE_VERSION}@" \
-        src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage.json && \
-    sed -i -e "s@flooddamage-tiff-downloader:latest@gfzriesgos/flooddamage-tiff-downloader:${FLOODDAMAGE_TIFF_VERSION}@" \
-        src/main/resources/org/n52/gfz/riesgos/configuration/flooddamage-tiff-downloader.json && \
-    sed -i -e "s@modelprop:latest@gfzriesgos/modelprop:${MODELPROP_VERSION}@" \
-        src/main/resources/org/n52/gfz/riesgos/configuration/modelprop.json && \
-    sed -i -e "s@quakeledger:latest@gfzriesgos/quakeledger:${QUAKELEDGER_VERSION}@" \
-        src/main/resources/org/n52/gfz/riesgos/configuration/quakeledger.json && \
-    sed -i -e "s@shakyground:latest@gfzriesgos/shakyground:${SHAKYGROUND_VERSION}@" \
-        src/main/resources/org/n52/gfz/riesgos/configuration/shakyground.json && \
-    sed -i -e "s@deus:latest@gfzriesgos/deus:${DEUS_VERSION}@" \
-        src/main/resources/org/n52/gfz/riesgos/configuration/deus.json && \
-    mvn clean package -B && \
+RUN mvn clean package -B && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
