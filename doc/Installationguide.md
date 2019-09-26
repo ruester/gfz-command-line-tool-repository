@@ -3,6 +3,9 @@
 Here we show a way to install services in an wps server on an
 linux operation system like ubuntu.
 
+For a fast and easy installation we also maintain a docker image at
+[Docker Hub](https://cloud.docker.com/u/gfzriesgos/repository/docker/gfzriesgos/riesgos-wps).
+
 ## Prerequisites
 
 This installation guide is based on a provided docker image with the
