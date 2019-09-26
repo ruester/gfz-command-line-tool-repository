@@ -144,11 +144,11 @@ We have to care about the following:
 
 The last step is to add the script to the docker image.
 In most cases we checkout a git repository (see the Dockerfiles for
-quakeledger or shakyground - in this 
-dockerfiles we also have to install git) but here it is enough to 
+quakeledger or shakyground - in this
+dockerfiles we also have to install git) but here it is enough to
 just copy the script into the image.
 
-```
+```bash
 FROM ubuntu:18.04
 
 # for not having interaction on installation process
@@ -166,7 +166,7 @@ COPY filter_big.py /usr/share/git/filter_big/filter_big.py
 
 Just run the the docker build command and provide a tag for it.
 
-```
+```bash
 docker build . --tag filter_big
 ```
 
@@ -178,8 +178,8 @@ between the WPS server and the host system.
 
 ## Write the json configuration
 
-We have to provide a description of how the skeleton-process 
-can find and execute the process and how to 
+We have to provide a description of how the skeleton-process
+can find and execute the process and how to
 handle input and output data.
 
 ```javascript
@@ -192,26 +192,26 @@ handle input and output data.
   "exitValueHandler": "errorIfNotZero",
   "stderrHandler": "errorIfNotEmpty",
   "input": [
-    { 
+    {
         "title": "input-file",
         "abstract": "geojson feature collection to filter",
         "useAs": "file",
         "path": "input_file.geojson",
         "type": "geojson"
     },
-    { 
+    {
         "title": "min-area",
         "abstract": "double value to filter give back all elements that are equal or greater than this area (in square km)",
         "useAs": "commandLineArgument",
-        "type": "double" 
+        "type": "double"
     }
   ],
   "output": [
-    { 
+    {
         "title": "output-file",
         "abstract": "remaining features in wgs84 geojson",
-        "readFrom": "file", 
-        "path": "output_file.geojson", 
+        "readFrom": "file",
+        "path": "output_file.geojson",
         "type": "geojson"
     }
   ]
@@ -224,11 +224,11 @@ Lets to through the elements:
 
 - title is the title under which you can access to the process.
   Make sure that you insert a new title which every new process.
-  
+
 - abstract is a description that will be shown on the description of
   the wps service. While this field is optional, please make sure that
   you provide a meaningful description for the users of your service.
-  
+
 - imageId is the tag or the image id of the docker image that contains
   the code. Here we use the filter_big image we created in the last step.
   It is possible to refer to the exact image id as well as to the
@@ -239,39 +239,39 @@ Lets to through the elements:
   Another important aspect is that the docker image id is not
   stable building the image on different machines. That is why we
   rely on the tag here.
-  
+
 - workingDirectory gives the name of the directory that we use to run
   the program. In this case we copied the file to the /usr/share/git/filter_big
   folder inside of the image. All your paths in the script are relative to
   the script location so this is the directory to use for the process.
-  
+
 - exitValueHandler gives us the handler for the exit value.
   Because we may give back a non zero exit value, we want to make sure
   that the wps server realized that there was an error.
-  
+
 - same for the stderrHandler. We are sure, that we don't have any
   warning that we want to ignore (warnings on python are normally given back
   on stderr). So any text on stderr is clearly a
   sign of an error in our script, that should be propagated to the server.
-  
+
 - for the input fields we have
-  * an input-file that have a geojson format and is always on the path
+  - an input-file that have a geojson format and is always on the path
     input_file.geojson
-  * a command line argument that is a double
-  
+  - a command line argument that is a double
+
 - for the output we just have one geojson file that is always written
   to output_file.geojson. Please notice that the reading process
   of the output data is done after the script ran, so after the script is
   done we say *read* this from a file and provide it as a output of the
   process.
- 
+
 It is not necessary to provide all inputs and outputs of the script
 script as arguments here.
 If we are not interested in one output the script produces we can
 simply ignore it.
 
-For input files that must always be the same it is the best 
-approach to make sure they are copied also into the docker 
+For input files that must always be the same it is the best
+approach to make sure they are copied also into the docker
 image next to the script.
 
 For an overview of the supported input and output formats
@@ -279,7 +279,6 @@ you can look [here](SupportedFormats.md).
 
 If you realize that you need to add your own format you can take
 a look [here](HowToAddOwnFormat.md).
-
 
 ## Copy the json file to the configuration folder
 
@@ -294,8 +293,7 @@ can be included.
 You can see the path for adding the configuration files
 in the wps server adminstration interface (using
 the wps server in the docker container and running the server locally
-it is
-http://localhost:8080/wps.
+it is [http://localhost:8080/wps](http://localhost:8080/wps).
 You find the folder name under Repositories (in the navigation bar
 on the left) and under GFZ RIESGOS Configuration Module.
 The default value there is /usr/share/riesgos/json-configurations.
@@ -347,14 +345,14 @@ URL = 'http://localhost:8080/wps/WebProcessingService'
 # that we want to process
 #
 REQUEST_DATA = '''
-<wps:Execute service="WPS" version="2.0.0" 
+<wps:Execute service="WPS" version="2.0.0"
   xmlns:wps="http://www.opengis.net/wps/2.0"
   xmlns:ows="http://www.opengis.net/ows/2.0"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.opengis.net/wps/2.0
       http://schemas.opengis.net/wps/2.0/wpsExecute.xsd"
-  response="document" 
+  response="document"
   mode="sync">
   <ows:Identifier>FilterBigProcess</ows:Identifier>
   <wps:Input id="input-file">
@@ -364,29 +362,29 @@ REQUEST_DATA = '''
           "name": "dummy",
           "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4326" } },
           "features": [
-            { "type": "Feature", "properties": { "id": 1 }, 
-                "geometry": { "type": "Polygon", "coordinates": [ [ 
-                [ -74.176616915422969, -14.330845771144094 ], 
-                [ -72.743781094527435, -15.186567164178921 ], 
-                [ -72.743781094527435, -15.186567164178921 ], 
-                [ -73.818407960199082, -16.420398009950066 ], 
-                [ -74.992537313432919, -15.604477611940116 ], 
+            { "type": "Feature", "properties": { "id": 1 },
+                "geometry": { "type": "Polygon", "coordinates": [ [
+                [ -74.176616915422969, -14.330845771144094 ],
+                [ -72.743781094527435, -15.186567164178921 ],
+                [ -72.743781094527435, -15.186567164178921 ],
+                [ -73.818407960199082, -16.420398009950066 ],
+                [ -74.992537313432919, -15.604477611940116 ],
                 [ -74.176616915422969, -14.330845771144094 ] ] ] } },
-            { "type": "Feature", "properties": { "id": 2 }, 
-                "geometry": { "type": "Polygon", "coordinates": [ [ 
-                [ -72.664179104477682, -16.340796019900313 ], 
-                [ -70.952736318408043, -17.116915422885388 ], 
-                [ -70.952736318408043, -17.116915422885388 ], 
-                [ -71.310945273631916, -18.131840796019716 ], 
-                [ -73.12189054726376, -17.276119402984889 ], 
+            { "type": "Feature", "properties": { "id": 2 },
+                "geometry": { "type": "Polygon", "coordinates": [ [
+                [ -72.664179104477682, -16.340796019900313 ],
+                [ -70.952736318408043, -17.116915422885388 ],
+                [ -70.952736318408043, -17.116915422885388 ],
+                [ -71.310945273631916, -18.131840796019716 ],
+                [ -73.12189054726376, -17.276119402984889 ],
                 [ -72.664179104477682, -16.340796019900313 ] ] ] } },
-            { "type": "Feature", "properties": { "id": 3 }, 
-                "geometry": { "type": "Polygon", "coordinates": [ [ 
-                [ -69.659203980099576, -13.992537313432653 ], 
-                [ -58.514925373134403, -13.435323383084395 ], 
-                [ -59.151741293532417, -26.927860696517229 ], 
-                [ -71.470149253731421, -26.052238805969964 ], 
-                [ -71.470149253731421, -26.052238805969964 ], 
+            { "type": "Feature", "properties": { "id": 3 },
+                "geometry": { "type": "Polygon", "coordinates": [ [
+                [ -69.659203980099576, -13.992537313432653 ],
+                [ -58.514925373134403, -13.435323383084395 ],
+                [ -59.151741293532417, -26.927860696517229 ],
+                [ -71.470149253731421, -26.052238805969964 ],
+                [ -71.470149253731421, -26.052238805969964 ],
                 [ -69.659203980099576, -13.992537313432653 ] ] ] } }
           ]
       }
@@ -397,7 +395,7 @@ REQUEST_DATA = '''
           <wps:LiteralValue>1000000</wps:LiteralValue>
       </wps:Data>
   </wps:Input>
-  <wps:Output 
+  <wps:Output
       id="output-file"
       transmission="value"
       mimeType="application/vnd.geo+json">
@@ -501,9 +499,9 @@ If you refer to the old image id, than you have to update this field to
 use the new image id. You also have to copy the json configuration to the
 configuration folder (you can just overwrite the file).
 
-In case that you use a docker tag (say: "filter_big:latest") 
+In case that you use a docker tag (say: "filter_big:latest")
 in the json configuration and you
-set this tag on the docker build command (--tag "filter_big"), 
+set this tag on the docker build command (--tag "filter_big"),
 the configuration already refers, than docker will already refer to
 your new image. No change on the configuration file is necessary
 to the tag. The process will refer to exactly this tag, so no further
@@ -531,7 +529,7 @@ In the basic skeleton some processes are already integrated.
 All this processes have source code, a dockerfile and a configuration
 that you can take as templates for your own processes.
 
-Please refer to the overview of the already included processes 
+Please refer to the overview of the already included processes
 [here](IncludedProcesses.md).
 
 At the moment you can replace the existing processes by giving
@@ -550,14 +548,14 @@ similar to quakeledger and shakyground, than you must follow some of steps:
    It makes it easier to improve processes (and create docker images for
    other people than yourself) if one can access the source code of
    your process.
-   
+
 2. Add your dockerfile to the assistance folder in the repository
 
 3. Add your json configuration to the  src/main/resources/org/n52/gfz/riesgos folder
 
 4. Write a factory method in the ConfigurationFactory class
 
-5. Call this factory method in the createPredefinedConfigurations method of the 
+5. Call this factory method in the createPredefinedConfigurations method of the
    GfzRiesgosRepositoryCM class and insert the configuration in the list
 
 6. Recreate the package and deploy it in the same way as it is mentioned

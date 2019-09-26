@@ -1,7 +1,7 @@
 # Add your own error handler
 
 Sometimes the included handlers and java classes in this repository
-are not enough to support proper error handling in your specific 
+are not enough to support proper error handling in your specific
 cases.
 
 ## pythonTraceback as example
@@ -13,7 +13,7 @@ important to include a error handler for python tracebacks.
 1/0
 ```
 
-```
+```text
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 ZeroDivisionError: division by zero
@@ -23,7 +23,8 @@ This handling only focuses on the shell side of the output. From our
 java code we have to possibility to access the python stacktrace from
 within python, so we only parse the stderr text and search for
 something like
-``` 
+
+```text
 Traceback [...]
 ```
 
@@ -67,7 +68,7 @@ The very first step is to look how R errors are printed on stderr.
 read.table("non_existing_file.txt")
 ```
 
-```
+```text
 Fehler in file(file, "rt") : kann Verbindung nicht öffnen
 Zusätzlich: Warnmeldung:
 In file(file, "rt") :
@@ -83,7 +84,7 @@ In most cases - as our wps server and all the docker images does -
 the locale settings are english, so we have to take a look at the
 english error message:
 
-```
+```text
 Error in file(file, "rt") : cannot open the connection
 In addition: Warning message:
 In file(file, "rt") :
@@ -101,7 +102,7 @@ What is the error message in case of an undefined function?
 non_existing_function("do something useful")
 ```
 
-```
+```text
 Error: could not find function "non_existing_function"
 ```
 
@@ -242,7 +243,6 @@ public class TestRErrorMessageStderrHandler {
 
 ### Write the implementation
 
-
 And this implementation will do the job:
 
 ```java
@@ -261,7 +261,7 @@ import java.util.regex.Pattern;
  * of R scripts.
  */
 public class RErrorMessageStderrHandler implements IStderrHandler {
-    
+
     private static final long serialVersionUID = 6766008892229228194L;
 
     /**
@@ -326,9 +326,9 @@ parsing the json configuration files.
 Just add the following line to the StderrHandlerOption enum in
 the org.n52.gfz.riesgos.configuration.parse.stderrhandler package:
 
-```
+```text
 R_ERROR("rError", RErrorMessageStderrHandler::new)
-``` 
+```
 
 Now it is possible to change the stderr handler to "rError" for any
 json configuration files.

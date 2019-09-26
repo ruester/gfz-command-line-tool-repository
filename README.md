@@ -1,6 +1,6 @@
-[![pipeline status](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/badges/master/pipeline.svg)](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/commits/master)
-
 # gfz-riesgos-wps-repository
+
+[![pipeline status](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/badges/master/pipeline.svg)](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/commits/master)
 
 ## Description
 
@@ -23,7 +23,7 @@ and to manage the dependencies (programs, libraries, python packages,
 internal configuration files, ...).
 
 For each processes a json configuration file must be provided, so that
-the basic process skeleton - which is the same for all processes - 
+the basic process skeleton - which is the same for all processes -
 knows how to provide the input data, how to
 start the process and how to read the output of the programs. It is
 also used to specify the way of error handling in the process skeleton.
@@ -37,11 +37,11 @@ The json configuration is explained in more detail
 [here](doc/JsonConfigurationExplaned.md).
 
 ## Requirements
+
 All of the code here runs on top of the WPS Server provided by
 [52° North](https://github.com/52North/WPS).
 
 For other details please refer to the [installation guide](doc/Installationguide.md).
-
 
 ## Currently implemented processes
 
@@ -51,7 +51,6 @@ processes that are already on board.
 
 Additionally to the main processes there are also some [format conversion
 processes](doc/FormatConversionProcesses.md) in the repository.
-
 
 ## How to add a service
 

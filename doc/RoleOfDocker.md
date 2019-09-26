@@ -10,13 +10,13 @@ The main aims in docker usage for this repository:
 - Dependency handling
 
   It is possible to bundle the source code and the dependencies in
-  a docker image. Different scripts may have conflicting versions 
+  a docker image. Different scripts may have conflicting versions
   of dependencies. With the docker image it is possible to bundle
   all the libraries and package together with the command line
   programs.
-  
+
 - Independent executions
-  
+
   It is the aim of the framework to provide a mechanism to separate
   the executions of different runs of one service without any inference
   especially for file handling. Without the use of docker there must
@@ -32,14 +32,13 @@ The main aims in docker usage for this repository:
   is loaded into the execution of the process skeleton.
   So the whole resource management is done after removing the docker
   container.
-  
+
 - Easier testing
 
   Having a docker image it is easy to test the process. Once a
   program runs inside of the docker container it will run on other
   computers as well, because all the dependencies are already included,
   all programs are already configured.
-   
 
 ## Known problems with docker
 
@@ -48,7 +47,7 @@ The main aims in docker usage for this repository:
   Using docker means that there is an overhead in the whole execution process.
   A container for each run must be created before and removed after the execution.
   For all input and output files there must be communication with the underlying
-  docker file system. 
+  docker file system.
   So also temporary files that are already on the server must be
   copied to the container.
 
@@ -56,31 +55,31 @@ The main aims in docker usage for this repository:
 
 - Non-transferable image ids
 
-  Another problem is that the image id differs when the image is 
+  Another problem is that the image id differs when the image is
   created on different machines.
   The reason for that is that in most docker build processes there is a kind
-  of update for one or several package managers. Executed on different machines and in a 
+  of update for one or several package managers. Executed on different machines and in a
   different time forces differences in the files of the system. That means that
   the check sums of the layers of the docker build process will be different.
-  
+
   We try to avoid this problem by using tags for the images, which can point to
   an image regardless of the image id.
-  
+
   Tags can be replaced with newer versions, which is both good (we can
   rebuild the image - say for a dependency we forgot on creating it first -
-  and we not need to update the json configuration file) and bad 
+  and we not need to update the json configuration file) and bad
   (we can not rely on the image id as an integrity check - which means that
-  exactly *this* version of the code will be executed). 
-  
+  exactly *this* version of the code will be executed).
+
 - Higher complexity
-  
+
   It would be way easier to install the server and the processes without
   having to care about docker (we must make sure that the server can run
   docker - both with the executables and access to the docker socket;
   we have to build dockerfiles on our server and we have to make sure
   your json configurations refer to the right images). Also the
   debugging process is much more difficult by using docker.
-  
+
 ## Why we use docker here
 
 Even which the non underestimable contra points, we use docker here

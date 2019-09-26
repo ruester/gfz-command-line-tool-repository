@@ -83,10 +83,11 @@ public class JsonDataBinding implements IComplexData {
 
 Here we use an JSONObject to store all our data in. We just could have gone
 with a simple string to read and write JSON out, but this way we at least
-have the validation that the data is valid json (but not 
+have the validation that the data is valid json (but not
 necessary valid geojson).
 
 Because we use a custom payload class we have to create this is well:
+
 ```java
 package org.n52.gfz.riesgos.formats.json.binding;
 
@@ -152,12 +153,12 @@ If you just want to use an existing binding class you can skip this step.
 
 ## Add the entry to the DefaultFormatOption enum
 
-In the DefaultFormatOption enum in the org.n52.gfz.riesgos.configuration.parse.defaultformats 
+In the DefaultFormatOption enum in the org.n52.gfz.riesgos.configuration.parse.defaultformats
 package are the format entries that can be
 used for the defaultFormat attribute.
 Just add the following line:
 
-```
+```java
     /**
      * Enum for json.
      */
@@ -334,7 +335,7 @@ public class JsonGenerator
             if(asJsonArray.isPresent()) {
                 return new ByteArrayInputStream(asJsonArray.get().toJSONString().getBytes());
             }
-            
+
             LOGGER.error("JSON not an object nor an array");
 
         } else {
@@ -354,7 +355,7 @@ you can skip this step.
 
 Next step is to add the parser and generator in the repository class.
 
-Just call the constructors in the lists of the registerGenerators and 
+Just call the constructors in the lists of the registerGenerators and
 registerParsers methods.
 You only need to add those parsers and generators that you wrote in the
 two steps before.
@@ -384,8 +385,8 @@ import java.util.Objects;
 public class ConvertBytesToJsonDataBinding
         implements IConvertByteArrayToIData<JsonDataBinding> {
 
-    private static final long serialVersionUID = -643297229677437705L; 
-    
+    private static final long serialVersionUID = -643297229677437705L;
+
     /**
      * Converts the byte array to an IData element.
      * @param content byte array to convert
@@ -476,7 +477,7 @@ option in the org.n52.gfz.riesgos.configuration.parse packages.
 
 We will add the following line to the ToStdinInputOption enum:
 
-```
+```java
 JSON("json", new StdinJsonFactory()),
 ```
 
@@ -541,10 +542,10 @@ public class StdinJsonFactory implements  IAsStdinInputFactory {
 }
 ```
 
-We also want to add the createStdinJson method to the 
+We also want to add the createStdinJson method to the
 InputParameterFactory.INSTANCE:
 
-```
+```java
     /**
      * Creates a stdin input with json.
      * @param identifier identifier of the data
@@ -573,7 +574,7 @@ InputParameterFactory.INSTANCE:
 Similar to the process for adding it as stdin type, we add
 a line on the ToCommandLineArgumentOption enum.
 
-```
+```java
 JSON("json",
             new CommandLineArgumentJsonFileFactory()),
 ```
@@ -648,13 +649,12 @@ public class CommandLineArgumentJsonFileFactory
         );
     }
 }
-
 ```
 
-And we add the createCommandLineArgumentJson method to the 
+And we add the createCommandLineArgumentJson method to the
 InputParameterFactory.INSTANCE:
 
-```
+```java
     /**
      * Creates a command line argument (json file) with a file path that will
      * be written down as a temporary file.
@@ -695,7 +695,7 @@ InputParameterFactory.INSTANCE:
 This is again similar to adding the type as stdin input.
 First we have to add an entry for the ToFileInputOption enum:
 
-```
+```java
 JSON("json", new InputFileJsonFactory())
 ```
 
@@ -757,7 +757,7 @@ public class InputFileJsonFactory implements IAsFileInputFactory {
 
 And we add the createFileInJson to the InputParameterFactory.INSTANCE:
 
-```
+```java
     /**
      * Creates an input file argument with json.
      * @param identifier identifier of the data
@@ -790,11 +790,11 @@ And we add the createFileInJson to the InputParameterFactory.INSTANCE:
 
 ## Add the type as output for stdout
 
-To add the type as output type for stdout, we have to add the 
+To add the type as output type for stdout, we have to add the
 following line
 to the FromStdoutOption enum:
 
-```
+```java
     /**
      * This is the enum to read json from stdout.
      */
@@ -816,7 +816,7 @@ to the FromStdoutOption enum:
 
 And we have to add the createStdoutJson method to the OutputParameterFactory.INSTANCE:
 
-```
+```java
     /**
      * Creates a json output (via stdout).
      * @param identifier identifier of the data
@@ -844,7 +844,7 @@ And we have to add the createStdoutJson method to the OutputParameterFactory.INS
 This is again very similar to adding it to stdout.
 We have to add the line to the FromStderrOption enum:
 
-```
+```java
     /**
      * This is the enum to read json from stderr.
      */
@@ -853,7 +853,7 @@ We have to add the line to the FromStderrOption enum:
 
 and the createStderrJson method in OutputParameterFactory.INSTANCE:
 
-```
+```java
     /**
      * Creates a json output (via stderr).
      * @param identifier identifier of the data
@@ -881,7 +881,7 @@ and the createStderrJson method in OutputParameterFactory.INSTANCE:
 
 We have to add the line to the FromFilesOption enum:
 
-```
+```java
     /**
      * This is the enum to read json from files.
      */
@@ -906,7 +906,7 @@ We have to add the line to the FromFilesOption enum:
 Then we have to add the method createFileOutJson method to the
 OutputParameterFactory.INSTANCE.
 
-```
+```java
     /**
      * Creates a xml file for json on a given path.
      * @param identifier identifier of the data
@@ -938,7 +938,6 @@ OutputParameterFactory.INSTANCE.
         return builder.build();
     }
 ```
-
 
 ## Check dependencies
 

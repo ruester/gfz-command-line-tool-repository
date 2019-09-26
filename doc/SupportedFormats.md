@@ -6,10 +6,10 @@ Most of the supported in- and output formats are created to support the
 If you realize that there is format missing that you need take a look
 at the [how-to guide on adding own formats](HowToAddOwnFormats.md).
 
-The formats here specify how the data will be given to or read from 
+The formats here specify how the data will be given to or read from
 the command line program. The conversion further conversion from
 user input is done via parsers, the conversion to process output is
-done via generators. 
+done via generators.
 
 Please note, that there are different formats supported for different
 kinds of input and output mechanisms.
@@ -61,10 +61,10 @@ the the minimum latitude and last the maximum latitude.
 This is according to the order that the quakeledger uses for its
 bounding box.
 
-For the other complex data formats (xml, geotiff, geojson, shapefile, file, quakeml), 
-the input of the data will be written to a temporary file with a 
+For the other complex data formats (xml, geotiff, geojson, shapefile, file, quakeml),
+the input of the data will be written to a temporary file with a
 unique name. The argument given to the command line program is the file name.
- 
+
 For the shapefile type the name of the .shp file is given and none of the other files.
 
 The file type is the most generic type. It will only be used if no
@@ -75,7 +75,7 @@ The quakeml is a type that is derived from the basic xml type, because it uses
 xml under the hood, but provides a mechanism to transform to other file formats.
 
 All the possible values are listed in ToCommandLineArgumentOption enum
-in the ParseJsonForInputImpl class. They all provide to transform the data to 
+in the ParseJsonForInputImpl class. They all provide to transform the data to
 a command line argument.
 
 ### Input files
@@ -84,6 +84,7 @@ The input files are mostly the same as the complex formats for the
 command line arguments, just that the path of the file is always the same.
 
 The supported types are:
+
 - geotiff
 - geojson
 - shapefile
@@ -121,6 +122,7 @@ for error handling.
 ### Stdout
 
 The supported types for the working with the stdout stream are:
+
 - string
 - xml
 - quakeml
@@ -131,6 +133,7 @@ The supported types for the working with the stdout stream are:
 ### Stderr
 
 The supported types for the stderr stream are:
+
 - string
 - json
 
@@ -139,6 +142,7 @@ The supported types for the stderr stream are:
 The most common output mechanism are files.
 
 The following are supported:
+
 - xml
 - file
 - geojson
@@ -212,14 +216,13 @@ to specify this.
 
 The following values are supported:
 
-* geojson
-* gml
-* xml (without a schema)
-* quakeml (which is the validated one)
-* nonValidQuakeml (which is the original one, that is not valid 
-according to the schema)
-* shakemap
-* nrml
-* json
-* geotiff (which uses default encoding)
-* geotiff64 (which uses base 64 encoding)
+- geojson
+- gml
+- xml (without a schema)
+- quakeml (which is the validated one)
+- nonValidQuakeml (which is the original one, that is not valid according to the schema)
+- shakemap
+- nrml
+- json
+- geotiff (which uses default encoding)
+- geotiff64 (which uses base 64 encoding)
