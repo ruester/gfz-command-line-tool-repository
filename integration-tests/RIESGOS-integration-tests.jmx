@@ -6622,9 +6622,12 @@
               <stringProp name="-1595657671">&quot;D2_stddev&quot;:</stringProp>
               <stringProp name="1322833834">&quot;D4_mean&quot;:</stringProp>
               <stringProp name="-2006613065">&quot;no_damage&quot;:&quot;D0&quot;</stringProp>
-              <stringProp name="-1740710405">&quot;assetCategory&quot;:&quot;buildings&quot;,&quot;format&quot;:&quot;continuous&quot;,&quot;description&quot;:&quot;</stringProp>
+              <stringProp name="242285153">&quot;assetCategory&quot;:&quot;buildings&quot;</stringProp>
               <stringProp name="-781258914">&quot;id&quot;:&quot;SARA_v1.0&quot;,&quot;damage_states&quot;:&quot;</stringProp>
-              <stringProp name="978884219">&quot;limit_states&quot;:[&quot;D1&quot;,&quot;D2&quot;,&quot;D3&quot;,&quot;D4&quot;,&quot;D5&quot;],&quot;taxonomy_source&quot;:&quot;GEM&quot;</stringProp>
+              <stringProp name="-248690354">&quot;limit_states&quot;:[&quot;D1&quot;,&quot;D2&quot;,&quot;D3&quot;,&quot;D4&quot;]</stringProp>
+              <stringProp name="-1729342">&quot;format&quot;:&quot;continuous&quot;</stringProp>
+              <stringProp name="164548080">&quot;description&quot;:&quot;</stringProp>
+              <stringProp name="692942422">&quot;taxonomy_source&quot;:&quot;GEM&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
