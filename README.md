@@ -1,5 +1,7 @@
 # gfz-riesgos-wps-repository
 
+[![pipeline status](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/badges/master/pipeline.svg)](https://gitext.gfz-potsdam.de/riesgos/gfz-riesgos-wps-repository/commits/master)
+
 ## Description
 
 This is the dockerhub branch of the gfz-riesgos-wps-repository project which is

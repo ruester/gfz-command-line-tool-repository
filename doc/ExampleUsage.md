@@ -2,12 +2,12 @@
 
 - [Requirements](#requirements)
 - [Command line](#command-line)
-    - [cURL](#curl)
-    - [wget](#wget)
-    - [Async execution](#async-execution)
+  - [cURL](#curl)
+  - [wget](#wget)
+  - [Async execution](#async-execution)
 - [Python](#python)
-    - [OWSLib](#owslib)
-    - [Other libraries](#other-libraries)
+  - [OWSLib](#owslib)
+  - [Other libraries](#other-libraries)
 - [R](#r)
 
 ## Requirements
@@ -69,7 +69,6 @@ Which gives something like:
 </wps:ProcessOfferings>
 ```
 
-
 ## Command line
 
 For querying a WPS server from the command line you can use `cURL` or `wget`.
@@ -94,20 +93,17 @@ It is best to prepare a XML file with the request to the WPS in it, so for examp
 
 You can then send the XML file with `cURL` or `wget` as described in the following:
 
-
 ### cURL
 
 ```bash
 curl -X POST -H "Content-Type: text/xml" -d @myxmlfile.xml "https://URL/to/WPS"
 ```
 
-
 ### wget
 
 ```bash
 wget "https://URL/to/WPS" --post-file "myxmlfile.xml" --header "Content-Type:text/xml"
 ```
-
 
 ### Async execution
 
@@ -148,7 +144,6 @@ You can then get the results of the job with:
 ```bash
 https://URLtoWPS?service=WPS&version=2.0.0&request=GetResult&jobId=YourJobId
 ```
-
 
 ## Python
 

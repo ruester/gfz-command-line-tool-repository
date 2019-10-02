@@ -3,39 +3,40 @@
 Here we show a way to install services in an wps server on an
 linux operation system like ubuntu.
 
+For a fast and easy installation we also maintain a docker image at
+[Docker Hub](https://hub.docker.com/r/gfzriesgos/riesgos-wps).
+
 ## Prerequisites
 
 This installation guide is based on a provided docker image with the
 installation of a wps server by 52°North.
 
-We used the folder you can find 
+We used the folder you can find
 [here](https://52north.org/delivery/riesgos/gfz-wps.zip).
 To use the stuff you have to extract the content of a zip to a location
 in which the server should run.
 
-```
+```bash
 wget https://52north.org/delivery/riesgos/gfz-wps.zip
 unzip gfz-wps.zip -d gfz-wps
 ```
 
-If you don't have access to a docker image like this or you need to 
+If you don't have access to a docker image like this or you need to
 install the wps server as a standalone server please refer to the
 [installation guide from 52°North](https://github.com/52North/WPS/wiki/Setting-up-the-52%C2%B0North-WPS-with-Ecplise).
 
-
-Using the content of this folder you just need to install docker, 
+Using the content of this folder you just need to install docker,
 docker-compose and maven before the installation process starts.
-
 
 Using Ubuntu 18.10 you just need to run the following command:
 
-```
+```bash
 sudo apt-get install docker-io docker-compose maven
 ```
 
 You also need to install maven on your system to compile this java project.
 
-```
+```bash
 sudo apt-get install maven
 ```
 
@@ -55,16 +56,16 @@ provided gfz-wps folder), you need to modify the Dockerfile in this
 folder to install the docker binaries inside of the image.
 
 The docker image in our case uses a debian system (the "FROM" command of the
-Dockerfile points to the tomcat:9-jre8 image, 
-which is based on a debian stretch image itself). 
+Dockerfile points to the tomcat:9-jre8 image,
+which is based on a debian stretch image itself).
 You must add the the following lines at the end of the Dockerfile:
 
-```
-RUN apt update 
+```bash
+RUN apt update
 RUN apt install apt-transport-https ca-certificates curl software-properties-common gnupg2 -y
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-RUN apt update 
+RUN apt update
 RUN apt install docker-ce -y
 ```
 
@@ -75,7 +76,7 @@ Using the wps server inside of docker you also need to edit
 the docker-compose.yml file to provide access to the docker socket.
 Just insert the following line in the volumes section:
 
-```
+```yaml
 volumes:
     [...]
     - /var/run/docker.sock:/var/run/docker.sock
@@ -85,25 +86,26 @@ In case you also want to have a shared folder with your own
 configuration files for added services, you should also add
 a volume entry for the folder where you want to put this files into.
 
-```
+```yaml
 volumes:
     [...]
     - ./json-configs:/usr/share/riesgos/json-configurations
 ```
+
 The default path that is used to save the configurations is the
 /usr/share/riesgos/json-configuration folder, but you can change this
 path later. The json-configs is a folder that you can create in the
 folder next to the Dockerfile. You can put json configurations
 into this folder later.
 
-
 Then all you have to do is to (re)create the image using docker-compose
-```
+
+```bash
 docker-compose build
 ```
+
 (You must be in the directory with the docker compose and the Dockerfile to
 run this command.)
-
 
 ## Build the package
 
@@ -115,12 +117,12 @@ or download the files as a zip from the github site
 Once you have downloaded the code, you can go into to the root
 directory of the project and run
 
-```
+```bash
 mvn clean package
 ```
 
-which downloads the dependencies, 
-compiles the sources, 
+which downloads the dependencies,
+compiles the sources,
 runs the tests and builds the package.
 
 If the command succeed you can find the jar file in the target folder.
@@ -153,12 +155,14 @@ downloaded the dependencies to your computer.
 
 In case of Ubuntu 18.10 you can find the jars under your home
 directory:
-```
+
+```bash
 ~/.m2/repository/
 ```
 
 In case of commons-compress you find the jar under:
-```
+
+```bash
 ~/.m2/repository/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar
 ```
 
@@ -171,22 +175,25 @@ In case you have a question about this, feel free to contact us.
 
 ## Edit the dispatcher-servlet.xml
 
-In the normal case the server configuration file you can find 
+In the normal case the server configuration file you can find
 under WEB-INF/classes/dispatcher-servlet.xml of the server.
 It contains the information where which packages to scan for wps services.
 At the beginning it is too restrictive for our cases.
 
 You have to change the line
-```
+
+```xml
 <context:component-scan base-package="org.n52.wps">
 ```
+
 to
-```
+
+```xml
 <context:component-scan base-package="org.n52">
 ```
 
-(This is the necessary step as under: 
-https://github.com/riesgos/52north-wps-osmtovector-process).
+(This is the necessary step as under:
+[https://github.com/riesgos/52north-wps-osmtovector-process](https://github.com/riesgos/52north-wps-osmtovector-process)).
 
 ## Create the docker images for the supported processes
 
@@ -197,31 +204,38 @@ for the server.
 For the predefined services we provide the Dockerfiles to create the images.
 
 Just go into the folder
-```
+
+```bash
 assistance/dockerfiles/quakeledger
 ```
+
 and run
 
-```
+```bash
 docker build . --tag quakeledger
 ```
+
 to build the image for the quakeledger process.
 
 To build the image for shakyground switch in the folder
-```
+
+```bash
 assistance/dockerfiles/shakyground
 ```
+
 and run
-```
+
+```bash
 docker build . --tag shakyground
 ```
+
 Especially downloading some grid data here may take a lot of time.
 
 Same work have to be done for assetmaster and modelprop.
 Go into the specific folders and run the commands (be sure that you
 are in the right folder for each command)
 
-```
+```bash
 # in the assetmaster folder
 docker build . --tag assetmaster
 # in the modelprop folder
@@ -245,12 +259,13 @@ check the values for the server protocol, the server host name
 and the server host ports in the server configurations.
 
 If your server runs on localhost you find this site on
-http://localhost:8080/wps/server on the server sub site.
+[http://localhost:8080/wps/server](http://localhost:8080/wps/server)
+on the server sub site.
 
 ## Optional configure the folder to use as a configuration repository
 
 This project relies on providing json files as configurations for
-how to call command line programs in docker images and how to handle 
+how to call command line programs in docker images and how to handle
 input and output.
 You can configure a path where the program searches for configurations
 to integrate them as services.
@@ -258,10 +273,12 @@ You can find this option under the wps page of your server
 (localhost:8080/wps in case you use the docker image for the server)
 and find it on the Repositories (in the navigation) and under the
 GFZ RIESGOS Configuration Module.
-Its default location is 
-```
+Its default location is
+
+```bash
 /usr/share/riesgos/json-configurations
 ```
+
 In case you added the volume line for this folder in the docker-compose.yml
 file you can now add configurations in this folder to provide
 access to your own algorithms.
@@ -270,7 +287,8 @@ access to your own algorithms.
 
 In case you use the server in the docker image just go to the
 folder with the docker-compose.yml file and run
-```
+
+```bash
 docker-compose up
 ```
 
@@ -323,9 +341,9 @@ formats as this:
     </sld:UserStyle>
   </sld:NamedLayer>
 </sld:StyledLayerDescriptor>
-
 ```
 
-After this change the wps-js-client (http://localhost:8080/wps-js-client) is able
-to display the image from the wms service right after output with the
-link was generated. 
+After this change the wps-js-client
+([http://localhost:8080/wps-js-client](http://localhost:8080/wps-js-client))
+is able to display the image from the wms service right after output with the
+link was generated.

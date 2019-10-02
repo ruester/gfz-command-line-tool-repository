@@ -4,6 +4,7 @@ The json configuration files are one core component of the integration
 of command line programs as web processing services.
 
 It is used to:
+
 - provide a process description with the name, input and output paramters
   of the service
 - it provides data on how to run the command line program
@@ -124,7 +125,7 @@ You can chose from the following options:
 | rError | Scan the text for a error massage for the R programming language. Warnings will be ignored. |
 
 If you realize that your command line program shows an behaviour that must
-that must be supported please refer to 
+that must be supported please refer to
 [our guide to add your own error handler.](HowToAddOwnErrorHandler.md)
 
 ## stdoutHandler
@@ -151,13 +152,14 @@ You have to provide an array with at least the following fields:
 The title specifies an identifier that will also be used in the
 process description provided by the wps server.
 
-As the same as with the overall process it is also possible to 
+As the same as with the overall process it is also possible to
 include a field "abstract" and to provide a string with the
 description of the input parameter here. Please notice that this field
 is optional.
 
 Also there is the option to add a key value pair
-```
+
+```json
 "optional": true
 ```
 
@@ -173,7 +175,7 @@ The following values are possible:
 |-------|-------------|
 | stdin | Take the content of the input and pipe it to the program via the stdin stream. |
 | commandLineArgument | Add the content (or the name of a temporary file) to the command to execute. |
-| file | The content of the input will be written to the file with a given path, so that the file is there when the program gets executed. | 
+| file | The content of the input will be written to the file with a given path, so that the file is there when the program gets executed. |
 
 For input files there must always be a path attribute as well, so that the
 basic process skeleton knows where to create the file.
@@ -195,7 +197,7 @@ of the output parameter. As for inputs this field is optional here too.
 Also it is possible here to mark the output as optional as well (same as
 for input values. This will treat the server to try to load the value
 after the processing but to not thrown an error in case the file/stream
-is not there. 
+is not there.
 
 The term readFrom may be difficult to understand for output parameters,
 but it specifies the moment on which the command line program runs

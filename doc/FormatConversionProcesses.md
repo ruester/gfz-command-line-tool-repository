@@ -3,17 +3,17 @@
 We provide services for converting data from one format to an other one.
 This mostly focus on having an OGC compliant data format for
 some of the more expert and domain focused file formats that are around
-in risk analysis. 
+in risk analysis.
 
 This is true for the quakeml file format as well as for shakemaps.
 
 ## QuakeMLTransformationProcess
 
 The basic format of the quakeledger process is quakeml that is valid according to the
-xsd file at http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd.
+xsd file at [http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd](http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd).
 
 We had some afford to improve quakeledger to support this format, because
-the older quakeml format - and so the output of the original quakeledger - 
+the older quakeml format - and so the output of the original quakeledger -
 was not valid.
 
 Because there may be already old quakeml around, we provide a parser for both
@@ -24,8 +24,8 @@ but some data about the overall position of the events, the uncertainty,
 the depth, the magnitude and the focal mechanism.
 
 We don't use the hierarchical structure of the xml, but more a table like
-structure. This way we can provide a mechanism to transform the 
-quakeml data from and into into a simple feature collection. 
+structure. This way we can provide a mechanism to transform the
+quakeml data from and into into a simple feature collection.
 This way we can parse and generate quakeml
 in GML and GeoJSON. Both this formats use WGS84.
 
@@ -60,18 +60,17 @@ At the moment it maps the hierarchical structure in a table
 structure duplicating all the information for the exposure model
 in every row.
 
-
 ## How to add your own format conversion process
 
 The format conversion processes only rely on the parser and generator
-principle of the wps server. 
-Additional code is only executed to validate the data 
+principle of the wps server.
+Additional code is only executed to validate the data
 so to make sure that the input is valid.
 
 You can take a look in the src/main/java/formats folder to analyse some
 of the parsers and generators.
 
 Once you have written the parser and generators (and registered them
-in the GfzRiesgosRepository class) you only have to add the 
+in the GfzRiesgosRepository class) you only have to add the
 ClassTransformationProcess to the addAlgorithmsOfFormatTransformations
 method in the GfzRiesgosRepositoryCM class.

@@ -18,6 +18,7 @@ package org.n52.gfz.riesgos.algorithm;
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cache.IDataRecreator;
@@ -706,9 +707,12 @@ public class BaseGfzRiesgosService
                 } catch (final NonEmptyStderrException exception) {
                     logger.error("Error on handling stderr", exception);
                     throw new ExceptionReport(
-                            "There is an error on stderr",
-                            ExceptionReport.REMOTE_COMPUTATION_ERROR,
-                            exception);
+                        "There is an error on stderr: "
+                        + exception.getMessage()
+                        + ExceptionUtils.getStackTrace(exception),
+                        ExceptionReport.REMOTE_COMPUTATION_ERROR,
+                        exception
+                    );
                 }
             }
             try {
@@ -952,13 +956,19 @@ public class BaseGfzRiesgosService
 
                 }
             } catch (final IOException ioException) {
+                logger.error("Files could not be read", ioException);
                 throw new ExceptionReport(
-                        "Files could not be read",
+                        "Files could not be read"
+                        + ioException.getMessage()
+                        + ExceptionUtils.getStackTrace(ioException),
                         ExceptionReport.REMOTE_COMPUTATION_ERROR,
                         ioException);
             } catch (final ConvertToIDataException convertException) {
+                logger.error("Data could not be converted", convertException);
                 throw new ExceptionReport(
-                        "Data could not be converted",
+                        "Data could not be converted"
+                        + convertException.getMessage()
+                        + ExceptionUtils.getStackTrace(convertException),
                         ExceptionReport.REMOTE_COMPUTATION_ERROR,
                         convertException);
             }
