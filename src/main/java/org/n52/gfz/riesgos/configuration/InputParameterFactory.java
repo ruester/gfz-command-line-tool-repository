@@ -765,6 +765,50 @@ public enum InputParameterFactory {
     }
 
     /**
+     * Creates an input file argument with generic xml.
+     * If there is an schema we will try to validate it, but if not,
+     * than we are fine with that too (for example for the tsunami shakemaps
+     * there are no xsd files).
+     *
+     * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
+     * @param optionalAbstract optional description
+     * @param defaultFormat optional default format
+     * @param path path to the file
+     * @param schema optional schema of the xml
+     * @return generic xml input file
+     */
+    public IInputParameter createFileInXml(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final FormatEntry defaultFormat,
+            final String path,
+            final String schema) {
+
+        final InputParameterImpl.Builder<GenericXMLDataBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        GenericXMLDataBinding.class,
+                        isOptional,
+                        optionalAbstract);
+        builder.withPath(path);
+        builder.withFunctionToWriteToFiles(
+                new WriteSingleByteStreamToPath<>(
+                        new ConvertGenericXMLDataBindingToBytes<>()));
+        if (schema != null) {
+            builder.withSchema(schema);
+            builder.withValidator(
+                    new XmlBindingWithAllowedSchema<>(schema));
+        }
+
+        builder.withDefaultFormat(defaultFormat);
+        return builder.build();
+
+
+    }
+
+    /**
      * Creates an input file argument with shakemap.
      * @param identifier identifier of the data
      * @param isOptional true if the value is optional
