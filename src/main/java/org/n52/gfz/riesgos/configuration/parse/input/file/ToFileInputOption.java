@@ -51,6 +51,11 @@ public enum ToFileInputOption {
     SHAKEMAP("shakemap", new InputFileShakemapFactory()),
 
     /**
+     * This is a enum to read general xml input.
+     */
+    XML("xml", new InputFileXmlFactory()),
+
+    /**
      * This is a enum to read the input from a nrml xml file.
      */
     NRML("nrml", new InputFileNrmlFactory()),
