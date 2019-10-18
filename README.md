@@ -12,8 +12,7 @@ automatically build and uploaded to Docker Hub if there is a new commit.
 You need to have docker installed on the host system and pull all needed images
 used by the processes you want to configure.
 
-For the GFZ services of the RIESGOS project following images are available
-and need to be pulled:
+For the GFZ services of the RIESGOS project following images are available:
 
 ```bash
 docker pull gfzriesgos/quakeledger:latest
@@ -21,7 +20,6 @@ docker pull gfzriesgos/shakyground:latest
 docker pull gfzriesgos/assetmaster:latest
 docker pull gfzriesgos/modelprop:latest
 docker pull gfzriesgos/flooddamage:latest
-docker pull gfzriesgos/flooddamage-tiff-downloader:latest
 docker pull gfzriesgos/deus:latest
 ```
 
