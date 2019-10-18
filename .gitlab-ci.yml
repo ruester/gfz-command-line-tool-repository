@@ -10,7 +10,6 @@ variables:
 cache:
   paths:
     - .m2/repository/
-    - target/
 
 before_script:
   - env
@@ -20,12 +19,12 @@ before_script:
 .validate: &validate
   stage: build
   script:
-    - 'mvn $MAVEN_CLI_OPTS test-compile'
+    - 'mvn $MAVEN_CLI_OPTS clean test-compile'
 
 .verify: &verify
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS verify'
+    - 'mvn $MAVEN_CLI_OPTS clean verify'
 
 validate:jdk8:
   <<: *validate
@@ -37,4 +36,4 @@ checkstyle:
   stage: test
   allow_failure: true
   script:
-    - 'mvn $MAVEN_CLI_OPTS checkstyle:checkstyle'
+    - 'mvn $MAVEN_CLI_OPTS clean checkstyle:checkstyle'

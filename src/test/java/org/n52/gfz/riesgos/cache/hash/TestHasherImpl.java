@@ -16,12 +16,21 @@
 
 package org.n52.gfz.riesgos.cache.hash;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertNotEquals;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.gfz.riesgos.cache.dockerimagehandling.NoDockerImageIdLookup;
 import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
-import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.OutputParameterFactory;
@@ -34,22 +43,10 @@ import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertNotEquals;
-
 /**
  * This is the test class to test the hashing.
  */
 public class TestHasherImpl {
-
-
     /**
      * This is a simple test that cares about the configurations
      * and a integer value that will be given to the program.
@@ -110,38 +107,6 @@ public class TestHasherImpl {
         final String hash3 = hasher.hash(configuration1, inputData2);
 
         assertNotEquals("The hashes are different", hash1, hash3);
-    }
-
-    @Test
-    public void testQuakeledger() {
-
-        final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
-
-        final IConfiguration quakeledgerConfig = ConfigurationFactory.INSTANCE.create("quakeledger.json");
-
-        final Map<String, List<IData>> inputData = createQuakeledgerInputData();
-
-        final String hash = hasher.hash(quakeledgerConfig, inputData);
-
-        final Map<String, List<IData>> sameInputData = createQuakeledgerInputData();
-
-        final String sameHash = hasher.hash(quakeledgerConfig, sameInputData);
-
-        assertEquals("Both hashes should be equal", hash, sameHash);
-
-        final Map<String, List<IData>> otherData = createQuakeledgerInputData();
-        otherData.put("zmin", Collections.singletonList(new LiteralDoubleBinding(4.0)));
-
-        final String otherHash = hasher.hash(quakeledgerConfig, otherData);
-
-        assertNotEquals("The hashes must be different", hash, otherHash);
-
-        final IConfiguration changedQuakeledgerConfig = ConfigurationFactory.INSTANCE.create("quakeledger.json");
-        changedQuakeledgerConfig.getDefaultCommandLineFlags().add("-v");
-
-        final String againOtherHash = hasher.hash(changedQuakeledgerConfig, inputData);
-
-        assertNotEquals("And with another configuration it should be different as well", hash, againOtherHash);
     }
 
     @Test
@@ -252,240 +217,341 @@ public class TestHasherImpl {
 
     @Test
     public void testDifferentXmlInput() {
-        final IConfiguration shakygroundConfig = ConfigurationFactory.INSTANCE.create("shakyground.json");
+        final IConfiguration shakygroundConfig = new ConfigurationImpl.Builder(
+                "a",
+                null,
+                "b",
+                "/tmp",
+                Arrays.asList("ls")
+                ).withAddedInputIdentifier(
+                    InputParameterFactory
+                        .INSTANCE
+                        .createCommandLineArgumentQuakeML(
+                            "dummy",
+                            false,
+                            null,
+                            null,
+                            null
+                        )
+                ).build();
 
         try {
+            final String dummyXml = "<eventParameters publicID=\"quakeml:"
+                + "quakeledger/0\" xmlns="
+                + "\"http://quakeml.org/xmlns/bed/1.2\">\n"
+                + "  <event publicID=\"quakeml:quakeledger/84945\">\n"
+                + "    <preferredOriginID>quakeml:quakeledger/"
+                + "84945</preferredOriginID>\n"
+                + "    <preferredMagnitudeID>quakeml:quakeledger/"
+                + "84945</preferredMagnitudeID>\n"
+                + "    <type>earthquake</type>\n"
+                + "    <description>\n"
+                + "      <text>stochastic</text>\n"
+                + "    </description>\n"
+                + "    <origin publicID=\"quakeml:quakeledger/84945\">\n"
+                + "      <time>\n"
+                + "        <value>16773-01-01T00:00:00.000000Z</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </time>\n"
+                + "      <latitude>\n"
+                + "        <value>-30.9227</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </latitude>\n"
+                + "      <longitude>\n"
+                + "        <value>-71.49875</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </longitude>\n"
+                + "      <depth>\n"
+                + "        <value>34.75117</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </depth>\n"
+                + "      <creationInfo>\n"
+                + "        <author>GFZ</author>\n"
+                + "      </creationInfo>\n"
+                + "      <originUncertainty>\n"
+                + "        <horizontalUncertainty>NaN</horizontalUncertainty>\n"
+                + "        <minHorizontalUncertainty>NaN"
+                + "</minHorizontalUncertainty>\n"
+                + "        <maxHorizontalUncertainty>NaN"
+                + "</maxHorizontalUncertainty>\n"
+                + "        <azimuthMaxHorizontalUncertainty>NaN"
+                + "</azimuthMaxHorizontalUncertainty>\n"
+                + "      </originUncertainty>\n"
+                + "    </origin>\n"
+                + "    <magnitude publicID=\"quakeml:quakeledger/84945\">\n"
+                + "      <mag>\n"
+                + "        <value>8.35</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </mag>\n"
+                + "      <type>MW</type>\n"
+                + "      <creationInfo>\n"
+                + "        <author>GFZ</author>\n"
+                + "      </creationInfo>\n"
+                + "    </magnitude>\n"
+                + "    <focalMechanism publicID=\"quakeml:quakeledger/"
+                + "84945\">\n"
+                + "      <nodalPlanes preferredPlane=\"1\">\n"
+                + "        <nodalPlane1>\n"
+                + "          <strike>\n"
+                + "            <value>7.310981</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </strike>\n"
+                + "          <dip>\n"
+                + "            <value>16.352970000000003</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </dip>\n"
+                + "          <rake>\n"
+                + "            <value>90.0</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </rake>\n"
+                + "        </nodalPlane1>\n"
+                + "      </nodalPlanes>\n"
+                + "    </focalMechanism>\n"
+                + "  </event>\n"
+                + "</eventParameters>\n";
+
             final Map<String, List<IData>> inputData1 = new HashMap<>();
-            inputData1.put("quakeMLFile", Collections.singletonList(QuakeMLXmlDataBinding.fromValidatedXml(XmlObject.Factory.parse("<eventParameters publicID=\"quakeml:quakeledger/0\" xmlns=\"http://quakeml.org/xmlns/bed/1.2\">\n" +
-                    "  <event publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "    <preferredOriginID>quakeml:quakeledger/84945</preferredOriginID>\n" +
-                    "    <preferredMagnitudeID>quakeml:quakeledger/84945</preferredMagnitudeID>\n" +
-                    "    <type>earthquake</type>\n" +
-                    "    <description>\n" +
-                    "      <text>stochastic</text>\n" +
-                    "    </description>\n" +
-                    "    <origin publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <time>\n" +
-                    "        <value>16773-01-01T00:00:00.000000Z</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </time>\n" +
-                    "      <latitude>\n" +
-                    "        <value>-30.9227</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </latitude>\n" +
-                    "      <longitude>\n" +
-                    "        <value>-71.49875</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </longitude>\n" +
-                    "      <depth>\n" +
-                    "        <value>34.75117</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </depth>\n" +
-                    "      <creationInfo>\n" +
-                    "        <author>GFZ</author>\n" +
-                    "      </creationInfo>\n" +
-                    "      <originUncertainty>\n" +
-                    "        <horizontalUncertainty>NaN</horizontalUncertainty>\n" +
-                    "        <minHorizontalUncertainty>NaN</minHorizontalUncertainty>\n" +
-                    "        <maxHorizontalUncertainty>NaN</maxHorizontalUncertainty>\n" +
-                    "        <azimuthMaxHorizontalUncertainty>NaN</azimuthMaxHorizontalUncertainty>\n" +
-                    "      </originUncertainty>\n" +
-                    "    </origin>\n" +
-                    "    <magnitude publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <mag>\n" +
-                    "        <value>8.35</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </mag>\n" +
-                    "      <type>MW</type>\n" +
-                    "      <creationInfo>\n" +
-                    "        <author>GFZ</author>\n" +
-                    "      </creationInfo>\n" +
-                    "    </magnitude>\n" +
-                    "    <focalMechanism publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <nodalPlanes preferredPlane=\"1\">\n" +
-                    "        <nodalPlane1>\n" +
-                    "          <strike>\n" +
-                    "            <value>7.310981</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </strike>\n" +
-                    "          <dip>\n" +
-                    "            <value>16.352970000000003</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </dip>\n" +
-                    "          <rake>\n" +
-                    "            <value>90.0</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </rake>\n" +
-                    "        </nodalPlane1>\n" +
-                    "      </nodalPlanes>\n" +
-                    "    </focalMechanism>\n" +
-                    "  </event>\n" +
-                    "</eventParameters>\n"))));
-            final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
+            inputData1.put(
+                "dummy",
+                Collections.singletonList(
+                    QuakeMLXmlDataBinding.fromValidatedXml(
+                        XmlObject.Factory.parse(dummyXml)
+                    )
+                )
+            );
+            final IHasher hasher = new HasherImpl(
+                new NoDockerImageIdLookup(),
+                new NoWpsVersionHandler()
+            );
 
             final String hash = hasher.hash(shakygroundConfig, inputData1);
 
+            final String dummyXml2 = "<eventParameters publicID=\"quakeml:"
+                + "quakeledger/0\" xmlns="
+                + "\"http://quakeml.org/xmlns/bed/1.2\">\n"
+                + "  <event publicID=\"quakeml:quakeledger/84945\">\n"
+                + "    <preferredOriginID>quakeml:quakeledger/84945"
+                + "</preferredOriginID>\n"
+                + "    <preferredMagnitudeID>quakeml:quakeledger/84945"
+                + "</preferredMagnitudeID>\n"
+                + "    <type>earthquake</type>\n"
+                + "    <description>\n"
+                + "      <text>stochastic</text>\n"
+                + "    </description>\n"
+                + "    <origin publicID=\"quakeml:quakeledger/84945\">\n"
+                + "      <time>\n"
+                + "        <value>16773-01-01T00:00:00.000000Z</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </time>\n"
+                + "      <latitude>\n"
+                + "        <value>-31.9227</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </latitude>\n"
+                + "      <longitude>\n"
+                + "        <value>-71.49875</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </longitude>\n"
+                + "      <depth>\n"
+                + "        <value>34.75117</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </depth>\n"
+                + "      <creationInfo>\n"
+                + "        <author>GFZ</author>\n"
+                + "      </creationInfo>\n"
+                + "      <originUncertainty>\n"
+                + "        <horizontalUncertainty>NaN"
+                + "</horizontalUncertainty>\n"
+                + "        <minHorizontalUncertainty>NaN"
+                + "</minHorizontalUncertainty>\n"
+                + "        <maxHorizontalUncertainty>NaN"
+                + "</maxHorizontalUncertainty>\n"
+                + "        <azimuthMaxHorizontalUncertainty>NaN"
+                + "</azimuthMaxHorizontalUncertainty>\n"
+                + "      </originUncertainty>\n"
+                + "    </origin>\n"
+                + "    <magnitude publicID=\"quakeml:quakeledger/84945\">\n"
+                + "      <mag>\n"
+                + "        <value>8.35</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </mag>\n"
+                + "      <type>MW</type>\n"
+                + "      <creationInfo>\n"
+                + "        <author>GFZ</author>\n"
+                + "      </creationInfo>\n"
+                + "    </magnitude>\n"
+                + "    <focalMechanism publicID=\"quakeml:quakeledger/"
+                + "84945\">\n"
+                + "      <nodalPlanes preferredPlane=\"1\">\n"
+                + "        <nodalPlane1>\n"
+                + "          <strike>\n"
+                + "            <value>7.310981</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </strike>\n"
+                + "          <dip>\n"
+                + "            <value>16.352970000000003</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </dip>\n"
+                + "          <rake>\n"
+                + "            <value>90.0</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </rake>\n"
+                + "        </nodalPlane1>\n"
+                + "      </nodalPlanes>\n"
+                + "    </focalMechanism>\n"
+                + "  </event>\n"
+                + "</eventParameters>\n";
 
             // other latitude value
             final Map<String, List<IData>> inputData2 = new HashMap<>();
-            inputData2.put("quakeMLFile", Collections.singletonList(QuakeMLXmlDataBinding.fromValidatedXml(XmlObject.Factory.parse("<eventParameters publicID=\"quakeml:quakeledger/0\" xmlns=\"http://quakeml.org/xmlns/bed/1.2\">\n" +
-                    "  <event publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "    <preferredOriginID>quakeml:quakeledger/84945</preferredOriginID>\n" +
-                    "    <preferredMagnitudeID>quakeml:quakeledger/84945</preferredMagnitudeID>\n" +
-                    "    <type>earthquake</type>\n" +
-                    "    <description>\n" +
-                    "      <text>stochastic</text>\n" +
-                    "    </description>\n" +
-                    "    <origin publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <time>\n" +
-                    "        <value>16773-01-01T00:00:00.000000Z</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </time>\n" +
-                    "      <latitude>\n" +
-                    "        <value>-31.9227</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </latitude>\n" +
-                    "      <longitude>\n" +
-                    "        <value>-71.49875</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </longitude>\n" +
-                    "      <depth>\n" +
-                    "        <value>34.75117</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </depth>\n" +
-                    "      <creationInfo>\n" +
-                    "        <author>GFZ</author>\n" +
-                    "      </creationInfo>\n" +
-                    "      <originUncertainty>\n" +
-                    "        <horizontalUncertainty>NaN</horizontalUncertainty>\n" +
-                    "        <minHorizontalUncertainty>NaN</minHorizontalUncertainty>\n" +
-                    "        <maxHorizontalUncertainty>NaN</maxHorizontalUncertainty>\n" +
-                    "        <azimuthMaxHorizontalUncertainty>NaN</azimuthMaxHorizontalUncertainty>\n" +
-                    "      </originUncertainty>\n" +
-                    "    </origin>\n" +
-                    "    <magnitude publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <mag>\n" +
-                    "        <value>8.35</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </mag>\n" +
-                    "      <type>MW</type>\n" +
-                    "      <creationInfo>\n" +
-                    "        <author>GFZ</author>\n" +
-                    "      </creationInfo>\n" +
-                    "    </magnitude>\n" +
-                    "    <focalMechanism publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <nodalPlanes preferredPlane=\"1\">\n" +
-                    "        <nodalPlane1>\n" +
-                    "          <strike>\n" +
-                    "            <value>7.310981</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </strike>\n" +
-                    "          <dip>\n" +
-                    "            <value>16.352970000000003</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </dip>\n" +
-                    "          <rake>\n" +
-                    "            <value>90.0</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </rake>\n" +
-                    "        </nodalPlane1>\n" +
-                    "      </nodalPlanes>\n" +
-                    "    </focalMechanism>\n" +
-                    "  </event>\n" +
-                    "</eventParameters>\n"))));
+            inputData2.put(
+                "dummy",
+                Collections.singletonList(
+                    QuakeMLXmlDataBinding.fromValidatedXml(
+                        XmlObject.Factory.parse(dummyXml2)
+                    )
+                )
+            );
 
             final String hash2 = hasher.hash(shakygroundConfig, inputData2);
 
             assertNotEquals("The hashes must be different", hash, hash2);
 
+            final String dummyXml3 = "<eventParameters publicID="
+                + "\"quakeml:quakeledger/0\" xmlns="
+                + "\"http://quakeml.org/xmlns/bed/1.2\">\n"
+                + "  <event publicID=\"quakeml:quakeledger/84945\">\n"
+                + "    <preferredOriginID>quakeml:quakeledger/"
+                + "84945</preferredOriginID>\n"
+                + "    <preferredMagnitudeID>quakeml:quakeledger/"
+                + "84945</preferredMagnitudeID>\n"
+                + "    <type>earthquake</type>\n"
+                + "    <description>\n"
+                + "      <text>stochastic</text>\n"
+                + "    </description>\n"
+                + "    <origin publicID=\"quakeml:quakeledger/84945\">\n"
+                + "      <time>\n"
+                + "        <value>16773-01-01T00:00:00.000000Z</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </time>\n"
+                + "      <latitude>\n"
+                + "        <value>-30.9227</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </latitude>\n"
+                + "      <longitude>\n"
+                + "        <value>-71.49875</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </longitude>\n"
+                + "      <depth>\n"
+                + "        <value>34.75117</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </depth>\n"
+                + "      <creationInfo>\n"
+                + "        <author>GFZ</author>\n"
+                + "      </creationInfo>\n"
+                + "      <originUncertainty>\n"
+                + "        <horizontalUncertainty>NaN</horizontalUncertainty>\n"
+                + "        <minHorizontalUncertainty>NaN"
+                + "</minHorizontalUncertainty>\n"
+                + "        <maxHorizontalUncertainty>NaN"
+                + "</maxHorizontalUncertainty>\n"
+                + "        <azimuthMaxHorizontalUncertainty>NaN"
+                + "</azimuthMaxHorizontalUncertainty>\n"
+                + "      </originUncertainty>\n"
+                + "    </origin>\n"
+                + "    <magnitude publicID=\"quakeml:quakeledger/84945\">\n"
+                + "      <mag>\n"
+                + "        <value>8.35</value>\n"
+                + "        <uncertainty>NaN</uncertainty>\n"
+                + "      </mag>\n"
+                + "      <type>MW</type>\n"
+                + "      <creationInfo>\n"
+                + "        <author>GFZ</author>\n"
+                + "      </creationInfo>\n"
+                + "    </magnitude>\n"
+                + "    <focalMechanism publicID=\"quakeml:"
+                + "quakeledger/84945\">\n"
+                + "      <nodalPlanes preferredPlane=\"1\">\n"
+                + "        <nodalPlane1>\n"
+                + "          <strike>\n"
+                + "            <value>7.310981</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </strike>\n"
+                + "          <dip>\n"
+                + "            <value>16.352970000000003</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </dip>\n"
+                + "          <rake>\n"
+                + "            <value>90.0</value>\n"
+                + "            <uncertainty>NaN</uncertainty>\n"
+                + "          </rake>\n"
+                + "        </nodalPlane1>\n"
+                + "      </nodalPlanes>\n"
+                + "    </focalMechanism>\n"
+                + "  </event>\n"
+                + "</eventParameters>\n";
+
             final Map<String, List<IData>> inputData3 = new HashMap<>();
-            inputData3.put("quakeMLFile", Collections.singletonList(QuakeMLXmlDataBinding.fromValidatedXml(XmlObject.Factory.parse("<eventParameters publicID=\"quakeml:quakeledger/0\" xmlns=\"http://quakeml.org/xmlns/bed/1.2\">\n" +
-                    "  <event publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "    <preferredOriginID>quakeml:quakeledger/84945</preferredOriginID>\n" +
-                    "    <preferredMagnitudeID>quakeml:quakeledger/84945</preferredMagnitudeID>\n" +
-                    "    <type>earthquake</type>\n" +
-                    "    <description>\n" +
-                    "      <text>stochastic</text>\n" +
-                    "    </description>\n" +
-                    "    <origin publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <time>\n" +
-                    "        <value>16773-01-01T00:00:00.000000Z</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </time>\n" +
-                    "      <latitude>\n" +
-                    "        <value>-30.9227</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </latitude>\n" +
-                    "      <longitude>\n" +
-                    "        <value>-71.49875</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </longitude>\n" +
-                    "      <depth>\n" +
-                    "        <value>34.75117</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </depth>\n" +
-                    "      <creationInfo>\n" +
-                    "        <author>GFZ</author>\n" +
-                    "      </creationInfo>\n" +
-                    "      <originUncertainty>\n" +
-                    "        <horizontalUncertainty>NaN</horizontalUncertainty>\n" +
-                    "        <minHorizontalUncertainty>NaN</minHorizontalUncertainty>\n" +
-                    "        <maxHorizontalUncertainty>NaN</maxHorizontalUncertainty>\n" +
-                    "        <azimuthMaxHorizontalUncertainty>NaN</azimuthMaxHorizontalUncertainty>\n" +
-                    "      </originUncertainty>\n" +
-                    "    </origin>\n" +
-                    "    <magnitude publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <mag>\n" +
-                    "        <value>8.35</value>\n" +
-                    "        <uncertainty>NaN</uncertainty>\n" +
-                    "      </mag>\n" +
-                    "      <type>MW</type>\n" +
-                    "      <creationInfo>\n" +
-                    "        <author>GFZ</author>\n" +
-                    "      </creationInfo>\n" +
-                    "    </magnitude>\n" +
-                    "    <focalMechanism publicID=\"quakeml:quakeledger/84945\">\n" +
-                    "      <nodalPlanes preferredPlane=\"1\">\n" +
-                    "        <nodalPlane1>\n" +
-                    "          <strike>\n" +
-                    "            <value>7.310981</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </strike>\n" +
-                    "          <dip>\n" +
-                    "            <value>16.352970000000003</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </dip>\n" +
-                    "          <rake>\n" +
-                    "            <value>90.0</value>\n" +
-                    "            <uncertainty>NaN</uncertainty>\n" +
-                    "          </rake>\n" +
-                    "        </nodalPlane1>\n" +
-                    "      </nodalPlanes>\n" +
-                    "    </focalMechanism>\n" +
-                    "  </event>\n" +
-                    "</eventParameters>\n"))));
+            inputData3.put(
+                "dummy",
+                Collections.singletonList(
+                    QuakeMLXmlDataBinding.fromValidatedXml(
+                        XmlObject.Factory.parse(dummyXml3)
+                    )
+                )
+            );
 
             final String hash3 = hasher.hash(shakygroundConfig, inputData3);
 
             assertEquals("hash and hash3 must be equal", hash, hash3);
 
-            final IHasher otherHasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
+            final IHasher otherHasher = new HasherImpl(
+                new NoDockerImageIdLookup(),
+                new NoWpsVersionHandler()
+            );
 
-            final String hash4 = otherHasher.hash(shakygroundConfig, inputData3);
+            final String hash4 = otherHasher.hash(
+                shakygroundConfig,
+                inputData3
+            );
 
-            assertEquals("Hashes created with another instance should be consistent", hash3, hash4);
+            assertEquals(
+                "Hashes created with another instance should be consistent",
+                hash3,
+                hash4
+            );
 
             // and it should be consistent if I recreate the configuration
-            // the tricky point here is that the quakeml argument gets a temporary
-            // file path
+            // the tricky point here is that the quakeml argument gets a
+            // temporary file path
             // --> this temporary file path should not be taken into account
-            final IConfiguration shakygroundConf2 = ConfigurationFactory.INSTANCE.create("shakyground.json");
+            final IConfiguration shakygroundConf2 =
+                new ConfigurationImpl.Builder(
+                    "a",
+                    null,
+                    "b",
+                    "/tmp",
+                    Arrays.asList("ls")
+                ).withAddedInputIdentifier(
+                    InputParameterFactory
+                        .INSTANCE
+                        .createCommandLineArgumentQuakeML(
+                            "dummy",
+                            false,
+                            null,
+                            null,
+                            null
+                        )
+                ).build();
 
             final String hash5 = otherHasher.hash(shakygroundConf2, inputData3);
 
-            assertEquals("Hashes for recreated configurations (the same ones) should be equal", hash3, hash5);
-
-        } catch(final XmlException xmlException) {
+            assertEquals(
+                "Hashes for recreated configurations (the same ones) "
+                + "should be equal",
+                hash3,
+                hash5
+            );
+        } catch (final XmlException xmlException) {
             xmlException.printStackTrace();
             fail("There should be no xml exception");
         }

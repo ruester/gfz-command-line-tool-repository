@@ -16,23 +16,9 @@
 
 package org.n52.gfz.riesgos.cmdexecution.docker;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
-import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
-import org.n52.gfz.riesgos.cache.hash.HasherImpl;
-import org.n52.gfz.riesgos.cache.impl.CacheImpl;
-import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
-import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
-import org.n52.gfz.riesgos.configuration.IConfiguration;
-import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
-import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
-import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
-import org.n52.wps.server.ExceptionReport;
-import org.n52.wps.server.IAlgorithm;
-import org.slf4j.LoggerFactory;
+import static junit.framework.TestCase.fail;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +27,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static junit.framework.TestCase.fail;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.n52.gfz.riesgos.algorithm.BaseGfzRiesgosService;
+import org.n52.gfz.riesgos.cache.dockerimagehandling.DockerImageIdLookup;
+import org.n52.gfz.riesgos.cache.hash.HasherImpl;
+import org.n52.gfz.riesgos.cache.impl.CacheImpl;
+import org.n52.gfz.riesgos.cache.wpsversionhandling.NoWpsVersionHandler;
+import org.n52.gfz.riesgos.configuration.IConfiguration;
+import org.n52.gfz.riesgos.configuration.InputParameterFactory;
+import org.n52.gfz.riesgos.configuration.impl.ConfigurationImpl;
+import org.n52.wps.io.data.IData;
+import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
+import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
+import org.n52.wps.server.ExceptionReport;
+import org.n52.wps.server.IAlgorithm;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is a test that can only run on a system with
@@ -100,8 +102,23 @@ public class TestContainerIdCreation {
     private static class StartQueryRunnable implements Runnable {
         @Override
         public void run() {
-            final IConfiguration conf = ConfigurationFactory.INSTANCE
-                .create("quakeledger.json");
+            final IConfiguration conf = new ConfigurationImpl.Builder(
+                "a",
+                null,
+                "b",
+                "/tmp",
+                Arrays.asList("ls")
+                ).withAddedInputIdentifier(
+                    InputParameterFactory
+                        .INSTANCE
+                        .createCommandLineArgumentNrmlFile(
+                            "dummy",
+                            false,
+                            null,
+                            null,
+                            null
+                        )
+                ).build();
 
             final IAlgorithm algorithm = new BaseGfzRiesgosService(
                 conf,

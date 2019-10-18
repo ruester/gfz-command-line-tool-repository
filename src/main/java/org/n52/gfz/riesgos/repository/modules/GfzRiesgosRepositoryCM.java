@@ -24,7 +24,6 @@ import org.n52.gfz.riesgos.algorithm.TransformDataFormatProcess;
 import org.n52.gfz.riesgos.cache.hash.HasherSingleton;
 import org.n52.gfz.riesgos.cache.impl.CacheSingleton;
 import org.n52.gfz.riesgos.cmdexecution.docker.DockerExecutionContextManagerFactory;
-import org.n52.gfz.riesgos.configuration.ConfigurationFactory;
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.configuration.IOutputParameter;
 import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
@@ -267,19 +266,6 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
     }
 
     /**
-     * Get a list of predefined configurations.
-     * @return list with the predefined configurations
-     * that are integrated by default
-     */
-    private List<IConfiguration> createPredefinedConfigurations() {
-        // final ConfigurationFactory factory = ConfigurationFactory.INSTANCE;
-        return Arrays.asList(
-                // add your configuration here, for example:
-                // factory.create("quakeledger.json")
-        );
-    }
-
-    /**
      *
      * @return list with algoritm data with all
      * configurations (the predefined ones, the
@@ -298,15 +284,6 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         // can be overwritten by improved ones on server runtime
         final Map<String, IConfiguration> configurationProcesses =
                 new HashMap<>();
-
-        // step 1: the predefined ones
-        for (final IConfiguration predefinedConfig
-                : createPredefinedConfigurations()) {
-            configurationProcesses.put(
-                    predefinedConfig.getIdentifier(),
-                    predefinedConfig
-            );
-        }
 
         // others can be added by using the folder
         addConfigurationsFromFolder(
