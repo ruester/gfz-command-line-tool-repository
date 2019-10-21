@@ -4137,7 +4137,7 @@
               <stringProp name="-159928895">&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;</stringProp>
               <stringProp name="939949005">&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-              <stringProp name="-124005002">&quot;publicID&quot;:&quot;quakeml:quakeledger\/105601&quot;</stringProp>
+              <stringProp name="-340499093">&quot;publicID&quot;:&quot;quakeml:quakeledger\/</stringProp>
               <stringProp name="1329739188">&quot;properties&quot;:{&quot;</stringProp>
               <stringProp name="1546290972">&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/105601&quot;</stringProp>
             </collectionProp>
