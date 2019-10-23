@@ -29,13 +29,13 @@ import java.util.Objects;
 public class ConvertLiteralStringToBytes implements IConvertIDataToByteArray<LiteralStringBinding> {
 
     @Override
-    public byte[] convertToBytes(LiteralStringBinding binding) {
+    public byte[] convertToBytes(final LiteralStringBinding binding) {
        final String strContent = binding.getPayload();
        return strContent.getBytes();
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

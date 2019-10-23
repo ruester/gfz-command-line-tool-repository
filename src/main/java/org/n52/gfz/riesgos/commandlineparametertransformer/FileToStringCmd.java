@@ -42,7 +42,8 @@ public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandL
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(T iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(final T iData)
+            throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
         Optional.ofNullable(defaultCommandLineFlag).ifPresent(result::add);
         if(filename == null) {
@@ -53,7 +54,7 @@ public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandL
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

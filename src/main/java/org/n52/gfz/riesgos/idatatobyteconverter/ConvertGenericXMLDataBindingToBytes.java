@@ -31,7 +31,7 @@ import java.util.Objects;
 public class ConvertGenericXMLDataBindingToBytes<T extends GenericXMLDataBinding> implements IConvertIDataToByteArray<T> {
 
     @Override
-    public byte[] convertToBytes(T binding) {
+    public byte[] convertToBytes(final T binding) {
         final XmlObject xmlObject = binding.getPayload();
         final String strContent = xmlObject.xmlText();
 
@@ -39,7 +39,7 @@ public class ConvertGenericXMLDataBindingToBytes<T extends GenericXMLDataBinding
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

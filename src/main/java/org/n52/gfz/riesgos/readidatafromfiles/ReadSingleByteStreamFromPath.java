@@ -55,14 +55,17 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
     }
 
     @Override
-    public DataWithRecreatorTuple<T> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
-
+    public DataWithRecreatorTuple<T> readFromFiles(
+        final IExecutionContext context,
+        final String workingDirectory,
+        final String path
+    ) throws ConvertToIDataException, IOException {
         final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
         return new DataWithRecreatorTuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter, bindingClass));
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

@@ -43,8 +43,9 @@ public class LiteralBooleanBindingToStringCmd implements IConvertIDataToCommandL
 
     }
     @Override
-    public List<String> convertToCommandLineParameter(LiteralBooleanBinding binding) {
-
+    public List<String> convertToCommandLineParameter(
+        final LiteralBooleanBinding binding
+    ) {
         final List<String> result = new ArrayList<>();
 
         final Boolean value = binding.getPayload();
@@ -52,12 +53,11 @@ public class LiteralBooleanBindingToStringCmd implements IConvertIDataToCommandL
             result.add(commandLineFlag);
         }
 
-
         return result;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

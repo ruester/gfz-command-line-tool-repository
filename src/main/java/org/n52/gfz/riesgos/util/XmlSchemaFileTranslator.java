@@ -45,7 +45,7 @@ public class XmlSchemaFileTranslator {
         translator.put("http://earthquake.usgs.gov/eqcenter/shakemap", shakemapSchemaFile);
     }
 
-    public static boolean isURL(String str) {
+    public static boolean isURL(final String str) {
         try {
             URL url = new URL(str);
             url.openStream().close();
@@ -59,7 +59,7 @@ public class XmlSchemaFileTranslator {
      * @param uri uri that should be changed
      * @return File
      */
-    public Object translateUri(String uri) {
+    public Object translateUri(final String uri) {
         if (translator.containsKey(uri)) {
             try {
                 return translator.get(uri).toURL();

@@ -42,8 +42,9 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
     }
 
     @Override
-    public byte[] convertToBytes(GTVectorDataBinding binding) throws ConvertToBytesException {
-
+    public byte[] convertToBytes(
+        final GTVectorDataBinding binding
+    ) throws ConvertToBytesException {
         final FeatureCollection<?, ?> featureCollection = binding.getPayload();
         try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             format.writeFeatures(featureCollection, out);
@@ -55,7 +56,7 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
