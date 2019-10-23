@@ -4889,6 +4889,180 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with Shakemap output (big)" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute&#xd;
+	service=&quot;WPS&quot;&#xd;
+	version=&quot;2.0.0&quot;&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot;&#xd;
+	xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot;&#xd;
+	response=&quot;document&quot;&#xd;
+	mode=&quot;sync&quot;&gt;&#xd;
+	&lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess&lt;/ows:Identifier&gt;&#xd;
+&lt;wps:Input id=&quot;quakeMLFile&quot;&gt;&#xd;
+&lt;wps:Data schema=&quot;http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&#xd;
+&lt;ns1:eventParameters&#xd;
+    xmlns:ns1=&quot;http://quakeml.org/xmlns/bed/1.2&quot;&#xd;
+    xmlns=&quot;http://quakeml.org/xmlns/bed/1.2&quot; publicID=&quot;quakeml:quakeledger/0&quot;&gt;&#xd;
+    &lt;event publicID=&quot;quakeml:quakeledger/peru_29&quot;&gt;&#xd;
+        &lt;preferredOriginID&gt;quakeml:quakeledger/peru_29&lt;/preferredOriginID&gt;&#xd;
+        &lt;preferredMagnitudeID&gt;quakeml:quakeledger/peru_29&lt;/preferredMagnitudeID&gt;&#xd;
+        &lt;type&gt;earthquake&lt;/type&gt;&#xd;
+        &lt;description&gt;&#xd;
+            &lt;text&gt;observed&lt;/text&gt;&#xd;
+        &lt;/description&gt;&#xd;
+        &lt;origin publicID=&quot;quakeml:quakeledger/peru_29&quot;&gt;&#xd;
+            &lt;time&gt;&#xd;
+                &lt;value&gt;1746-10-29T00:00:00.000000Z&lt;/value&gt;&#xd;
+                &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+            &lt;/time&gt;&#xd;
+            &lt;latitude&gt;&#xd;
+                &lt;value&gt;-12.0&lt;/value&gt;&#xd;
+                &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+            &lt;/latitude&gt;&#xd;
+            &lt;longitude&gt;&#xd;
+                &lt;value&gt;-77.2&lt;/value&gt;&#xd;
+                &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+            &lt;/longitude&gt;&#xd;
+            &lt;depth&gt;&#xd;
+                &lt;value&gt;30.0&lt;/value&gt;&#xd;
+                &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+            &lt;/depth&gt;&#xd;
+            &lt;creationInfo&gt;&#xd;
+                &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+            &lt;/creationInfo&gt;&#xd;
+            &lt;originUncertainty&gt;&#xd;
+                &lt;horizontalUncertainty&gt;NaN&lt;/horizontalUncertainty&gt;&#xd;
+                &lt;minHorizontalUncertainty&gt;NaN&lt;/minHorizontalUncertainty&gt;&#xd;
+                &lt;maxHorizontalUncertainty&gt;NaN&lt;/maxHorizontalUncertainty&gt;&#xd;
+                &lt;azimuthMaxHorizontalUncertainty&gt;NaN&lt;/azimuthMaxHorizontalUncertainty&gt;&#xd;
+            &lt;/originUncertainty&gt;&#xd;
+        &lt;/origin&gt;&#xd;
+        &lt;magnitude publicID=&quot;quakeml:quakeledger/peru_29&quot;&gt;&#xd;
+            &lt;mag&gt;&#xd;
+                &lt;value&gt;8.8&lt;/value&gt;&#xd;
+                &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+            &lt;/mag&gt;&#xd;
+            &lt;type&gt;MW&lt;/type&gt;&#xd;
+            &lt;creationInfo&gt;&#xd;
+                &lt;author&gt;GFZ&lt;/author&gt;&#xd;
+            &lt;/creationInfo&gt;&#xd;
+        &lt;/magnitude&gt;&#xd;
+        &lt;focalMechanism publicID=&quot;quakeml:quakeledger/peru_29&quot;&gt;&#xd;
+            &lt;nodalPlanes preferredPlane=&quot;1&quot;&gt;&#xd;
+                &lt;nodalPlane1&gt;&#xd;
+                    &lt;strike&gt;&#xd;
+                        &lt;value&gt;NaN&lt;/value&gt;&#xd;
+                        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+                    &lt;/strike&gt;&#xd;
+                    &lt;dip&gt;&#xd;
+                        &lt;value&gt;NaN&lt;/value&gt;&#xd;
+                        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+                    &lt;/dip&gt;&#xd;
+                    &lt;rake&gt;&#xd;
+                        &lt;value&gt;NaN&lt;/value&gt;&#xd;
+                        &lt;uncertainty&gt;NaN&lt;/uncertainty&gt;&#xd;
+                    &lt;/rake&gt;&#xd;
+                &lt;/nodalPlane1&gt;&#xd;
+            &lt;/nodalPlanes&gt;&#xd;
+        &lt;/focalMechanism&gt;&#xd;
+    &lt;/event&gt;&#xd;
+&lt;/ns1:eventParameters&gt;&#xd;
+&lt;/wps:Data&gt;&#xd;
+&lt;/wps:Input&gt;&#xd;
+&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout">1000</stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="767787856">&lt;wps:Data schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;</stringProp>
+              <stringProp name="179973297">&lt;wps:Output id=&quot;shakeMapFile&quot;&gt;</stringProp>
+              <stringProp name="-2039662432">&lt;shakemap_grid xmlns=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot;</stringProp>
+              <stringProp name="-200846074">&lt;grid_specification</stringProp>
+              <stringProp name="-1929777566">&lt;event_specific_uncertainty</stringProp>
+              <stringProp name="-607592229">&lt;grid_field index=&quot;1&quot; name=&quot;LON&quot; units=&quot;dd&quot;/&gt;</stringProp>
+              <stringProp name="-1563652274">&lt;grid_field index=&quot;2&quot; name=&quot;LAT&quot; units=&quot;dd&quot;/&gt;</stringProp>
+              <stringProp name="-620494557">&lt;grid_field index=&quot;3&quot; name=&quot;PGA&quot; units=&quot;g&quot;/&gt;</stringProp>
+              <stringProp name="-288287413">&lt;grid_field index=&quot;4&quot; name=&quot;STDPGA&quot; units=&quot;g&quot;/&gt;</stringProp>
+              <stringProp name="582339799">&lt;grid_data&gt;</stringProp>
+              <stringProp name="1814640606">&lt;event</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="2119520441">code_version=&quot;shakyground 0.1&quot;</stringProp>
+              <stringProp name="-1948737220">event_id=&quot;quakeml:quakeledger/84945&quot;</stringProp>
+              <stringProp name="-209153717">map_status=&quot;RELEASED&quot;</stringProp>
+              <stringProp name="-131100341">process_timestamp=&quot;</stringProp>
+              <stringProp name="-1982991031">lat_max=&quot;</stringProp>
+              <stringProp name="-1982762313">lat_min=&quot;</stringProp>
+              <stringProp name="-88537611">lon_max=&quot;</stringProp>
+              <stringProp name="-88308893">lon_min=&quot;</stringProp>
+              <stringProp name="-1043017290">nlat=&quot;</stringProp>
+              <stringProp name="-1042605982">nlon=&quot;</stringProp>
+              <stringProp name="1430860357">nominal_lat_spacing=&quot;</stringProp>
+              <stringProp name="1134824689">nominal_lon_spacing=&quot;</stringProp>
+              <stringProp name="1396742623">regular_grid=&quot;1&quot;</stringProp>
+              <stringProp name="-1453499544">name=&quot;pga&quot;</stringProp>
+              <stringProp name="-2145032669">numsta=&quot;&quot;</stringProp>
+              <stringProp name="-2132198874">value=&quot;0.0&quot;</stringProp>
+              <stringProp name="-1453498893">name=&quot;pgv&quot;</stringProp>
+              <stringProp name="1200036022">name=&quot;mi&quot;</stringProp>
+              <stringProp name="-937593263">name=&quot;psa03&quot;</stringProp>
+              <stringProp name="-937592395">name=&quot;psa10&quot;</stringProp>
+              <stringProp name="-937590473">name=&quot;psa30&quot;</stringProp>
+              <stringProp name="1554591112">depth=&quot;</stringProp>
+              <stringProp name="253642758">event_description=&quot;&quot;</stringProp>
+              <stringProp name="-1948737220">event_id=&quot;quakeml:quakeledger/84945&quot;</stringProp>
+              <stringProp name="-1520343499">event_network=&quot;nan&quot;</stringProp>
+              <stringProp name="-699622978">event_timestamp=&quot;2019-01-01T00:00:00.000000Z&quot;</stringProp>
+              <stringProp name="280840252">lat=&quot;-30.9227&quot;</stringProp>
+              <stringProp name="2060103144">lon=&quot;-71.49875&quot;</stringProp>
+              <stringProp name="2004087509">magnitude=&quot;8.35&quot;</stringProp>
+              <stringProp name="-96561183">&lt;grid_field index=&quot;5&quot; name=&quot;SA(0.3)&quot; units=&quot;g&quot;/&gt;</stringProp>
+              <stringProp name="961941189">&lt;grid_field index=&quot;6&quot; name=&quot;STDSA(0.3)&quot; units=&quot;g&quot;/&gt;</stringProp>
+              <stringProp name="-1879703519">&lt;grid_field index=&quot;7&quot; name=&quot;SA(1.0)&quot; units=&quot;g&quot;/&gt;</stringProp>
+              <stringProp name="-1932644927">&lt;grid_field index=&quot;8&quot; name=&quot;STDSA(1.0)&quot; units=&quot;g&quot;/&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with GeoJSON output" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
