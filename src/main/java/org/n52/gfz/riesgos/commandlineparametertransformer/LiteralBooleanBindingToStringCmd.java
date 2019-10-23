@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
@@ -33,16 +31,20 @@ import java.util.Objects;
 public final class LiteralBooleanBindingToStringCmd
     implements IConvertIDataToCommandLineParameter<LiteralBooleanBinding> {
 
+    /**
+     * Commandline flag.
+     */
     private final String commandLineFlag;
 
     /**
-     * Constructor with command line flag
-     * @param commandLineFlag flag that is used if the value is true
+     * Constructor with command line flag.
+     * @param cmdLineFlag flag that is used if the value is true
      */
-    public LiteralBooleanBindingToStringCmd(final String commandLineFlag) {
-        this.commandLineFlag = commandLineFlag;
+    public LiteralBooleanBindingToStringCmd(final String cmdLineFlag) {
+        this.commandLineFlag = cmdLineFlag;
 
     }
+
     @Override
     public List<String> convertToCommandLineParameter(
         final LiteralBooleanBinding binding

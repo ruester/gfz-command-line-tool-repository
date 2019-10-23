@@ -21,12 +21,12 @@ import org.n52.gfz.riesgos.exceptions.NonZeroExitValueException;
 import java.io.Serializable;
 
 /**
- * Interface for the handling of the exit value
+ * Interface for the handling of the exit value.
  */
 @FunctionalInterface
 public interface IExitValueHandler extends Serializable {
     /**
-     * handles the exit value
+     * Handles the exit value.
      * @param exitValue value to handle
      * @param logger logger from the algorithm class
      * @throws NonZeroExitValueException there may be an exception for non zero

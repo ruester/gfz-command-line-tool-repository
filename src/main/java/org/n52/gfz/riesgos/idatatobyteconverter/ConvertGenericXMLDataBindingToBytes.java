@@ -14,10 +14,7 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
-
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
@@ -26,7 +23,8 @@ import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import java.util.Objects;
 
 /**
- * Implementation to convert a GenericXMLDataBinding to a byte array
+ * Implementation to convert a GenericXMLDataBinding to a byte array.
+ * @param <T> type of data binding
  */
 public final class ConvertGenericXMLDataBindingToBytes
     <T extends GenericXMLDataBinding>

@@ -21,7 +21,7 @@ import org.n52.gfz.riesgos.exceptions.NonEmptyStderrException;
 import java.io.Serializable;
 
 /**
- * Handler for text from stderr
+ * Handler for text from stderr.
  */
 @FunctionalInterface
 public interface IStderrHandler extends Serializable {

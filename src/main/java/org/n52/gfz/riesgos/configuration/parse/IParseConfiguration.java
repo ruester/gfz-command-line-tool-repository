@@ -14,20 +14,17 @@ package org.n52.gfz.riesgos.configuration.parse;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.configuration.IConfiguration;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 
 /**
- * Interface to parse the configuration
+ * Interface to parse the configuration.
  */
 public interface IParseConfiguration {
-
     /**
-     * parses the configuration text
+     * Parses the configuration text.
      * @param inputText text with the configuration
      * @return IConfiguration
      * @throws ParseConfigurationException exception that is thrown

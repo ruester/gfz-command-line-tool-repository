@@ -16,13 +16,13 @@
 
 package org.n52.gfz.riesgos.configuration.parse.input.commandlineargument;
 
+import java.util.List;
+
 import org.n52.gfz.riesgos.configuration.IInputParameter;
 import org.n52.gfz.riesgos.configuration.InputParameterFactory;
 import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.wps.webapp.api.FormatEntry;
-
-import java.util.List;
 
 /**
  * Implementation to create a command line argument with a string.

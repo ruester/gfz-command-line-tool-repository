@@ -12,8 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 package org.n52.gfz.riesgos.commandlineparametertransformer;
@@ -34,17 +32,23 @@ import java.util.Optional;
 public final class LiteralIntBindingToStringCmd
     implements IConvertIDataToCommandLineParameter<LiteralIntBinding> {
 
+    /**
+     * Default flag.
+     */
     private final String defaultFlag;
 
     /**
-     * Constructor with a default flag
-     * @param defaultFlag flag that is before the element
-     *                    (for example --level before a level value)
+     * Constructor with a default flag.
+     * @param argDefaultFlag flag that is before the element
+     *                       (for example --level before a level value)
      */
-    public LiteralIntBindingToStringCmd(final String defaultFlag) {
-        this.defaultFlag = defaultFlag;
+    public LiteralIntBindingToStringCmd(final String argDefaultFlag) {
+        this.defaultFlag = argDefaultFlag;
     }
 
+    /**
+     * Constructor for no arguments.
+     */
     public LiteralIntBindingToStringCmd() {
         this(null);
     }

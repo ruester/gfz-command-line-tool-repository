@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
@@ -27,22 +25,42 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Class to convert file to string.
+ * @param <T> Type of the data
+ */
 public final class FileToStringCmd<T extends IData>
     implements IConvertIDataToCommandLineParameter<T> {
 
+    /**
+     * Filename.
+     */
     private final String filename;
+
+    /**
+     * Default flag.
+     */
     private final String defaultCommandLineFlag;
 
+    /**
+     * Constructor with filename and flag.
+     * @param argFilename filename
+     * @param argDefaultCommandLineFlag default flag
+     */
     public FileToStringCmd(
-        final String filename,
-        final String defaultCommandLineFlag
+        final String argFilename,
+        final String argDefaultCommandLineFlag
     ) {
-        this.filename = filename;
-        this.defaultCommandLineFlag = defaultCommandLineFlag;
+        this.filename = argFilename;
+        this.defaultCommandLineFlag = argDefaultCommandLineFlag;
     }
 
-    public FileToStringCmd(final String filename) {
-        this(filename, null);
+    /**
+     * Constructor with filename only.
+     * @param argFilename filname
+     */
+    public FileToStringCmd(final String argFilename) {
+        this(argFilename, null);
     }
 
     @Override
@@ -66,8 +84,8 @@ public final class FileToStringCmd<T extends IData>
             return false;
         }
         FileToStringCmd that = (FileToStringCmd) o;
-        return Objects.equals(filename, that.filename) &&
-            Objects.equals(
+        return Objects.equals(filename, that.filename)
+            && Objects.equals(
                 defaultCommandLineFlag,
                 that.defaultCommandLineFlag
             );

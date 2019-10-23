@@ -22,6 +22,9 @@ import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.wps.webapp.api.FormatEntry;
 
+/**
+ * Factory for stdout strings.
+ */
 public class StdoutStringFactory implements IStdoutOutputFactory {
     /**
      * Factory method to create the identifier with the given data.

@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToByteArray;
@@ -24,7 +22,7 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import java.util.Objects;
 
 /**
- * Function to convert a literal string to a byte array
+ * Function to convert a literal string to a byte array.
  */
 public final class ConvertLiteralStringToBytes
     implements IConvertIDataToByteArray<LiteralStringBinding> {

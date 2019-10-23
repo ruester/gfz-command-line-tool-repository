@@ -1,5 +1,3 @@
-package org.n52.gfz.riesgos.functioninterfaces;
-
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -16,17 +14,7 @@ package org.n52.gfz.riesgos.functioninterfaces;
  * limitations under the Licence.
  */
 
-import java.io.Serializable;
-
 /**
- * Handler for stdout text.
+ * Package for function interfaces.
  */
-@FunctionalInterface
-public interface IStdoutHandler extends Serializable {
-
-    /**
-     * Handles the text on stdout.
-     * @param stdout text from stdout
-     */
-    void handleStdout(String stdout);
-}
+package org.n52.gfz.riesgos.functioninterfaces;

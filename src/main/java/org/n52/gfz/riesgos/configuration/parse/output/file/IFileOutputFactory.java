@@ -26,7 +26,6 @@ import org.n52.wps.webapp.api.FormatEntry;
  */
 @FunctionalInterface
 public interface IFileOutputFactory {
-
     /**
      * Factory methode to create the identifier with the given data.
      * @param identifier identifier of the data
@@ -35,6 +34,7 @@ public interface IFileOutputFactory {
      * @param defaultFormat optional default format
      * @param path path to the file
      * @param schema optional schema
+     * @throws ParseConfigurationException On invalid configuration
      * @return IIdentifierWithBinding
      */
     IOutputParameter create(
@@ -45,5 +45,4 @@ public interface IFileOutputFactory {
             String path,
             String schema
     ) throws ParseConfigurationException;
-
 }

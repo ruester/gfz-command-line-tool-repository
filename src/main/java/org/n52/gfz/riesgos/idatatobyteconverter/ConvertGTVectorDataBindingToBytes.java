@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.geotools.feature.FeatureCollection;
@@ -29,17 +27,23 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
+/**
+ * Implementation to convert a GTVector to a byte array.
+ */
 public final class ConvertGTVectorDataBindingToBytes
     implements IConvertIDataToByteArray<GTVectorDataBinding> {
 
+    /**
+     * The format.
+     */
     private final Format format;
 
     /**
-     * Constructor with format
-     * @param format format to write the data to bytes
+     * Constructor with format.
+     * @param argFormat format to write the data to bytes
      */
-    public ConvertGTVectorDataBindingToBytes(final Format format) {
-        this.format = format;
+    public ConvertGTVectorDataBindingToBytes(final Format argFormat) {
+        this.format = argFormat;
     }
 
     @Override
@@ -74,8 +78,17 @@ public final class ConvertGTVectorDataBindingToBytes
         return Objects.hash(format);
     }
 
+    /**
+     * Helper interface for feature writer.
+     */
     @FunctionalInterface
     private interface IFeatureWriter {
+        /**
+         * Write features.
+         * @param featureCollection feature collection
+         * @param out output stream
+         * @throws IOException on input/output error
+         */
         void writeFeatures(
             FeatureCollection<?, ?> featureCollection,
             OutputStream out
@@ -83,18 +96,28 @@ public final class ConvertGTVectorDataBindingToBytes
     }
 
     /**
-     * Format-Options for writing the data to bytes
+     * Format-Options for writing the data to bytes.
      */
     public enum Format implements IFeatureWriter {
+        /**
+         * Singleton.
+         */
         JSON(
             (featureCollection, out) -> new FeatureJSON()
                 .writeFeatureCollection(featureCollection, out)
         );
 
+        /**
+         * Feature writer.
+         */
         private final IFeatureWriter featureWriter;
 
-        Format(final IFeatureWriter featureWriter) {
-            this.featureWriter = featureWriter;
+        /**
+         * Constructor for feature writer.
+         * @param argFeatureWriter feature writer
+         */
+        Format(final IFeatureWriter argFeatureWriter) {
+            this.featureWriter = argFeatureWriter;
         }
 
         @Override

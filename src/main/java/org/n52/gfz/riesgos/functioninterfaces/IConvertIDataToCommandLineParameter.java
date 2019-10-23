@@ -1,5 +1,7 @@
 package org.n52.gfz.riesgos.functioninterfaces;
 
+import java.util.List;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -19,11 +21,10 @@ package org.n52.gfz.riesgos.functioninterfaces;
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.wps.io.data.IData;
 
-import java.util.List;
-
 /**
  * Interface to convert in IData to a string for using it as a
  * command line argument.
+ * @param <T> Type of data
  */
 @FunctionalInterface
 public interface IConvertIDataToCommandLineParameter<T extends IData> {

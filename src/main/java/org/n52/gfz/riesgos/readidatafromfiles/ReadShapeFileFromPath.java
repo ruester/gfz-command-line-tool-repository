@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.readidatafromfiles;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.apache.commons.io.IOUtils;
@@ -38,7 +36,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
- * Implementation to read multiple files for a shapefile
+ * Implementation to read multiple files for a shapefile.
  */
 public final class ReadShapeFileFromPath
     implements IReadIDataFromFiles<GTVectorDataBinding> {
@@ -97,6 +95,12 @@ public final class ReadShapeFileFromPath
         );
     }
 
+    /**
+     * Helper function to write a file with given contents.
+     * @param file File to write to
+     * @param content Content to be written
+     * @throws IOException For errors while writing
+     */
     private void writeFile(final File file, final byte[] content)
             throws IOException {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {

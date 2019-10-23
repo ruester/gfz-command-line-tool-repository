@@ -12,8 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 package org.n52.gfz.riesgos.util;
@@ -90,8 +88,8 @@ public final class Tuple<A extends Serializable, B extends Serializable>
             return false;
         }
         Tuple<?, ?> tuple = (Tuple<?, ?>) o;
-        return Objects.equals(first, tuple.first) &&
-                Objects.equals(second, tuple.second);
+        return Objects.equals(first, tuple.first)
+            && Objects.equals(second, tuple.second);
     }
 
     @Override

@@ -16,7 +16,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  * limitations under the Licence.
  */
 
-
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
 import org.n52.wps.io.data.binding.bbox.BoundingBoxData;
