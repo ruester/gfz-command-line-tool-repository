@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * Implementation to convert a GeotiffBinding to a byte array
  */
-public class ConvertGeotiffBindingToBytes
+public final class ConvertGeotiffBindingToBytes
     implements IConvertIDataToByteArray<GeotiffBinding> {
 
     @Override

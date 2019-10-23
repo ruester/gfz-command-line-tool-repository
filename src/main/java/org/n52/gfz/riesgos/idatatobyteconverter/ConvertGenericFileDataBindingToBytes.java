@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * Implementation to convert a file binding to a byte array
  */
-public class ConvertGenericFileDataBindingToBytes
+public final class ConvertGenericFileDataBindingToBytes
     implements IConvertIDataToByteArray<GenericFileDataBinding> {
 
     @Override

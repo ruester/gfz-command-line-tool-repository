@@ -34,7 +34,7 @@ import java.util.Objects;
  * Implementation that reads a single byte array for one single file.
  * Can be used with every IConvertByteArrayToIData implementation
  */
-public class ReadSingleByteStreamFromPath<T extends IData>
+public final class ReadSingleByteStreamFromPath<T extends IData>
     implements IReadIDataFromFiles<T> {
 
     private static final long serialVersionUID = 7014190269474895564L;

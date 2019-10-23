@@ -27,7 +27,7 @@ import java.util.Objects;
  * @param <A> a first type
  * @param <B> a second type
  */
-public class Tuple<A extends Serializable, B extends Serializable>
+public final class Tuple<A extends Serializable, B extends Serializable>
     implements Serializable {
 
     private static final long serialVersionUID = 3516097485825823384L;

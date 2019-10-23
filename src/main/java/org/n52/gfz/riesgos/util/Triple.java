@@ -18,7 +18,7 @@ package org.n52.gfz.riesgos.util;
 
 import java.util.Objects;
 
-public class Triple<A, B, C> {
+public final class Triple<A, B, C> {
 
     private final A first;
     private final B second;

@@ -30,7 +30,7 @@ import java.util.Objects;
  * Used to add it as a command line argument.
  * Uses the flag to add it if the value is true.
  */
-public class LiteralBooleanBindingToStringCmd
+public final class LiteralBooleanBindingToStringCmd
     implements IConvertIDataToCommandLineParameter<LiteralBooleanBinding> {
 
     private final String commandLineFlag;

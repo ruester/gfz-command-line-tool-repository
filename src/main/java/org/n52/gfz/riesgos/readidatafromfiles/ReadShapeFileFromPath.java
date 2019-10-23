@@ -40,7 +40,7 @@ import java.util.Objects;
 /**
  * Implementation to read multiple files for a shapefile
  */
-public class ReadShapeFileFromPath
+public final class ReadShapeFileFromPath
     implements IReadIDataFromFiles<GTVectorDataBinding> {
 
     private static final long serialVersionUID = -8077547979877603576L;

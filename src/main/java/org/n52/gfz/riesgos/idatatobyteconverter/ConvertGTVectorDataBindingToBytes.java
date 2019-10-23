@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-public class ConvertGTVectorDataBindingToBytes
+public final class ConvertGTVectorDataBindingToBytes
     implements IConvertIDataToByteArray<GTVectorDataBinding> {
 
     private final Format format;

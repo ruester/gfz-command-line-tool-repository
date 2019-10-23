@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  * Function to convert a literal string to a byte array
  */
-public class ConvertLiteralStringToBytes
+public final class ConvertLiteralStringToBytes
     implements IConvertIDataToByteArray<LiteralStringBinding> {
 
     @Override

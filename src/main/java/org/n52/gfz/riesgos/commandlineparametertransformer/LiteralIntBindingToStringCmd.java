@@ -31,7 +31,7 @@ import java.util.Optional;
  * Used to add a command line argument.
  * Can also handle default flags.
  */
-public class LiteralIntBindingToStringCmd
+public final class LiteralIntBindingToStringCmd
     implements IConvertIDataToCommandLineParameter<LiteralIntBinding> {
 
     private final String defaultFlag;

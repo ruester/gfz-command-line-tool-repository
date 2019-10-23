@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class FileToStringCmd<T extends IData>
+public final class FileToStringCmd<T extends IData>
     implements IConvertIDataToCommandLineParameter<T> {
 
     private final String filename;

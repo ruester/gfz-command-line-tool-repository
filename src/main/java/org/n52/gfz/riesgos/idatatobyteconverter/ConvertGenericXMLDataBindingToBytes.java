@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * Implementation to convert a GenericXMLDataBinding to a byte array
  */
-public class ConvertGenericXMLDataBindingToBytes
+public final class ConvertGenericXMLDataBindingToBytes
     <T extends GenericXMLDataBinding>
     implements IConvertIDataToByteArray<T> {
 
