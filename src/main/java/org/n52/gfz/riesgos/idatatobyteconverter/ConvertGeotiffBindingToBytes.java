@@ -31,11 +31,12 @@ import java.util.Objects;
 /**
  * Implementation to convert a GeotiffBinding to a byte array
  */
-public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray<GeotiffBinding> {
+public class ConvertGeotiffBindingToBytes
+    implements IConvertIDataToByteArray<GeotiffBinding> {
 
     @Override
-    public byte[] convertToBytes(final GeotiffBinding binding) throws ConvertToBytesException {
-
+    public byte[] convertToBytes(final GeotiffBinding binding)
+            throws ConvertToBytesException {
         final File file = binding.getPayload();
 
         try(FileInputStream fileReader = new FileInputStream(file)) {

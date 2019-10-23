@@ -25,13 +25,14 @@ import java.io.Serializable;
  * Interface to convert a byte array to an IData element
  */
 @FunctionalInterface
-public interface IConvertByteArrayToIData<T extends IData> extends Serializable {
-
+public interface IConvertByteArrayToIData<T extends IData>
+    extends Serializable {
     /**
      * converts the byte array to an IData element
      * @param content byte array to convert
      * @return IData element
-     * @throws ConvertToIDataException exception if there is an internal error / exception on conversion
+     * @throws ConvertToIDataException exception if there is an internal error /
+     *                                 exception on conversion
      */
     T convertToIData(byte[] content) throws ConvertToIDataException;
 }

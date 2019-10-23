@@ -38,8 +38,10 @@ public interface IWriteIDataToFiles<T extends IData> {
      * @param context context (maybe a container)
      * @param workingDirectory directory to copy the f
      * @param path destination of the iData
-     * @throws ConvertToBytesException Exception on converting the IData to byte[]
-     * @throws IOException a normal IOException that may happen on writing the files
+     * @throws ConvertToBytesException Exception on converting the IData to
+     *                                 byte[]
+     * @throws IOException a normal IOException that may happen on writing the
+     *                     files
      */
     void writeToFiles(
             T iData,

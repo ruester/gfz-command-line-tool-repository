@@ -31,13 +31,15 @@ import java.util.Optional;
  * Used to add a command line argument.
  * Can also handle default flags.
  */
-public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineParameter<LiteralIntBinding> {
+public class LiteralIntBindingToStringCmd
+    implements IConvertIDataToCommandLineParameter<LiteralIntBinding> {
 
     private final String defaultFlag;
 
     /**
      * Constructor with a default flag
-     * @param defaultFlag flag that is before the element (for example --level before a level value)
+     * @param defaultFlag flag that is before the element
+     *                    (for example --level before a level value)
      */
     public LiteralIntBindingToStringCmd(final String defaultFlag) {
         this.defaultFlag = defaultFlag;
@@ -48,14 +50,15 @@ public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineP
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(final LiteralIntBinding binding) {
+    public List<String> convertToCommandLineParameter(
+        final LiteralIntBinding binding
+    ) {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
 
         final Integer value = binding.getPayload();
         result.add(String.valueOf(value));
-
 
         return result;
     }

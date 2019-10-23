@@ -33,7 +33,7 @@ public class StdoutStringFactory implements IStdoutOutputFactory {
      * @param schema           optional schema (for xml)
      * @return IIdentifierWithBinding
      * @throws ParseConfigurationException exception to throw
-     *                                     if a attribute is not supported by the factory
+     *          if a attribute is not supported by the factory
      */
     @Override
     public IOutputParameter create(

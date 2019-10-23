@@ -27,8 +27,10 @@ import java.util.Map;
  * Utility class for XML schema translation
  */
 public class XmlSchemaFileTranslator {
-    public static final String quakemlSchemaResource = "/org/n52/gfz/riesgos/validators/xml/QuakeML-BED-1.2.xsd";
-    public static final String shakemapSchemaResource = "/org/n52/gfz/riesgos/validators/xml/shakemap.xsd";
+    public static final String quakemlSchemaResource =
+        "/org/n52/gfz/riesgos/validators/xml/QuakeML-BED-1.2.xsd";
+    public static final String shakemapSchemaResource =
+        "/org/n52/gfz/riesgos/validators/xml/shakemap.xsd";
     final Map<String, URI> translator;
 
     public XmlSchemaFileTranslator() {
@@ -37,12 +39,22 @@ public class XmlSchemaFileTranslator {
             shakemapSchemaFile = null;
 
         try {
-            quakemlSchemaFile = getClass().getResource(quakemlSchemaResource).toURI();
-            shakemapSchemaFile = getClass().getResource(shakemapSchemaResource).toURI();
+            quakemlSchemaFile = getClass().getResource(
+                quakemlSchemaResource
+            ).toURI();
+            shakemapSchemaFile = getClass().getResource(
+                shakemapSchemaResource
+            ).toURI();
         } catch (URISyntaxException e) { }
 
-        translator.put("http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", quakemlSchemaFile);
-        translator.put("http://earthquake.usgs.gov/eqcenter/shakemap", shakemapSchemaFile);
+        translator.put(
+            "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd",
+            quakemlSchemaFile
+        );
+        translator.put(
+            "http://earthquake.usgs.gov/eqcenter/shakemap",
+            shakemapSchemaFile
+        );
     }
 
     public static boolean isURL(final String str) {

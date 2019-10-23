@@ -27,7 +27,8 @@ import java.util.Objects;
  * @param <A> a first type
  * @param <B> a second type
  */
-public class Tuple<A extends Serializable, B extends Serializable> implements Serializable {
+public class Tuple<A extends Serializable, B extends Serializable>
+    implements Serializable {
 
     private static final long serialVersionUID = 3516097485825823384L;
 
@@ -73,8 +74,10 @@ public class Tuple<A extends Serializable, B extends Serializable> implements Se
      * @param <BB> second type
      * @return new Tuple(key, value)
      */
-    public static <AA extends Serializable, BB extends  Serializable> Tuple<AA, BB> fromEntry(
-            final Map.Entry<AA, BB> entry) {
+    public static <AA extends Serializable, BB extends  Serializable>
+            Tuple<AA, BB> fromEntry(
+        final Map.Entry<AA, BB> entry
+    ) {
         return new Tuple<>(entry.getKey(), entry.getValue());
     }
 

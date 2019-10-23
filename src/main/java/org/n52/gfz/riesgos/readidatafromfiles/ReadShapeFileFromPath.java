@@ -40,7 +40,8 @@ import java.util.Objects;
 /**
  * Implementation to read multiple files for a shapefile
  */
-public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBinding> {
+public class ReadShapeFileFromPath
+    implements IReadIDataFromFiles<GTVectorDataBinding> {
 
     private static final long serialVersionUID = -8077547979877603576L;
 
@@ -55,31 +56,49 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
         tempDirAsFile.deleteOnExit();
 
         final String outputFileTemplate = "output";
-        final String outputFileTemplatePath = Paths.get(tempDir.toString(), outputFileTemplate).toString();
+        final String outputFileTemplatePath = Paths.get(
+            tempDir.toString(),
+            outputFileTemplate
+        ).toString();
         final String outputFilePathShp = outputFileTemplatePath + ".shp";
 
-        for(final WriteShapeFileToPath.SingleFile singleFile : WriteShapeFileToPath.SingleFile.values()) {
-            final String pathToRead = singleFile.getSpecificPathByShapeFilePath(path);
+        for (final WriteShapeFileToPath.SingleFile singleFile
+            : WriteShapeFileToPath.SingleFile.values()
+        ) {
+            final String pathToRead = singleFile
+                .getSpecificPathByShapeFilePath(path);
 
-            final byte[] content = context.readFromFile(Paths.get(workingDirectory, pathToRead).toString());
+            final byte[] content = context.readFromFile(
+                Paths.get(workingDirectory, pathToRead).toString()
+            );
 
-            final File tempOutFile = new File(outputFileTemplatePath + singleFile.getEnding());
+            final File tempOutFile = new File(
+                outputFileTemplatePath + singleFile.getEnding()
+            );
             writeFile(tempOutFile, content);
             tempOutFile.deleteOnExit();
         }
 
         // that code is reused from GTBinZippedSHPParser
-        final DataStore store = new ShapefileDataStore(new File(outputFilePathShp).toURI().toURL());
-        final SimpleFeatureCollection features = store.getFeatureSource(store.getTypeNames()[0]).getFeatures();
+        final DataStore store = new ShapefileDataStore(
+            new File(outputFilePathShp).toURI().toURL()
+        );
+        final SimpleFeatureCollection features = store.getFeatureSource(
+            store.getTypeNames()[0]
+        ).getFeatures();
 
         final GTVectorDataBinding binding = new GTVectorDataBinding(features);
 
         // the recreate because we know that there is no temporary file
         // involved here
-        return new DataWithRecreatorTuple<>(binding, new RecreateFromBindingClass(binding));
+        return new DataWithRecreatorTuple<>(
+            binding,
+            new RecreateFromBindingClass(binding)
+        );
     }
 
-    private void writeFile(final File file, final byte[] content) throws IOException {
+    private void writeFile(final File file, final byte[] content)
+            throws IOException {
         try(FileOutputStream outputStream = new FileOutputStream(file)) {
             IOUtils.write(content, outputStream);
         }
@@ -97,6 +116,4 @@ public class ReadShapeFileFromPath implements IReadIDataFromFiles<GTVectorDataBi
     public int hashCode() {
         return Objects.hash(getClass().getName());
     }
-
-
 }

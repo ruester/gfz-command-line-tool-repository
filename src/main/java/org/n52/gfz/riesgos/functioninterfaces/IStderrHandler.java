@@ -30,7 +30,9 @@ public interface IStderrHandler extends Serializable {
      * Handles stderr text.
      * @param stderr text to handle
      * @param logger logger of the algorithm
-     * @throws NonEmptyStderrException there may be an exception on non empty stderr
+     * @throws NonEmptyStderrException there may be an exception on non empty
+     *                                 stderr
      */
-    void handleStderr(String stderr, ILogger logger) throws NonEmptyStderrException;
+    void handleStderr(String stderr, ILogger logger)
+        throws NonEmptyStderrException;
 }

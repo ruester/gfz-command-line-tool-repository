@@ -37,8 +37,6 @@ import java.util.Optional;
  */
 public class ParseJsonForInputImpl extends AbstractParseJson {
 
-
-
     /**
      * Constant with the field attribute for useAs.
      */
@@ -90,10 +88,11 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
      * Default constructor.
      */
     public ParseJsonForInputImpl() {
-        this.optionsToUseAsCommandLineArgument = ToCommandLineArgumentOption.asMap();
+        this.optionsToUseAsCommandLineArgument =
+            ToCommandLineArgumentOption.asMap();
+
         this.optionsToUseAsStdinInput = ToStdinInputOption.asMap();
         this.optionsToUseAsFileInput = ToFileInputOption.asMap();
-
         this.optionsForDefaultFormat = DefaultFormatOption.asMap();
     }
 

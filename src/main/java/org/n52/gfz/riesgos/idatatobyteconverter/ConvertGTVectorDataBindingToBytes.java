@@ -29,7 +29,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArray<GTVectorDataBinding> {
+public class ConvertGTVectorDataBindingToBytes
+    implements IConvertIDataToByteArray<GTVectorDataBinding> {
 
     private final Format format;
 
@@ -63,7 +64,8 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConvertGTVectorDataBindingToBytes that = (ConvertGTVectorDataBindingToBytes) o;
+        ConvertGTVectorDataBindingToBytes that =
+            (ConvertGTVectorDataBindingToBytes) o;
         return format == that.format;
     }
 
@@ -74,14 +76,20 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
 
     @FunctionalInterface
     private interface IFeatureWriter {
-        void writeFeatures(FeatureCollection<?, ?> featureCollection, OutputStream out) throws IOException;
+        void writeFeatures(
+            FeatureCollection<?, ?> featureCollection,
+            OutputStream out
+        ) throws IOException;
     }
 
     /**
      * Format-Options for writing the data to bytes
      */
     public enum Format implements IFeatureWriter {
-        JSON((featureCollection, out) -> new FeatureJSON().writeFeatureCollection(featureCollection, out));
+        JSON(
+            (featureCollection, out) -> new FeatureJSON()
+                .writeFeatureCollection(featureCollection, out)
+        );
 
         private final IFeatureWriter featureWriter;
 
@@ -90,7 +98,10 @@ public class ConvertGTVectorDataBindingToBytes implements IConvertIDataToByteArr
         }
 
         @Override
-        public void writeFeatures(final FeatureCollection<?, ?> featureCollection, final OutputStream out) throws IOException {
+        public void writeFeatures(
+            final FeatureCollection<?, ?> featureCollection,
+            final OutputStream out
+        ) throws IOException {
             this.featureWriter.writeFeatures(featureCollection, out);
         }
     }

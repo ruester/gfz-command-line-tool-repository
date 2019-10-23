@@ -31,11 +31,12 @@ import java.util.Objects;
 /**
  * Implementation to convert a file binding to a byte array
  */
-public class ConvertGenericFileDataBindingToBytes implements IConvertIDataToByteArray<GenericFileDataBinding>{
+public class ConvertGenericFileDataBindingToBytes
+    implements IConvertIDataToByteArray<GenericFileDataBinding> {
 
     @Override
-    public byte[] convertToBytes(final GenericFileDataBinding binding) throws ConvertToBytesException {
-
+    public byte[] convertToBytes(final GenericFileDataBinding binding)
+            throws ConvertToBytesException {
         final File file = binding.getPayload().getBaseFile(false);
 
         try(FileInputStream inputStream = new FileInputStream(file)) {

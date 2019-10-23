@@ -24,13 +24,14 @@ import java.io.Serializable;
 /**
  * Interface for converting the exit value to an IData element
  */
-public interface IConvertExitValueToIData<T extends IData> extends Serializable {
-
+public interface IConvertExitValueToIData<T extends IData>
+    extends Serializable {
     /**
      * converts the exit value to an IData element
      * @param exitValue integer value to convert
      * @return IData element
-     * @throws ConvertToIDataException exception if there is an internal error / exception on conversion
+     * @throws ConvertToIDataException exception if there is an internal error
+     *                                 / exception on conversion
      */
     T convertToIData(int exitValue) throws ConvertToIDataException;
 }

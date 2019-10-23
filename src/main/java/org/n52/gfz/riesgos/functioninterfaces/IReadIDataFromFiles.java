@@ -33,13 +33,22 @@ import java.io.Serializable;
 public interface IReadIDataFromFiles<T extends IData> extends Serializable {
 
     /**
-     * Reads the idata from the filesystem (maybe multiple files, maybe from a container)
+     * Reads the idata from the filesystem (maybe multiple files, maybe from a
+     * container)
      * @param context context (maybe the container)
-     * @param workingDirectory the working directory in which the file is / the files are
-     * @param path basic path of a single file / the main file if there are several
+     * @param workingDirectory the working directory in which the file is /
+     *                         the files are
+     * @param path basic path of a single file / the main file if there are
+     *             several
      * @return IData with the recreator (for a caching mechanism)
-     * @throws ConvertToIDataException if the conversion is not possible this exception will be thrown
-     * @throws IOException will be thrown if there is problem on the IO mechanism on java
+     * @throws ConvertToIDataException if the conversion is not possible this
+     *                                 exception will be thrown
+     * @throws IOException will be thrown if there is problem on the IO
+     *                     mechanism on java
      */
-    DataWithRecreatorTuple<T> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException;
+    DataWithRecreatorTuple<T> readFromFiles(
+        IExecutionContext context,
+        String workingDirectory,
+        String path
+    ) throws ConvertToIDataException, IOException;
 }

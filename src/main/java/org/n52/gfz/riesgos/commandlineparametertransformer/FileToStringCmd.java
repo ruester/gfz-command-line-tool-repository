@@ -27,12 +27,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandLineParameter<T> {
+public class FileToStringCmd<T extends IData>
+    implements IConvertIDataToCommandLineParameter<T> {
 
     private final String filename;
     private final String defaultCommandLineFlag;
 
-    public FileToStringCmd(final String filename, final String defaultCommandLineFlag) {
+    public FileToStringCmd(
+        final String filename,
+        final String defaultCommandLineFlag
+    ) {
         this.filename = filename;
         this.defaultCommandLineFlag = defaultCommandLineFlag;
     }
@@ -63,7 +67,10 @@ public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandL
         }
         FileToStringCmd that = (FileToStringCmd) o;
         return Objects.equals(filename, that.filename) &&
-                Objects.equals(defaultCommandLineFlag, that.defaultCommandLineFlag);
+            Objects.equals(
+                defaultCommandLineFlag,
+                that.defaultCommandLineFlag
+            );
     }
 
     @Override
