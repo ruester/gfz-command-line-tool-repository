@@ -50,7 +50,7 @@ public class LiteralBooleanBindingToStringCmd
         final List<String> result = new ArrayList<>();
 
         final Boolean value = binding.getPayload();
-        if(value) {
+        if (value) {
             result.add(commandLineFlag);
         }
 

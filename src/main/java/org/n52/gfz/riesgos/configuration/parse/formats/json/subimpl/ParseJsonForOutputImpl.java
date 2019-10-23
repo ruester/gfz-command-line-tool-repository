@@ -74,12 +74,10 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
      * Default constructor.
      */
     public ParseJsonForOutputImpl() {
-
         this.optionsToReadFromStdout = FromStdoutOption.asMap();
         this.optionsToReadFromFiles = FromFilesOption.asMap();
         this.optionsToReadFromStderr = FromStderrOption.asMap();
         this.optionsToReadFromExitValue = FromExitValueOption.asMap();
-
         this.optionsForDefaultFormat = DefaultFormatOption.asMap();
     }
 
@@ -106,7 +104,7 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
         final Optional<String> defaultFormatStr =
                 getOptionalString(json, DEFAULT_FORMAT);
 
-        if(defaultFormatStr.isPresent()) {
+        if (defaultFormatStr.isPresent()) {
             if (!optionsForDefaultFormat.containsKey(defaultFormatStr.get())) {
                 throw new ParseConfigurationException(
                         defaultFormatStr.get()
@@ -163,7 +161,6 @@ public class ParseJsonForOutputImpl extends AbstractParseJson {
                         "Not supported type value");
             }
         } else if (FromFilesOption.readFrom().equals(readFrom)) {
-
             final String path = getString(json, PATH);
 
             if (optionsToReadFromFiles.containsKey(type)) {

@@ -39,9 +39,9 @@ public class ConvertGeotiffBindingToBytes
             throws ConvertToBytesException {
         final File file = binding.getPayload();
 
-        try(FileInputStream fileReader = new FileInputStream(file)) {
+        try (FileInputStream fileReader = new FileInputStream(file)) {
             return IOUtils.toByteArray(fileReader);
-        } catch(final IOException exception) {
+        } catch (final IOException exception) {
             throw new ConvertToBytesException(exception);
         }
     }

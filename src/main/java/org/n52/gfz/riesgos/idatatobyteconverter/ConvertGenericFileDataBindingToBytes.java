@@ -39,9 +39,9 @@ public class ConvertGenericFileDataBindingToBytes
             throws ConvertToBytesException {
         final File file = binding.getPayload().getBaseFile(false);
 
-        try(FileInputStream inputStream = new FileInputStream(file)) {
+        try (FileInputStream inputStream = new FileInputStream(file)) {
             return IOUtils.toByteArray(inputStream);
-        } catch(final IOException exception) {
+        } catch (final IOException exception) {
             throw new ConvertToBytesException(exception);
         }
 

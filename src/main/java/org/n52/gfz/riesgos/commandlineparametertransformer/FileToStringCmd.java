@@ -50,7 +50,7 @@ public class FileToStringCmd<T extends IData>
             throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
         Optional.ofNullable(defaultCommandLineFlag).ifPresent(result::add);
-        if(filename == null) {
+        if (filename == null) {
             throw new ConvertToStringCmdException("There is no filename");
         }
         result.add(filename);

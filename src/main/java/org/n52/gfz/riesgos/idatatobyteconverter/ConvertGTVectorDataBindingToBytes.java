@@ -47,10 +47,10 @@ public class ConvertGTVectorDataBindingToBytes
         final GTVectorDataBinding binding
     ) throws ConvertToBytesException {
         final FeatureCollection<?, ?> featureCollection = binding.getPayload();
-        try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             format.writeFeatures(featureCollection, out);
             return out.toByteArray();
-        } catch(final IOException ioException) {
+        } catch (final IOException ioException) {
             throw new ConvertToBytesException(ioException);
         }
 

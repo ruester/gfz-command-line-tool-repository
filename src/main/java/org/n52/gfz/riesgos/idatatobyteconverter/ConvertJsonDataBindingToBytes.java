@@ -48,9 +48,9 @@ public class ConvertJsonDataBindingToBytes
         final Optional<JSONObject> asObject = jsonObject.getJsonObject();
         final Optional<JSONArray> asArray = jsonObject.getJsonArray();
         final String content;
-        if(asObject.isPresent()) {
+        if (asObject.isPresent()) {
             content = asObject.get().toJSONString();
-        } else if(asArray.isPresent()) {
+        } else if (asArray.isPresent()) {
             content = asArray.get().toJSONString();
         } else {
             throw new ConvertToBytesException(

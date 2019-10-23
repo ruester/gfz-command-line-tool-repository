@@ -99,7 +99,7 @@ public class ReadShapeFileFromPath
 
     private void writeFile(final File file, final byte[] content)
             throws IOException {
-        try(FileOutputStream outputStream = new FileOutputStream(file)) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             IOUtils.write(content, outputStream);
         }
     }

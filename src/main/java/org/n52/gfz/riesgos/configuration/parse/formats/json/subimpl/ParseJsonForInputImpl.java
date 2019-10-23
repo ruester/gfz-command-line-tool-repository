@@ -125,8 +125,7 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
         final Optional<String> defaultFormatStr =
                 getOptionalString(json, DEFAULT_FORMAT);
 
-
-        if(defaultFormatStr.isPresent()) {
+        if (defaultFormatStr.isPresent()) {
             if (!optionsForDefaultFormat.containsKey(defaultFormatStr.get())) {
                 throw new ParseConfigurationException(
                         defaultFormatStr.get()
