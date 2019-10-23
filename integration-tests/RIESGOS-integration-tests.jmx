@@ -4139,7 +4139,7 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-340499093">&quot;publicID&quot;:&quot;quakeml:quakeledger\/</stringProp>
               <stringProp name="1329739188">&quot;properties&quot;:{&quot;</stringProp>
-              <stringProp name="1546290972">&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/105601&quot;</stringProp>
+              <stringProp name="227910277">&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
