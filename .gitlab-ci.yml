@@ -34,6 +34,5 @@ verify:jdk8:
 
 checkstyle:
   stage: test
-  allow_failure: true
   script:
     - 'mvn $MAVEN_CLI_OPTS clean checkstyle:checkstyle'
