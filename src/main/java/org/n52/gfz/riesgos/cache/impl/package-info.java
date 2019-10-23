@@ -17,5 +17,4 @@
 /**
  * Package with the implementation of the cache system.
  */
-
 package org.n52.gfz.riesgos.cache.impl;
