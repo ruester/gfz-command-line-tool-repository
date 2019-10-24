@@ -12,8 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 package org.n52.gfz.riesgos.util;
@@ -27,7 +25,8 @@ import java.util.Objects;
  * @param <A> a first type
  * @param <B> a second type
  */
-public class Tuple<A extends Serializable, B extends Serializable> implements Serializable {
+public final class Tuple<A extends Serializable, B extends Serializable>
+    implements Serializable {
 
     private static final long serialVersionUID = 3516097485825823384L;
 
@@ -73,13 +72,15 @@ public class Tuple<A extends Serializable, B extends Serializable> implements Se
      * @param <BB> second type
      * @return new Tuple(key, value)
      */
-    public static <AA extends Serializable, BB extends  Serializable> Tuple<AA, BB> fromEntry(
-            final Map.Entry<AA, BB> entry) {
+    public static <AA extends Serializable, BB extends  Serializable>
+            Tuple<AA, BB> fromEntry(
+        final Map.Entry<AA, BB> entry
+    ) {
         return new Tuple<>(entry.getKey(), entry.getValue());
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -87,8 +88,8 @@ public class Tuple<A extends Serializable, B extends Serializable> implements Se
             return false;
         }
         Tuple<?, ?> tuple = (Tuple<?, ?>) o;
-        return Objects.equals(first, tuple.first) &&
-                Objects.equals(second, tuple.second);
+        return Objects.equals(first, tuple.first)
+            && Objects.equals(second, tuple.second);
     }
 
     @Override

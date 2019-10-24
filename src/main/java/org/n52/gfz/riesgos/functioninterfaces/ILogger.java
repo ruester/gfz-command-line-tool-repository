@@ -14,18 +14,16 @@ package org.n52.gfz.riesgos.functioninterfaces;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 /**
- * Function to log text
+ * Function to log text.
  */
 @FunctionalInterface
 public interface ILogger {
 
     /**
-     * Insert the text to a log
+     * Insert the text to a log.
      * @param text text to log
      */
     void log(String text);

@@ -22,15 +22,17 @@ import java.io.Serializable;
 import java.util.Optional;
 
 /**
- * Interface to check an idata element
+ * Interface to check an idata element.
+ * @param <T> Type of data
  */
 @FunctionalInterface
-public interface ICheckDataAndGetErrorMessage<T extends IData> extends Serializable {
-
+public interface ICheckDataAndGetErrorMessage<T extends IData>
+    extends Serializable {
     /**
-     * Checks a IData and (maybe) gives back the text of the problem
+     * Checks a IData and (maybe) gives back the text of the problem.
      * @param data element to check
-     * @return empty if there is no problem with the value; else the text of the problem description
+     * @return empty if there is no problem with the value; else the text of
+     *         the problem description
      */
     Optional<String> check(T data);
 }

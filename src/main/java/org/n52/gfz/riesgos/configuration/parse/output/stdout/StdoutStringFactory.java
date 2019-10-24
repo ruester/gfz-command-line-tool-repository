@@ -22,6 +22,9 @@ import org.n52.gfz.riesgos.configuration.parse.ParseUtils;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.wps.webapp.api.FormatEntry;
 
+/**
+ * Factory for stdout strings.
+ */
 public class StdoutStringFactory implements IStdoutOutputFactory {
     /**
      * Factory method to create the identifier with the given data.
@@ -33,7 +36,7 @@ public class StdoutStringFactory implements IStdoutOutputFactory {
      * @param schema           optional schema (for xml)
      * @return IIdentifierWithBinding
      * @throws ParseConfigurationException exception to throw
-     *                                     if a attribute is not supported by the factory
+     *          if a attribute is not supported by the factory
      */
     @Override
     public IOutputParameter create(

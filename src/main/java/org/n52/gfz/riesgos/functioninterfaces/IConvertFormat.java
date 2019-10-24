@@ -14,14 +14,12 @@ package org.n52.gfz.riesgos.functioninterfaces;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 
 /**
- * Interface for any kind of format converting process
+ * Interface for any kind of format converting process.
  * @param <X> format of the input data
  * @param <Y> format of the output data
  */
@@ -29,7 +27,7 @@ import org.n52.gfz.riesgos.exceptions.ConvertFormatException;
 public interface IConvertFormat<X, Y>  {
 
     /**
-     * Converts data from one format to another
+     * Converts data from one format to another.
      * @param x data to convert
      * @return converted data
      * @throws ConvertFormatException exception that is used on this conversion

@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.functioninterfaces.IConvertIDataToCommandLineParameter;
@@ -30,41 +28,47 @@ import java.util.Objects;
  * Used to add it as a command line argument.
  * Uses the flag to add it if the value is true.
  */
-public class LiteralBooleanBindingToStringCmd implements IConvertIDataToCommandLineParameter<LiteralBooleanBinding> {
+public final class LiteralBooleanBindingToStringCmd
+    implements IConvertIDataToCommandLineParameter<LiteralBooleanBinding> {
 
+    /**
+     * Commandline flag.
+     */
     private final String commandLineFlag;
 
     /**
-     * Constructor with command line flag
-     * @param commandLineFlag flag that is used if the value is true
+     * Constructor with command line flag.
+     * @param cmdLineFlag flag that is used if the value is true
      */
-    public LiteralBooleanBindingToStringCmd(final String commandLineFlag) {
-        this.commandLineFlag = commandLineFlag;
+    public LiteralBooleanBindingToStringCmd(final String cmdLineFlag) {
+        this.commandLineFlag = cmdLineFlag;
 
     }
-    @Override
-    public List<String> convertToCommandLineParameter(LiteralBooleanBinding binding) {
 
+    @Override
+    public List<String> convertToCommandLineParameter(
+        final LiteralBooleanBinding binding
+    ) {
         final List<String> result = new ArrayList<>();
 
         final Boolean value = binding.getPayload();
-        if(value) {
+        if (value) {
             result.add(commandLineFlag);
         }
-
 
         return result;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LiteralBooleanBindingToStringCmd that = (LiteralBooleanBindingToStringCmd) o;
+        LiteralBooleanBindingToStringCmd that =
+            (LiteralBooleanBindingToStringCmd) o;
         return Objects.equals(commandLineFlag, that.commandLineFlag);
     }
 

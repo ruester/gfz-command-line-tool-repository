@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  quakeledger:
+    image: gfzriesgos/quakeledger:latest
+
+  shakyground:
+    image: gfzriesgos/shakyground:latest
+
+  assetmaster:
+    image: gfzriesgos/assetmaster:latest
+
+  modelprop:
+    image: gfzriesgos/modelprop:latest
+
+  deus:
+    image: gfzriesgos/deus:latest
+
+  flooddamage:
+    image: gfzriesgos/flooddamage:latest
+
+  riesgos-wps:
+    image: gfzriesgos/riesgos-wps:latest
+    container_name: riesgos-wps-prod
+    restart: always
+    environment:
+      - CATALINA_OPTS=-Xmx12g -Xms12g
+    ports:
+      - "80:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "riesgos-json-config:/usr/share/riesgos/json-configurations"
+      - "riesgos-wps-hsqldb:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
+      - "riesgos-wps-logs:/usr/local/tomcat/logs"
+      - "./tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml"
+      - "./users.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
+      - "./application_properties.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+
+volumes:
+  riesgos-json-config:
+    external: true
+  riesgos-wps-hsqldb:
+    external: true
+  riesgos-wps-logs:
+    external: true

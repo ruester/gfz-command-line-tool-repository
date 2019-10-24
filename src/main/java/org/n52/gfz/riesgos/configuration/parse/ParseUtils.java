@@ -23,7 +23,11 @@ import java.util.List;
  */
 public enum ParseUtils {
 
+    /**
+     * Singleton.
+     */
     INSTANCE;
+
     /**
      * The class should be used as static.
      */

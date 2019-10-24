@@ -34,7 +34,7 @@ public class CacheImpl implements ICacher {
     /**
      * Maximum size of the cache map.
      */
-    private static final long MAX_SIZE = 50_000L;
+    private static final long MAX_SIZE = 50L;
 
     /**
      * Maximum duration to store the

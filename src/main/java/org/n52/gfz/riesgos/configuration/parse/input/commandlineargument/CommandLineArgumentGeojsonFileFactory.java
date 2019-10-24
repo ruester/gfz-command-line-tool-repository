@@ -55,10 +55,8 @@ public class CommandLineArgumentGeojsonFileFactory
             final String defaultValue,
             final List<String> allowedValues,
             final List<String> supportedCrs,
-            final String schema)
-
-            throws ParseConfigurationException {
-
+            final String schema
+    ) throws ParseConfigurationException {
         final ParseUtils parseUtils = ParseUtils.INSTANCE;
 
         if (parseUtils.strHasValue(defaultValue)) {

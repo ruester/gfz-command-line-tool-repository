@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.commandlineparametertransformer;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.exceptions.ConvertToStringCmdException;
@@ -27,25 +25,50 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandLineParameter<T> {
+/**
+ * Class to convert file to string.
+ * @param <T> Type of the data
+ */
+public final class FileToStringCmd<T extends IData>
+    implements IConvertIDataToCommandLineParameter<T> {
 
+    /**
+     * Filename.
+     */
     private final String filename;
+
+    /**
+     * Default flag.
+     */
     private final String defaultCommandLineFlag;
 
-    public FileToStringCmd(final String filename, final String defaultCommandLineFlag) {
-        this.filename = filename;
-        this.defaultCommandLineFlag = defaultCommandLineFlag;
+    /**
+     * Constructor with filename and flag.
+     * @param argFilename filename
+     * @param argDefaultCommandLineFlag default flag
+     */
+    public FileToStringCmd(
+        final String argFilename,
+        final String argDefaultCommandLineFlag
+    ) {
+        this.filename = argFilename;
+        this.defaultCommandLineFlag = argDefaultCommandLineFlag;
     }
 
-    public FileToStringCmd(final String filename) {
-        this(filename, null);
+    /**
+     * Constructor with filename only.
+     * @param argFilename filname
+     */
+    public FileToStringCmd(final String argFilename) {
+        this(argFilename, null);
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(T iData) throws ConvertToStringCmdException {
+    public List<String> convertToCommandLineParameter(final T iData)
+            throws ConvertToStringCmdException {
         final List<String> result = new ArrayList<>();
         Optional.ofNullable(defaultCommandLineFlag).ifPresent(result::add);
-        if(filename == null) {
+        if (filename == null) {
             throw new ConvertToStringCmdException("There is no filename");
         }
         result.add(filename);
@@ -53,7 +76,7 @@ public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandL
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -61,8 +84,11 @@ public class FileToStringCmd<T extends IData> implements IConvertIDataToCommandL
             return false;
         }
         FileToStringCmd that = (FileToStringCmd) o;
-        return Objects.equals(filename, that.filename) &&
-                Objects.equals(defaultCommandLineFlag, that.defaultCommandLineFlag);
+        return Objects.equals(filename, that.filename)
+            && Objects.equals(
+                defaultCommandLineFlag,
+                that.defaultCommandLineFlag
+            );
     }
 
     @Override

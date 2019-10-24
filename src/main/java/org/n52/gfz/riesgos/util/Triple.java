@@ -18,32 +18,67 @@ package org.n52.gfz.riesgos.util;
 
 import java.util.Objects;
 
-public class Triple<A, B, C> {
+/**
+ * Class for a triple.
+ * @param <A> Type of first component
+ * @param <B> Type of second component
+ * @param <C> Type of third component
+ */
+public final class Triple<A, B, C> {
 
+    /**
+     * First component.
+     */
     private final A first;
+
+    /**
+     * Second component.
+     */
     private final B second;
+
+    /**
+     * Third component.
+     */
     private final C third;
 
+    /**
+     * Constructor with all threee components.
+     * @param aFirst First component
+     * @param aSecond Second component
+     * @param aThird Third component
+     */
     public Triple(final A aFirst, final B aSecond, final C aThird) {
         this.first = aFirst;
         this.second = aSecond;
         this.third = aThird;
     }
 
+    /**
+     * Get first component.
+     * @return First component
+     */
     public A getFirst() {
         return first;
     }
 
+    /**
+     * Get second component.
+     * @return Second component
+     */
     public B getSecond() {
         return second;
     }
 
+    /**
+     * Get third component.
+     * @return Third component
+     */
     public C getThird() {
         return third;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -51,9 +86,9 @@ public class Triple<A, B, C> {
             return false;
         }
         Triple<?, ?, ?> triple = (Triple<?, ?, ?>) o;
-        return Objects.equals(first, triple.first) &&
-                Objects.equals(second, triple.second) &&
-                Objects.equals(third, triple.third);
+        return Objects.equals(first, triple.first)
+            && Objects.equals(second, triple.second)
+            && Objects.equals(third, triple.third);
     }
 
     @Override

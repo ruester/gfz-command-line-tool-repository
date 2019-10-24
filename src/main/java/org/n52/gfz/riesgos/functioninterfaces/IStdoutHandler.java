@@ -19,13 +19,13 @@ package org.n52.gfz.riesgos.functioninterfaces;
 import java.io.Serializable;
 
 /**
- * Handler for stdout text
+ * Handler for stdout text.
  */
 @FunctionalInterface
 public interface IStdoutHandler extends Serializable {
 
     /**
-     * Handles the text on stdout
+     * Handles the text on stdout.
      * @param stdout text from stdout
      */
     void handleStdout(String stdout);

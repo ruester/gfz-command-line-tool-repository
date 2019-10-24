@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.apache.commons.io.IOUtils;
@@ -29,25 +27,26 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Implementation to convert a file binding to a byte array
+ * Implementation to convert a file binding to a byte array.
  */
-public class ConvertGenericFileDataBindingToBytes implements IConvertIDataToByteArray<GenericFileDataBinding>{
+public final class ConvertGenericFileDataBindingToBytes
+    implements IConvertIDataToByteArray<GenericFileDataBinding> {
 
     @Override
-    public byte[] convertToBytes(final GenericFileDataBinding binding) throws ConvertToBytesException {
-
+    public byte[] convertToBytes(final GenericFileDataBinding binding)
+            throws ConvertToBytesException {
         final File file = binding.getPayload().getBaseFile(false);
 
-        try(FileInputStream inputStream = new FileInputStream(file)) {
+        try (FileInputStream inputStream = new FileInputStream(file)) {
             return IOUtils.toByteArray(inputStream);
-        } catch(final IOException exception) {
+        } catch (final IOException exception) {
             throw new ConvertToBytesException(exception);
         }
 
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

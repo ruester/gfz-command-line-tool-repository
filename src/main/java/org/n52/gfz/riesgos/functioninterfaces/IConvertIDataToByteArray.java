@@ -20,16 +20,18 @@ import org.n52.gfz.riesgos.exceptions.ConvertToBytesException;
 import org.n52.wps.io.data.IData;
 
 /**
- * Interface to convert an IData element to a byte array
+ * Interface to convert an IData element to a byte array.
+ * @param <T> Type of data
  */
 @FunctionalInterface
 public interface IConvertIDataToByteArray<T extends IData> {
 
     /**
-     * converts the IData to a byte array
+     * Converts the IData to a byte array.
      * @param iData element to convert
      * @return byte array
-     * @throws ConvertToBytesException exception that indicates that the element could not converted to byte array
+     * @throws ConvertToBytesException exception that indicates that the
+     *                                 element could not converted to byte array
      */
     byte[] convertToBytes(T iData) throws ConvertToBytesException;
 }

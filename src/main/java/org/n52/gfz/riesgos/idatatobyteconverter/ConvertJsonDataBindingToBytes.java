@@ -12,8 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 package org.n52.gfz.riesgos.idatatobyteconverter;
@@ -48,9 +46,9 @@ public class ConvertJsonDataBindingToBytes
         final Optional<JSONObject> asObject = jsonObject.getJsonObject();
         final Optional<JSONArray> asArray = jsonObject.getJsonArray();
         final String content;
-        if(asObject.isPresent()) {
+        if (asObject.isPresent()) {
             content = asObject.get().toJSONString();
-        } else if(asArray.isPresent()) {
+        } else if (asArray.isPresent()) {
             content = asArray.get().toJSONString();
         } else {
             throw new ConvertToBytesException(

@@ -52,8 +52,8 @@ public class DoubleGridToFloat
 
         final Raster baseRaster = gridCoverage2D.getRenderedImage().getData();
 
-        for (int indexWidth=0; indexWidth < width; indexWidth += 1) {
-            for (int indexHeight=0; indexHeight < height; indexHeight += 1) {
+        for (int indexWidth = 0; indexWidth < width; indexWidth += 1) {
+            for (int indexHeight = 0; indexHeight < height; indexHeight += 1) {
                 final double value = baseRaster.getSampleDouble(
                         indexWidth, indexHeight, 0);
 

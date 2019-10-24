@@ -12,8 +12,6 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 package org.n52.gfz.riesgos.commandlineparametertransformer;
@@ -31,24 +29,34 @@ import java.util.Optional;
  * Used to add a command line argument.
  * Can also handle default flags.
  */
-public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineParameter<LiteralIntBinding> {
+public final class LiteralIntBindingToStringCmd
+    implements IConvertIDataToCommandLineParameter<LiteralIntBinding> {
 
+    /**
+     * Default flag.
+     */
     private final String defaultFlag;
 
     /**
-     * Constructor with a default flag
-     * @param defaultFlag flag that is before the element (for example --level before a level value)
+     * Constructor with a default flag.
+     * @param argDefaultFlag flag that is before the element
+     *                       (for example --level before a level value)
      */
-    public LiteralIntBindingToStringCmd(final String defaultFlag) {
-        this.defaultFlag = defaultFlag;
+    public LiteralIntBindingToStringCmd(final String argDefaultFlag) {
+        this.defaultFlag = argDefaultFlag;
     }
 
+    /**
+     * Constructor for no arguments.
+     */
     public LiteralIntBindingToStringCmd() {
         this(null);
     }
 
     @Override
-    public List<String> convertToCommandLineParameter(final LiteralIntBinding binding) {
+    public List<String> convertToCommandLineParameter(
+        final LiteralIntBinding binding
+    ) {
         final List<String> result = new ArrayList<>();
 
         Optional.ofNullable(defaultFlag).ifPresent(result::add);
@@ -56,12 +64,11 @@ public class LiteralIntBindingToStringCmd implements IConvertIDataToCommandLineP
         final Integer value = binding.getPayload();
         result.add(String.valueOf(value));
 
-
         return result;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

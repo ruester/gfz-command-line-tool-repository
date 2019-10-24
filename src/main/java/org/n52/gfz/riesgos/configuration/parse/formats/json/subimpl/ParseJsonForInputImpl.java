@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.configuration.parse.formats.json.subimpl;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.json.simple.JSONObject;
@@ -36,8 +34,6 @@ import java.util.Optional;
  * Sub implementation for parsing a single input input.
  */
 public class ParseJsonForInputImpl extends AbstractParseJson {
-
-
 
     /**
      * Constant with the field attribute for useAs.
@@ -90,10 +86,11 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
      * Default constructor.
      */
     public ParseJsonForInputImpl() {
-        this.optionsToUseAsCommandLineArgument = ToCommandLineArgumentOption.asMap();
+        this.optionsToUseAsCommandLineArgument =
+            ToCommandLineArgumentOption.asMap();
+
         this.optionsToUseAsStdinInput = ToStdinInputOption.asMap();
         this.optionsToUseAsFileInput = ToFileInputOption.asMap();
-
         this.optionsForDefaultFormat = DefaultFormatOption.asMap();
     }
 
@@ -126,8 +123,7 @@ public class ParseJsonForInputImpl extends AbstractParseJson {
         final Optional<String> defaultFormatStr =
                 getOptionalString(json, DEFAULT_FORMAT);
 
-
-        if(defaultFormatStr.isPresent()) {
+        if (defaultFormatStr.isPresent()) {
             if (!optionsForDefaultFormat.containsKey(defaultFormatStr.get())) {
                 throw new ParseConfigurationException(
                         defaultFormatStr.get()

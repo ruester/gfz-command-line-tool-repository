@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.readidatafromfiles;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
@@ -33,12 +31,21 @@ import java.util.Objects;
 /**
  * Implementation that reads a single byte array for one single file.
  * Can be used with every IConvertByteArrayToIData implementation
+ * @param <T> Type of the data
  */
-public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIDataFromFiles<T> {
+public final class ReadSingleByteStreamFromPath<T extends IData>
+    implements IReadIDataFromFiles<T> {
 
     private static final long serialVersionUID = 7014190269474895564L;
 
+    /**
+     * The converter.
+     */
     private final IConvertByteArrayToIData<T> converter;
+
+    /**
+     * Binding class.
+     */
     private final Class<? extends IData> bindingClass;
 
     /**
@@ -46,23 +53,34 @@ public class ReadSingleByteStreamFromPath<T extends IData> implements IReadIData
      * byte[] to IData and just reads from the single given file.
      *
      * Can be used in all situations where one file produces the iData
+     *
+     * @param argConverter converter
+     * @param argBindingClass binding class
      */
     public ReadSingleByteStreamFromPath(
-            final IConvertByteArrayToIData<T> converter,
-            final Class<T> bindingClass) {
-        this.converter = converter;
-        this.bindingClass = bindingClass;
+            final IConvertByteArrayToIData<T> argConverter,
+            final Class<T> argBindingClass) {
+        this.converter = argConverter;
+        this.bindingClass = argBindingClass;
     }
 
     @Override
-    public DataWithRecreatorTuple<T> readFromFiles(IExecutionContext context, String workingDirectory, String path) throws ConvertToIDataException, IOException {
-
-        final byte[] content = context.readFromFile(Paths.get(workingDirectory, path).toString());
-        return new DataWithRecreatorTuple<>(converter.convertToIData(content), new RecreateFromByteArray(content, converter, bindingClass));
+    public DataWithRecreatorTuple<T> readFromFiles(
+        final IExecutionContext context,
+        final String workingDirectory,
+        final String path
+    ) throws ConvertToIDataException, IOException {
+        final byte[] content = context.readFromFile(
+            Paths.get(workingDirectory, path).toString()
+        );
+        return new DataWithRecreatorTuple<>(
+            converter.convertToIData(content),
+            new RecreateFromByteArray(content, converter, bindingClass)
+        );
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

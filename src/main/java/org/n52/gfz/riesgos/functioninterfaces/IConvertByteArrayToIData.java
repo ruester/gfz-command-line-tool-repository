@@ -1,5 +1,7 @@
 package org.n52.gfz.riesgos.functioninterfaces;
 
+import java.io.Serializable;
+
 /*
  * Copyright (C) 2019 GFZ German Research Centre for Geosciences
  *
@@ -19,19 +21,19 @@ package org.n52.gfz.riesgos.functioninterfaces;
 import org.n52.gfz.riesgos.exceptions.ConvertToIDataException;
 import org.n52.wps.io.data.IData;
 
-import java.io.Serializable;
-
 /**
- * Interface to convert a byte array to an IData element
+ * Interface to convert a byte array to an IData element.
+ * @param <T> Type of data
  */
 @FunctionalInterface
-public interface IConvertByteArrayToIData<T extends IData> extends Serializable {
-
+public interface IConvertByteArrayToIData<T extends IData>
+    extends Serializable {
     /**
-     * converts the byte array to an IData element
+     * Converts the byte array to an IData element.
      * @param content byte array to convert
      * @return IData element
-     * @throws ConvertToIDataException exception if there is an internal error / exception on conversion
+     * @throws ConvertToIDataException exception if there is an internal error /
+     *                                 exception on conversion
      */
     T convertToIData(byte[] content) throws ConvertToIDataException;
 }

@@ -24,28 +24,59 @@ import java.util.Map;
  */
 
 /**
- * Utility class for XML schema translation
+ * Utility class for XML schema translation.
  */
 public class XmlSchemaFileTranslator {
-    public static final String quakemlSchemaResource = "/org/n52/gfz/riesgos/validators/xml/QuakeML-BED-1.2.xsd";
-    public static final String shakemapSchemaResource = "/org/n52/gfz/riesgos/validators/xml/shakemap.xsd";
-    final Map<String, URI> translator;
+    /**
+     * Location of the QuakeML schema file.
+     */
+    public static final String QUAKEML_SCHEMA_RES =
+        "/org/n52/gfz/riesgos/validators/xml/QuakeML-BED-1.2.xsd";
 
+    /**
+     * Location of the ShakeMap schema file.
+     */
+    public static final String SHAKEMAP_SCHEMA_RES =
+        "/org/n52/gfz/riesgos/validators/xml/shakemap.xsd";
+
+    /**
+     * Mapping of all available schema translations.
+     */
+    private final Map<String, URI> translator;
+
+    /**
+     * Initialization of the mappings.
+     */
     public XmlSchemaFileTranslator() {
         translator = new HashMap<>();
         URI quakemlSchemaFile = null,
             shakemapSchemaFile = null;
 
         try {
-            quakemlSchemaFile = getClass().getResource(quakemlSchemaResource).toURI();
-            shakemapSchemaFile = getClass().getResource(shakemapSchemaResource).toURI();
+            quakemlSchemaFile = getClass().getResource(
+                QUAKEML_SCHEMA_RES
+            ).toURI();
+            shakemapSchemaFile = getClass().getResource(
+                SHAKEMAP_SCHEMA_RES
+            ).toURI();
         } catch (URISyntaxException e) { }
 
-        translator.put("http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd", quakemlSchemaFile);
-        translator.put("http://earthquake.usgs.gov/eqcenter/shakemap", shakemapSchemaFile);
+        translator.put(
+            "http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd",
+            quakemlSchemaFile
+        );
+        translator.put(
+            "http://earthquake.usgs.gov/eqcenter/shakemap",
+            shakemapSchemaFile
+        );
     }
 
-    public static boolean isURL(String str) {
+    /**
+     * Check if a given string is a URL.
+     * @param str String to check
+     * @return true if string is a URL, otherwise false
+     */
+    public static boolean isURL(final String str) {
         try {
             URL url = new URL(str);
             url.openStream().close();
@@ -56,10 +87,11 @@ public class XmlSchemaFileTranslator {
     }
 
     /**
+     * Translate given URI to URL or File.
      * @param uri uri that should be changed
      * @return File
      */
-    public Object translateUri(String uri) {
+    public Object translateUri(final String uri) {
         if (translator.containsKey(uri)) {
             try {
                 return translator.get(uri).toURL();

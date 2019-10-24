@@ -14,8 +14,6 @@ package org.n52.gfz.riesgos.idatatobyteconverter;
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the Licence for the specific language governing permissions and
  *  limitations under the Licence.
- *
- *
  */
 
 import org.apache.commons.io.IOUtils;
@@ -29,24 +27,25 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Implementation to convert a GeotiffBinding to a byte array
+ * Implementation to convert a GeotiffBinding to a byte array.
  */
-public class ConvertGeotiffBindingToBytes implements IConvertIDataToByteArray<GeotiffBinding> {
+public final class ConvertGeotiffBindingToBytes
+    implements IConvertIDataToByteArray<GeotiffBinding> {
 
     @Override
-    public byte[] convertToBytes(final GeotiffBinding binding) throws ConvertToBytesException {
-
+    public byte[] convertToBytes(final GeotiffBinding binding)
+            throws ConvertToBytesException {
         final File file = binding.getPayload();
 
-        try(FileInputStream fileReader = new FileInputStream(file)) {
+        try (FileInputStream fileReader = new FileInputStream(file)) {
             return IOUtils.toByteArray(fileReader);
-        } catch(final IOException exception) {
+        } catch (final IOException exception) {
             throw new ConvertToBytesException(exception);
         }
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

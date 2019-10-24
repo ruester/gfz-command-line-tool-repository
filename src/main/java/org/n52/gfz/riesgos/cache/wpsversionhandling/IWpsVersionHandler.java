@@ -18,10 +18,8 @@ package org.n52.gfz.riesgos.cache.wpsversionhandling;
 
 /**
  * Interface to get the versions for the wps and the repository.
- * TODO: second implementation
  */
 public interface IWpsVersionHandler {
-
     /**
      *
      * @return version of the wps server
