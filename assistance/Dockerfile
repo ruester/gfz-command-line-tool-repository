@@ -106,15 +106,24 @@ RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1
 
 # add or build needed webapps:
 
+# geoserver
 RUN mkdir -pv /usr/local/tomcat/webapps/geoserver
 
 WORKDIR /usr/local/tomcat/webapps/geoserver
-RUN wget https://datapacket.dl.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
+RUN wget https://downloads.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
     unzip geoserver-2.10.4-war.zip && \
     rm -f geoserver-2.10.4-war.zip && \
     unzip geoserver.war && \
+    wget https://repo1.maven.org/maven2/com/thetransactioncompany/cors-filter/1.9.3/cors-filter-1.9.3.jar \
+        -O WEB-INF/lib/cors-filter-1.9.3.jar && \
+    wget https://repo1.maven.org/maven2/com/thetransactioncompany/java-property-utils/1.9.1/java-property-utils-1.9.1.jar \
+        -O WEB-INF/lib/java-property-utils-1.9.1.jar && \
+    rm -f WEB-INF/web.xml && \
     rm -f geoserver.war
 
+COPY ./assistance/geoserver-web.xml /usr/local/tomcat/webapps/geoserver/WEB-INF/web.xml
+
+# clone needed git repos:
 WORKDIR /root/git
 
 # if you want to use the master branch from wps-js you need the complete history:
