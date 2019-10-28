@@ -9497,6 +9497,85 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           <hashTree/>
         </hashTree>
       </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="FlooddamageProcess" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1373789594000</longProp>
+        <longProp name="ThreadGroup.end_time">1373789594000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration">10</stringProp>
+        <stringProp name="ThreadGroup.delay">5</stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Flooddamage with Tiff output" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.FlooddamageProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;duration-h&quot;&gt;&#xd;
+        &lt;wps:Reference mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot; xlink:href=&quot;http://www.sd-kama.de/geoserver/rain_cotopaxi/wcs?request=GetCoverage&amp;amp;service=WCS&amp;amp;format=image/tiff&amp;amp;version=2.0.0&amp;amp;CoverageId=rain_cotopaxi:duration_latacunga_city&quot;/&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsmax-ms&quot;&gt;&#xd;
+        &lt;wps:Reference mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot; xlink:href=&quot;http://www.sd-kama.de/geoserver/rain_cotopaxi/wcs?request=GetCoverage&amp;amp;service=WCS&amp;amp;format=image/tiff&amp;amp;version=2.0.0&amp;amp;CoverageId=rain_cotopaxi:v_at_wdmax_latacunga_city&quot;/&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;wdmax-cm&quot;&gt;&#xd;
+        &lt;wps:Reference mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot; xlink:href=&quot;http://www.sd-kama.de/geoserver/rain_cotopaxi/wcs?request=GetCoverage&amp;amp;service=WCS&amp;amp;format=image/tiff&amp;amp;version=2.0.0&amp;amp;CoverageId=rain_cotopaxi:wd_max_latacunga_city&quot;/&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;damage_manzanas&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;damage_buildings&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-240210360">&lt;wps:Output id=&quot;damage_manzanas&quot;&gt;</stringProp>
+              <stringProp name="-167849274">&lt;wps:Data</stringProp>
+              <stringProp name="-146340786">&lt;wps:Output id=&quot;damage_buildings&quot;&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="QuakeMLTransformationProcess" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
