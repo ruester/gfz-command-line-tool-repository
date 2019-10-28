@@ -43,7 +43,7 @@ FROM tomcat:9-jre8
 # for example with a volume:
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
-ARG WPS_VERSION=4.0.0-beta.9
+ARG WPS_VERSION=4.0.0-beta.10
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -162,7 +162,7 @@ RUN git checkout -b current v${WPS_VERSION} && \
     sed -i -e 's@base-package="org\.n52\.wps"@base-package="org\.n52"@' /usr/local/tomcat/webapps/wps/WEB-INF/classes/dispatcher-servlet.xml
 
 # add missing libraries needed by gfz-command-line-tool-repository:
-RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.9/commons-compress-1.9.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/commons-compress-1.9.jar && \
+RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.18/commons-compress-1.18.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/commons-compress-1.18.jar && \
     wget https://repo1.maven.org/maven2/org/apache/ant/ant/1.10.5/ant-1.10.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/ant-1.10.5.jar && \
     wget http://repo.boundlessgeo.com/main/org/geotools/gt-process-raster/13.5/gt-process-raster-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-raster-13.5.jar && \
     wget http://repo.boundlessgeo.com/main/org/geotools/gt-process/13.5/gt-process-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-13.5.jar && \
