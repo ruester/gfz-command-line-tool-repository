@@ -17,11 +17,15 @@ before_script:
   - java -version
 
 .validate: &validate
+  except:
+    - schedules
   stage: build
   script:
     - 'mvn $MAVEN_CLI_OPTS clean test-compile'
 
 .verify: &verify
+  except:
+    - schedules
   stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS clean verify'
@@ -33,6 +37,23 @@ verify:jdk8:
   <<: *verify
 
 checkstyle:
+  except:
+    - schedules
   stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS clean checkstyle:checkstyle'
+
+integration_test:
+  only:
+    - schedules
+  script:
+    - wget "http://mirror.synyx.de/apache//jmeter/binaries/apache-jmeter-5.1.1.tgz" -O apache-jmeter-5.1.1.tgz
+    - tar xf apache-jmeter-5.1.1.tgz
+    - cd integration-tests
+    - bash ../apache-jmeter-5.1.1/bin/jmeter.sh -n -t RIESGOS-integration-tests.jmx -o jmeter-report -l jmeter-log.txt -e
+    - cat jmeter-log.txt
+    - if [ "$(fgrep -c 'Test failed' jmeter-log.txt)" != "0" ]; then false; else true; fi
+  artifacts:
+    name: jmeter-report
+    paths:
+      - ${CI_PROJECT_DIR}/integration-tests/jmeter-report
