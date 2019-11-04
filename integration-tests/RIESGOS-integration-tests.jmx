@@ -8775,14 +8775,14 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
     &lt;/wps:Input&gt;&#xd;
     &lt;wps:Input id=&quot;schema&quot;&gt;&#xd;
         &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
-            &lt;wps:LiteralValue&gt;SARA.0&lt;/wps:LiteralValue&gt;&#xd;
+            &lt;wps:LiteralValue&gt;SARA_v1.0&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
     &lt;wps:Input id=&quot;fragility&quot;&gt;&#xd;
         &lt;wps:Data mimeType=&quot;application/json&quot;&gt;&#xd;
 {&#xd;
     &quot;meta&quot;: {&#xd;
-        &quot;id&quot;: &quot;SARA.0&quot;,&#xd;
+        &quot;id&quot;: &quot;SARA_v1.0&quot;,&#xd;
         &quot;assetCategory&quot;: &quot;buildings&quot;,&#xd;
         &quot;lossCategory&quot;: &quot;structural&quot;,&#xd;
         &quot;taxonomy_source&quot;: &quot;GEM&quot;,&#xd;
@@ -9472,6 +9472,95 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-90509732">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:[[[[</stringProp>
+              <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
+              <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
+              <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
+              <stringProp name="-942479675">&quot;name&quot;:</stringProp>
+              <stringProp name="34624981">&quot;id&quot;:</stringProp>
+              <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
+              <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
+              <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
+              <stringProp name="344576853">&quot;Buildings&quot;:</stringProp>
+              <stringProp name="-419238898">&lt;wps:Output id=&quot;damage&quot;&gt;</stringProp>
+              <stringProp name="-1178802068">&quot;expo&quot;:</stringProp>
+              <stringProp name="2144092459">&quot;Taxonomy&quot;:</stringProp>
+              <stringProp name="-905014860">&quot;transitions&quot;:</stringProp>
+              <stringProp name="-886931028">&quot;from_damage_state&quot;:</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Deus with big inputs" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.DeusProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;intensity&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+${__FileToString(./deus_post_intensity.xml,,)}&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;exposure&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;application/json&quot;&gt;&#xd;
+${__FileToString(./deus_post_exposure.json,,)}&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;schema&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;SARA_v1.0&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;fragility&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;application/json&quot;&gt;&#xd;
+${__FileToString(./deus_post_fragility.json,,)}&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;updated_exposure&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;transition&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;damage&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="321139178">&lt;wps:Output id=&quot;updated_exposure&quot;&gt;</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
+              <stringProp name="-1388392993">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:[[[</stringProp>
               <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
