@@ -14,7 +14,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <wps.version>4.0.0-beta.8</wps.version>
+        <wps.version>4.0.0-beta.10</wps.version>
         <java-version>1.8</java-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
