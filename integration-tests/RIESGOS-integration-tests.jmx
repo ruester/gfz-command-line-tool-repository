@@ -4596,7 +4596,7 @@
         <stringProp name="ThreadGroup.delay">5</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with NRML + JSON output" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with JSON output" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -4639,7 +4639,6 @@
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;selectedRowsXml&quot; transmission=&quot;value&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -4673,23 +4672,10 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="2084386146">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;</stringProp>
-              <stringProp name="912014172">&lt;wps:Output id=&quot;selectedRowsXml&quot;&gt;</stringProp>
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
               <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
-              <stringProp name="58801311">&lt;nrml</stringProp>
-              <stringProp name="684322147">&lt;exposureModel id=&quot;SARA_v1.0&quot; category=&quot;buildings&quot; taxonomySource=&quot;GEM&quot;&gt;</stringProp>
-              <stringProp name="1949336062">&lt;description&gt;</stringProp>
-              <stringProp name="323087357">&lt;conversions&gt;</stringProp>
-              <stringProp name="784630111">&lt;assets&gt;</stringProp>
-              <stringProp name="1628338764">&lt;asset id=&quot;</stringProp>
-              <stringProp name="1274305071">&lt;occupancies&gt;</stringProp>
-              <stringProp name="355983860">&lt;costs&gt;</stringProp>
-              <stringProp name="-1412283615">&lt;location lon=&quot;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
-              <stringProp name="-908696175">xmlns:gml=&quot;http://www.opengis.net/gml&quot;</stringProp>
-              <stringProp name="-1073580409">xmlns=&quot;http://openquake.org/xmlns/nrml/0.5&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
               <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
@@ -4744,7 +4730,6 @@
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;selectedRowsXml&quot; transmission=&quot;value&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -4778,17 +4763,9 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="2084386146">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;</stringProp>
-              <stringProp name="912014172">&lt;wps:Output id=&quot;selectedRowsXml&quot;&gt;</stringProp>
               <stringProp name="7234106">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;features&quot;:[],&quot;type&quot;:&quot;FeatureCollection&quot;}&lt;/wps:Data&gt;</stringProp>
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
-              <stringProp name="58801311">&lt;nrml</stringProp>
-              <stringProp name="684322147">&lt;exposureModel id=&quot;SARA_v1.0&quot; category=&quot;buildings&quot; taxonomySource=&quot;GEM&quot;&gt;</stringProp>
-              <stringProp name="1949336062">&lt;description&gt;</stringProp>
-              <stringProp name="323087357">&lt;conversions&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-              <stringProp name="-908696175">xmlns:gml=&quot;http://www.opengis.net/gml&quot;</stringProp>
-              <stringProp name="-1073580409">xmlns=&quot;http://openquake.org/xmlns/nrml/0.5&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -4840,7 +4817,6 @@
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;selectedRowsXml&quot; transmission=&quot;value&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -4874,23 +4850,10 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="2084386146">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;text/xml&quot;&gt;</stringProp>
-              <stringProp name="912014172">&lt;wps:Output id=&quot;selectedRowsXml&quot;&gt;</stringProp>
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
               <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
-              <stringProp name="58801311">&lt;nrml</stringProp>
-              <stringProp name="684322147">&lt;exposureModel id=&quot;SARA_v1.0&quot; category=&quot;buildings&quot; taxonomySource=&quot;GEM&quot;&gt;</stringProp>
-              <stringProp name="1949336062">&lt;description&gt;</stringProp>
-              <stringProp name="323087357">&lt;conversions&gt;</stringProp>
-              <stringProp name="784630111">&lt;assets&gt;</stringProp>
-              <stringProp name="1628338764">&lt;asset id=&quot;</stringProp>
-              <stringProp name="1274305071">&lt;occupancies&gt;</stringProp>
-              <stringProp name="355983860">&lt;costs&gt;</stringProp>
-              <stringProp name="-1412283615">&lt;location lon=&quot;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
-              <stringProp name="-908696175">xmlns:gml=&quot;http://www.opengis.net/gml&quot;</stringProp>
-              <stringProp name="-1073580409">xmlns=&quot;http://openquake.org/xmlns/nrml/0.5&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
               <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
