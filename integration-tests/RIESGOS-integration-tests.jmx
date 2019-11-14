@@ -681,7 +681,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1128900818">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1730534278">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -786,14 +786,6 @@
         &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
-        &lt;ows:Title&gt;selectedRowsXml&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;selectedRowsXml&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot;/&gt;
-          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
         &lt;ows:Title&gt;selectedRowsGeoJson&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;selectedRowsGeoJson&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
@@ -857,7 +849,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1625462235">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="428989053">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -877,14 +869,6 @@
           &lt;/LiteralDataDomain&gt;
         &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;selectedRowsXml&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;selectedRowsXml&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot;/&gt;
-          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;selectedRowsGeoJson&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;selectedRowsGeoJson&lt;/ows:Identifier&gt;
@@ -949,7 +933,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1744981502">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1143695012">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -966,6 +950,8 @@
               &lt;ows:Value&gt;SARA_v1.0&lt;/ows:Value&gt;
               &lt;ows:Value&gt;HAZUS_v1.0&lt;/ows:Value&gt;
               &lt;ows:Value&gt;SUPPASRI2013_v2.0&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Mavrouli_et_al_2014&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Torres_Corredor_et_al_2017&lt;/ows:Value&gt;
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;SARA_v1.0&lt;/ows:DefaultValue&gt;
@@ -2591,7 +2577,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1128900818">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1730534278">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2696,14 +2682,6 @@
         &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
-        &lt;ows:Title&gt;selectedRowsXml&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;selectedRowsXml&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot;/&gt;
-          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
         &lt;ows:Title&gt;selectedRowsGeoJson&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;selectedRowsGeoJson&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
@@ -2767,7 +2745,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1625462235">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="428989053">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2787,14 +2765,6 @@
           &lt;/LiteralDataDomain&gt;
         &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;selectedRowsXml&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;selectedRowsXml&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/xml&quot;/&gt;
-          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;selectedRowsGeoJson&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;selectedRowsGeoJson&lt;/ows:Identifier&gt;
@@ -2859,7 +2829,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1744981502">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1143695012">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2876,6 +2846,8 @@
               &lt;ows:Value&gt;SARA_v1.0&lt;/ows:Value&gt;
               &lt;ows:Value&gt;HAZUS_v1.0&lt;/ows:Value&gt;
               &lt;ows:Value&gt;SUPPASRI2013_v2.0&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Mavrouli_et_al_2014&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Torres_Corredor_et_al_2017&lt;/ows:Value&gt;
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;SARA_v1.0&lt;/ows:DefaultValue&gt;
