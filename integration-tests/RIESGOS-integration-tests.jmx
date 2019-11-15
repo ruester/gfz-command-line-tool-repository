@@ -681,7 +681,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1730534278">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1780400986">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -748,6 +748,8 @@
           &lt;LiteralDataDomain&gt;
             &lt;ows:AllowedValues&gt;
               &lt;ows:Value&gt;SARA_v1.0&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Mavrouli_et_al_2014&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Torres_Corredor_et_al_2017&lt;/ows:Value&gt;
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;SARA_v1.0&lt;/ows:DefaultValue&gt;
@@ -2577,7 +2579,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1730534278">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1780400986">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2644,6 +2646,8 @@
           &lt;LiteralDataDomain&gt;
             &lt;ows:AllowedValues&gt;
               &lt;ows:Value&gt;SARA_v1.0&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Mavrouli_et_al_2014&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Torres_Corredor_et_al_2017&lt;/ows:Value&gt;
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;SARA_v1.0&lt;/ows:DefaultValue&gt;
@@ -4568,7 +4572,7 @@
         <stringProp name="ThreadGroup.delay">5</stringProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with JSON output" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with SARA" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
@@ -4599,6 +4603,188 @@
     &lt;wps:Input id=&quot;schema&quot;&gt;&#xd;
         &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
             &lt;wps:LiteralValue&gt;SARA_v1.0&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;assettype&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;res&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;querymode&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
+              <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
+              <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
+              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with Torres Corredor" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.AssetmasterProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;lonmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-78.85&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;lonmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-78.43&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;latmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-1.05&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;latmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-0.62&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;schema&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;Torres_Corredor_et_al_2017&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;assettype&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;res&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;querymode&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+&lt;/wps:Execute&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
+              <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
+              <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
+              <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
+              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with Mavrouli" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:Execute service=&quot;WPS&quot; version=&quot;2.0.0&quot; xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0        http://schemas.opengis.net/wps/2.0/wpsExecute.xsd&quot; response=&quot;document&quot; mode=&quot;sync&quot;&gt;&#xd;
+    &lt;ows:Identifier&gt;org.n52.gfz.riesgos.algorithm.impl.AssetmasterProcess&lt;/ows:Identifier&gt;&#xd;
+    &lt;wps:Input id=&quot;lonmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-78.85&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;lonmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-78.43&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;latmin&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-1.05&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;latmax&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;-0.62&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;schema&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;Mavrouli_et_al_2014&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
     &lt;wps:Input id=&quot;assettype&quot;&gt;&#xd;
