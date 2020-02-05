@@ -64,6 +64,9 @@ public enum HasherSingleton implements IHasher {
             final IConfiguration configuration,
             final Map<String, List<IData>> inputData,
             final Set<String> requestedParameters) {
-        return wrappedHasher.hash(configuration, inputData, requestedParameters);
+        return wrappedHasher.hash(
+            configuration,
+            inputData,
+            requestedParameters);
     }
 }

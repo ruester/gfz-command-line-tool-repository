@@ -948,21 +948,26 @@ public class BaseGfzRiesgosService
         private void readFromOutputFiles(
                 final IExecutionContext context) throws ExceptionReport {
 
-            final Set<String> requestedParameters = getSetWithRequestedOutputIds();
+            final Set<String> requestedParameters =
+                    getSetWithRequestedOutputIds();
             try {
                 for (final IOutputParameter outputValue : outputIdentifiers) {
-                    if (requestedParameters.contains(outputValue.getIdentifier())) {
+                    if (requestedParameters.contains(
+                            outputValue.getIdentifier())
+                    ) {
                         try {
                             final Optional<String> optionalPath =
-                                    outputValue.getPathToWriteToOrReadFromFile();
+                                outputValue.getPathToWriteToOrReadFromFile();
                             final Optional<IReadIDataFromFiles>
-                                    optionalFunctionToReadFromFiles =
-                                    outputValue.getFunctionToReadIDataFromFiles();
+                                optionalFunctionToReadFromFiles =
+                                outputValue.getFunctionToReadIDataFromFiles();
                             if (optionalPath.isPresent()
-                                    && optionalFunctionToReadFromFiles.isPresent()) {
+                                && optionalFunctionToReadFromFiles.isPresent()
+                            ) {
 
                                 final String path = optionalPath.get();
-                                final IReadIDataFromFiles functionToReadFromFiles =
+                                final IReadIDataFromFiles
+                                        functionToReadFromFiles =
                                         optionalFunctionToReadFromFiles.get();
                                 final DataWithRecreatorTuple readResult =
                                         functionToReadFromFiles.readFromFiles(
