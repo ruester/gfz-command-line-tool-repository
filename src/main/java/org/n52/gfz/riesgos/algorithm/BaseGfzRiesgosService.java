@@ -324,6 +324,11 @@ public class BaseGfzRiesgosService
         ));
     }
 
+    /**
+     * This returns a set of the identifiers (as strinds) that the user
+     * requests.
+     * @return Set with output parameter identifiers.
+     */
     private Set<String> getSetWithRequestedOutputIds() {
         final Set<String> requestedParameters = new HashSet<>();
 
