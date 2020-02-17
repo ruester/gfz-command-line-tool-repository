@@ -21,6 +21,7 @@ import org.n52.wps.io.data.IData;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This is the interface for the computation of the
@@ -35,10 +36,12 @@ public interface IHasher {
      * Computes the hash for the configuration and the input data.
      * @param configuration configuration of the process that should be cached
      * @param inputData input data for the process
+     * @param requestedParameters the ids of the output that the user requested
      * @return hash (unique for the combination of configuration and input data)
      */
     String hash(
             IConfiguration configuration,
-            Map<String, List<IData>> inputData);
+            Map<String, List<IData>> inputData,
+            Set<String> requestedParameters);
 
 }

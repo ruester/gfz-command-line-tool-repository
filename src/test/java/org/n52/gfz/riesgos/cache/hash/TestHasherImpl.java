@@ -23,8 +23,10 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
@@ -82,8 +84,10 @@ public class TestHasherImpl {
 
         final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
-        final String hash1 = hasher.hash(configuration1, inputData1);
-        final String hashSameAs1 = hasher.hash(configurationSameAs1, inputDataSameAs1);
+        final Set<String> emptySet = new HashSet<>(Collections.emptyList());
+
+        final String hash1 = hasher.hash(configuration1, inputData1, emptySet);
+        final String hashSameAs1 = hasher.hash(configurationSameAs1, inputDataSameAs1, emptySet);
 
         assertEquals("Both hashes are the same", hash1, hashSameAs1);
 
@@ -97,16 +101,20 @@ public class TestHasherImpl {
                         "times", false, null, null, null, null)
                 ).build();
 
-        final String hash2 = hasher.hash(configuration2, inputData1);
+        final String hash2 = hasher.hash(configuration2, inputData1, emptySet);
 
         assertNotEquals("The hashes are different", hash1, hash2);
 
         final Map<String, List<IData>> inputData2 = new HashMap<>();
         inputData2.put("times", Collections.singletonList(new LiteralIntBinding(4)));
 
-        final String hash3 = hasher.hash(configuration1, inputData2);
+        final String hash3 = hasher.hash(configuration1, inputData2, emptySet);
 
         assertNotEquals("The hashes are different", hash1, hash3);
+
+        final String hash1OtherSet = hasher.hash(configuration1, inputData1, new HashSet<>(Arrays.asList("parameter1")));
+
+        assertNotEquals("hash1 and hash1OhterSet are not equal", hash1, hash1OtherSet);
     }
 
     @Test
@@ -128,7 +136,7 @@ public class TestHasherImpl {
                                                     null))
                     .build();
 
-            final String hash1 = hasher.hash(conf1, exampleInputData);
+            final String hash1 = hasher.hash(conf1, exampleInputData, Collections.emptySet());
 
             final IConfiguration conf2 = new ConfigurationImpl.Builder("a", null, "b", "/tmp", Arrays.asList("ls"))
                     .withAddedInputIdentifier(
@@ -142,7 +150,7 @@ public class TestHasherImpl {
                                             "a.xml"))
                     .build();
 
-            final String hash2 = hasher.hash(conf2, exampleInputData);
+            final String hash2 = hasher.hash(conf2, exampleInputData, Collections.emptySet());
 
             assertNotEquals("Both should not be equal", hash1, hash2);
 
@@ -158,7 +166,7 @@ public class TestHasherImpl {
                                             "b.xml"))
                     .build();
 
-            final String hash3 = hasher.hash(conf3, exampleInputData);
+            final String hash3 = hasher.hash(conf3, exampleInputData, Collections.emptySet());
 
             assertNotEquals("Both should not be equal", hash2, hash3);
 
@@ -174,7 +182,7 @@ public class TestHasherImpl {
                                             "a.xml"))
                     .build();
 
-            final String hash4 = hasher.hash(conf4, exampleInputData);
+            final String hash4 = hasher.hash(conf4, exampleInputData, Collections.emptySet());
 
             assertNotEquals("Both should not be equal", hash2, hash4);
 
@@ -190,7 +198,7 @@ public class TestHasherImpl {
                                             "a.xml"))
                     .build();
 
-            final String hash5 = hasher.hash(conf5, exampleInputData);
+            final String hash5 = hasher.hash(conf5, exampleInputData, Collections.emptySet());
 
             assertNotEquals("Both should not be equal", hash2, hash5);
 
@@ -206,7 +214,7 @@ public class TestHasherImpl {
                                             "a.xml"))
                     .build();
 
-            final String hash6 = hasher.hash(conf6, exampleInputData);
+            final String hash6 = hasher.hash(conf6, exampleInputData, Collections.emptySet());
 
             assertEquals("Both should be equal", hash6, hash5);
         } catch (final XmlException xmlException) {
@@ -324,7 +332,7 @@ public class TestHasherImpl {
                 new NoWpsVersionHandler()
             );
 
-            final String hash = hasher.hash(shakygroundConfig, inputData1);
+            final String hash = hasher.hash(shakygroundConfig, inputData1, Collections.emptySet());
 
             final String dummyXml2 = "<eventParameters publicID=\"quakeml:"
                 + "quakeledger/0\" xmlns="
@@ -412,7 +420,7 @@ public class TestHasherImpl {
                 )
             );
 
-            final String hash2 = hasher.hash(shakygroundConfig, inputData2);
+            final String hash2 = hasher.hash(shakygroundConfig, inputData2, Collections.emptySet());
 
             assertNotEquals("The hashes must be different", hash, hash2);
 
@@ -500,7 +508,7 @@ public class TestHasherImpl {
                 )
             );
 
-            final String hash3 = hasher.hash(shakygroundConfig, inputData3);
+            final String hash3 = hasher.hash(shakygroundConfig, inputData3, Collections.emptySet());
 
             assertEquals("hash and hash3 must be equal", hash, hash3);
 
@@ -511,7 +519,8 @@ public class TestHasherImpl {
 
             final String hash4 = otherHasher.hash(
                 shakygroundConfig,
-                inputData3
+                inputData3,
+                Collections.emptySet()
             );
 
             assertEquals(
@@ -543,7 +552,7 @@ public class TestHasherImpl {
                         )
                 ).build();
 
-            final String hash5 = otherHasher.hash(shakygroundConf2, inputData3);
+            final String hash5 = otherHasher.hash(shakygroundConf2, inputData3, Collections.emptySet());
 
             assertEquals(
                 "Hashes for recreated configurations (the same ones) "
@@ -586,8 +595,8 @@ public class TestHasherImpl {
 
         final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
-        final String hash1 = hasher.hash(configuration1, inputData);
-        final String hash2 = hasher.hash(configuration2, inputData);
+        final String hash1 = hasher.hash(configuration1, inputData, Collections.emptySet());
+        final String hash2 = hasher.hash(configuration2, inputData, Collections.emptySet());
 
         assertNotEquals("Both hashes are different", hash1, hash2);
 
@@ -603,7 +612,7 @@ public class TestHasherImpl {
                 .withAddedOutputIdentifier(OutputParameterFactory.INSTANCE.createStdoutString("stdout", false, null))
                 .build();
 
-        final String hash3 = hasher.hash(configuration3, inputData);
+        final String hash3 = hasher.hash(configuration3, inputData, Collections.emptySet());
 
         assertEquals("2 and 3 are equal", hash2, hash3);
 
@@ -618,7 +627,7 @@ public class TestHasherImpl {
                 .withAddedOutputIdentifier(OutputParameterFactory.INSTANCE.createFileOutGeneric("stdout", false, null, null, "a.txt"))
                 .build();
 
-        final String hash4 = hasher.hash(configuration4, inputData);
+        final String hash4 = hasher.hash(configuration4, inputData, Collections.emptySet());
 
         assertNotEquals("the hashes are different", hash2, hash4);
     }
@@ -669,8 +678,8 @@ public class TestHasherImpl {
 
         final IHasher hasher = new HasherImpl(new NoDockerImageIdLookup(), new NoWpsVersionHandler());
 
-        final String hash1 = hasher.hash(conf1, inputValues);
-        final String hash2 = hasher.hash(conf2, inputValues);
+        final String hash1 = hasher.hash(conf1, inputValues, Collections.emptySet());
+        final String hash2 = hasher.hash(conf2, inputValues, Collections.emptySet());
 
         assertNotEquals("The ordering is different -> not equals", hash1, hash2);
     }

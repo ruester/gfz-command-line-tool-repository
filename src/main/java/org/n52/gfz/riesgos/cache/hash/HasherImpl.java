@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Implementation of the hasher, that takes the input
@@ -89,18 +90,21 @@ public class HasherImpl implements IHasher {
      * Creates a hash from the configuration and the input data.
      * @param configuration configuration used for the process
      * @param inputData input data for the process
+     * @param requestedParameters output parameters that the user requested
      * @return hash for the overall input environment and the
      * output handling
      */
     @Override
     public String hash(
             final IConfiguration configuration,
-            final Map<String, List<IData>> inputData) {
+            final Map<String, List<IData>> inputData,
+            final Set<String> requestedParameters) {
 
         final CacheKey key = new CacheKey(
                 configuration,
                 imageIdLookup.lookUpImageId(configuration.getImageId()),
                 inputData,
+                requestedParameters,
                 imageIdLookup.getDockerVersion(),
                 wpsVersionHandler.getRepositoryVersion(),
                 wpsVersionHandler.getWpsVersion());
@@ -178,6 +182,10 @@ public class HasherImpl implements IHasher {
         private final List<IOutputParameter> outputParameters;
 
         /**
+         * A set with the output parameters that the user requested.
+         */
+        private final Set<String> requestedParameters;
+        /**
          * The version of docker.
          */
         private final String dockerVersion;
@@ -213,6 +221,8 @@ public class HasherImpl implements IHasher {
          * @param configuration configuration to use for caching
          * @param aImageId      real image id to use for running the code
          * @param inputData     input data to execute the code with
+         * @param aRequestedParameters set of output parameters that the user
+         *                             requested
          * @param aDockerVersion docker version of the docker daemon
          * @param aWpsVersion version of the wps server
          * @param aRepositoryVersion version of the repository
@@ -220,6 +230,7 @@ public class HasherImpl implements IHasher {
         CacheKey(final IConfiguration configuration,
                  final String aImageId,
                  final Map<String, List<IData>> inputData,
+                 final Set<String> aRequestedParameters,
                  final String aDockerVersion,
                  final String aWpsVersion,
                  final String aRepositoryVersion) {
@@ -243,6 +254,7 @@ public class HasherImpl implements IHasher {
 
             // just to now the handling of the output
             outputParameters = configuration.getOutputIdentifiers();
+            this.requestedParameters = aRequestedParameters;
 
             inputCacheKeyMap = new ArrayList<>();
 
@@ -311,6 +323,8 @@ public class HasherImpl implements IHasher {
                     && Objects.equals(stdoutHandler, cacheKey.stdoutHandler)
                     && Objects.equals(outputParameters,
                     cacheKey.outputParameters)
+                    && Objects.equals(requestedParameters,
+                    cacheKey.requestedParameters)
                     && Objects.equals(inputCacheKeyMap,
                     cacheKey.inputCacheKeyMap)
                     && Objects.equals(dockerVersion, cacheKey.dockerVersion)
@@ -336,6 +350,7 @@ public class HasherImpl implements IHasher {
                     stderrHandler,
                     stdoutHandler,
                     outputParameters,
+                    requestedParameters,
                     inputCacheKeyMap,
                     dockerVersion,
                     wpsVersion,

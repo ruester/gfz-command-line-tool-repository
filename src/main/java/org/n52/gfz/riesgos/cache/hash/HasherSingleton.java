@@ -23,6 +23,7 @@ import org.n52.wps.io.data.IData;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Singleton implementation of the hasher.
@@ -55,12 +56,17 @@ public enum HasherSingleton implements IHasher {
      * input data.
      * @param configuration configuration of the process
      * @param inputData input data for the query
+     * @param requestedParameters requested output parameters by the user
      * @return hash
      */
     @Override
     public String hash(
             final IConfiguration configuration,
-            final Map<String, List<IData>> inputData) {
-        return wrappedHasher.hash(configuration, inputData);
+            final Map<String, List<IData>> inputData,
+            final Set<String> requestedParameters) {
+        return wrappedHasher.hash(
+            configuration,
+            inputData,
+            requestedParameters);
     }
 }

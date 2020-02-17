@@ -17,6 +17,7 @@ package org.n52.gfz.riesgos.algorithm;
  */
 
 import net.opengis.wps.x100.ProcessDescriptionsDocument;
+import net.opengis.wps.x20.OutputDefinitionType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.n52.gfz.riesgos.cache.DataWithRecreatorTuple;
@@ -54,6 +55,9 @@ import org.n52.gfz.riesgos.processdescription.IProcessDescriptionGeneratorOutput
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorDataConfigImpl;
 import org.n52.gfz.riesgos.processdescription.impl.ProcessDescriptionGeneratorImpl;
 import org.n52.gfz.riesgos.util.Tuple;
+import org.n52.wps.commons.context.ExecutionContext;
+import org.n52.wps.commons.context.ExecutionContextFactory;
+import org.n52.wps.commons.context.OutputTypeWrapper;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
@@ -64,9 +68,11 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -275,7 +281,11 @@ public class BaseGfzRiesgosService
             final Map<String, List<IData>> inputDataFromMethod)
             throws ExceptionReport {
 
-        final String hash = hasher.hash(configuration, inputDataFromMethod);
+        final Set<String> requestedParameters = getSetWithRequestedOutputIds();
+        final String hash = hasher.hash(
+                configuration,
+                inputDataFromMethod,
+                requestedParameters);
 
         logger.info("Cache-Hash: " + hash);
 
@@ -312,6 +322,31 @@ public class BaseGfzRiesgosService
                 Map.Entry::getKey,
                 entry -> entry.getValue().getFirst()
         ));
+    }
+
+    /**
+     * This returns a set of the identifiers (as strinds) that the user
+     * requests.
+     * @return Set with output parameter identifiers.
+     */
+    private Set<String> getSetWithRequestedOutputIds() {
+        final Set<String> requestedParameters = new HashSet<>();
+
+        final ExecutionContext wpsExecutionContext =
+                ExecutionContextFactory.getContext();
+        final OutputTypeWrapper outputTypeWrapper =
+                wpsExecutionContext.getOutputs();
+
+        if (outputTypeWrapper.isWPS100Execution()) {
+            outputTypeWrapper.getWps100OutputDefinitionTypes().stream().map(
+                    outputType -> outputType.getIdentifier().getStringValue()
+            ).forEach(requestedParameters::add);
+        } else {
+            outputTypeWrapper.getWps200OutputDefinitionTypes().stream().map(
+                    OutputDefinitionType::getId
+            ).forEach(requestedParameters::add);
+        }
+        return requestedParameters;
     }
 
     /**
@@ -918,42 +953,49 @@ public class BaseGfzRiesgosService
         private void readFromOutputFiles(
                 final IExecutionContext context) throws ExceptionReport {
 
+            final Set<String> requestedParameters =
+                    getSetWithRequestedOutputIds();
             try {
                 for (final IOutputParameter outputValue : outputIdentifiers) {
-                    try {
-                        final Optional<String> optionalPath =
+                    if (requestedParameters.contains(
+                            outputValue.getIdentifier())
+                    ) {
+                        try {
+                            final Optional<String> optionalPath =
                                 outputValue.getPathToWriteToOrReadFromFile();
-                        final Optional<IReadIDataFromFiles>
+                            final Optional<IReadIDataFromFiles>
                                 optionalFunctionToReadFromFiles =
                                 outputValue.getFunctionToReadIDataFromFiles();
-                        if (optionalPath.isPresent()
-                            && optionalFunctionToReadFromFiles.isPresent()) {
+                            if (optionalPath.isPresent()
+                                && optionalFunctionToReadFromFiles.isPresent()
+                            ) {
 
-                            final String path = optionalPath.get();
-                            final IReadIDataFromFiles functionToReadFromFiles =
-                                    optionalFunctionToReadFromFiles.get();
-                            final DataWithRecreatorTuple readResult =
-                                    functionToReadFromFiles.readFromFiles(
+                                final String path = optionalPath.get();
+                                final IReadIDataFromFiles
+                                        functionToReadFromFiles =
+                                        optionalFunctionToReadFromFiles.get();
+                                final DataWithRecreatorTuple readResult =
+                                        functionToReadFromFiles.readFromFiles(
                                             context,
                                             configuration.getWorkingDirectory(),
                                             path);
-                            putIntoOutput(
-                                    outputValue,
-                                    readResult.getData(),
-                                    readResult.getRecreator());
-                        }
-                    } catch (final IOException
-                            | ConvertToIDataException exception) {
-                        if (outputValue.isOptional()) {
-                            logger.info("Can't read from output file.");
-                            logger.info("But since '"
-                                    + outputValue.getIdentifier()
-                                    + "' is optional, it can be ignored.");
-                        } else {
-                            throw exception;
+                                putIntoOutput(
+                                        outputValue,
+                                        readResult.getData(),
+                                        readResult.getRecreator());
+                            }
+                        } catch (final IOException
+                                | ConvertToIDataException exception) {
+                            if (outputValue.isOptional()) {
+                                logger.info("Can't read from output file.");
+                                logger.info("But since '"
+                                        + outputValue.getIdentifier()
+                                        + "' is optional, it can be ignored.");
+                            } else {
+                                throw exception;
+                            }
                         }
                     }
-
                 }
             } catch (final IOException ioException) {
                 logger.error("Files could not be read", ioException);
