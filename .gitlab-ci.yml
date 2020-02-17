@@ -10,6 +10,7 @@ variables:
 cache:
   paths:
     - .m2/repository/
+    - .local/
 
 before_script:
   - env
@@ -47,8 +48,8 @@ integration_test:
   only:
     - schedules
   script:
-    - wget "http://mirror.synyx.de/apache//jmeter/binaries/apache-jmeter-5.1.1.tgz" -O apache-jmeter-5.1.1.tgz
-    - tar xf apache-jmeter-5.1.1.tgz
+    - if [ ! -f ".local/apache-jmeter-5.1.1.tgz" ]; then mkdir .local && wget "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.1.1.tgz" -O .local/apache-jmeter-5.1.1.tgz; fi
+    - tar xf .local/apache-jmeter-5.1.1.tgz
     - cd integration-tests
     - bash ../apache-jmeter-5.1.1/bin/jmeter.sh -n -t RIESGOS-integration-tests.jmx -o jmeter-report -l jmeter-log.txt -e
     - cat jmeter-log.txt

@@ -16,22 +16,14 @@
 
 package org.n52.gfz.riesgos.formats.json.parsers;
 
-import org.apache.commons.io.IOUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
-import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.parser.AbstractParser;
 import org.n52.wps.webapp.api.FormatEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -46,6 +38,12 @@ public class JsonParser
     private static final Logger LOGGER =
             LoggerFactory.getLogger(JsonParser.class);
 
+
+    /**
+     * Helper class that contains all the logic for the json parser.
+     */
+    private final JsonParserLogic logic;
+
     /**
      * This is the default constructor for the JsonParser.
      */
@@ -57,6 +55,8 @@ public class JsonParser
         supportedFormats.add(json.getMimeType());
         supportedEncodings.add(json.getEncoding());
         formats.add(json);
+
+        logic = new JsonParserLogic();
     }
 
     /**
@@ -71,25 +71,6 @@ public class JsonParser
             final InputStream stream,
             final String mimeType,
             final String schema) {
-        try {
-            final ByteArrayOutputStream byteArrayOutputStream =
-                    new ByteArrayOutputStream();
-            IOUtils.copy(stream, byteArrayOutputStream);
-            final String content =
-                    new String(byteArrayOutputStream.toByteArray());
-            final JSONParser parser = new JSONParser();
-            final Object parsed = parser.parse(content);
-            if (parsed instanceof  JSONObject) {
-                final JSONObject jsonObject = (JSONObject) parsed;
-                return new JsonDataBinding(new JsonObjectOrArray(jsonObject));
-            } else if (parsed instanceof JSONArray) {
-                final JSONArray jsonArray = (JSONArray) parsed;
-                return new JsonDataBinding(new JsonObjectOrArray(jsonArray));
-            }
-            throw new RuntimeException(
-                    "Can't parse the content to an json object");
-        } catch (final IOException | ParseException exception) {
-            throw new RuntimeException(exception);
-        }
+        return logic.parse(stream);
     }
 }

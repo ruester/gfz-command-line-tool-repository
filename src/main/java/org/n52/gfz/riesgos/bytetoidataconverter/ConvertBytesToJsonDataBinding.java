@@ -25,6 +25,9 @@ import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
 import org.n52.gfz.riesgos.formats.json.binding.JsonObjectOrArray;
 import org.n52.gfz.riesgos.functioninterfaces.IConvertByteArrayToIData;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Objects;
 
 /**
@@ -45,10 +48,11 @@ public class ConvertBytesToJsonDataBinding
     @Override
     public JsonDataBinding convertToIData(final byte[] content)
             throws ConvertToIDataException {
-        final String text = new String(content);
         final JSONParser parser = new JSONParser();
         try {
-            final Object parsed = parser.parse(text);
+            final Object parsed = parser.parse(
+                    new InputStreamReader(
+                            new ByteArrayInputStream(content)));
             if (parsed instanceof JSONObject) {
                 final JSONObject jsonObject = (JSONObject) parsed;
                 return new JsonDataBinding(new JsonObjectOrArray(jsonObject));
@@ -56,8 +60,8 @@ public class ConvertBytesToJsonDataBinding
                 final JSONArray jsonArray = (JSONArray) parsed;
                 return new JsonDataBinding(new JsonObjectOrArray(jsonArray));
             }
-        } catch (final ParseException parseException) {
-            throw new ConvertToIDataException(parseException);
+        } catch (final ParseException | IOException exception) {
+            throw new ConvertToIDataException(exception);
         }
         return null;
     }
