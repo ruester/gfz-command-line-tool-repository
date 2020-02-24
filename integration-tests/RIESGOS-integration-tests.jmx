@@ -1350,7 +1350,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="187488072">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1593135994">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -1407,6 +1407,13 @@
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -1468,7 +1475,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-59117475">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-329866619">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -1561,6 +1568,13 @@
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -3404,7 +3418,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="187488072">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1593135994">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3461,6 +3475,13 @@
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -3522,7 +3543,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-59117475">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-329866619">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3615,6 +3636,13 @@
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -4963,7 +4991,7 @@
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
               <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-              <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
+              <stringProp name="-942479675">&quot;name&quot;:</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
               <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
@@ -9851,8 +9879,6 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
               <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
-              <stringProp name="-942479675">&quot;name&quot;:</stringProp>
-              <stringProp name="34624981">&quot;id&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
@@ -9940,8 +9966,6 @@ ${__FileToString(./deus_post_fragility.json,,)}&#xd;
               <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
-              <stringProp name="-942479675">&quot;name&quot;:</stringProp>
-              <stringProp name="34624981">&quot;id&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
@@ -10218,8 +10242,6 @@ ${__FileToString(./ashfall_base64.txt,,)}&#xd;
               <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
-              <stringProp name="-942479675">&quot;name&quot;:</stringProp>
-              <stringProp name="34624981">&quot;id&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
@@ -10480,8 +10502,6 @@ ${__FileToString(./ashfall_intensity.geojson,,)}&#xd;
               <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
-              <stringProp name="-942479675">&quot;name&quot;:</stringProp>
-              <stringProp name="34624981">&quot;id&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
