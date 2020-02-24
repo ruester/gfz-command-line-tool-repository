@@ -131,6 +131,14 @@ public class DockerContainerExecutionContextManagerImpl
         result.add("--restart");
         result.add("no");
 
+        // We disable the secure computing profile to gain performance.
+        // We are aware that this may cause security issues, but as we define
+        // the processes that run on our server (via configs *AND* docker
+        // images), we can be sure that this we run only code that we trust.
+        result.add("--security-opt");
+        result.add("seccomp=unconfined");
+
+
         result.addAll(createFlagsForDroppingAllTheCapabilities());
 
 
