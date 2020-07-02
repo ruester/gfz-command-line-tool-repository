@@ -6683,7 +6683,7 @@
     &lt;/wps:Input&gt;&#xd;
     &lt;wps:Input id=&quot;taxonomies&quot;&gt;&#xd;
         &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
-            &lt;wps:LiteralValue&gt;MUR+ADO/H&lt;/wps:LiteralValue&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MUR-H1&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRows&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
