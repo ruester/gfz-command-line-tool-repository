@@ -45,7 +45,7 @@
         <repository>
             <id>boundless</id>
             <name>Boudless Repo</name>
-            <url>http://repo.boundlessgeo.com/main/</url>
+            <url>https://repo.osgeo.org/release/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -53,6 +53,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+
     </repositories>
 
     <dependencies>
