@@ -12,6 +12,11 @@ cache:
     - .m2/repository/
     - .local/
 
+stages:
+  - test
+  - build
+  - docker
+
 before_script:
   - env
   - which java
@@ -58,3 +63,11 @@ integration_test:
     name: jmeter-report
     paths:
       - ${CI_PROJECT_DIR}/integration-tests/jmeter-report
+
+dockerbuild:
+  stage: docker
+  image: docker:19.03.1
+  before_script: []
+  cache: {}
+  script:
+    - docker build -f assistance/Dockerfile .
