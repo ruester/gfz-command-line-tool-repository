@@ -50,8 +50,16 @@ ENV DEBIAN_FRONTEND noninteractive
 VOLUME [ "/usr/share/riesgos/json-configurations" ]
 
 RUN apt update && \
-    apt install git apt-transport-https ca-certificates maven curl software-properties-common openjdk-8-jdk gnupg2 -y
-
+    apt upgrade -y && \
+    apt install -y \
+        git \
+        apt-transport-https \
+        ca-certificates \
+        maven \
+        curl \
+        software-properties-common \
+        openjdk-8-jdk \
+        gnupg2
 
 # install nodejs, npm, grunt and bower
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
@@ -152,7 +160,10 @@ RUN npm install && \
     cp -vr dist /usr/local/tomcat/webapps/wps-js-client
 
 WORKDIR /root/git/WPS
+COPY ./assistance/repo-fix.patch .
+
 RUN git checkout -b current v${WPS_VERSION} && \
+    git am repo-fix.patch && \
     mvn clean package -B -P with-geotools && \
     mkdir -pv /usr/local/tomcat/webapps/wps && \
     cp -v 52n-wps-webapp/target/52n-wps-webapp-${WPS_VERSION}.war /usr/local/tomcat/webapps/wps/wps.war && \
@@ -164,8 +175,8 @@ RUN git checkout -b current v${WPS_VERSION} && \
 # add missing libraries needed by gfz-command-line-tool-repository:
 RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.19/commons-compress-1.19.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/commons-compress-1.19.jar && \
     wget https://repo1.maven.org/maven2/org/apache/ant/ant/1.10.5/ant-1.10.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/ant-1.10.5.jar && \
-    wget http://repo.boundlessgeo.com/main/org/geotools/gt-process-raster/13.5/gt-process-raster-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-raster-13.5.jar && \
-    wget http://repo.boundlessgeo.com/main/org/geotools/gt-process/13.5/gt-process-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-13.5.jar && \
+    wget https://repo.osgeo.org/repository/geotools-releases/org/geotools/gt-process-raster/13.5/gt-process-raster-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-raster-13.5.jar && \
+    wget https://repo.osgeo.org/repository/geotools-releases/org/geotools/gt-process/13.5/gt-process-13.5.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/gt-process-13.5.jar && \
     wget https://repo1.maven.org/maven2/org/jaitools/jt-contour/1.3.1/jt-contour-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-contour-1.3.1.jar && \
     wget https://repo1.maven.org/maven2/org/jaitools/jt-attributeop/1.3.1/jt-attributeop-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-attributeop-1.3.1.jar
 
