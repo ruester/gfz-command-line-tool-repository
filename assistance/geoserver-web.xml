@@ -169,23 +169,7 @@
         <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
         <init-param>
             <param-name>cors.allowOrigin</param-name>
-            <param-value>http://riesgos.dlr.de http://200.1.180.51</param-value>
-            <!-- It would also be possible to allow it for everyone.
-                 You can just use the following snippet instead
-                 of the param-value element:
-
             <param-value>*</param-value>
-
-                 For the moment we stick with just allowing some explicit
-                 urls, as we want the partners in south america
-                 hosting their own version of our backend services as we
-                 are going to change them in the project and it is very
-                 unlikely that they will update the frontend as fast
-                 as necessary to stay in sync.
-                 When they have their own version of the backend services
-                 (WPS & WMS) then they can allow CORS for their servers
-                 easily.
-            -->
         </init-param>
         <init-param>
             <param-name>cors.allowGenericHttpRequests</param-name>
