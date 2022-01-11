@@ -22,25 +22,13 @@ before_script:
   - which java
   - java -version
 
-.validate: &validate
-  except:
-    - schedules
-  stage: build
-  script:
-    - 'mvn $MAVEN_CLI_OPTS clean test-compile'
-
-.verify: &verify
+verify_java:
   except:
     - schedules
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS clean verify'
-
-validate:jdk8:
-  <<: *validate
-
-verify:jdk8:
-  <<: *verify
+    - mvn $MAVEN_CLI_OPTS clean verify
+    - mvn $MAVEN_CLI_OPTS clean test-compile
 
 checkstyle:
   except:
