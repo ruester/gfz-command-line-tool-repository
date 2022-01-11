@@ -1,7 +1,4 @@
-# based on example file for maven projects:
-# https://gitlab.com/gitlab-org/gitlab-ci-yml/blob/master/Maven.gitlab-ci.yml
-
-image: maven:3.6.1-jdk-8
+image: tomcat:9-jdk8-openjdk-slim-buster
 
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
@@ -21,6 +18,8 @@ before_script:
   - env
   - which java
   - java -version
+  - DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y
+  - DEBIAN_FRONTEND=noninteractive apt install -y maven
 
 verify_java:
   except:

@@ -1,4 +1,4 @@
-FROM tomcat:9-jre8
+FROM tomcat:9-jdk8-openjdk-slim-buster
 
 # You need to have docker installed on the host system and pull all needed
 # images as configured by the repository or the configuration directory
@@ -58,7 +58,6 @@ RUN apt update && \
         maven \
         curl \
         software-properties-common \
-        openjdk-8-jdk \
         gnupg2
 
 # install nodejs, npm, grunt and bower
