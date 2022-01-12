@@ -60,29 +60,19 @@ RUN apt update && \
         maven \
         curl \
         software-properties-common \
-        gnupg2
+        gnupg2 \
+        wget \
+        unzip \
+        docker.io && \
+    docker --version
 
-# install nodejs, npm, grunt and bower
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt install nodejs npm -y && \
-    npm install -g grunt-cli && \
-    npm install -g bower
-RUN node --version
-RUN npm --version
-RUN grunt --version
-RUN bower --version
-
-
-# install docker
-ENV DOCKER_CHANNEL stable
-ENV DOCKER_VERSION 18.09.6
-ENV DOCKER_ARCH x86_64
-
-RUN wget -O /tmp/docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${DOCKER_ARCH}/docker-${DOCKER_VERSION}.tgz" && \
-    tar --extract --file /tmp/docker.tgz --strip-components 1 --directory /usr/local/bin/ && \
-    rm /tmp/docker.tgz
-RUN dockerd --version
-RUN docker --version
+# install nodejs, grunt and bower
+# nodejs package already contains npm
+# installing the debian buster npm version would lead to package conflicts
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt install -y nodejs && \
+    npm install -g grunt-cli@v1.4.3 && \
+    npm install -g bower@1.8.13
 
 # setup tomcat
 RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
