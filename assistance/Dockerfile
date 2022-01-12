@@ -44,6 +44,8 @@ FROM tomcat:9-jdk8-openjdk-slim-buster
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
 ARG WPS_VERSION=4.0.0-beta.10
+ARG WPS_JS_COMMIT=e56ffe34540f4b0261442eccd9cee0557ae1b5e5
+ARG WPS_JS_CLIENT_COMMIT=0945f0282424c56324c98897d50ffc7e11fffde6
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -136,8 +138,10 @@ WORKDIR /root/git
 # if you want to use the master branch from wps-js you need the complete history:
 # git clone -b master https://github.com/52North/wps-js.git
 
-RUN git clone -b dev --depth=1 https://github.com/52North/wps-js.git && \
-    git clone -b develop --depth=1 https://github.com/52North/wps-js-client.git && \
+RUN git config --global user.email "root@localhost" && \
+    git config --global user.name "Root" && \
+    git clone https://github.com/52North/wps-js.git && \
+    git clone https://github.com/52North/wps-js-client.git && \
     git clone https://github.com/52North/WPS.git
 
 WORKDIR /root/git/wps-js
@@ -147,13 +151,15 @@ WORKDIR /root/git/wps-js
 #    cp -v target/wps-js-*.war /usr/local/tomcat/webapps/
 
 # for dev branch:
-RUN npm install && \
+RUN git reset --hard "${WPS_JS_COMMIT}" && \
+    npm install && \
     bower --allow-root install && \
     grunt -v && \
     cp -vr dist /usr/local/tomcat/webapps/wps-js
 
 WORKDIR /root/git/wps-js-client
-RUN npm install && \
+RUN git reset --hard "${WPS_JS_CLIENT_COMMIT}" && \
+    npm install && \
     bower --allow-root install && \
     grunt -v && \
     cp -vr dist /usr/local/tomcat/webapps/wps-js-client
