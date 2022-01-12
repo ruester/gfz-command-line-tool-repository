@@ -92,6 +92,11 @@ RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
 </tomcat-users>\n\
 ' > /usr/local/tomcat/conf/tomcat-users.xml
 
+# activate tomcat manager
+RUN rmdir /usr/local/tomcat/webapps && \
+    mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps && \
+    rm -rf /usr/local/tomcat/webapps/examples
+
 RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
 <Context antiResourceLocking="false" privileged="true">\n\
   <Valve className="org.apache.catalina.valves.RemoteAddrValve"\n\
@@ -110,8 +115,6 @@ RUN mv /usr/local/tomcat/webapps/ROOT/index.jsp /usr/local/tomcat/webapps/ROOT/_
     printf '<html><body><a href="/wps-js-client">WPS JS Client</a><br><a href="/wps/WebProcessingService?Request=GetCapabilities&Service=WPS">WebProcessingService</a></body></html>\
 ' > /usr/local/tomcat/webapps/ROOT/index.html
 
-RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar
-
 
 # add or build needed webapps:
 
@@ -119,7 +122,8 @@ RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1
 RUN mkdir -pv /usr/local/tomcat/webapps/geoserver
 
 WORKDIR /usr/local/tomcat/webapps/geoserver
-RUN wget https://downloads.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
+RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar && \
+    wget https://downloads.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
     unzip geoserver-2.10.4-war.zip && \
     rm -f geoserver-2.10.4-war.zip && \
     unzip geoserver.war && \
