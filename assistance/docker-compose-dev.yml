@@ -20,7 +20,9 @@ services:
     image: gfzriesgos/flooddamage:latest
 
   riesgos-wps:
-    image: gfzriesgos/riesgos-wps:latest
+    build:
+      context: ../
+      dockerfile: assistance/Dockerfile
     container_name: riesgos-wps-dev
     ports:
       - "8080:8080"
@@ -32,6 +34,4 @@ services:
 
 volumes:
   riesgos-json-config-dev:
-    external: true
   riesgos-wps-hsqldb-dev:
-    external: true
