@@ -183,6 +183,13 @@ RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.19
     wget https://repo1.maven.org/maven2/org/jaitools/jt-attributeop/1.3.1/jt-attributeop-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-attributeop-1.3.1.jar
 
 WORKDIR /root/git/gfz-command-line-tool-repository
+
+# download dependencies
+# have this as an extra step in the Dockerfile to enable caching and not
+# download the dependencies for every build (if only the source code changed)
+COPY pom.xml .
+RUN mvn --batch-mode dependency:resolve
+
 COPY . .
-RUN mvn clean package --batch-mode && \
+RUN mvn --batch-mode clean package && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar

@@ -347,3 +347,65 @@ After this change the wps-js-client
 ([http://localhost:8080/wps-js-client](http://localhost:8080/wps-js-client))
 is able to display the image from the wms service right after output with the
 link was generated.
+
+## Optional: GitLab runner
+
+If you want to use a GitLab runner to build, test and/or deploy the project
+you can add a GitLab runner with those commands:
+
+```shell
+docker run \
+    -d \
+    --name gitlab-runner \
+    --restart always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v gitlab-runner-config:/etc/gitlab-runner \
+    gitlab/gitlab-runner:latest
+
+# then register the runner:
+docker run \
+    --rm \
+    -it \
+    -v gitlab-runner-config:/etc/gitlab-runner \
+    gitlab/gitlab-runner:latest register
+```
+
+You also need to change the configuration of the runner afterwards:
+
+```shell
+# get the directory of the configuration file, see "Mountpoint"
+docker volume inspect gitlab-runner-config
+
+# edit the configuration file "config.toml"
+vim /var/lib/docker/volumes/gitlab-runner-config/_data/config.toml
+```
+
+Enter the Docker socket file and the `/builds` directory to the volumes:
+
+```ini
+concurrent = 1
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "RIESGOS runner"
+  url = "YOUR GITLAB URL"
+  token = "YOUR TOKEN"
+  executor = "docker"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+  [runners.docker]
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = false
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = ["/cache", "/var/run/docker.sock:/var/run/docker.sock", "/builds:/builds"]
+    shm_size = 0
+```

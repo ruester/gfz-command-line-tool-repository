@@ -2,25 +2,25 @@ version: "3"
 
 services:
   quakeledger:
-    image: gfzriesgos/quakeledger:latest
+    image: gfzriesgos/quakeledger:1.0
 
   shakyground:
-    image: gfzriesgos/shakyground:latest
+    image: gfzriesgos/shakyground:1.0
 
   assetmaster:
-    image: gfzriesgos/assetmaster:latest
+    image: gfzriesgos/assetmaster:1.0
 
   modelprop:
-    image: gfzriesgos/modelprop:latest
+    image: gfzriesgos/modelprop:1.0
 
   deus:
-    image: gfzriesgos/deus:latest
+    image: gfzriesgos/deus:1.0
 
   flooddamage:
-    image: gfzriesgos/flooddamage:latest
+    image: gfzriesgos/flooddamage:20191122
 
   riesgos-wps:
-    image: gfzriesgos/riesgos-wps:latest
+    image: gfzriesgos/riesgos-wps:__PROD_IMAGE_TAG__
     container_name: riesgos-wps-prod
     restart: always
     environment:
@@ -32,14 +32,11 @@ services:
       - "riesgos-json-config:/usr/share/riesgos/json-configurations"
       - "riesgos-wps-hsqldb:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
       - "riesgos-wps-logs:/usr/local/tomcat/logs"
-      - "./tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml"
-      - "./users.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
-      - "./application_properties.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+      - "${PWD}/tomcat-users-prod.xml:/usr/local/tomcat/conf/tomcat-users.xml"
+      - "${PWD}/users-prod.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
+      - "${PWD}/application_properties_prod.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
 
 volumes:
   riesgos-json-config:
-    external: true
   riesgos-wps-hsqldb:
-    external: true
   riesgos-wps-logs:
-    external: true

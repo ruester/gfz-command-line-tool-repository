@@ -5,3 +5,4 @@ target/
 .settings/
 .vscode
 jmeter.log
+assistance/conf

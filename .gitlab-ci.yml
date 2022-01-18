@@ -3,6 +3,7 @@ image: tomcat:9-jdk8-openjdk-slim-buster
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  RIESGOS_SERVICES: "assetmaster deus volcanus flooddamage modelprop quakeledger shakyground"
 
 cache:
   paths:
@@ -12,36 +13,39 @@ cache:
 stages:
   - test
   - build
+  - deploy
 
 before_script:
   - env
-  - which java
-  - java -version
   - DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y
   - DEBIAN_FRONTEND=noninteractive apt install -y maven
+  - which java
+  - java -version
+  - mvn --version
 
 verify_java:
+  stage: test
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - if: $CI_COMMIT_BRANCH
-  stage: test
   script:
     - mvn $MAVEN_CLI_OPTS clean verify
     - mvn $MAVEN_CLI_OPTS clean test-compile
 
 checkstyle:
+  stage: test
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - if: $CI_COMMIT_BRANCH
-  stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS clean checkstyle:checkstyle'
 
 integration_test:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  before_script: []
   script:
     - if [ ! -f ".local/apache-jmeter-5.1.1.tgz" ]; then mkdir .local && wget "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.1.1.tgz" -O .local/apache-jmeter-5.1.1.tgz; fi
     - tar xf .local/apache-jmeter-5.1.1.tgz
@@ -101,3 +105,84 @@ dockerbuild_tagged:
     - docker tag riesgos-wps:$CI_COMMIT_TAG git.gfz-potsdam.de:5000/id2/riesgos/gfz-riesgos-wps-repository:$CI_COMMIT_TAG
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker push git.gfz-potsdam.de:5000/id2/riesgos/gfz-riesgos-wps-repository:$CI_COMMIT_TAG
+
+deploy_staging:
+  image: docker/compose:1.25.5
+  stage: deploy
+  before_script:
+    - apk update
+    - apk add bash wget tar gzip
+  cache: {}
+  allow_failure: false
+  when: manual
+  tags:
+    - riesgos
+    - deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_BRANCH
+  script:
+    - cd assistance
+
+    # replace placeholders in configuration files
+    # we need both versions (staging/production) of those files as we have both
+    # environments on the same server and the /builds directory is shared
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PASSWORD_STAGING}@g" users-staging.xml
+    - sed -i -e "s@__WPS_URL__@${WPS_URL_STAGING}@g" application_properties_staging.js
+    - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_STAGING}@g" tomcat-users-staging.xml
+
+    - docker-compose -f docker-compose-staging.yml pull
+
+    # get configuration files of services
+    - /bin/bash get-configuration-files.sh docker-compose-staging.yml
+
+    - docker-compose -f docker-compose-staging.yml down || true
+    - docker-compose -f docker-compose-staging.yml up -d
+
+    # copy configuration files of services to running docker container
+    - >
+      for service in ${RIESGOS_SERVICES}; do
+        docker cp "conf/${service}.json" riesgos-wps-staging:/usr/share/riesgos/json-configurations
+      done
+
+deploy_production:
+  image: docker/compose:1.25.5
+  stage: deploy
+  before_script:
+    - apk update
+    - apk add bash wget tar gzip
+  cache: {}
+  allow_failure: false
+  when: manual
+  tags:
+    - riesgos
+    - deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_TAG
+  script:
+    - cd assistance
+
+    # replace placeholders in configuration files
+    # we need both versions (staging/production) of those files as we have both
+    # environments on the same server and the /builds directory is shared
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PASSWORD_PROD}@g" users-prod.xml
+    - sed -i -e "s@__WPS_URL__@${WPS_URL_PROD}@g" application_properties_prod.js
+    - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_PROD}@g" tomcat-users-prod.xml
+    - sed -i -e "s@__PROD_IMAGE_TAG__@${CI_COMMIT_TAG}@g" docker-compose-prod.yml
+
+    - docker-compose -f docker-compose-prod.yml pull
+
+    # get configuration files of services
+    - /bin/bash get-configuration-files.sh docker-compose-prod.yml
+
+    - docker-compose -f docker-compose-prod.yml down || true
+    - docker-compose -f docker-compose-prod.yml up -d
+
+    # copy configuration files of services to running docker container
+    - >
+      for service in ${RIESGOS_SERVICES}; do
+        docker cp "conf/${service}.json" riesgos-wps-prod:/usr/share/riesgos/json-configurations
+      done

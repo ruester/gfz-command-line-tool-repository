@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  quakeledger-staging:
+    image: gfzriesgos/quakeledger:latest
+
+  shakyground-staging:
+    image: gfzriesgos/shakyground:latest
+
+  assetmaster-staging:
+    image: gfzriesgos/assetmaster:latest
+
+  modelprop-staging:
+    image: gfzriesgos/modelprop:latest
+
+  deus-staging:
+    image: gfzriesgos/deus:latest
+
+  flooddamage-staging:
+    image: gfzriesgos/flooddamage:latest
+
+  riesgos-wps-staging:
+    image: gfzriesgos/riesgos-wps:latest
+    container_name: riesgos-wps-staging
+    restart: always
+    environment:
+      - CATALINA_OPTS=-Xmx6g -Xms6g
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "riesgos-json-config-staging:/usr/share/riesgos/json-configurations"
+      - "riesgos-wps-hsqldb-staging:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
+      - "riesgos-wps-logs-staging:/usr/local/tomcat/logs"
+      - "${PWD}/tomcat-users-staging.xml:/usr/local/tomcat/conf/tomcat-users.xml"
+      - "${PWD}/users-staging.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
+      - "${PWD}/application_properties_staging.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+
+volumes:
+  riesgos-json-config-staging:
+  riesgos-wps-hsqldb-staging:
+  riesgos-wps-logs-staging:
