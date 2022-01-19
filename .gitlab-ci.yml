@@ -29,6 +29,11 @@ verify_java:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - if: $CI_COMMIT_BRANCH
+      changes:
+        - src/
+        - pom.xml
+        - checkstyle-suppressions.xml
+        - .gitlab-ci.yml
   script:
     - mvn $MAVEN_CLI_OPTS clean verify
     - mvn $MAVEN_CLI_OPTS clean test-compile
@@ -39,6 +44,11 @@ checkstyle:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: never
     - if: $CI_COMMIT_BRANCH
+      changes:
+        - src/
+        - pom.xml
+        - checkstyle-suppressions.xml
+        - .gitlab-ci.yml
   script:
     - 'mvn $MAVEN_CLI_OPTS clean checkstyle:checkstyle'
 
