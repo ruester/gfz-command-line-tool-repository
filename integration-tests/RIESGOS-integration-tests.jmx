@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1.1 r1855137">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.1">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="RIESGOS Integration Tests" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -16,7 +16,7 @@
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
         <stringProp name="HTTPSampler.domain">rz-vm140.gfz-potsdam.de</stringProp>
-        <stringProp name="HTTPSampler.port">80</stringProp>
+        <stringProp name="HTTPSampler.port">8080</stringProp>
         <stringProp name="HTTPSampler.protocol"></stringProp>
         <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
         <stringProp name="HTTPSampler.path">/wps/WebProcessingService</stringProp>
@@ -59,6 +59,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
@@ -2152,6 +2153,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GetCapabilities" enabled="true">
@@ -4220,6 +4222,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Quakeledger with QuakeML output" enabled="true">
@@ -4910,6 +4913,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Assetmaster with SARA" enabled="true">
@@ -5377,6 +5381,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Shakyground with Shakemap output" enabled="true">
@@ -6656,6 +6661,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Modelprop with JSON output" enabled="true">
@@ -6755,6 +6761,7 @@
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Deus with JSON outputs" enabled="true">
@@ -9997,6 +10004,7 @@ ${__FileToString(./deus_post_fragility.json,,)}&#xd;
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Volcanus with JSON outputs" enabled="true">
@@ -10533,6 +10541,7 @@ ${__FileToString(./ashfall_intensity.geojson,,)}&#xd;
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Flooddamage with Tiff output" enabled="true">
@@ -10612,6 +10621,7 @@ ${__FileToString(./ashfall_intensity.geojson,,)}&#xd;
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="QuakeMLTransformation from QuakeML to GeoJSON" enabled="true">
@@ -11264,6 +11274,7 @@ ${__FileToString(./ashfall_intensity.geojson,,)}&#xd;
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="ShakemapTransformation to GeoJSON" enabled="true">
@@ -11641,6 +11652,7 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="NrmlTransformation to GeoJSON" enabled="false">
@@ -12409,6 +12421,7 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">10</stringProp>
         <stringProp name="ThreadGroup.delay">5</stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for WPS requests" enabled="true">

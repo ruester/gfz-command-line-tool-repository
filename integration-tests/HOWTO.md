@@ -3,8 +3,8 @@ To run the integration tests following steps are needed:
 - download JMeter from https://jmeter.apache.org/download_jmeter.cgi and unpack it
 
 ```
-wget http://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.apache.org/dist/jmeter/binaries/apache-jmeter-5.1.1.tgz
-tar xf apache-jmeter-5.1.1.tgz
+wget http://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz
+tar xf apache-jmeter-5.4.1.tgz
 ```
 
 - change to the directory where the `.jmx` file is located
