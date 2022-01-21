@@ -6,3 +6,4 @@ target/
 .vscode
 jmeter.log
 assistance/conf
+assistance/wait-for.sh

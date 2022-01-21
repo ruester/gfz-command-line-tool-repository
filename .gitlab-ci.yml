@@ -121,7 +121,7 @@ deploy_staging:
   stage: deploy
   before_script:
     - apk update
-    - apk add bash wget tar gzip
+    - apk add bash wget tar gzip curl netcat-openbsd
   cache: {}
   allow_failure: false
   when: manual
@@ -135,11 +135,17 @@ deploy_staging:
   script:
     - cd assistance
 
+    # download waiting script used for checking GeoServer later
+    - wget "https://raw.githubusercontent.com/eficode/wait-for/v2.2.1/wait-for" -O wait-for.sh
+    - chmod 755 wait-for.sh
+
     # replace placeholders in configuration files
     # we need both versions (staging/production) of those files as we have both
     # environments on the same server and the /builds directory is shared
     - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PASSWORD_STAGING}@g" users-staging.xml
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PLAIN_PASSWORD_STAGING}@g" SLD/add-style-to-geoserver.sh
     - sed -i -e "s@__WPS_URL__@${WPS_URL_STAGING}@g" application_properties_staging.js
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_STAGING}@g" SLD/add-style-to-geoserver.sh
     - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_STAGING}@g" tomcat-users-staging.xml
 
     - docker-compose -f docker-compose-staging.yml pull
@@ -156,12 +162,17 @@ deploy_staging:
         docker cp "conf/${service}.json" riesgos-wps-staging:/usr/share/riesgos/json-configurations
       done
 
+    # wait for GeoServer to be ready then deploy ShakeMap style to GeoServer
+    - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_STAGING}/index.html"
+    - cd SLD
+    - /bin/bash add-style-to-geoserver.sh
+
 deploy_production:
   image: docker/compose:1.25.5
   stage: deploy
   before_script:
     - apk update
-    - apk add bash wget tar gzip
+    - apk add bash wget tar gzip curl netcat-openbsd
   cache: {}
   allow_failure: false
   when: manual
@@ -175,11 +186,17 @@ deploy_production:
   script:
     - cd assistance
 
+    # download waiting script used for checking GeoServer later
+    - wget "https://raw.githubusercontent.com/eficode/wait-for/v2.2.1/wait-for" -O wait-for.sh
+    - chmod 755 wait-for.sh
+
     # replace placeholders in configuration files
     # we need both versions (staging/production) of those files as we have both
     # environments on the same server and the /builds directory is shared
     - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PASSWORD_PROD}@g" users-prod.xml
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PLAIN_PASSWORD_PROD}@g" SLD/add-style-to-geoserver.sh
     - sed -i -e "s@__WPS_URL__@${WPS_URL_PROD}@g" application_properties_prod.js
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_PROD}@g" SLD/add-style-to-geoserver.sh
     - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_PROD}@g" tomcat-users-prod.xml
     - sed -i -e "s@__PROD_IMAGE_TAG__@${CI_COMMIT_TAG}@g" docker-compose-prod.yml
 
@@ -196,3 +213,8 @@ deploy_production:
       for service in ${RIESGOS_SERVICES}; do
         docker cp "conf/${service}.json" riesgos-wps-prod:/usr/share/riesgos/json-configurations
       done
+
+    # wait for GeoServer to be ready then deploy ShakeMap style to GeoServer
+    - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_PROD}/index.html"
+    - cd SLD
+    - /bin/bash add-style-to-geoserver.sh

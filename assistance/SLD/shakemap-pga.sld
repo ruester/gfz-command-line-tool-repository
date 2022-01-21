@@ -5,7 +5,7 @@
   <sld:NamedLayer>
     <sld:Name/>
     <sld:UserStyle>
-      <sld:Name>Default Styler</sld:Name>
+      <sld:Name>shakemap-pga</sld:Name>
       <sld:FeatureTypeStyle>
         <sld:Name>name</sld:Name>
         <sld:Rule>
