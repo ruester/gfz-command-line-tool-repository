@@ -11,17 +11,18 @@
         <sld:Rule>
           <sld:RasterSymbolizer>
             <sld:ColorMap>
-              <sld:ColorMapEntry color="#6699FF" opacity="0" quantity="0" label=""/>
-              <sld:ColorMapEntry color="#6699FF" opacity="1.0" quantity="0.09" label=""/>
-              <sld:ColorMapEntry color="#009999" opacity="1.0" quantity="0.16" label=""/>
-              <sld:ColorMapEntry color="#009966" opacity="1.0" quantity="0.25" label=""/>
-              <sld:ColorMapEntry color="#00CC33" opacity="1.0" quantity="0.36" label=""/>
-              <sld:ColorMapEntry color="#71C627" opacity="1.0" quantity="0.5"/>
-              <sld:ColorMapEntry color="#CCFF00" opacity="1.0" quantity="0.62" label=""/>
-              <sld:ColorMapEntry color="#FFFF00" opacity="1.0" quantity="0.7" label=""/>
-              <sld:ColorMapEntry color="#FFCC00" opacity="1.0" quantity="0.81" label=""/>
-              <sld:ColorMapEntry color="#FF9900" opacity="1.0" quantity="0.96" label=""/>
-              <sld:ColorMapEntry color="#FF0000" opacity="1.0" quantity="1" label=""/>
+              <sld:ColorMapEntry color="#FFFFFF" opacity="0" quantity="0" label=""/>
+              <sld:ColorMapEntry color="#FFFFFF" opacity="0" quantity="0.0005" label=""/>
+              <sld:ColorMapEntry color="#BFCCFF" opacity="0.5" quantity="0.0015" label=""/>
+              <sld:ColorMapEntry color="#A0E6FF" opacity="0.5" quantity="0.0035" label=""/>
+              <sld:ColorMapEntry color="#80FFFF" opacity="0.5" quantity="0.0075" label=""/>
+              <sld:ColorMapEntry color="#7AFF93" opacity="0.5" quantity="0.0150" label=""/>
+              <sld:ColorMapEntry color="#FFFF00" opacity="0.5" quantity="0.0350" label=""/>
+              <sld:ColorMapEntry color="#FFC800" opacity="0.5" quantity="0.0750" label=""/>
+              <sld:ColorMapEntry color="#FF9100" opacity="0.5" quantity="0.1500" label=""/>
+              <sld:ColorMapEntry color="#FF0000" opacity="0.5" quantity="0.3500" label=""/>
+              <sld:ColorMapEntry color="#C80000" opacity="0.5" quantity="0.7500" label=""/>
+              <sld:ColorMapEntry color="#800000" opacity="0.5" quantity="1.5000" label=""/>
             </sld:ColorMap>
             <sld:ContrastEnhancement>
               <sld:GammaValue>1.0</sld:GammaValue>
