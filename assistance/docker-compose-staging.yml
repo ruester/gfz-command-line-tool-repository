@@ -25,6 +25,9 @@ services:
     restart: always
     environment:
       - CATALINA_OPTS=-Xmx6g -Xms6g
+      - GEOSERVER_HOST=rz-vm140.gfz-potsdam.de
+      - GEOSERVER_PORT=8433
+      - GEOSERVER_PROTOCOL=https
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "riesgos-json-config-staging:/usr/share/riesgos/json-configurations"

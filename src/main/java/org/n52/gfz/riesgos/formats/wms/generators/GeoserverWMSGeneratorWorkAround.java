@@ -96,9 +96,35 @@ public class GeoserverWMSGeneratorWorkAround extends AbstractGenerator {
 
             throws IOException {
 
+        final String cmGeoserverHost = cm.getGeoserverHost();
+        final String cmGeoserverPort = cm.getGeoserverPort();
+        final String defaultProtocol = "http";
 
-        final String pureHosthame = cm.getGeoserverHost();
-        final String purePort = cm.getGeoserverPort();
+        final String envGeoserverHost = System.getenv("GEOSERVER_HOST");
+        final String envGeoserverPort = System.getenv("GEOSERVER_PORT");
+        final String envGeoserverProtocol =
+                System.getenv("GEOSERVER_PROTOCOL");
+
+        final String hostname;
+        if (envGeoserverHost != null && !envGeoserverHost.isEmpty()) {
+            hostname = envGeoserverHost;
+        } else {
+            hostname = cmGeoserverHost;
+        }
+        final String port;
+        if (envGeoserverPort != null && !envGeoserverPort.isEmpty()) {
+            port = envGeoserverPort;
+        } else {
+            port = cmGeoserverPort;
+        }
+        final String protocol;
+        if (envGeoserverProtocol != null && !envGeoserverProtocol.isEmpty()) {
+            protocol = envGeoserverProtocol;
+        } else {
+            protocol = defaultProtocol;
+        }
+
+
 
         final InputStream inputStreamRaw =
                 generator.generateStream(data, mimeType, schema);
@@ -114,10 +140,10 @@ public class GeoserverWMSGeneratorWorkAround extends AbstractGenerator {
 
         final String text = new String(byteOutputStream.toByteArray());
 
-        final String hostname =
-                "http://" + pureHosthame + ":"  + purePort + "/";
+        final String baseUrl =
+                protocol + "://" + hostname + ":"  + port + "/";
         final String textReplaced =
-                text.replace("https://riesgos.52north.org/", hostname);
+                text.replace("https://riesgos.52north.org/", baseUrl);
 
         return new ByteArrayInputStream(textReplaced.getBytes());
     }
