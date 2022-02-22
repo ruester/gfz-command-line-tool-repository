@@ -2,22 +2,22 @@ version: "3"
 
 services:
   quakeledger:
-    image: gfzriesgos/quakeledger:1.0
+    image: gfzriesgos/quakeledger:1.0.1
 
   shakyground:
-    image: gfzriesgos/shakyground:1.0
+    image: gfzriesgos/shakyground:2.0.0
 
   assetmaster:
-    image: gfzriesgos/assetmaster:1.0
+    image: gfzriesgos/assetmaster:2.0.0
 
   modelprop:
-    image: gfzriesgos/modelprop:1.0
+    image: gfzriesgos/modelprop:1.1.0
 
   deus:
-    image: gfzriesgos/deus:1.0
+    image: gfzriesgos/deus:1.1.0
 
   flooddamage:
-    image: gfzriesgos/flooddamage:20191122
+    image: gfzriesgos/flooddamage:20220222
 
   riesgos-wps:
     image: gfzriesgos/riesgos-wps:__PROD_IMAGE_TAG__
