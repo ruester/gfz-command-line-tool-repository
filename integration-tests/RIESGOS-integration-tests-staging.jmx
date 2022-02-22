@@ -16,8 +16,8 @@
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
         <stringProp name="HTTPSampler.domain">rz-vm140.gfz-potsdam.de</stringProp>
-        <stringProp name="HTTPSampler.port">8080</stringProp>
-        <stringProp name="HTTPSampler.protocol"></stringProp>
+        <stringProp name="HTTPSampler.port">8443</stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
         <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
         <stringProp name="HTTPSampler.path">/wps/WebProcessingService</stringProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
@@ -12740,9 +12740,10 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-325732394">Access-Control-Allow-Origin: http://riesgos.dlr.de</stringProp>
+              <stringProp name="-332354659">Access-Control-Allow-Origin: https://example\.com</stringProp>
               <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
-              <stringProp name="-1974234482">Access-Control-Expose-Headers: *</stringProp>
+              <stringProp name="-1071725206">Access-Control-Expose-Headers: \*</stringProp>
+              <stringProp name="419966231">Access-Control-Allow-Origin: \*</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -12813,9 +12814,10 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-325732394">Access-Control-Allow-Origin: http://riesgos.dlr.de</stringProp>
+              <stringProp name="-332354659">Access-Control-Allow-Origin: https://example\.com</stringProp>
               <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
-              <stringProp name="-1974234482">Access-Control-Expose-Headers: *</stringProp>
+              <stringProp name="-1071725206">Access-Control-Expose-Headers: \*</stringProp>
+              <stringProp name="419966231">Access-Control-Allow-Origin: \*</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -12844,7 +12846,7 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
             </elementProp>
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Origin</stringProp>
-              <stringProp name="Header.value">http://riesgos.dlr.de</stringProp>
+              <stringProp name="Header.value">https://example.com</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>
