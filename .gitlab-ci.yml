@@ -148,7 +148,7 @@ deploy_staging:
     - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_STAGING}@g" SLD/add-style-to-geoserver.sh
     - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_STAGING}@g" tomcat-users-staging.xml
 
-    - docker-compose -p riesgos-staging -f docker-compose-staging.yml pull
+    - docker-compose -f docker-compose-staging.yml pull
 
     # get configuration files of services
     - /bin/bash get-configuration-files.sh docker-compose-staging.yml
@@ -200,7 +200,7 @@ deploy_production:
     - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_PROD}@g" tomcat-users-prod.xml
     - sed -i -e "s@__PROD_IMAGE_TAG__@${CI_COMMIT_TAG}@g" docker-compose-prod.yml
 
-    - docker-compose -p riesgos-prod -f docker-compose-prod.yml pull
+    - docker-compose -f docker-compose-prod.yml pull
 
     # get configuration files of services
     - /bin/bash get-configuration-files.sh docker-compose-prod.yml
