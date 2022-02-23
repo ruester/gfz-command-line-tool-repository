@@ -19,6 +19,7 @@ package org.n52.gfz.riesgos.configuration;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.FileToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
+import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDateTimeBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
@@ -45,6 +46,7 @@ import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
+import org.n52.wps.io.data.binding.literal.LiteralDateTimeBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
@@ -178,6 +180,49 @@ public enum InputParameterFactory {
                     new LiteralStringBindingWithAllowedValues(allowedValues));
         }
 
+        return builder.build();
+    }
+
+
+    /**
+     * Creates a command line string argument.
+     * @param identifier identifier of the data
+     * @param isOptional true if the value is optional
+     * @param optionalAbstract optional description of the parameter
+     * @param flag optional command line flag (--x for a parameter x)
+     * @param defaultValue optional default value of the argument
+     * @param allowedValues optional list with allowed values
+     * @return object with information about how to use the value as a string
+     * command line argument input parameter
+     */
+    public IInputParameter createCommandLineArgumentDateTime(
+            final String identifier,
+            final boolean isOptional,
+            final String optionalAbstract,
+            final String flag,
+            final String defaultValue,
+            final List<String> allowedValues) {
+        final InputParameterImpl.Builder<LiteralDateTimeBinding> builder =
+                new InputParameterImpl.Builder<>(
+                        identifier,
+                        LiteralDateTimeBinding.class,
+                        isOptional,
+                        optionalAbstract
+                );
+        builder.withFunctionToTransformToCmd(
+                new LiteralDateTimeBindingToStringCmd(flag));
+        if (defaultValue != null) {
+            builder.withDefaultValue(defaultValue);
+        }
+
+        if (allowedValues != null && (!allowedValues.isEmpty())) {
+            builder.withAllowedValues(allowedValues);
+            // For the moment we don't add validators.
+            // The WPS will care that we have valid date objects, that
+            // we can then convert to command line arguments.
+            // We currently also don't have a kind of range
+            // parameter that we could validate.
+        }
         return builder.build();
     }
 

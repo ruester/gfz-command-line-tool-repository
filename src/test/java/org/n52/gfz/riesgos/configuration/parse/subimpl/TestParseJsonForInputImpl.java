@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.n52.gfz.riesgos.commandlineparametertransformer.BoundingBoxDataToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.FileToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralBooleanBindingToStringCmd;
+import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDateTimeBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralDoubleBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToStringCmd;
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
@@ -46,6 +47,7 @@ import org.n52.wps.io.data.binding.complex.GenericFileDataBinding;
 import org.n52.wps.io.data.binding.complex.GenericXMLDataBinding;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
+import org.n52.wps.io.data.binding.literal.LiteralDateTimeBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
 import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
@@ -332,6 +334,38 @@ public class TestParseJsonForInputImpl {
             assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
             assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
             assertEquals("The converter is to write the string as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
+            assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
+        } catch(final ParseConfigurationException exception) {
+            fail("There should be no exception");
+        }
+    }
+
+    /**
+     * test with a datetime without a default value
+     */
+    @Test
+    public void parseCommandLineArgumentDatetimeWithoutDefaultValue() {
+        final String text = "{" +
+                "\"title\": \"a\"," +
+                "\"useAs\": \"commandLineArgument\"," +
+                "\"type\": \"datetime\"" +
+                "}";
+
+        final ParseJsonForInputImpl parser = new ParseJsonForInputImpl();
+        final IConvertIDataToCommandLineParameter converter = new LiteralDateTimeBindingToStringCmd();
+
+        try {
+            final IInputParameter inputIdentifier = parser.parseInput(parseJson(text));
+            assertEquals("the identifier is the title", "a", inputIdentifier.getIdentifier());
+            assertEquals("It uses a LiteralDateTimeBinding", LiteralDateTimeBinding.class, inputIdentifier.getBindingClass());
+            assertFalse("There is no path", inputIdentifier.getPathToWriteToOrReadFromFile().isPresent());
+            assertFalse("There is no schema", inputIdentifier.getSchema().isPresent());
+            assertFalse("There is no validator", inputIdentifier.getValidator().isPresent());
+            assertFalse("There are no supported crs for bbox", inputIdentifier.getSupportedCRSForBBox().isPresent());
+            assertFalse("There is no function to write the data to files", inputIdentifier.getFunctionToWriteIDataToFiles().isPresent());
+            assertFalse("There is no function to write the data to stdin", inputIdentifier.getFunctionToWriteToStdin().isPresent());
+            assertTrue("There is a function to convert it to a cmd argument", inputIdentifier.getFunctionToTransformToCmd().isPresent());
+            assertEquals("The converter is to write the datetime as a cmd argument", converter, inputIdentifier.getFunctionToTransformToCmd().get());
             assertFalse("There is no default value", inputIdentifier.getDefaultValue().isPresent());
         } catch(final ParseConfigurationException exception) {
             fail("There should be no exception");

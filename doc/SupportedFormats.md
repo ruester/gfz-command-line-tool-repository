@@ -35,6 +35,7 @@ supported types. It includes:
 - double
 - boolean
 - string
+- datetime
 - bbox
 - xml
 - geotiff
@@ -186,6 +187,14 @@ no validation of the xml content.
 
 Boolean parameters need an additional flag attribute that will be set
 if the value is true.
+
+### datetime
+
+Datetime objects are handled internally as UTC values - so whatever you
+pass in the WPS request will be
+converted to UTC before your command
+line program acutally sees it.
+Values follow then ISO format: '2022-12-31T23:59:59.000Z'
 
 ### bbox
 

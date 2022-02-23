@@ -43,6 +43,7 @@ import org.n52.wps.io.data.IBBOXData;
 import org.n52.wps.io.data.IComplexData;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.ILiteralData;
+import org.n52.wps.io.data.binding.literal.LiteralDateTimeBinding;
 import org.n52.wps.webapp.api.FormatEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -249,8 +250,26 @@ public class ProcessDescriptionGeneratorImpl
             if (inputClassType.isPresent()) {
                 final DomainMetadataType datatype =
                         literalData.addNewDataType();
+                String lowerCaseInputClassType =
+                        inputClassType.get().toLowerCase();
+                if (inputParameter.getBindingClass().equals(
+                        LiteralDateTimeBinding.class
+                )) {
+                    // The literalDateTimeBinding class also supports time.
+                    // It serializes to the long value of the
+                    // number of milliseconds since January 1, 1970,
+                    // 00:00:00 GMT.
+                    //
+                    // As the mechanism gets the constructor that gets
+                    // a java Date object, the current mechanism
+                    // dispatches
+                    // to just 'date'.
+                    // But in some of our cases we want to have
+                    // datetime values.
+                    lowerCaseInputClassType = "dateTime";
+                }
                 datatype.setReference("xs:"
-                        + inputClassType.get().toLowerCase());
+                        + lowerCaseInputClassType);
 
                 final Optional<List<String>> optionalAllowedValues =
                         inputParameter.getAllowedValues();
