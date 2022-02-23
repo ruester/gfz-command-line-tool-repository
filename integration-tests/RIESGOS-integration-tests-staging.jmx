@@ -6460,7 +6460,7 @@
               <stringProp name="-261220619">Service=WMS</stringProp>
               <stringProp name="204802932">Request=GetMap</stringProp>
               <stringProp name="879824658">Version=1.1.1</stringProp>
-              <stringProp name="2061578968">layers=N52:primary</stringProp>
+              <stringProp name="1230321647">layers=riesgos:</stringProp>
               <stringProp name="1485219">.tif</stringProp>
               <stringProp name="-788034761">width=</stringProp>
               <stringProp name="802788342">height=</stringProp>
