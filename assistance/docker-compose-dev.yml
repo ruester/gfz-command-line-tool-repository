@@ -27,9 +27,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - GEOSERVER_HOST=localhost
-      - GEOSERVER_PORT=8080
-      - GEOSERVER_PROTOCOL=http
+      - RIESGOS_GEOSERVER_ACCESS_BASE_URL=http://localhost:8080/geoserver
+      - RIESGOS_GEOSERVER_SEND_BASE_URL=http://localhost:8080/geoserver
+      - RIESGOS_GEOSERVER_USERNAME=admin
+      - RIESGOS_GEOSERVER_PASSWORD=geoserver
     volumes:
       - "riesgos-json-config-dev:/usr/share/riesgos/json-configurations"
       - "/var/run/docker.sock:/var/run/docker.sock"

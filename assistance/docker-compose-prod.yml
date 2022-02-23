@@ -25,9 +25,10 @@ services:
     restart: always
     environment:
       - CATALINA_OPTS=-Xmx12g -Xms12g
-      - GEOSERVER_HOST=rz-vm140.gfz-potsdam.de
-      - GEOSERVER_PORT=433
-      - GEOSERVER_PROTOCOL=https
+      - RIESGOS_GEOSERVER_ACCESS_BASE_URL=__GEOSERVER_URL__
+      - RIESGOS_GEOSERVER_SEND_BASE_URL=http://localhost/geoserver
+      - RIESGOS_GEOSERVER_USERNAME=admin
+      - RIESGOS_GEOSERVER_PASSWORD=__GEOSERVER_PASSWORD__
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "riesgos-json-config:/usr/share/riesgos/json-configurations"

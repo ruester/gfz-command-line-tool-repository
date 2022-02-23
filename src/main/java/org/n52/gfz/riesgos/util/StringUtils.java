@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * Utility functions to work with strings.
@@ -69,5 +70,26 @@ public enum StringUtils {
                              .getResourceAsStream(path)) {
             return readFromStream(inputStream);
         }
+    }
+
+    /**
+     * Create a unique filename.
+     * Basically wrote once by 52N, slightly changed.
+     * @param fileName existing filename
+     * @return some unique filename
+     */
+    public static String makeUniqueFileName(final String fileName) {
+        final int suffixStartIdx = fileName.lastIndexOf('.');
+        final boolean hasSuffix = suffixStartIdx >= 0;
+        final String suffix = hasSuffix
+                ? fileName.substring(suffixStartIdx)
+                : "";
+        final String rawName = hasSuffix
+                ? fileName.substring(0, suffixStartIdx)
+                : fileName;
+        final int endIndex = 5;
+        final String uniquePart =
+                UUID.randomUUID().toString().substring(0, endIndex);
+        return rawName + "_" + uniquePart + suffix;
     }
 }
