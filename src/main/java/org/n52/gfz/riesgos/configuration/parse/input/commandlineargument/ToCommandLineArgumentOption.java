@@ -41,10 +41,15 @@ public enum ToCommandLineArgumentOption {
     BOOLEAN("boolean",
             new CommandLineArgumentBooleanFactory()),
     /**
-     * This is the enum to use a stringas command line argument.
+     * This is the enum to use a string as command line argument.
      */
     STRING("string",
             new CommandLineArgumentStringFactory()),
+    /**
+     * This is the eunm to use a datetime as command line argument.
+     */
+    DATETIME("datetime",
+            new CommandLineArgumentDateTimeFactory()),
     /**
      * This is the enum to use a bounding box as command line argument.
      */
@@ -58,7 +63,7 @@ public enum ToCommandLineArgumentOption {
     /**
      * This is the enum to use a geotiff file as command line argument.
      */
-    GEOFITT("geotiff",
+    GEOTIFF("geotiff",
             new CommandLineArgumentGeotiffFileFactory()),
     /**
      * This is the enum to use a geojson file as command line argument.

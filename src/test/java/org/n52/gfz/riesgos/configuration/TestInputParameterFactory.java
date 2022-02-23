@@ -46,5 +46,10 @@ public class TestInputParameterFactory {
         final IInputParameter identifier5 = InputParameterFactory.INSTANCE.createCommandLineArgumentString("val2", false, null, null, "x", Arrays.asList("x", "y"));
 
         assertEquals("4 and 5 are equal", identifier4, identifier5);
+
+        final IInputParameter identifier6 = InputParameterFactory.INSTANCE.createCommandLineArgumentDateTime("starttime", false, null, null, null, null);
+        final IInputParameter identifier7 = InputParameterFactory.INSTANCE.createCommandLineArgumentDateTime("starttime", false, null, null, null, null);
+
+        assertEquals("6 and 7 are also equal", identifier6, identifier7);
     }
 }

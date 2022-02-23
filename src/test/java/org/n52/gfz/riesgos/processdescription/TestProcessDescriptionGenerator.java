@@ -58,7 +58,6 @@ public class TestProcessDescriptionGenerator {
     public void testQuakeledgerConfig() {
 
         // because of the test case
-        // because of the test case
         // there is no direct access to the ParserFactory and GeneratorFactory classes
         // it only uses a Supplier to get the the parsers and generators
         final IConfiguration configuration = new QuakeledgerConfig();
@@ -191,6 +190,14 @@ public class TestProcessDescriptionGenerator {
                 "          <DefaultValue>-33.1299174879672</DefaultValue>\n" +
                 "        </LiteralData>\n" +
                 "      </Input>\n" +
+                "      <Input minOccurs=\"1\" maxOccurs=\"1\">\n" +
+                "        <ows:Identifier>starttime</ows:Identifier>\n" +
+                "        <ows:Title>starttime</ows:Title>\n" +
+                "        <LiteralData>\n" +
+                "          <ows:DataType ows:reference=\"xs:dateTime\"/>\n" +
+                "          <ows:AnyValue/>\n" +
+                "        </LiteralData>\n" +
+                "      </Input>\n" +
                 "    </DataInputs>\n" +
                 "    <ProcessOutputs>\n" +
                 "      <Output>\n" +
@@ -251,7 +258,9 @@ public class TestProcessDescriptionGenerator {
                             "etype", false, null,null,  "deaggregation",
                             Arrays.asList("observed", "deaggregation", "stochastic", "expert")),
                     InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlon", false, null, null, "-71.5730623712764", null),
-                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlat", false, null ,null, "-33.1299174879672", null)
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDouble("tlat", false, null ,null, "-33.1299174879672", null),
+                    // and to have a test for the datetime
+                    InputParameterFactory.INSTANCE.createCommandLineArgumentDateTime("starttime", false, null, null, null, null)
             );
         }
 
