@@ -720,7 +720,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="410279914">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="888677443">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -836,6 +836,9 @@
             &lt;ows:AllowedValues&gt;
               &lt;ows:Value&gt;ValpCVTSaraDownscaled&lt;/ows:Value&gt;
               &lt;ows:Value&gt;ValpCVTBayesian&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpCommuna&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularOriginal&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularGrid&lt;/ows:Value&gt;
               &lt;ows:Value&gt;LimaCVT1_PD30_TI70_5000&lt;/ows:Value&gt;
               &lt;ows:Value&gt;LimaCVT2_PD30_TI70_10000&lt;/ows:Value&gt;
               &lt;ows:Value&gt;LimaCVT3_PD30_TI70_50000&lt;/ows:Value&gt;
@@ -2849,7 +2852,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="410279914">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="888677443">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2965,6 +2968,9 @@
             &lt;ows:AllowedValues&gt;
               &lt;ows:Value&gt;ValpCVTSaraDownscaled&lt;/ows:Value&gt;
               &lt;ows:Value&gt;ValpCVTBayesian&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpCommuna&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularOriginal&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularGrid&lt;/ows:Value&gt;
               &lt;ows:Value&gt;LimaCVT1_PD30_TI70_5000&lt;/ows:Value&gt;
               &lt;ows:Value&gt;LimaCVT2_PD30_TI70_10000&lt;/ows:Value&gt;
               &lt;ows:Value&gt;LimaCVT3_PD30_TI70_50000&lt;/ows:Value&gt;
