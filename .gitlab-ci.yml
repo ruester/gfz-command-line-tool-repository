@@ -1,11 +1,9 @@
-# based on example file for maven projects:
-# https://gitlab.com/gitlab-org/gitlab-ci-yml/blob/master/Maven.gitlab-ci.yml
-
-image: maven:3.6.1-jdk-8
+image: tomcat:9-jdk8-openjdk-slim-buster
 
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  RIESGOS_SERVICES: "assetmaster deus volcanus flooddamage modelprop quakeledger shakyground"
 
 cache:
   paths:
@@ -15,43 +13,49 @@ cache:
 stages:
   - test
   - build
-  - docker
+  - deploy
 
 before_script:
   - env
+  - DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y
+  - DEBIAN_FRONTEND=noninteractive apt install -y maven
   - which java
   - java -version
+  - mvn --version
 
-.validate: &validate
-  except:
-    - schedules
-  stage: build
-  script:
-    - 'mvn $MAVEN_CLI_OPTS clean test-compile'
-
-.verify: &verify
-  except:
-    - schedules
+verify_java:
   stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - src/
+        - pom.xml
+        - checkstyle-suppressions.xml
+        - .gitlab-ci.yml
   script:
-    - 'mvn $MAVEN_CLI_OPTS clean verify'
-
-validate:jdk8:
-  <<: *validate
-
-verify:jdk8:
-  <<: *verify
+    - mvn $MAVEN_CLI_OPTS clean verify
+    - mvn $MAVEN_CLI_OPTS clean test-compile
 
 checkstyle:
-  except:
-    - schedules
   stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - src/
+        - pom.xml
+        - checkstyle-suppressions.xml
+        - .gitlab-ci.yml
   script:
     - 'mvn $MAVEN_CLI_OPTS clean checkstyle:checkstyle'
 
 integration_test:
-  only:
-    - schedules
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  before_script: []
   script:
     - if [ ! -f ".local/apache-jmeter-5.1.1.tgz" ]; then mkdir .local && wget "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.1.1.tgz" -O .local/apache-jmeter-5.1.1.tgz; fi
     - tar xf .local/apache-jmeter-5.1.1.tgz
@@ -64,12 +68,165 @@ integration_test:
     paths:
       - ${CI_PROJECT_DIR}/integration-tests/jmeter-report
 
-dockerbuild:
-  stage: docker
-  image: docker:19.03.1
+dockerbuild_latest:
+  image: docker:20.10.12
+  stage: build
   before_script: []
   cache: {}
-  except:
-    - schedules
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_BRANCH
+  tags:
+    - group
   script:
-    - docker build -f assistance/Dockerfile .
+    - docker build -t riesgos-wps:latest -f assistance/Dockerfile .
+
+    # push latest image to Docker Hub
+    - docker tag riesgos-wps:latest gfzriesgos/riesgos-wps:latest
+    - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWORD}
+    - docker push gfzriesgos/riesgos-wps:latest
+
+    # push latest image to GitLab Container Registry
+    - docker tag riesgos-wps:latest git.gfz-potsdam.de:5000/id2/riesgos/gfz-riesgos-wps-repository:latest
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push git.gfz-potsdam.de:5000/id2/riesgos/gfz-riesgos-wps-repository:latest
+
+dockerbuild_tagged:
+  image: docker:20.10.12
+  stage: build
+  before_script: []
+  cache: {}
+  tags:
+    - group
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_TAG
+  script:
+    - docker build -t riesgos-wps:$CI_COMMIT_TAG -f assistance/Dockerfile .
+
+    # push image to Docker Hub
+    - docker tag riesgos-wps:$CI_COMMIT_TAG gfzriesgos/riesgos-wps:$CI_COMMIT_TAG
+    - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWORD}
+    - docker push gfzriesgos/riesgos-wps:$CI_COMMIT_TAG
+
+    # push image to GitLab Container Registry
+    - docker tag riesgos-wps:$CI_COMMIT_TAG git.gfz-potsdam.de:5000/id2/riesgos/gfz-riesgos-wps-repository:$CI_COMMIT_TAG
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push git.gfz-potsdam.de:5000/id2/riesgos/gfz-riesgos-wps-repository:$CI_COMMIT_TAG
+
+deploy_staging:
+  image: docker/compose:1.25.5
+  stage: deploy
+  before_script:
+    - apk update
+    - apk add bash wget tar gzip curl netcat-openbsd
+  cache: {}
+  allow_failure: false
+  when: manual
+  tags:
+    - riesgos
+    - deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_BRANCH
+  script:
+    - cd assistance
+
+    # download waiting script used for checking GeoServer later
+    - wget "https://raw.githubusercontent.com/eficode/wait-for/v2.2.1/wait-for" -O wait-for.sh
+    - chmod 755 wait-for.sh
+
+    # replace placeholders in configuration files
+    # we need both versions (staging/production) of those files as we have both
+    # environments on the same server and the /builds directory is shared
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PASSWORD_STAGING}@g" users-staging.xml
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PLAIN_PASSWORD_STAGING}@g" SLD/add-style-to-geoserver.sh
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PLAIN_PASSWORD_STAGING}@g" docker-compose-staging.yml
+    - sed -i -e "s@__WPS_URL__@${WPS_URL_STAGING}@g" application_properties_staging.js
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_STAGING}@g" SLD/add-style-to-geoserver.sh
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_STAGING}@g" geoserver-global.xml
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_STAGING}@g" docker-compose-staging.yml
+    - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_STAGING}@g" tomcat-users-staging.xml
+
+    - docker-compose -f docker-compose-staging.yml pull
+
+    # get configuration files of services
+    - /bin/bash get-configuration-files.sh docker-compose-staging.yml
+
+    - docker-compose -p riesgos-staging -f docker-compose-staging.yml down || true
+    - docker-compose -p riesgos-staging -f docker-compose-staging.yml up -d
+
+    # copy configuration files of services to running docker container
+    - >
+      for service in ${RIESGOS_SERVICES}; do
+        docker cp "conf/${service}.json" riesgos-wps-staging:/usr/share/riesgos/json-configurations
+      done
+
+    # copy configuration for GeoServer
+    - docker cp "geoserver-global.xml" riesgos-wps-staging:/usr/local/tomcat/webapps/geoserver/data/global.xml
+
+    # wait for GeoServer to be ready then deploy ShakeMap style to GeoServer
+    - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_STAGING}/index.html"
+    - cd SLD
+    - /bin/bash add-style-to-geoserver.sh
+
+deploy_production:
+  image: docker/compose:1.25.5
+  stage: deploy
+  before_script:
+    - apk update
+    - apk add bash wget tar gzip curl netcat-openbsd
+  cache: {}
+  allow_failure: false
+  when: manual
+  tags:
+    - riesgos
+    - deploy
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: $CI_COMMIT_TAG
+  script:
+    - cd assistance
+
+    # download waiting script used for checking GeoServer later
+    - wget "https://raw.githubusercontent.com/eficode/wait-for/v2.2.1/wait-for" -O wait-for.sh
+    - chmod 755 wait-for.sh
+
+    # replace placeholders in configuration files
+    # we need both versions (staging/production) of those files as we have both
+    # environments on the same server and the /builds directory is shared
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PASSWORD_PROD}@g" users-prod.xml
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PLAIN_PASSWORD_PROD}@g" SLD/add-style-to-geoserver.sh
+    - sed -i -e "s@__GEOSERVER_PASSWORD__@${GEOSERVER_PLAIN_PASSWORD_PROD}@g" docker-compose-prod.yml
+    - sed -i -e "s@__WPS_URL__@${WPS_URL_PROD}@g" application_properties_prod.js
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_PROD}@g" SLD/add-style-to-geoserver.sh
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_PROD}@g" geoserver-global.xml
+    - sed -i -e "s@__GEOSERVER_URL__@${GEOSERVER_URL_PROD}@g" docker-compose-prod.yml
+    - sed -i -e "s@__MANAGER_PASSWORD__@${MANAGER_PASSWORD_PROD}@g" tomcat-users-prod.xml
+    - sed -i -e "s@__PROD_IMAGE_TAG__@${CI_COMMIT_TAG}@g" docker-compose-prod.yml
+
+    - docker-compose -f docker-compose-prod.yml pull
+
+    # get configuration files of services
+    - /bin/bash get-configuration-files.sh docker-compose-prod.yml
+
+    - docker-compose -p riesgos-prod -f docker-compose-prod.yml down || true
+    - docker-compose -p riesgos-prod -f docker-compose-prod.yml up -d
+
+    # copy configuration files of services to running docker container
+    - >
+      for service in ${RIESGOS_SERVICES}; do
+        docker cp "conf/${service}.json" riesgos-wps-prod:/usr/share/riesgos/json-configurations
+      done
+
+    # copy configuration for GeoServer
+    - docker cp "geoserver-global.xml" riesgos-wps-prod:/usr/local/tomcat/webapps/geoserver/data/global.xml
+
+    # wait for GeoServer to be ready then deploy ShakeMap style to GeoServer
+    - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_PROD}/index.html"
+    - cd SLD
+    - /bin/bash add-style-to-geoserver.sh

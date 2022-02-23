@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  quakeledger-staging:
+    image: gfzriesgos/quakeledger:latest
+
+  shakyground-staging:
+    image: gfzriesgos/shakyground:latest
+
+  assetmaster-staging:
+    image: gfzriesgos/assetmaster:latest
+
+  modelprop-staging:
+    image: gfzriesgos/modelprop:latest
+
+  deus-staging:
+    image: gfzriesgos/deus:latest
+
+  flooddamage-staging:
+    image: gfzriesgos/flooddamage:latest
+
+  riesgos-wps-staging:
+    image: gfzriesgos/riesgos-wps:latest
+    container_name: riesgos-wps-staging
+    restart: always
+    environment:
+      - CATALINA_OPTS=-Xmx6g -Xms6g
+      - RIESGOS_GEOSERVER_ACCESS_BASE_URL=__GEOSERVER_URL__
+      - RIESGOS_GEOSERVER_SEND_BASE_URL=http://localhost:8080/geoserver
+      - RIESGOS_GEOSERVER_USERNAME=admin
+      - RIESGOS_GEOSERVER_PASSWORD=__GEOSERVER_PASSWORD__
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "riesgos-json-config-staging:/usr/share/riesgos/json-configurations"
+      - "riesgos-wps-hsqldb-staging:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
+      - "riesgos-wps-logs-staging:/usr/local/tomcat/logs"
+      - "${PWD}/tomcat-users-staging.xml:/usr/local/tomcat/conf/tomcat-users.xml"
+      - "${PWD}/users-staging.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
+      - "${PWD}/application_properties_staging.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+
+  nginx:
+    image: nginx:1.21.6-alpine
+    restart: always
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - "/etc/ssl/private/gfz_hosts_default.key:/etc/ssl/private/gfz_hosts_default.key:ro"
+      - "/etc/ssl/gfz_hosts_default.chained.crt:/etc/ssl/gfz_hosts_default.chained.crt:ro"
+      - "/etc/ssl/private/rz-vm140.gfz-potsdam.de.key:/etc/ssl/private/rz-vm140.gfz-potsdam.de.key:ro"
+      - "/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:ro"
+      - "/etc/ssl/dhparam.pem:/etc/ssl/dhparam.pem:ro"
+      - "/etc/ssl/dfn-ca-global-g2-chain.pem:/etc/ssl/chain.pem:ro"
+      - "${PWD}/nginx_staging.conf:/etc/nginx/conf.d/default.conf:ro"
+
+volumes:
+  riesgos-json-config-staging:
+  riesgos-wps-hsqldb-staging:
+  riesgos-wps-logs-staging:

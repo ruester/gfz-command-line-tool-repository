@@ -16,6 +16,7 @@
 
 package org.n52.gfz.riesgos.formats.shakemap.generators;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
@@ -23,9 +24,9 @@ import org.n52.gfz.riesgos.formats.shakemap.IShakemap;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.functions.DoubleGridToFloat;
 import org.n52.gfz.riesgos.formats.shakemap.functions.ShakemapToGridCoverageForRegularGrid;
-import org.n52.gfz.riesgos.formats.wms.generators.WMSGeneratorFactory;
+import org.n52.gfz.riesgos.formats.wms.generators.RiesgosWmsGenerator;
+import org.n52.gfz.riesgos.util.geoserver.exceptions.GeoserverClientException;
 import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.complex.GTRasterDataBinding;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
 import org.n52.wps.webapp.api.FormatEntry;
 import org.slf4j.Logger;
@@ -110,14 +111,15 @@ public class ShakemapWMSGenerator extends AbstractGenerator {
 
             final GridCoverage2D gridCoverage = TO_GRID.apply(shakemap);
 
-            return WMSGeneratorFactory
-                    .INSTANCE
-                    .getWMSGenerator(
-                            GTRasterDataBinding.class)
-                        .generateStream(
-                                new GTRasterDataBinding(gridCoverage),
-                                mimeType,
-                                schema);
+            try {
+                return IOUtils.toInputStream(
+                        new RiesgosWmsGenerator().storeGridAndReturnGetMapUrl(
+                                gridCoverage
+                        )
+                );
+            } catch (GeoserverClientException geoserverClientException) {
+                throw new IOException(geoserverClientException);
+            }
         } else {
             LOGGER.error(
                     "Can't convert another data binding "

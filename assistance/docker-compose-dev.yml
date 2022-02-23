@@ -20,10 +20,17 @@ services:
     image: gfzriesgos/flooddamage:latest
 
   riesgos-wps:
-    image: gfzriesgos/riesgos-wps:latest
+    build:
+      context: ../
+      dockerfile: assistance/Dockerfile
     container_name: riesgos-wps-dev
     ports:
       - "8080:8080"
+    environment:
+      - RIESGOS_GEOSERVER_ACCESS_BASE_URL=http://localhost:8080/geoserver
+      - RIESGOS_GEOSERVER_SEND_BASE_URL=http://localhost:8080/geoserver
+      - RIESGOS_GEOSERVER_USERNAME=admin
+      - RIESGOS_GEOSERVER_PASSWORD=geoserver
     volumes:
       - "riesgos-json-config-dev:/usr/share/riesgos/json-configurations"
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -32,6 +39,4 @@ services:
 
 volumes:
   riesgos-json-config-dev:
-    external: true
   riesgos-wps-hsqldb-dev:
-    external: true

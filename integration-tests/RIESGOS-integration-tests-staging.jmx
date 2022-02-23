@@ -16,8 +16,8 @@
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
         <stringProp name="HTTPSampler.domain">rz-vm140.gfz-potsdam.de</stringProp>
-        <stringProp name="HTTPSampler.port">8080</stringProp>
-        <stringProp name="HTTPSampler.protocol"></stringProp>
+        <stringProp name="HTTPSampler.port">8443</stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
         <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
         <stringProp name="HTTPSampler.path">/wps/WebProcessingService</stringProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
@@ -506,7 +506,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-817528552">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1360722050">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -523,6 +523,42 @@
           &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
         &lt;/wps:ComplexData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;gmpe&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;Ground motion prediction equation.&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;gmpe&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;MontalvaEtAl2016SInter&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;GhofraniAtkinson2014&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;AbrahamsonEtAl2015SInter&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;YoungsEtAl1997SInterNSHMP2008&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+            &lt;ows:DefaultValue&gt;MontalvaEtAl2016SInter&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;vsgrid&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;Grid shear wave velocity in 30 meter depth&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;vsgrid&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;USGSSlopeBasedTopographyProxy&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;FromSeismogeotechnicsMicrozonation&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+            &lt;ows:DefaultValue&gt;USGSSlopeBasedTopographyProxy&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;shakeMapFile&lt;/ows:Title&gt;
@@ -684,7 +720,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1780400986">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="888677443">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -787,6 +823,32 @@
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;intersects&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;model&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;model&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;ValpCVTSaraDownscaled&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpCVTBayesian&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpCommuna&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularOriginal&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularGrid&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT1_PD30_TI70_5000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT2_PD30_TI70_10000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT3_PD30_TI70_50000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT4_PD40_TI60_5000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT5_PD40_TI60_10000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT6_PD40_TI60_50000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaBlocks&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LatacungaRuralAreas&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
           &lt;/LiteralDataDomain&gt;
         &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
@@ -938,7 +1000,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1143695012">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="216490914">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -957,6 +1019,7 @@
               &lt;ows:Value&gt;SUPPASRI2013_v2.0&lt;/ows:Value&gt;
               &lt;ows:Value&gt;Mavrouli_et_al_2014&lt;/ows:Value&gt;
               &lt;ows:Value&gt;Torres_Corredor_et_al_2017&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Medina_2019&lt;/ows:Value&gt;
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;SARA_v1.0&lt;/ows:DefaultValue&gt;
@@ -1154,7 +1217,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1399356222">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-667142231">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -1171,7 +1234,7 @@
       &lt;/wps:Input&gt;
       &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
         &lt;ows:Title&gt;vsmax-ms&lt;/ows:Title&gt;
-        &lt;ows:Abstract&gt;Tiff file with the maximum velocity of the flood in m/s&lt;/ows:Abstract&gt;
+        &lt;ows:Abstract&gt;Tiff file with the velocity of the flood at peak water level in m/s&lt;/ows:Abstract&gt;
         &lt;ows:Identifier&gt;vsmax-ms&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
@@ -2575,7 +2638,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-817528552">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1360722050">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2592,6 +2655,42 @@
           &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
         &lt;/wps:ComplexData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;gmpe&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;Ground motion prediction equation.&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;gmpe&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;MontalvaEtAl2016SInter&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;GhofraniAtkinson2014&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;AbrahamsonEtAl2015SInter&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;YoungsEtAl1997SInterNSHMP2008&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+            &lt;ows:DefaultValue&gt;MontalvaEtAl2016SInter&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;vsgrid&lt;/ows:Title&gt;
+        &lt;ows:Abstract&gt;Grid shear wave velocity in 30 meter depth&lt;/ows:Abstract&gt;
+        &lt;ows:Identifier&gt;vsgrid&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;USGSSlopeBasedTopographyProxy&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;FromSeismogeotechnicsMicrozonation&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
+            &lt;ows:DefaultValue&gt;USGSSlopeBasedTopographyProxy&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
         &lt;ows:Title&gt;shakeMapFile&lt;/ows:Title&gt;
@@ -2753,7 +2852,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1780400986">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="888677443">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2856,6 +2955,32 @@
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;intersects&lt;/ows:DefaultValue&gt;
+          &lt;/LiteralDataDomain&gt;
+        &lt;/wps:LiteralData&gt;
+      &lt;/wps:Input&gt;
+      &lt;wps:Input minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;&gt;
+        &lt;ows:Title&gt;model&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;model&lt;/ows:Identifier&gt;
+        &lt;wps:LiteralData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;text/plain&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;LiteralDataDomain&gt;
+            &lt;ows:AllowedValues&gt;
+              &lt;ows:Value&gt;ValpCVTSaraDownscaled&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpCVTBayesian&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpCommuna&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularOriginal&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;ValpRegularGrid&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT1_PD30_TI70_5000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT2_PD30_TI70_10000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT3_PD30_TI70_50000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT4_PD40_TI60_5000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT5_PD40_TI60_10000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaCVT6_PD40_TI60_50000&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LimaBlocks&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;LatacungaRuralAreas&lt;/ows:Value&gt;
+            &lt;/ows:AllowedValues&gt;
+            &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
           &lt;/LiteralDataDomain&gt;
         &lt;/wps:LiteralData&gt;
       &lt;/wps:Input&gt;
@@ -3007,7 +3132,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1143695012">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="216490914">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3026,6 +3151,7 @@
               &lt;ows:Value&gt;SUPPASRI2013_v2.0&lt;/ows:Value&gt;
               &lt;ows:Value&gt;Mavrouli_et_al_2014&lt;/ows:Value&gt;
               &lt;ows:Value&gt;Torres_Corredor_et_al_2017&lt;/ows:Value&gt;
+              &lt;ows:Value&gt;Medina_2019&lt;/ows:Value&gt;
             &lt;/ows:AllowedValues&gt;
             &lt;ows:DataType ows:reference=&quot;xs:string&quot;/&gt;
             &lt;ows:DefaultValue&gt;SARA_v1.0&lt;/ows:DefaultValue&gt;
@@ -3223,7 +3349,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1399356222">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-667142231">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3240,7 +3366,7 @@
       &lt;/wps:Input&gt;
       &lt;wps:Input minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;&gt;
         &lt;ows:Title&gt;vsmax-ms&lt;/ows:Title&gt;
-        &lt;ows:Abstract&gt;Tiff file with the maximum velocity of the flood in m/s&lt;/ows:Abstract&gt;
+        &lt;ows:Abstract&gt;Tiff file with the velocity of the flood at peak water level in m/s&lt;/ows:Abstract&gt;
         &lt;ows:Identifier&gt;vsmax-ms&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
@@ -4959,6 +5085,11 @@
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;model&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;ValpCVTBayesian&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -5048,6 +5179,11 @@
     &lt;wps:Input id=&quot;querymode&quot;&gt;&#xd;
         &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;model&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;LatacungaRuralAreas&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
@@ -5141,6 +5277,11 @@
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;model&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;LatacungaRuralAreas&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -5232,6 +5373,11 @@
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;model&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;ValpCVTSaraDownscaled&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -5319,6 +5465,11 @@
             &lt;wps:LiteralValue&gt;intersects&lt;/wps:LiteralValue&gt;&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;model&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;LimaCVT1_PD30_TI70_5000&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
     &lt;wps:Output id=&quot;selectedRowsGeoJson&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -5355,7 +5506,6 @@
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
               <stringProp name="-1079911648">&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
-              <stringProp name="847901181">&quot;name&quot;:&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
               <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
@@ -5470,6 +5620,16 @@
 &lt;/eventParameters&gt;&#xd;
 &lt;/wps:Data&gt;&#xd;
 &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 &lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -5644,6 +5804,16 @@
 &lt;/ns1:eventParameters&gt;&#xd;
 &lt;/wps:Data&gt;&#xd;
 &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 &lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; schema=&quot;http://earthquake.usgs.gov/eqcenter/shakemap&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -5815,6 +5985,16 @@
 &lt;/eventParameters&gt;&#xd;
 &lt;/wps:Data&gt;&#xd;
 &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 &lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -5949,6 +6129,16 @@
 &lt;/eventParameters&gt;&#xd;
 &lt;/wps:Data&gt;&#xd;
 &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 &lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -6079,6 +6269,16 @@
 &lt;/eventParameters&gt;&#xd;
 &lt;/wps:Data&gt;&#xd;
 &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 &lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -6210,6 +6410,16 @@
 &lt;/eventParameters&gt;&#xd;
 &lt;/wps:Data&gt;&#xd;
 &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 &lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/WMS&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -6250,18 +6460,29 @@
               <stringProp name="-261220619">Service=WMS</stringProp>
               <stringProp name="204802932">Request=GetMap</stringProp>
               <stringProp name="879824658">Version=1.1.1</stringProp>
-              <stringProp name="2061578968">layers=N52:primary</stringProp>
+              <stringProp name="1230321647">layers=riesgos:</stringProp>
               <stringProp name="1485219">.tif</stringProp>
               <stringProp name="-788034761">width=</stringProp>
               <stringProp name="802788342">height=</stringProp>
               <stringProp name="1540830991">format=image/png</stringProp>
               <stringProp name="93535028">bbox=</stringProp>
               <stringProp name="-1172649803">srs=EPSG:4326</stringProp>
+              <stringProp name="-881234799">rz-vm140</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
             <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="No localhost reference" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1204607085">localhost</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">20</intProp>
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
@@ -6351,6 +6572,16 @@
 &lt;/eventParameters&gt;&#xd;
 &lt;/wps:Data&gt;&#xd;
 &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 &lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot; mimeType=&quot;text/xml&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -6423,6 +6654,16 @@
 {&quot;type&quot;:&quot;FeatureCollection&quot;,&quot;features&quot;:[{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-71.4987,-30.9227]},&quot;properties&quot;:{&quot;preferredOriginID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;preferredMagnitudeID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;type&quot;:&quot;earthquake&quot;,&quot;description.text&quot;:&quot;stochastic&quot;,&quot;origin.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;origin.time.value&quot;:&quot;2019-01-01T00:00:00.000000Z&quot;,&quot;origin.depth.value&quot;:&quot;34.75117&quot;,&quot;origin.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;magnitude.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;magnitude.mag.value&quot;:&quot;8.35&quot;,&quot;magnitude.type&quot;:&quot;MW&quot;,&quot;magnitude.creationInfo.value&quot;:&quot;GFZ&quot;,&quot;focalMechanism.publicID&quot;:&quot;quakeml:quakeledger\/84945&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.strike.value&quot;:&quot;7.310981&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.dip.value&quot;:&quot;16.352970000000003&quot;,&quot;focalMechanism.nodalPlanes.nodalPlane1.rake.value&quot;:&quot;90.0&quot;,&quot;focalMechanism.nodalPlanes.preferredPlane&quot;:&quot;nodalPlane1&quot;},&quot;id&quot;:&quot;quakeml:quakeledger\/84945&quot;}]}&#xd;
 	&lt;/wps:Data&gt;&#xd;
 	&lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 	&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -6531,6 +6772,16 @@
       &lt;/gml:FeatureCollection&gt;&#xd;
 	&lt;/wps:Data&gt;&#xd;
 	&lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;gmpe&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;MontalvaEtAl2016SInter&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
+    &lt;wps:Input id=&quot;vsgrid&quot;&gt;&#xd;
+        &lt;wps:Data mimeType=&quot;text/xml&quot;&gt;&#xd;
+            &lt;wps:LiteralValue&gt;USGSSlopeBasedTopographyProxy&lt;/wps:LiteralValue&gt;&#xd;
+        &lt;/wps:Data&gt;&#xd;
+    &lt;/wps:Input&gt;&#xd;
 	&lt;wps:Output id=&quot;shakeMapFile&quot; transmission=&quot;value&quot; mimeType=&quot;application/vnd.geo+json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -12424,6 +12675,59 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for WPS requests (no SSL)" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;wps:GetCapabilities&#xd;
+	xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot;&#xd;
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&#xd;
+	xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 ../wps.xsd&quot;&#xd;
+	service=&quot;WPS&quot;&gt;&#xd;
+&lt;/wps:GetCapabilities&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">rz-vm140.gfz-potsdam.de</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/wps/WebProcessingService</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 301 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="50548">301</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="419966231">Access-Control-Allow-Origin: \*</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for WPS requests" enabled="true">
           <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
@@ -12506,9 +12810,9 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-325732394">Access-Control-Allow-Origin: http://riesgos.dlr.de</stringProp>
+              <stringProp name="-332354659">Access-Control-Allow-Origin: https://example\.com</stringProp>
               <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
-              <stringProp name="-1974234482">Access-Control-Expose-Headers: *</stringProp>
+              <stringProp name="-1071725206">Access-Control-Expose-Headers: \*</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -12517,7 +12821,64 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for WPSGeoServer requests" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for GeoServer requests (no SSL)" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="service" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">WMS</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">service</stringProp>
+              </elementProp>
+              <elementProp name="request" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">GetCapabilities</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">request</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">rz-vm140.gfz-potsdam.de</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/geoserver/wms</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 301 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="50548">301</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="-1071725206">Access-Control-Expose-Headers: \*</stringProp>
+              <stringProp name="419966231">Access-Control-Allow-Origin: \*</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for GeoServer requests" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="service" elementType="HTTPArgument">
@@ -12579,9 +12940,133 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-325732394">Access-Control-Allow-Origin: http://riesgos.dlr.de</stringProp>
               <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
-              <stringProp name="-1974234482">Access-Control-Expose-Headers: *</stringProp>
+              <stringProp name="-1071725206">Access-Control-Expose-Headers: \*</stringProp>
+              <stringProp name="419966231">Access-Control-Allow-Origin: \*</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for WPS OPTIONS requests (no SSL)" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">rz-vm140.gfz-potsdam.de</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/wps</stringProp>
+          <stringProp name="HTTPSampler.method">OPTIONS</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 204 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49590">204</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="419966231">Access-Control-Allow-Origin: \*</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for WPS OPTIONS requests" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">OPTIONS</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 200 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-332354659">Access-Control-Allow-Origin: https://example\.com</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
+              <stringProp name="-1071725206">Access-Control-Expose-Headers: \*</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CORS headers for GeoServer OPTIONS requests" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/geoserver</stringProp>
+          <stringProp name="HTTPSampler.method">OPTIONS</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout">300000</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="HTTP 204 Response Code" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49590">204</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
+            <stringProp name="Assertion.custom_message"></stringProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Allow origin header" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="419966231">Access-Control-Allow-Origin: \*</stringProp>
+              <stringProp name="-1013888749">Access-Control-Allow-Credentials: true</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_headers</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -12610,7 +13095,7 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
             </elementProp>
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Origin</stringProp>
-              <stringProp name="Header.value">http://riesgos.dlr.de</stringProp>
+              <stringProp name="Header.value">https://example.com</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>

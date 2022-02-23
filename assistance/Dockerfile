@@ -1,4 +1,4 @@
-FROM tomcat:9-jre8
+FROM tomcat:9-jdk8-openjdk-slim-buster
 
 # You need to have docker installed on the host system and pull all needed
 # images as configured by the repository or the configuration directory
@@ -44,6 +44,8 @@ FROM tomcat:9-jre8
 # -v /path/to/gfz-riesgos-wps.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar
 
 ARG WPS_VERSION=4.0.0-beta.10
+ARG WPS_JS_COMMIT=e56ffe34540f4b0261442eccd9cee0557ae1b5e5
+ARG WPS_JS_CLIENT_COMMIT=0945f0282424c56324c98897d50ffc7e11fffde6
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -58,30 +60,19 @@ RUN apt update && \
         maven \
         curl \
         software-properties-common \
-        openjdk-8-jdk \
-        gnupg2
+        gnupg2 \
+        wget \
+        unzip \
+        docker.io && \
+    docker --version
 
-# install nodejs, npm, grunt and bower
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt install nodejs npm -y && \
-    npm install -g grunt-cli && \
-    npm install -g bower
-RUN node --version
-RUN npm --version
-RUN grunt --version
-RUN bower --version
-
-
-# install docker
-ENV DOCKER_CHANNEL stable
-ENV DOCKER_VERSION 18.09.6
-ENV DOCKER_ARCH x86_64
-
-RUN wget -O /tmp/docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${DOCKER_ARCH}/docker-${DOCKER_VERSION}.tgz" && \
-    tar --extract --file /tmp/docker.tgz --strip-components 1 --directory /usr/local/bin/ && \
-    rm /tmp/docker.tgz
-RUN dockerd --version
-RUN docker --version
+# install nodejs, grunt and bower
+# nodejs package already contains npm
+# installing the debian buster npm version would lead to package conflicts
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt install -y nodejs && \
+    npm install -g grunt-cli@v1.4.3 && \
+    npm install -g bower@1.8.13
 
 # setup tomcat
 RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
@@ -90,6 +81,11 @@ RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
   <user username="admin" password="admin" roles="manager-gui" />\n\
 </tomcat-users>\n\
 ' > /usr/local/tomcat/conf/tomcat-users.xml
+
+# activate tomcat manager
+RUN rmdir /usr/local/tomcat/webapps && \
+    mv /usr/local/tomcat/webapps.dist /usr/local/tomcat/webapps && \
+    rm -rf /usr/local/tomcat/webapps/examples
 
 RUN printf '<?xml version="1.0" encoding="UTF-8"?>\n\
 <Context antiResourceLocking="false" privileged="true">\n\
@@ -109,8 +105,6 @@ RUN mv /usr/local/tomcat/webapps/ROOT/index.jsp /usr/local/tomcat/webapps/ROOT/_
     printf '<html><body><a href="/wps-js-client">WPS JS Client</a><br><a href="/wps/WebProcessingService?Request=GetCapabilities&Service=WPS">WebProcessingService</a></body></html>\
 ' > /usr/local/tomcat/webapps/ROOT/index.html
 
-RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar
-
 
 # add or build needed webapps:
 
@@ -118,7 +112,8 @@ RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1
 RUN mkdir -pv /usr/local/tomcat/webapps/geoserver
 
 WORKDIR /usr/local/tomcat/webapps/geoserver
-RUN wget https://downloads.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
+RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar && \
+    wget https://downloads.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
     unzip geoserver-2.10.4-war.zip && \
     rm -f geoserver-2.10.4-war.zip && \
     unzip geoserver.war && \
@@ -137,8 +132,10 @@ WORKDIR /root/git
 # if you want to use the master branch from wps-js you need the complete history:
 # git clone -b master https://github.com/52North/wps-js.git
 
-RUN git clone -b dev --depth=1 https://github.com/52North/wps-js.git && \
-    git clone -b develop --depth=1 https://github.com/52North/wps-js-client.git && \
+RUN git config --global user.email "root@localhost" && \
+    git config --global user.name "Root" && \
+    git clone https://github.com/52North/wps-js.git && \
+    git clone https://github.com/52North/wps-js-client.git && \
     git clone https://github.com/52North/WPS.git
 
 WORKDIR /root/git/wps-js
@@ -148,13 +145,15 @@ WORKDIR /root/git/wps-js
 #    cp -v target/wps-js-*.war /usr/local/tomcat/webapps/
 
 # for dev branch:
-RUN npm install && \
+RUN git reset --hard "${WPS_JS_COMMIT}" && \
+    npm install && \
     bower --allow-root install && \
     grunt -v && \
     cp -vr dist /usr/local/tomcat/webapps/wps-js
 
 WORKDIR /root/git/wps-js-client
-RUN npm install && \
+RUN git reset --hard "${WPS_JS_CLIENT_COMMIT}" && \
+    npm install && \
     bower --allow-root install && \
     grunt -v && \
     cp -vr dist /usr/local/tomcat/webapps/wps-js-client
@@ -162,9 +161,12 @@ RUN npm install && \
 WORKDIR /root/git/WPS
 COPY ./assistance/repo-fix.patch .
 
+# build the WPS war file
+# if geoprocessing.demo.52north.org is down the tests would fail
+# so we skip executing the tests for now
 RUN git checkout -b current v${WPS_VERSION} && \
     git am repo-fix.patch && \
-    mvn clean package -B -P with-geotools && \
+    mvn clean package -DskipTests=true --batch-mode -P with-geotools && \
     mkdir -pv /usr/local/tomcat/webapps/wps && \
     cp -v 52n-wps-webapp/target/52n-wps-webapp-${WPS_VERSION}.war /usr/local/tomcat/webapps/wps/wps.war && \
     cd /usr/local/tomcat/webapps/wps && \
@@ -181,6 +183,13 @@ RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-compress/1.19
     wget https://repo1.maven.org/maven2/org/jaitools/jt-attributeop/1.3.1/jt-attributeop-1.3.1.jar -O /usr/local/tomcat/webapps/wps/WEB-INF/lib/jt-attributeop-1.3.1.jar
 
 WORKDIR /root/git/gfz-command-line-tool-repository
+
+# download dependencies
+# have this as an extra step in the Dockerfile to enable caching and not
+# download the dependencies for every build (if only the source code changed)
+COPY pom.xml .
+RUN mvn --batch-mode dependency:resolve
+
 COPY . .
-RUN mvn clean package -B && \
+RUN mvn --batch-mode clean package && \
     cp -v target/*.jar /usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar

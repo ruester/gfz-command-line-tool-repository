@@ -2,44 +2,58 @@ version: "3"
 
 services:
   quakeledger:
-    image: gfzriesgos/quakeledger:latest
+    image: gfzriesgos/quakeledger:1.0.1
 
   shakyground:
-    image: gfzriesgos/shakyground:latest
+    image: gfzriesgos/shakyground:2.0.0
 
   assetmaster:
-    image: gfzriesgos/assetmaster:latest
+    image: gfzriesgos/assetmaster:2.0.0
 
   modelprop:
-    image: gfzriesgos/modelprop:latest
+    image: gfzriesgos/modelprop:1.1.0
 
   deus:
-    image: gfzriesgos/deus:latest
+    image: gfzriesgos/deus:1.1.0
 
   flooddamage:
-    image: gfzriesgos/flooddamage:latest
+    image: gfzriesgos/flooddamage:20220222
 
   riesgos-wps:
-    image: gfzriesgos/riesgos-wps:latest
+    image: gfzriesgos/riesgos-wps:__PROD_IMAGE_TAG__
     container_name: riesgos-wps-prod
     restart: always
     environment:
       - CATALINA_OPTS=-Xmx12g -Xms12g
-    ports:
-      - "80:8080"
+      - RIESGOS_GEOSERVER_ACCESS_BASE_URL=__GEOSERVER_URL__
+      - RIESGOS_GEOSERVER_SEND_BASE_URL=http://localhost/geoserver
+      - RIESGOS_GEOSERVER_USERNAME=admin
+      - RIESGOS_GEOSERVER_PASSWORD=__GEOSERVER_PASSWORD__
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "riesgos-json-config:/usr/share/riesgos/json-configurations"
       - "riesgos-wps-hsqldb:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
       - "riesgos-wps-logs:/usr/local/tomcat/logs"
-      - "./tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml"
-      - "./users.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
-      - "./application_properties.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+      - "${PWD}/tomcat-users-prod.xml:/usr/local/tomcat/conf/tomcat-users.xml"
+      - "${PWD}/users-prod.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
+      - "${PWD}/application_properties_prod.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+
+  nginx:
+    image: nginx:1.21.6-alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/etc/ssl/private/gfz_hosts_default.key:/etc/ssl/private/gfz_hosts_default.key:ro"
+      - "/etc/ssl/gfz_hosts_default.chained.crt:/etc/ssl/gfz_hosts_default.chained.crt:ro"
+      - "/etc/ssl/private/rz-vm140.gfz-potsdam.de.key:/etc/ssl/private/rz-vm140.gfz-potsdam.de.key:ro"
+      - "/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:ro"
+      - "/etc/ssl/dhparam.pem:/etc/ssl/dhparam.pem:ro"
+      - "/etc/ssl/dfn-ca-global-g2-chain.pem:/etc/ssl/chain.pem:ro"
+      - "${PWD}/nginx_prod.conf:/etc/nginx/conf.d/default.conf:ro"
 
 volumes:
   riesgos-json-config:
-    external: true
   riesgos-wps-hsqldb:
-    external: true
   riesgos-wps-logs:
-    external: true
