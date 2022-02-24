@@ -167,5 +167,35 @@ public class TestValidatedQuakeMLToFeatureCollectionConverter {
         }
     }
 
+    /**
+     * Test with some realworld geofon xml.
+     */
+    @Test
+    public void testGeofonFeatureValidatedQuakeledgerFormat() {
+
+
+        String xmlRawContent = null;
+        try {
+            xmlRawContent = StringUtils.readFromResourceFile("org/n52/gfz/riesgos/formats/quakeml_validated_geofon.xml");
+        } catch(final IOException ioException) {
+            fail("There should be no io exception on reading the input file");
+        }
+        try {
+            final XmlObject xmlContent = XmlObject.Factory.parse(xmlRawContent);
+
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> result = QuakeML.fromValidatedXml(xmlContent).toSimpleFeatureCollection();
+            final FeatureIterator<SimpleFeature> iterator = result.features();
+
+            assertTrue("There is one element", iterator.hasNext());
+            final SimpleFeature simpleFeature = iterator.next();
+            assertNotNull("This feature is not null", simpleFeature);
+
+        } catch (final XmlException e) {
+            fail("There should be no XmlException");
+        } catch(final ConvertFormatException e) {
+            fail("There should be no exception on converting");
+        }
+    }
+
 
 }
