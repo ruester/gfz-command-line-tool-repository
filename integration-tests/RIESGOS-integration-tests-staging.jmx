@@ -506,7 +506,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1360722050">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-903280215">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -571,6 +571,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -630,7 +631,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1008927485">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1206930008">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -661,6 +662,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -1799,7 +1801,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1479652778">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1996710357">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -1841,6 +1843,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -2082,7 +2085,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="574572810">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-561167051">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2108,6 +2111,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -2638,7 +2642,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1360722050">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-903280215">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2703,6 +2707,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -2762,7 +2767,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1008927485">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1206930008">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -2793,6 +2798,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -3931,7 +3937,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1479652778">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="1996710357">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3973,6 +3979,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -4214,7 +4221,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="574572810">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-561167051">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -4240,6 +4247,7 @@
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;UTF-8&quot;/&gt;
           &lt;ns:Format mimeType=&quot;image/geotiff&quot; encoding=&quot;base64&quot;/&gt;
           &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Output&gt;
     &lt;/wps:Process&gt;
@@ -11815,7 +11823,7 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
               <stringProp name="-261220619">Service=WMS</stringProp>
               <stringProp name="204802932">Request=GetMap</stringProp>
               <stringProp name="879824658">Version=1.1.1</stringProp>
-              <stringProp name="2061578968">layers=N52:primary</stringProp>
+              <stringProp name="1230321647">layers=riesgos:</stringProp>
               <stringProp name="1485219">.tif</stringProp>
               <stringProp name="-788034761">width=</stringProp>
               <stringProp name="802788342">height=</stringProp>
