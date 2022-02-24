@@ -29,33 +29,23 @@ import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import javax.media.jai.RasterFactory;
-import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Function to convert the IShakemap to a GridCoverage.
- * This just converts to grids and takes all the rows
- * in a shakemap to different bands.
- * There is no meaning between the different bands except that
- * they share the same geographic location (and no coding as
- * red, green or blue bands).
+ * Function to convert the IShakemap to a map of GridCoverages.
+ * It stores all the different columns in the shakemap as their own
+ * grids & puts them into the resulting map.
  *
- * This works for regular gridded shakemaps only.
+ * This way we can access the different imts as keys in the map.
  */
-public class ShakemapToGridCoverageForRegularGrid
-        implements Function<IShakemap, GridCoverage2D> {
-
-    /**
-     * Name for the coverage.
-     */
-    private static final String COVERAGE_NAME = "Shakemap";
-    /**
-     * Data type that should be used for the grids.
-     */
-    private static final int DATA_TYPE = DataBuffer.TYPE_DOUBLE;
+public class ShakemapToGridCoverageForMultipleRegularGrids
+        implements Function<IShakemap, Map<String, GridCoverage2D>> {
 
     /**
      * Our mixin with some helper methods.
@@ -65,14 +55,31 @@ public class ShakemapToGridCoverageForRegularGrid
     private final ShakemapToGridCoverageMixin mixin =
             new ShakemapToGridCoverageMixin();
 
+    /**
+     * DataBuffer type for the outputs.
+     * Should be either DataBuffer.TYPE_FLOAT or DataBuffer.TYPE_DOUBLE.
+     */
+    private final int type;
 
     /**
-     * Converts the shakemap to a grid coverage.
+     * Create the converter for a specific data type.
+     *
+     * @param atype DataBuffer.TYPE_FLOAT or DataBuffer.TYPE_DOUBLE
+     */
+    public ShakemapToGridCoverageForMultipleRegularGrids(final int atype) {
+        this.type = atype;
+    }
+
+
+    /**
+     * Converts the shakemap to a mutliple grid coverages (one per column
+     * in the shakemap).
      * @param shakemap shakemap to convert
      * @return Grid coverage with some bands for the data rows in shakemap
      */
     @Override
-    public GridCoverage2D apply(final IShakemap shakemap) {
+    public Map<String, GridCoverage2D> apply(final IShakemap shakemap) {
+        final Map<String, GridCoverage2D> result = new HashMap<>();
 
         final IShakemapSpecification specification =
                 shakemap.getSpecification();
@@ -88,44 +95,9 @@ public class ShakemapToGridCoverageForRegularGrid
         final double diffX = specification.getNominalLonSpacing();
         final double diffY = specification.getNominalLatSpacing();
 
-        final List<IShakemapField> fields = shakemap.getFields();
-
-        final List<IShakemapField> customFields = fields.stream()
+        final List<IShakemapField> customFields = shakemap.getFields().stream()
                 .filter(IShakemapField::isCustom)
                 .collect(Collectors.toList());
-        final WritableRaster raster = RasterFactory.createBandedRaster(
-                DATA_TYPE,
-                width,
-                height,
-                customFields.size(),
-                null
-        );
-
-        for (
-                int bandIndex = 0;
-                bandIndex < customFields.size();
-                bandIndex += 1
-        ) {
-
-            final IShakemapField field = customFields.get(bandIndex);
-
-            for (final IShakemapData data : shakemap.getData()) {
-                final double lon = data.getLon();
-                final double lat = data.getLat();
-
-                final double value = data.getCustomValues().getOrDefault(
-                        field.getName(), Double.NaN);
-                raster.setSample(
-                        mixin.transformLonToImageCoordinate(
-                                lon, minX, maxX, width
-                        ),
-                        mixin.transformLatToImageCoordinate(
-                                lat, minY, maxY, height
-                        ),
-                        bandIndex,
-                        value);
-            }
-        }
 
         // long (x), lat (y)
         final CoordinateReferenceSystem crs = mixin.findWgs84();
@@ -145,6 +117,60 @@ public class ShakemapToGridCoverageForRegularGrid
         final GridCoverageFactory factory =
                 CoverageFactoryFinder.getGridCoverageFactory(null);
 
-        return factory.create(COVERAGE_NAME, raster, envelope);
+        final List<WritableRaster> rasters = new ArrayList<>();
+
+        for (
+                int fieldIndex = 0;
+                fieldIndex < customFields.size();
+                fieldIndex += 1
+        ) {
+            rasters.add(RasterFactory.createBandedRaster(
+                    type,
+                    width,
+                    height,
+                    1,
+                    null
+            ));
+        }
+
+        for (final IShakemapData data : shakemap.getData()) {
+            final double lon = data.getLon();
+            final double lat = data.getLat();
+
+            final int x = mixin.transformLonToImageCoordinate(
+                    lon, minX, maxX, width
+            );
+            final int y = mixin.transformLatToImageCoordinate(
+                    lat, minY, maxY, height
+            );
+
+            for (
+                    int fieldIndex = 0;
+                    fieldIndex < customFields.size();
+                    fieldIndex += 1
+            ) {
+                final IShakemapField field = customFields.get(fieldIndex);
+
+                final double value = data.getCustomValues().getOrDefault(
+                        field.getName(), Double.NaN);
+                rasters.get(fieldIndex).setSample(x, y, 0, value);
+            }
+        }
+
+        for (
+                int fieldIndex = 0;
+                fieldIndex < customFields.size();
+                fieldIndex += 1
+        ) {
+            final IShakemapField field = customFields.get(fieldIndex);
+            final GridCoverage2D grid = factory.create(
+                    field.getName(), rasters.get(fieldIndex), envelope
+            );
+            result.put(field.getName(), grid);
+        }
+
+        return result;
     }
+
+
 }
