@@ -971,19 +971,10 @@ public class QuakeMLValidatedXmlImpl implements IQuakeMLDataProvider {
                 }
             }
 
-            final Optional<String> attributeText;
-            if (searchElement != null) {
-                final String pureAttributeTextAsNumber =
-                        searchElement.selectAttribute(PREFERRED_PLANE)
-                                .newCursor().getTextValue();
-                final String pureAttributeText =
-                        NODAL_PLANE + pureAttributeTextAsNumber;
-                attributeText = Optional.of(pureAttributeText);
-            } else {
-                attributeText = Optional.empty();
-            }
-
-            return attributeText;
+            return Optional.ofNullable(searchElement)
+                    .map(x -> x.selectAttribute(PREFERRED_PLANE))
+                    .map(x -> x.newCursor())
+                    .map(x ->  NODAL_PLANE + x.getTextValue());
         }
 
         /**
