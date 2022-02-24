@@ -55,7 +55,10 @@ checkstyle:
 integration_test:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
-  before_script: []
+  before_script:
+    - DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y wget
+  tags:
+    - group
   script:
     - if [ ! -f ".local/apache-jmeter-5.1.1.tgz" ]; then mkdir .local && wget "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.1.1.tgz" -O .local/apache-jmeter-5.1.1.tgz; fi
     - tar xf .local/apache-jmeter-5.1.1.tgz
