@@ -30,7 +30,7 @@ verify_java:
       when: never
     - if: $CI_COMMIT_BRANCH
       changes:
-        - src/
+        - src/**/*
         - pom.xml
         - checkstyle-suppressions.xml
         - .gitlab-ci.yml
@@ -45,7 +45,7 @@ checkstyle:
       when: never
     - if: $CI_COMMIT_BRANCH
       changes:
-        - src/
+        - src/**/*
         - pom.xml
         - checkstyle-suppressions.xml
         - .gitlab-ci.yml
