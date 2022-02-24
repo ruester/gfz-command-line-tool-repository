@@ -26,7 +26,7 @@ services:
     environment:
       - CATALINA_OPTS=-Xmx6g -Xms6g
       - RIESGOS_GEOSERVER_ACCESS_BASE_URL=__GEOSERVER_URL__
-      - RIESGOS_GEOSERVER_SEND_BASE_URL=http://localhost:8080/geoserver
+      - RIESGOS_GEOSERVER_SEND_BASE_URL=http://riesgos-wps-staging:8080/geoserver
       - RIESGOS_GEOSERVER_USERNAME=admin
       - RIESGOS_GEOSERVER_PASSWORD=__GEOSERVER_PASSWORD__
     volumes:
