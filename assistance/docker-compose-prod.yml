@@ -19,6 +19,9 @@ services:
   flooddamage:
     image: gfzriesgos/flooddamage:20220222
 
+  eve:
+    image: gfzriesgos/eve:0.1
+
   riesgos-wps:
     image: gfzriesgos/riesgos-wps:__PROD_IMAGE_TAG__
     container_name: riesgos-wps-prod

@@ -19,6 +19,9 @@ services:
   flooddamage-staging:
     image: gfzriesgos/flooddamage:latest
 
+  eve-staging:
+    image: gfzriesgos/eve:latest
+
   riesgos-wps-staging:
     image: gfzriesgos/riesgos-wps:latest
     container_name: riesgos-wps-staging

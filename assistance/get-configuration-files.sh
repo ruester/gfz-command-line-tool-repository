@@ -16,7 +16,7 @@ mkdir "${PWD}/conf"
 
 ARGS=("$@")
 COMPOSE_FILE=${ARGS[0]}
-SERVICES=(assetmaster deus flooddamage modelprop quakeledger shakyground)
+SERVICES=(assetmaster deus eve flooddamage modelprop quakeledger shakyground)
 TEMPFILE=$(mktemp)
 
 if [ -z "${COMPOSE_FILE}" ]; then

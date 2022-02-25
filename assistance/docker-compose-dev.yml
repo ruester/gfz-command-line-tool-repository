@@ -19,6 +19,9 @@ services:
   flooddamage:
     image: gfzriesgos/flooddamage:latest
 
+  eve:
+    image: gfzriesgos/eve:latest
+
   riesgos-wps:
     build:
       context: ../
