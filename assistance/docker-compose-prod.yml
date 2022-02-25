@@ -34,9 +34,9 @@ services:
       - "riesgos-json-config:/usr/share/riesgos/json-configurations"
       - "riesgos-wps-hsqldb:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
       - "riesgos-wps-logs:/usr/local/tomcat/logs"
-      - "${PWD}/tomcat-users-prod.xml:/usr/local/tomcat/conf/tomcat-users.xml"
-      - "${PWD}/users-prod.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
-      - "${PWD}/application_properties_prod.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+      - "/builds/riesgos-assistance-prod/tomcat-users-prod.xml:/usr/local/tomcat/conf/tomcat-users.xml"
+      - "/builds/riesgos-assistance-prod/users-prod.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
+      - "/builds/riesgos-assistance-prod/application_properties_prod.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
 
   nginx:
     image: nginx:1.21.6-alpine
@@ -51,7 +51,7 @@ services:
       - "/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:ro"
       - "/etc/ssl/dhparam.pem:/etc/ssl/dhparam.pem:ro"
       - "/etc/ssl/dfn-ca-global-g2-chain.pem:/etc/ssl/chain.pem:ro"
-      - "${PWD}/nginx_prod.conf:/etc/nginx/conf.d/default.conf:ro"
+      - "/builds/riesgos-assistance-prod/nginx_prod.conf:/etc/nginx/conf.d/default.conf:ro"
 
 volumes:
   riesgos-json-config:

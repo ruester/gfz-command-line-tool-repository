@@ -136,7 +136,9 @@ deploy_staging:
       when: never
     - if: $CI_COMMIT_BRANCH
   script:
-    - cd assistance
+    - rm -rf /builds/riesgos-assistance-staging || true
+    - cp -vr assistance /builds/riesgos-assistance-staging
+    - cd /builds/riesgos-assistance-staging
 
     # download waiting script used for checking GeoServer later
     - wget "https://raw.githubusercontent.com/eficode/wait-for/v2.2.1/wait-for" -O wait-for.sh
@@ -193,7 +195,9 @@ deploy_production:
       when: never
     - if: $CI_COMMIT_TAG
   script:
-    - cd assistance
+    - rm -rf /builds/riesgos-assistance-prod || true
+    - cp -vr assistance /builds/riesgos-assistance-prod
+    - cd /builds/riesgos-assistance-prod
 
     # download waiting script used for checking GeoServer later
     - wget "https://raw.githubusercontent.com/eficode/wait-for/v2.2.1/wait-for" -O wait-for.sh
