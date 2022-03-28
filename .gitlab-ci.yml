@@ -34,6 +34,9 @@ before_script:
       fi
     done
 
+.cleanup_docker: &cleanup_docker
+  - docker rmi $(docker images -q -f dangling=true) || true
+
 verify_java:
   stage: test
   rules:
@@ -200,6 +203,7 @@ deploy_staging:
     - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_STAGING}/index.html"
     - cd SLD
     - /bin/bash add-style-to-geoserver.sh
+    - *cleanup_docker
 
 deploy_production:
   image: docker/compose:1.25.5
@@ -261,6 +265,7 @@ deploy_production:
     - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_PROD}/index.html"
     - cd SLD
     - /bin/bash add-style-to-geoserver.sh
+    - *cleanup_docker
 
 deploy_latest_images:
   image: docker/compose:1.25.5
@@ -289,3 +294,4 @@ deploy_latest_images:
     - /bin/bash get-configuration-files.sh docker-compose-staging.yml
 
     - *install_configuration_files
+    - *cleanup_docker
