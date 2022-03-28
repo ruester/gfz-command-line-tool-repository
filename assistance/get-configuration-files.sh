@@ -19,6 +19,12 @@ COMPOSE_FILE=${ARGS[0]}
 SERVICES=(assetmaster deus eve flooddamage modelprop quakeledger shakyground)
 TEMPFILE=$(mktemp)
 
+function cleanup {
+    rm -f "${TEMPFILE}"
+}
+
+trap cleanup SIGINT SIGTERM ERR EXIT
+
 if [ -z "${COMPOSE_FILE}" ]; then
     echo "Need docker-compose file as parameter"
     exit 1
