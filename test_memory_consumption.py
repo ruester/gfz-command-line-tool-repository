@@ -6,25 +6,27 @@ import requests
 import lxml.etree as le
 
 ResultEncoding = collections.namedtuple(
-    "ResultEncoding", [
-        "mime_type",
-        "encoding",
-        "schema"
-    ])
+    "ResultEncoding", ["mime_type", "encoding", "schema"]
+)
 
 Bbox = collections.namedtuple(
-    "Bbox", [
+    "Bbox",
+    [
         "lonmin",
         "lonmax",
         "latmin",
         "latmax",
-    ])
+    ],
+)
+
 
 class ExecutionNotAcceptedException(Exception):
     pass
 
+
 class ExecutionNotSuccessfulException(Exception):
     pass
+
 
 class WpsServer:
     def __init__(self, endpoint):
@@ -35,13 +37,13 @@ class WpsServer:
         return cls("http://localhost:8080/wps/WebProcessingService")
 
     def execute_async(self, payload):
-        resp = requests.post(self.endpoint, payload, headers={
-            "Content-Type": "text/xml"
-        })
+        resp = requests.post(
+            self.endpoint, payload, headers={"Content-Type": "text/xml"}
+        )
         resp.raise_for_status()
         status_info = le.fromstring(resp.content)
         status = status_info.find("{http://www.opengis.net/wps/2.0}Status")
-        if not status.text == 'Accepted':
+        if not status.text == "Accepted":
             raise ExecutionNotAcceptedException(status.text)
         job_id = status_info.find("{http://www.opengis.net/wps/2.0}JobID")
         return job_id.text
@@ -49,12 +51,16 @@ class WpsServer:
     def block_until_done(self, job_id):
         is_running = True
         while is_running:
-            resp = requests.get(self.endpoint, {
-                "service": "WPS",
-                "version": "2.0.0",
-                "request": "GetStatus",
-                "jobId": job_id,
-            })
+            resp = requests.get(
+                self.endpoint,
+                {
+                    "service": "WPS",
+                    "version": "2.0.0",
+                    "request": "GetStatus",
+                    "jobId": job_id,
+                    "language": "en-US",
+                },
+            )
             resp.raise_for_status()
             status_report = le.fromstring(resp.content)
             status = status_report.find("{http://www.opengis.net/wps/2.0}Status")
@@ -65,22 +71,30 @@ class WpsServer:
             raise ExecutionNotSuccessfulException(status.text)
 
     def get_result_links(self, job_id):
-        resp = requests.get(self.endpoint, {
-            "service": "WPS",
-            "version": "2.0.0",
-            "request": "GetResult",
-            "jobId": job_id,
-        })
+        resp = requests.get(
+            self.endpoint,
+            {
+                "service": "WPS",
+                "version": "2.0.0",
+                "request": "GetResult",
+                "jobId": job_id,
+                "language": "en-US",
+            },
+        )
         resp.raise_for_status()
         outputs = {}
         result = le.fromstring(resp.content)
         for output in result.findall("{http://www.opengis.net/wps/2.0}Output"):
             id = output.attrib["id"]
-            for reference in output.findall("{http://www.opengis.net/wps/2.0}Reference"):
+            for reference in output.findall(
+                "{http://www.opengis.net/wps/2.0}Reference"
+            ):
                 schema = reference.attrib.get("schema")
                 encoding = reference.attrib.get("encoding")
                 mime_type = reference.attrib.get("mimeType")
-                key = ResultEncoding(schema=schema, encoding=encoding, mime_type=mime_type)
+                key = ResultEncoding(
+                    schema=schema, encoding=encoding, mime_type=mime_type
+                )
                 href = reference.attrib.get("{http://www.w3.org/1999/xlink}href")
 
                 outputs[id] = {key: href}
@@ -153,10 +167,10 @@ class QuakeledgerProcess:
         """
         filled_template = template
         for repl_text, repl_value in {
-                ":LONMIN:": bbox.lonmin,
-                ":LONMAX:": bbox.lonmax,
-                ":LATMIN:": bbox.latmin,
-                ":LATMAX:": bbox.latmax,
+            ":LONMIN:": bbox.lonmin,
+            ":LONMAX:": bbox.lonmax,
+            ":LATMIN:": bbox.latmin,
+            ":LATMAX:": bbox.latmax,
         }.items():
             filled_template = filled_template.replace(repl_text, str(repl_value))
 
@@ -164,9 +178,16 @@ class QuakeledgerProcess:
         job_id = self.server.execute_async(payload)
         self.server.block_until_done(job_id)
         outputs = self.server.get_result_links(job_id)
-        result_link = outputs["selectedRows"][ResultEncoding(encoding="UTF-8", mime_type="text/xml", schema="http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd")]
+        result_link = outputs["selectedRows"][
+            ResultEncoding(
+                encoding="UTF-8",
+                mime_type="text/xml",
+                schema="http://quakeml.org/xmlns/quakeml/1.2/QuakeML-1.2.xsd",
+            )
+        ]
 
         return result_link
+
 
 class ShakygroundProcess:
     def __init__(self, server):
@@ -204,12 +225,15 @@ class ShakygroundProcess:
         job_id = self.server.execute_async(payload)
         self.server.block_until_done(job_id)
         outputs = self.server.get_result_links(job_id)
-        result_link = outputs["shakeMapFile"][ResultEncoding(
-            mime_type="text/xml",
-            encoding="UTF-8",
-            schema="http://earthquake.usgs.gov/eqcenter/shakemap")
+        result_link = outputs["shakeMapFile"][
+            ResultEncoding(
+                mime_type="text/xml",
+                encoding="UTF-8",
+                schema="http://earthquake.usgs.gov/eqcenter/shakemap",
+            )
         ]
         return result_link
+
 
 class ModelpropProcess:
     def __init__(self, server):
@@ -250,12 +274,11 @@ class ModelpropProcess:
         job_id = self.server.execute_async(payload)
         self.server.block_until_done(job_id)
         outputs = self.server.get_result_links(job_id)
-        result_link = outputs["selectedRows"][ResultEncoding(
-            mime_type="application/json",
-            encoding="UTF-8",
-            schema=None)
+        result_link = outputs["selectedRows"][
+            ResultEncoding(mime_type="application/json", encoding="UTF-8", schema=None)
         ]
         return result_link
+
 
 class AssetmasterProcess:
     def __init__(self, server):
@@ -315,11 +338,11 @@ class AssetmasterProcess:
         """
         filled_template = template
         for repl_text, repl_value in {
-                ":MODEL:": model,
-                ":LONMIN:": bbox.lonmin,
-                ":LONMAX:": bbox.lonmax,
-                ":LATMIN:": bbox.latmin,
-                ":LATMAX:": bbox.latmax,
+            ":MODEL:": model,
+            ":LONMIN:": bbox.lonmin,
+            ":LONMAX:": bbox.lonmax,
+            ":LATMIN:": bbox.latmin,
+            ":LATMAX:": bbox.latmax,
         }.items():
             filled_template = filled_template.replace(repl_text, str(repl_value))
 
@@ -327,12 +350,11 @@ class AssetmasterProcess:
         job_id = self.server.execute_async(payload)
         self.server.block_until_done(job_id)
         outputs = self.server.get_result_links(job_id)
-        result_link = outputs["selectedRowsGeoJson"][ResultEncoding(
-            mime_type="application/json",
-            encoding="UTF-8",
-            schema=None)
+        result_link = outputs["selectedRowsGeoJson"][
+            ResultEncoding(mime_type="application/json", encoding="UTF-8", schema=None)
         ]
         return result_link
+
 
 class DeusProcess:
     def __init__(self, server):
@@ -368,9 +390,9 @@ class DeusProcess:
         """
         filled_template = template
         for repl_text, repl_value in {
-                ":ASSETMASTERLINK:": am_result_link,
-                ":MODELPROPLINK:": md_result_link,
-                ":SHAKYGROUNDLINK:": sk_result_link,
+            ":ASSETMASTERLINK:": am_result_link,
+            ":MODELPROPLINK:": md_result_link,
+            ":SHAKYGROUNDLINK:": sk_result_link,
         }.items():
             filled_template = filled_template.replace(repl_text, str(repl_value))
 
@@ -378,12 +400,11 @@ class DeusProcess:
         job_id = self.server.execute_async(payload)
         self.server.block_until_done(job_id)
         outputs = self.server.get_result_links(job_id)
-        result_link = outputs["merged_output"][ResultEncoding(
-            mime_type="application/json",
-            encoding="UTF-8",
-            schema=None)
+        result_link = outputs["merged_output"][
+            ResultEncoding(mime_type="application/json", encoding="UTF-8", schema=None)
         ]
         return result_link
+
 
 def main():
     wps = WpsServer.dev()
@@ -407,6 +428,7 @@ def main():
                                      am_result_link=am_result_link,
                                      md_result_link=md_result_link,)
     print(f"Deus: {ds_result_link}")
+
 
 if __name__ == "__main__":
     main()
