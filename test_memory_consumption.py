@@ -390,7 +390,7 @@ def main():
     model_bbox = Bbox(lonmin=-88, lonmax=-66, latmin=-21, latmax=0)
     eq_bbox = Bbox(lonmin=-86.5, lonmax=-68.5, latmin=-20.5, latmax=-0.6)
     am = AssetmasterProcess(wps)
-    am_result_link = am.send_request(model_bbox, model="LimaCVT1_PD30_TI70_5000")
+    am_result_link = am.send_request(model_bbox, model="LimaBlocks")
     print(f"Assetmaster: {am_result_link}")
     md = ModelpropProcess(wps)
     md_result_link = md.send_request()
@@ -402,6 +402,7 @@ def main():
     print(f"Shakyground: {sk_result_link}")
 
     ds = DeusProcess(wps)
+    print("Started deus...")
     ds_result_link = ds.send_request(sk_result_link=sk_result_link,
                                      am_result_link=am_result_link,
                                      md_result_link=md_result_link,)
