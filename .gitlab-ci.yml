@@ -34,7 +34,11 @@ before_script:
       fi
     done
 
-.cleanup_docker: &cleanup_docker
+.cleanup_docker_all: &cleanup_docker_all
+  - docker image prune --all --force
+  - docker volume prune --force
+
+.cleanup_docker_dangling: &cleanup_docker_dangling
   - docker rmi $(docker images -q -f dangling=true) || true
 
 verify_java:
@@ -190,7 +194,7 @@ deploy_staging:
     # get configuration files of services
     - /bin/bash get-configuration-files.sh docker-compose-staging.yml
 
-    - docker-compose -p riesgos-staging -f docker-compose-staging.yml down || true
+    - docker-compose -p riesgos-staging -f docker-compose-staging.yml down --remove-orphans || true
     - docker-compose -p riesgos-staging -f docker-compose-staging.yml up -d
 
     # copy configuration files of services to running docker container
@@ -203,7 +207,10 @@ deploy_staging:
     - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_STAGING}/index.html"
     - cd SLD
     - /bin/bash add-style-to-geoserver.sh
-    - *cleanup_docker
+
+    # since we have both staging and production on the same server only the
+    # staging deployment is allowed to cleanup all the docker images afterwards
+    - *cleanup_docker_all
 
 deploy_production:
   image: docker/compose:1.25.5
@@ -252,7 +259,7 @@ deploy_production:
     # get configuration files of services
     - /bin/bash get-configuration-files.sh docker-compose-prod.yml
 
-    - docker-compose -p riesgos-prod -f docker-compose-prod.yml down || true
+    - docker-compose -p riesgos-prod -f docker-compose-prod.yml down --remove-orphans || true
     - docker-compose -p riesgos-prod -f docker-compose-prod.yml up -d
 
     # copy configuration files of services to running docker container
@@ -265,7 +272,12 @@ deploy_production:
     - ./wait-for.sh --timeout 300 "${GEOSERVER_URL_PROD}/index.html"
     - cd SLD
     - /bin/bash add-style-to-geoserver.sh
-    - *cleanup_docker
+
+    # only remove dangling images after production deployment, otherwise there
+    # is the possibilty to destroy the staging docker setup, since newer
+    # versions of the service may were installed between the deployments
+    # (via trigger job) and have no container belonging to the newer image
+    - *cleanup_docker_dangling
 
 deploy_latest_images:
   image: docker/compose:1.25.5
@@ -294,4 +306,4 @@ deploy_latest_images:
     - /bin/bash get-configuration-files.sh docker-compose-staging.yml
 
     - *install_configuration_files
-    - *cleanup_docker
+    - *cleanup_docker_dangling
