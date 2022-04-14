@@ -79,4 +79,13 @@ public class RecreateFromByteArray implements IDataRecreator {
     public Class<? extends IData> getBindingClassToRecreate() {
         return bindingClass;
     }
+
+    /**
+     *
+     * @return the size of this object in bytes
+     */
+    @Override
+    public int getSizeInBytes() {
+        return this.content.length;
+    }
 }

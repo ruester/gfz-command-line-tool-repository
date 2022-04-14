@@ -35,11 +35,18 @@ public class RecreateFromBindingClass implements IDataRecreator {
     private final IData data;
 
     /**
+     * The size of this object in bytes.
+     */
+    private final int sizeInBytes;
+
+    /**
      * Creates the recreator from an existing idata.
      * @param aData idata to store in
+     * @param sizeBytes the size in bytes
      */
-    public RecreateFromBindingClass(final IData aData) {
+    public RecreateFromBindingClass(final IData aData, final int sizeBytes) {
         this.data = aData;
+        this.sizeInBytes = sizeBytes;
     }
 
     /**
@@ -58,5 +65,14 @@ public class RecreateFromBindingClass implements IDataRecreator {
     @Override
     public Class<? extends IData> getBindingClassToRecreate() {
         return data.getClass();
+    }
+
+    /**
+     *
+     * @return the size of this object in bytes
+     */
+    @Override
+    public int getSizeInBytes() {
+        return sizeInBytes;
     }
 }

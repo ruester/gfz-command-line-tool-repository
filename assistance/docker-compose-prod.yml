@@ -28,6 +28,7 @@ services:
     restart: always
     environment:
       - CATALINA_OPTS=-Xmx12g -Xms12g
+      - RIESGOS_MAX_CACHE_SIZE_MB=8192
       - RIESGOS_GEOSERVER_ACCESS_BASE_URL=__GEOSERVER_URL__
       - RIESGOS_GEOSERVER_SEND_BASE_URL=http://riesgos-wps:8080/geoserver
       - RIESGOS_GEOSERVER_USERNAME=admin

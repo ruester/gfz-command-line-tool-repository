@@ -44,7 +44,7 @@ public enum RiesgosWpsSettings {
      * http://localhost:8080/geoserver
      *
      * The idea to use a base url is that we can
-     * set the protocol, the hostname & the port ino
+     * set the protocol, the hostname & the port into
      * one single config entry.
      *
      * It can be different to the access base url, as it doesn't
@@ -84,6 +84,11 @@ public enum RiesgosWpsSettings {
     private final String geoserverWorkspace;
 
     /**
+     * Maximum size of the cache in MB.
+     */
+    private final long maxCacheSizeMb;
+
+    /**
      * Init the config by env variables.
      */
     RiesgosWpsSettings() {
@@ -94,7 +99,6 @@ public enum RiesgosWpsSettings {
         geoserverAccessBaseUrl = env.getOrDefault(
                 "RIESGOS_GEOSERVER_ACCESS_BASE_URL", ""
         );
-
         geoserverUsername = env.getOrDefault(
                 "RIESGOS_GEOSERVER_USERNAME", ""
         );
@@ -104,8 +108,12 @@ public enum RiesgosWpsSettings {
         geoserverWorkspace = env.getOrDefault(
                 "RIESGOS_GEOSERVER_WORKSPACE", DEFAULT_WORKSPACE
         );
+        maxCacheSizeMb = Long.valueOf(
+            env.getOrDefault(
+                "RIESGOS_MAX_CACHE_SIZE_MB", "1024"
+            )
+        );
     }
-
 
     /**
      * Getter for the geoserver send base url.
@@ -145,5 +153,13 @@ public enum RiesgosWpsSettings {
      */
     public String getGeoserverWorkspace() {
         return geoserverWorkspace;
+    }
+
+    /**
+     * Getter for the the maximum cache size in MB.
+     * @return the maximum cache size in MB
+     */
+    public long getMaxCacheSizeMb() {
+        return maxCacheSizeMb;
     }
 }
