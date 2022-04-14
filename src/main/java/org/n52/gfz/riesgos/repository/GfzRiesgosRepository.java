@@ -17,8 +17,8 @@ package org.n52.gfz.riesgos.repository;
  */
 
 import org.n52.gfz.riesgos.formats.geotiff.parsers.GeotiffParser;
-import org.n52.gfz.riesgos.formats.json.generators.JsonGenerator;
-import org.n52.gfz.riesgos.formats.json.parsers.JsonParser;
+import org.n52.gfz.riesgos.formats.jsonfile.generators.JsonFileGenerator;
+import org.n52.gfz.riesgos.formats.jsonfile.parsers.JsonFileParser;
 import org.n52.gfz.riesgos.formats.nrml.generators.NrmlGeoJsonGenerator;
 import org.n52.gfz.riesgos.formats.nrml.generators.NrmlXmlGenerator;
 import org.n52.gfz.riesgos.formats.nrml.parsers.NrmlXmlParser;
@@ -105,7 +105,8 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository {
                 new ShakemapWMSGenerator(),
                 new ShakemapMultipleWMSGenerator(),
                 // json
-                new JsonGenerator(),
+                new JsonFileGenerator(),
+                //new JsonGenerator(),
                 // nrml
                 new NrmlXmlGenerator(),
                 new NrmlGeoJsonGenerator()
@@ -127,7 +128,9 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository {
                 // shakemap
                 new ShakemapXmlParser(),
                 // json
-                new JsonParser(),
+                new JsonFileParser(),
+                //new JsonParser(),
+
                 // nrml
                 new NrmlXmlParser()
         ).forEach(new RegisterParserTask());
