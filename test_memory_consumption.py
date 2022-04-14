@@ -36,6 +36,14 @@ class WpsServer:
     def dev(cls):
         return cls("http://localhost:8080/wps/WebProcessingService")
 
+    @classmethod
+    def staging(cls):
+        return cls("https://rz-vm140.gfz-potsdam.de:8443/wps/WebProcessingService")
+
+    @classmethod
+    def prod(cls):
+        return cls("https://rz-vm140.gfz-potsdam.de/wps/WebProcessingService")
+
     def execute_async(self, payload):
         resp = requests.post(
             self.endpoint, payload, headers={"Content-Type": "text/xml"}
@@ -64,7 +72,7 @@ class WpsServer:
             resp.raise_for_status()
             status_report = le.fromstring(resp.content)
             status = status_report.find("{http://www.opengis.net/wps/2.0}Status")
-            if status.text != "Running":
+            if status.text not in ["Running", "Accepted"]:
                 is_running = False
             time.sleep(1)
         if status.text != "Succeeded":
@@ -200,7 +208,7 @@ class ShakygroundProcess:
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="http://www.opengis.net/wps/2.0 			  http://schemas.opengis.net/wps/2.0/wpsExecute.xsd"
                 response="document" mode="async">
-                <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.Shakyground2Process</ows:Identifier>
+                <ows:Identifier>org.n52.gfz.riesgos.algorithm.impl.ShakygroundProcess</ows:Identifier>
                 <wps:Input id="gmpe">
                     <wps:Data mimeType="text/xml">
                         <wps:LiteralValue>MontalvaEtAl2016SInter</wps:LiteralValue>
@@ -424,9 +432,11 @@ def main():
 
     ds = DeusProcess(wps)
     print("Started deus...")
-    ds_result_link = ds.send_request(sk_result_link=sk_result_link,
-                                     am_result_link=am_result_link,
-                                     md_result_link=md_result_link,)
+    ds_result_link = ds.send_request(
+        sk_result_link=sk_result_link,
+        am_result_link=am_result_link,
+        md_result_link=md_result_link,
+    )
     print(f"Deus: {ds_result_link}")
 
 

@@ -44,7 +44,7 @@ public class JsonGenerator
             LoggerFactory.getLogger(JsonGenerator.class);
 
     /**
-     * default constructor.
+     * Default constructor.
      */
     public JsonGenerator() {
         super();

@@ -21,10 +21,14 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotSame;
+
 
 /**
  * Tests for the StreamUtils class.
@@ -112,5 +116,29 @@ public class TestStreamUtils {
                 expected,
                 stringResult
         );
+    }
+
+    @Test
+    public void testCompressAndDecompress () throws IOException {
+        final List<String> testList = Arrays.asList(
+                "",
+                "abc",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbcccc"
+        );
+
+        for (final String testString : testList) {
+            final byte[] uncompressed = testString.getBytes();
+
+            final byte[] compressed = StreamUtils.compress(uncompressed);
+            final byte[] decompressed = StreamUtils.decompress(compressed);
+
+            assertEquals("uncompressed and decompressed should be equal",
+                    new String(uncompressed), new String(decompressed));
+
+            if (!testString.isEmpty()) {
+                assertNotSame("compressed and uncompressed should be different",
+                        uncompressed, compressed);
+            }
+        }
     }
 }
