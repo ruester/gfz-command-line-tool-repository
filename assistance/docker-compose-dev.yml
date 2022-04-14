@@ -30,6 +30,8 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - CATALINA_OPTS=-Xmx4g -Xms4g
+      - RIESGOS_MAX_CACHE_SIZE_MB=1024
       - RIESGOS_GEOSERVER_ACCESS_BASE_URL=http://localhost:8080/geoserver
       - RIESGOS_GEOSERVER_SEND_BASE_URL=http://localhost:8080/geoserver
       - RIESGOS_GEOSERVER_USERNAME=admin
@@ -38,7 +40,7 @@ services:
       - "riesgos-json-config-dev:/usr/share/riesgos/json-configurations"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "riesgos-wps-hsqldb-dev:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
-      - "../target/gfz-riesgos-wps-1.0-SNAPSHOT.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar"
+      - "../target/gfz-riesgos-wps-1.0-SNAPSHOT.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar:Z"
 
 volumes:
   riesgos-json-config-dev:

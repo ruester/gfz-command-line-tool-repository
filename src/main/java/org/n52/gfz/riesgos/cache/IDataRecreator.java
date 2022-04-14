@@ -42,4 +42,10 @@ public interface IDataRecreator extends Serializable {
      * @return binding class
      */
     Class<? extends IData> getBindingClassToRecreate();
+
+    /**
+     * Get the size of this object in bytes.
+     * @return the size of the object in bytes
+     */
+    int getSizeInBytes();
 }

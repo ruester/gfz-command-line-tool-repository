@@ -19,8 +19,13 @@ package org.n52.gfz.riesgos.cache.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.Weigher;
 import org.n52.gfz.riesgos.cache.ICacher;
 import org.n52.gfz.riesgos.cache.IDataRecreator;
+import org.n52.gfz.riesgos.settings.RiesgosWpsSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -32,9 +37,15 @@ import java.util.concurrent.TimeUnit;
 public class CacheImpl implements ICacher {
 
     /**
-     * Maximum size of the cache map.
+     * Logger for this class.
      */
-    private static final long MAX_SIZE = 50L;
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(CacheImpl.class);
+
+    /**
+     * Convert number between bytes and kilobytes.
+     */
+    private static final int CONVERT_BYTES = 1024;
 
     /**
      * Maximum duration to store the
@@ -47,15 +58,82 @@ public class CacheImpl implements ICacher {
      */
     private final Cache<String, Map<String, IDataRecreator>> cache;
 
-
     /**
      * Constructor without parameters.
      */
     public CacheImpl() {
         cache = CacheBuilder.newBuilder()
-                .maximumSize(MAX_SIZE)
-                .expireAfterAccess(MAX_DURATION_DAYS, TimeUnit.DAYS)
-                .build();
+            .maximumWeight(
+                RiesgosWpsSettings.INSTANCE.getMaxCacheSizeMb()
+            )
+            .weigher(new Weigher<String, Map<String, IDataRecreator>>() {
+                public int weigh(
+                        final String key,
+                        final Map<String, IDataRecreator> cacheOne
+                ) {
+                    int weight = 0;
+
+                    /* The weigh function will only be called when adding a
+                     * new entry to the cache and the cacheOne variable only
+                     * contains this one new entry. */
+                    for (IDataRecreator entry : cacheOne.values()) {
+                        int mb = entry.getSizeInBytes()
+                            / CONVERT_BYTES / CONVERT_BYTES;
+
+                        if (mb == 0) {
+                            mb = 1;
+                        }
+
+                        weight += mb;
+
+                        LOGGER.debug(
+                            "Weight of new entry for cache: "
+                            + String.valueOf(weight)
+                        );
+                    }
+
+                    return weight;
+                }
+            })
+            .expireAfterAccess(MAX_DURATION_DAYS, TimeUnit.DAYS)
+            .build();
+    }
+
+    /**
+     * Helper function to get the current memory usage of the cache in MB.
+     * @return current memory usage of the cache in MB
+     */
+    public int getCacheSizeMb() {
+        int sum = 0;
+
+        for (Map<String, IDataRecreator> m : cache.asMap().values()) {
+            for (IDataRecreator i : m.values()) {
+                int one = i.getSizeInBytes() / CONVERT_BYTES / CONVERT_BYTES;
+                if (one == 0) {
+                    one = 1;
+                }
+                sum += one;
+            }
+        }
+
+        return sum;
+    }
+
+    /**
+     * Helper function to log the current entries of the cache and their sizes.
+     */
+    public void logCacheEntries() {
+        for (Map<String, IDataRecreator> m : cache.asMap().values()) {
+            for (IDataRecreator i : m.values()) {
+                int one = i.getSizeInBytes() / CONVERT_BYTES / CONVERT_BYTES;
+                if (one == 0) {
+                    one = 1;
+                }
+                LOGGER.info(one + " MB for entry: " + m.toString());
+            }
+        }
+
+        LOGGER.info("Total MB used by cache: " + getCacheSizeMb());
     }
 
     /**
@@ -70,8 +148,6 @@ public class CacheImpl implements ICacher {
     @Override
     public Optional<Map<String, IDataRecreator>> getCachedResult(
             final String hash) {
-
-
         if (cache.asMap().containsKey(hash)) {
             return Optional.ofNullable(cache.getIfPresent(hash));
         }
@@ -89,10 +165,11 @@ public class CacheImpl implements ICacher {
     @Override
     public void insertResultIntoCache(
             final String hash,
-            final Map<String, IDataRecreator> outputData) {
-
+            final Map<String, IDataRecreator> outputData
+    ) {
+        // cleanup cache before adding the new entry
+        // (removing old entries if cache is quite full)
+        cache.cleanUp();
         cache.put(hash, outputData);
     }
-
-
 }

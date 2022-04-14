@@ -91,7 +91,7 @@ public class TestCacheImpl {
         final LiteralStringBinding strOutput = new LiteralStringBinding(outputValue);
 
         final Map<String, IDataRecreator> outputData = new HashMap<>();
-        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput));
+        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput, outputValue.getBytes().length));
 
         cache.insertResultIntoCache(hash, outputData);
 
@@ -155,7 +155,7 @@ public class TestCacheImpl {
         final LiteralStringBinding strOutput = new LiteralStringBinding(outputValue);
 
         final Map<String, IDataRecreator> outputData = new HashMap<>();
-        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput));
+        outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput, outputValue.getBytes().length));
 
         cache.insertResultIntoCache(hash, outputData);
 
@@ -215,7 +215,7 @@ public class TestCacheImpl {
             final LiteralStringBinding strOutput = new LiteralStringBinding(outputValue);
 
             final Map<String, IDataRecreator> outputData = new HashMap<>();
-            outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput));
+            outputData.put(configuration.getOutputIdentifiers().get(0).getIdentifier(), new RecreateFromBindingClass(strOutput, outputValue.getBytes().length));
 
             cache.insertResultIntoCache(hash, outputData);
 

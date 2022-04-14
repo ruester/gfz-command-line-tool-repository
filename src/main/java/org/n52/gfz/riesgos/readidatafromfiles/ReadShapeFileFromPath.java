@@ -60,6 +60,7 @@ public final class ReadShapeFileFromPath
         ).toString();
         final String outputFilePathShp = outputFileTemplatePath + ".shp";
 
+        int overallSize = 0;
         for (final WriteShapeFileToPath.SingleFile singleFile
             : WriteShapeFileToPath.SingleFile.values()
         ) {
@@ -69,6 +70,7 @@ public final class ReadShapeFileFromPath
             final byte[] content = context.readFromFile(
                 Paths.get(workingDirectory, pathToRead).toString()
             );
+            overallSize += content.length;
 
             final File tempOutFile = new File(
                 outputFileTemplatePath + singleFile.getEnding()
@@ -91,7 +93,10 @@ public final class ReadShapeFileFromPath
         // involved here
         return new DataWithRecreatorTuple<>(
             binding,
-            new RecreateFromBindingClass(binding)
+            // Having an overall size here is not complete accurate - however
+            // it gives some idea about how many data are handled here.
+            // And we want to keep track to know about how large our cache is.
+            new RecreateFromBindingClass(binding, overallSize)
         );
     }
 
