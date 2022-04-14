@@ -30,7 +30,7 @@ import org.n52.gfz.riesgos.configuration.parse.IParseConfiguration;
 import org.n52.gfz.riesgos.configuration.parse.formats.json.ParseJsonConfigurationImpl;
 import org.n52.gfz.riesgos.exceptions.ParseConfigurationException;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.jsonfile.binding.JsonFileBinding;
 import org.n52.gfz.riesgos.formats.nrml.binding.NrmlXmlDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
@@ -108,7 +108,7 @@ public class GfzRiesgosRepositoryCM extends ClassKnowingModule {
         processNames.put(NrmlXmlDataBinding.class, "NrmlCacheReader");
         processNames.put(GTVectorDataBinding.class, "GTVectorCacheReader");
         processNames.put(GTRasterDataBinding.class, "GTRasterCacheReader");
-        processNames.put(JsonDataBinding.class, "JSONCacheReader");
+        processNames.put(JsonFileBinding.class, "JSONCacheReader");
         processNames.put(GenericXMLDataBinding.class, "XMLCacheReader");
         processNames.put(LiteralStringBinding.class, "StringCacheReader");
         processNames.put(LiteralDoubleBinding.class, "DoubleCacheReader");

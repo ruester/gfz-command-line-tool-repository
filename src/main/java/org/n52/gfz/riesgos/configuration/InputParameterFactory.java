@@ -25,7 +25,7 @@ import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralIntBindingToSt
 import org.n52.gfz.riesgos.commandlineparametertransformer.LiteralStringBindingToStringCmd;
 import org.n52.gfz.riesgos.configuration.impl.InputParameterImpl;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.jsonfile.binding.JsonFileBinding;
 import org.n52.gfz.riesgos.formats.nrml.binding.NrmlXmlDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
@@ -34,7 +34,7 @@ import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGTVectorDataBindingToByte
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericFileDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGenericXMLDataBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertGeotiffBindingToBytes;
-import org.n52.gfz.riesgos.idatatobyteconverter.ConvertJsonDataBindingToBytes;
+import org.n52.gfz.riesgos.idatatobyteconverter.ConvertJsonFileBindingToBytes;
 import org.n52.gfz.riesgos.idatatobyteconverter.ConvertLiteralStringToBytes;
 import org.n52.gfz.riesgos.validators.LiteralStringBindingWithAllowedValues;
 import org.n52.gfz.riesgos.validators.XmlBindingWithAllowedSchema;
@@ -574,10 +574,10 @@ public enum InputParameterFactory {
             final String flag) {
         final String filename = createUUIDFilename(".json");
 
-        final InputParameterImpl.Builder<JsonDataBinding> builder =
+        final InputParameterImpl.Builder<JsonFileBinding> builder =
                 new InputParameterImpl.Builder<>(
                         identifier,
-                        JsonDataBinding.class,
+                        JsonFileBinding.class,
                         isOptional,
                         optionalAbstract);
         builder.withFunctionToTransformToCmd(
@@ -585,7 +585,7 @@ public enum InputParameterFactory {
         builder.withPath(filename);
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
-                        new ConvertJsonDataBindingToBytes()));
+                        new ConvertJsonFileBindingToBytes()));
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }
@@ -643,9 +643,9 @@ public enum InputParameterFactory {
             final String optionalAbstract,
             final FormatEntry defaultFormat) {
         return new InputParameterImpl.Builder<>(
-                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                identifier, JsonFileBinding.class, isOptional, optionalAbstract)
                 .withFunctionToWriteToStdin(
-                        new ConvertJsonDataBindingToBytes())
+                        new ConvertJsonFileBindingToBytes())
                 .withDefaultFormat(defaultFormat)
                 .build();
     }
@@ -904,16 +904,16 @@ public enum InputParameterFactory {
             final FormatEntry defaultFormat,
             final String path) {
 
-        final InputParameterImpl.Builder<JsonDataBinding> builder =
+        final InputParameterImpl.Builder<JsonFileBinding> builder =
                 new InputParameterImpl.Builder<>(
                         identifier,
-                        JsonDataBinding.class,
+                        JsonFileBinding.class,
                         isOptional,
                         optionalAbstract);
         builder.withPath(path);
         builder.withFunctionToWriteToFiles(
                 new WriteSingleByteStreamToPath<>(
-                        new ConvertJsonDataBindingToBytes()));
+                        new ConvertJsonFileBindingToBytes()));
         builder.withDefaultFormat(defaultFormat);
         return builder.build();
     }

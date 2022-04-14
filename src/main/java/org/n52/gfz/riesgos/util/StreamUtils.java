@@ -18,6 +18,9 @@ package org.n52.gfz.riesgos.util;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.util.ArrayList;
@@ -25,6 +28,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.InflaterOutputStream;
 
 /**
  * Utility class for streams.
@@ -102,5 +108,44 @@ public enum StreamUtils {
         textStreams.add(IOUtils.toInputStream("}"));
 
         return new SequenceInputStream(Collections.enumeration(textStreams));
+    }
+
+    /**
+     * Compress a byte array.
+     * @param data the byte array to compress
+     * @return the compressed byte array
+     * @throws IOException if compression failed
+     */
+    public static byte[] compress(final byte[] data) throws IOException {
+
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        final DeflaterOutputStream deflaterOutputStream =
+            new DeflaterOutputStream(
+                outputStream, new Deflater(Deflater.BEST_COMPRESSION)
+            );
+
+        deflaterOutputStream.write(data);
+        deflaterOutputStream.finish();
+        return outputStream.toByteArray();
+    }
+
+    /**
+     * Decompress a byte array.
+     * @param data the byte array to decompress
+     * @return the decompressed byte array
+     * @throws IOException if decompression failed
+     */
+    public static byte[] decompress(final byte[] data) throws IOException {
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
+
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        final InflaterOutputStream inflaterOutputStream =
+            new InflaterOutputStream(outputStream);
+
+        IOUtils.copy(inputStream, inflaterOutputStream);
+
+        inflaterOutputStream.finish();
+
+        return outputStream.toByteArray();
     }
 }

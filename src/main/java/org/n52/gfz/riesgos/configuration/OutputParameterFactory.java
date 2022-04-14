@@ -20,7 +20,7 @@ import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGTVectorDataBindin
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericFileDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGenericXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToGeotiffBinding;
-import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToJsonDataBinding;
+import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToJsonFileBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToLiteralStringBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToNrmlXMLDataBinding;
 import org.n52.gfz.riesgos.bytetoidataconverter.ConvertBytesToQuakeMLXmlBinding;
@@ -29,7 +29,7 @@ import org.n52.gfz.riesgos.configuration.impl.OutputParameterImpl;
 import org.n52.gfz.riesgos.configuration.parse.defaultformats.DefaultFormatOption;
 import org.n52.gfz.riesgos.exitvaluetoidataconverter.ConvertExitValueToLiteralIntBinding;
 import org.n52.gfz.riesgos.formats.IMimeTypeAndSchemaConstants;
-import org.n52.gfz.riesgos.formats.json.binding.JsonDataBinding;
+import org.n52.gfz.riesgos.formats.jsonfile.binding.JsonFileBinding;
 import org.n52.gfz.riesgos.formats.nrml.binding.NrmlXmlDataBinding;
 import org.n52.gfz.riesgos.formats.quakeml.binding.QuakeMLXmlDataBinding;
 import org.n52.gfz.riesgos.formats.shakemap.binding.ShakemapXmlDataBinding;
@@ -228,17 +228,17 @@ public enum OutputParameterFactory {
             final String optionalAbstract,
             final FormatEntry defaultFormat,
             final String path) {
-        final OutputParameterImpl.Builder<JsonDataBinding> builder =
+        final OutputParameterImpl.Builder<JsonFileBinding> builder =
                 new OutputParameterImpl.Builder<>(
                         identifier,
-                        JsonDataBinding.class,
+                        JsonFileBinding.class,
                         isOptional,
                         optionalAbstract);
         builder.withPath(path);
         builder.withFunctionToReadFromFiles(
                 new ReadSingleByteStreamFromPath<>(
-                        new ConvertBytesToJsonDataBinding(),
-                        JsonDataBinding.class));
+                        new ConvertBytesToJsonFileBinding(),
+                        JsonFileBinding.class));
         builder.withDefaultFormat(defaultFormat);
 
         return builder.build();
@@ -515,9 +515,9 @@ public enum OutputParameterFactory {
             final String optionalAbstract,
             final FormatEntry defaultFormat) {
         return new OutputParameterImpl.Builder<>(
-                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                identifier, JsonFileBinding.class, isOptional, optionalAbstract)
                 .withFunctionToHandleStdout(
-                        new ConvertBytesToJsonDataBinding())
+                        new ConvertBytesToJsonFileBinding())
                 .withDefaultFormat(defaultFormat)
                 .build();
     }
@@ -581,9 +581,9 @@ public enum OutputParameterFactory {
             final String optionalAbstract,
             final FormatEntry defaultFormat) {
         return new OutputParameterImpl.Builder<>(
-                identifier, JsonDataBinding.class, isOptional, optionalAbstract)
+                identifier, JsonFileBinding.class, isOptional, optionalAbstract)
                 .withFunctionToHandleStderr(
-                        new ConvertBytesToJsonDataBinding())
+                        new ConvertBytesToJsonFileBinding())
                 .withDefaultFormat(defaultFormat)
                 .build();
     }
