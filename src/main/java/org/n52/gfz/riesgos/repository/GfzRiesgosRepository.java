@@ -1,7 +1,7 @@
 package org.n52.gfz.riesgos.repository;
 
 /*
- * Copyright (C) 2019 GFZ German Research Centre for Geosciences
+ * Copyright (C) 2019-2022 GFZ German Research Centre for Geosciences
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.n52.gfz.riesgos.repository;
  */
 
 import org.n52.gfz.riesgos.formats.geotiff.parsers.GeotiffParser;
+import org.n52.gfz.riesgos.formats.shp.generators.ShapefileWMSGenerator;
 import org.n52.gfz.riesgos.formats.jsonfile.generators.JsonFileGenerator;
 import org.n52.gfz.riesgos.formats.jsonfile.parsers.JsonFileParser;
 import org.n52.gfz.riesgos.formats.nrml.generators.NrmlGeoJsonGenerator;
@@ -43,6 +44,7 @@ import org.n52.wps.io.GeneratorFactory;
 import org.n52.wps.io.IGenerator;
 import org.n52.wps.io.IParser;
 import org.n52.wps.io.ParserFactory;
+import org.n52.wps.io.datahandler.generator.GeoserverWMSGenerator;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ITransactionalAlgorithmRepository;
 import org.n52.wps.server.ProcessDescription;
@@ -109,8 +111,17 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository {
                 //new JsonGenerator(),
                 // nrml
                 new NrmlXmlGenerator(),
-                new NrmlGeoJsonGenerator()
+                new NrmlGeoJsonGenerator(),
+                // overwrite the existing WMS Generator
+                new ShapefileWMSGenerator()
         ).forEach(new RegisterGeneratorTask());
+
+        // We don't want to use an existing geoserver WMS generator.
+        // But we have our own one.
+        // (The existing one doesn't support https).
+        Stream.of(
+                GeoserverWMSGenerator.class
+        ).forEach(new RejectGeneratorTask());
     }
 
     /**
@@ -209,6 +220,36 @@ public class GfzRiesgosRepository implements ITransactionalAlgorithmRepository {
     @Override
     public void shutdown() {
         // nothing to do
+    }
+
+    /**
+     * This task removes registered generators.
+     *
+     * This has SIDE EFFECTS!
+     */
+    private static class RejectGeneratorTask
+            implements Consumer<Class<? extends IGenerator>> {
+        /**
+         * List of all the generators.
+         */
+        private final List<IGenerator> allGenerators;
+
+        /**
+         * Task to remove entries from the list of generators.
+         */
+        RejectGeneratorTask() {
+            this.allGenerators =
+                    GeneratorFactory.getInstance().getAllGenerators();
+        }
+
+        /**
+         * Remove generators from the list if they are instances of
+         * the given class.
+         * @param clazz SpecificGenerator.class
+         */
+        public void accept(final Class<? extends IGenerator> clazz) {
+            allGenerators.removeIf(clazz::isInstance);
+        }
     }
 
     /**
