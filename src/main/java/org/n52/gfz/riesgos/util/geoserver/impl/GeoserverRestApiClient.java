@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 GFZ German Research Centre for Geosciences
+ * Copyright (C) 2019-2022 GFZ German Research Centre for Geosciences
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,39 @@ package org.n52.gfz.riesgos.util.geoserver.impl;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.StatusLine;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.n52.gfz.riesgos.util.constants.Headers;
+import org.n52.gfz.riesgos.util.constants.MimeTypes;
 import org.n52.gfz.riesgos.util.geoserver.IGeoserverClient;
 import org.n52.gfz.riesgos.util.geoserver.exceptions.UnableToCreateCoverageException;
 import org.n52.gfz.riesgos.util.geoserver.exceptions.UnableToCreateWorkspaceException;
+import org.n52.gfz.riesgos.util.geoserver.exceptions.UnableToUploadShpException;
 import org.n52.gfz.riesgos.util.geoserver.exceptions.WorkspaceAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -93,6 +108,7 @@ public class GeoserverRestApiClient implements IGeoserverClient {
      * Also possible WorkspaceAlreadyExistsException: Very specific exception
      * in case the workspace exists already. Client can decide what to do then.
      */
+    @Override
     public void createWorkspace(
             final String workspace
     ) throws UnableToCreateWorkspaceException {
@@ -105,7 +121,8 @@ public class GeoserverRestApiClient implements IGeoserverClient {
         final EntityEnclosingMethod requestMethod = new PostMethod(url);
 
 
-        requestMethod.setRequestHeader("Content-type", "application/xml");
+        requestMethod.setRequestHeader(
+                Headers.CONTENT_TYPE, MimeTypes.APPLICATION_XML);
 
         client.getState().setCredentials(
                 new AuthScope(
@@ -120,7 +137,7 @@ public class GeoserverRestApiClient implements IGeoserverClient {
             requestMethod.setRequestEntity(
                     new StringRequestEntity(
                             payload,
-                            "application/xml",
+                            MimeTypes.APPLICATION_XML,
                             DEFAULT_CONTENT_CHARSET
                     )
             );
@@ -194,6 +211,7 @@ public class GeoserverRestApiClient implements IGeoserverClient {
      * @throws UnableToCreateCoverageException In case something goes
      * wrong when creating this coverage we throw this exception.
      */
+    @Override
     public void createCoverage(
             final File file,
             final String workspace,
@@ -227,11 +245,12 @@ public class GeoserverRestApiClient implements IGeoserverClient {
 
             final HttpClient client = new HttpClient();
             final EntityEnclosingMethod requestMethod = new PutMethod(url);
-            requestMethod.setRequestHeader("Content-type", "text/plain");
+            requestMethod.setRequestHeader(
+                    Headers.CONTENT_TYPE, MimeTypes.TEXT_PLAIN);
             requestMethod.setRequestEntity(
                     new StringRequestEntity(
                             payload,
-                            "text/plain",
+                            MimeTypes.TEXT_PLAIN,
                             DEFAULT_CONTENT_CHARSET
                     )
             );
@@ -257,5 +276,160 @@ public class GeoserverRestApiClient implements IGeoserverClient {
         } catch (IOException ioException) {
             throw new UnableToCreateCoverageException(ioException);
         }
+    }
+
+    /**
+     * Upload a shape file to the geoserver.
+     * @param file Shapefile that will be send
+     * @param workspace workspace name in that the file should be added
+     * @param storeName name of the store to add
+     * @return response of the request
+     * @throws UnableToUploadShpException if there is an error in the
+     * communication
+     * @throws IOException if writing data to disk failed
+     */
+    @Override
+    public String uploadShp(
+            final File file,
+            final String workspace,
+            final String storeName
+        ) throws UnableToUploadShpException, IOException {
+
+
+        final String url = this.baseUrl
+                + "/rest/workspaces/"
+                + workspace
+                + "/datastores/" + storeName
+                + "/file.shp?filename=" + storeName;
+
+        InputStream request = new BufferedInputStream(
+                new FileInputStream(file)
+        );
+        try {
+            return sendShpRequest(url, request);
+        } catch (HttpException httpException) {
+            throw new UnableToUploadShpException(httpException);
+        }
+    }
+
+    /**
+     * Get a list of layers for a data store.
+     * @param workspace name of the workspace
+     * @param storeName name of the data store
+     * @return list with the names (strings) of the layers in that store
+     * @throws IOException IOException if we have trouble interacting with the
+     * geoserver or parsing its responses
+     */
+    @Override
+    public List<String> getLayerNamesForDataStore(
+            final String workspace,
+            final String storeName
+    ) throws IOException {
+        final List<String> result = new ArrayList<>();
+        final String featureTypesUrl =  this.baseUrl
+                + "/rest/workspaces/"
+                + workspace
+                + "/datastores/" + storeName + "/featuretypes";
+
+        final String featureTypesResp = sendFeatureInfo(featureTypesUrl);
+
+        try {
+            final JSONParser parser = new JSONParser();
+            final JSONObject jsonObject =
+                    (JSONObject) parser.parse(featureTypesResp);
+            final JSONObject featureTypes =
+                    (JSONObject) jsonObject.get("featureTypes");
+            final JSONArray featureTypeArray =
+                    (JSONArray) featureTypes.get("featureType");
+            for (final Object featureTypeObject : featureTypeArray) {
+                final JSONObject featureType = (JSONObject) featureTypeObject;
+                final String layerName = (String) featureType.get("name");
+                result.add(layerName);
+            }
+
+        } catch (ParseException parseException) {
+            throw new IOException(parseException);
+        }
+
+        return result;
+    }
+
+    /**
+     * Helper method to send the a get feature info request.
+     * @param url to send the request to.
+     * @return String of the response body
+     * @throws IOException exception if we have trouble sending to the server
+     */
+    private String sendFeatureInfo(
+            final String url
+    ) throws IOException {
+        final HttpClient client = new HttpClient();
+        final GetMethod requestMethod = new GetMethod(url);
+        requestMethod.setRequestHeader(
+                Headers.ACCEPT, MimeTypes.APPLICATION_JSON);
+
+        client.getState().setCredentials(
+                new AuthScope(
+                        AuthScope.ANY_HOST,
+                        AuthScope.ANY_PORT,
+                        AuthScope.ANY_REALM
+                ),
+                this.credentials
+        );
+
+        final int statusCode = client.executeMethod(requestMethod);
+
+        if (
+                !((statusCode == HttpStatus.SC_OK)
+                        || (statusCode == HttpStatus.SC_CREATED))
+        ) {
+            LOGGER.error("Method failed: {}", requestMethod.getStatusLine());
+        }
+
+        // Read the response body.
+        final byte[] responseBody = requestMethod.getResponseBody();
+        return new String(responseBody);
+    }
+
+    /**
+     * Send a shapefile request (PUT) to GeoServer.
+     * @param target URL to send the request to
+     * @param request the content to send
+     * @return response of the request
+     * @throws IOException if writing data to disk failed
+     */
+    private String sendShpRequest(
+            final String target,
+            final InputStream request
+    )
+            throws IOException {
+        LOGGER.info("url to send shapefile to: {}", target);
+        final HttpClient client = new HttpClient();
+        final EntityEnclosingMethod requestMethod = new PutMethod(target);
+        requestMethod.setRequestHeader(
+                Headers.CONTENT_TYPE, MimeTypes.APPLICATION_ZIP);
+        requestMethod.setRequestEntity(new InputStreamRequestEntity(request));
+
+        client.getState().setCredentials(
+                new AuthScope(
+                    AuthScope.ANY_HOST,
+                    AuthScope.ANY_PORT,
+                    AuthScope.ANY_REALM
+                ),
+                this.credentials
+            );
+
+        final int statusCode = client.executeMethod(requestMethod);
+
+        if (
+                !((statusCode == HttpStatus.SC_OK)
+                || (statusCode == HttpStatus.SC_CREATED))
+        ) {
+            LOGGER.error("Method failed: {}", requestMethod.getStatusLine());
+        }
+
+        // Read the response body.
+        final byte[] responseBody = requestMethod.getResponseBody();
+        return new String(responseBody);
     }
 }
