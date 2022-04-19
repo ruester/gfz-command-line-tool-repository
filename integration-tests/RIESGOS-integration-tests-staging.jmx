@@ -1417,7 +1417,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1593135994">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1850101125">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -1458,29 +1458,49 @@
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
-        &lt;ows:Title&gt;updated_exposure&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;updated_exposure&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;transition&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;transition&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
         &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;shapefile_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;shapefile_summary&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/vnd.google-earth.kml+xml&quot; schema=&quot;http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://geoserver.itc.nl:8080/wps/schemas/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://www.opengeospatial.org/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;meta_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;meta_summary&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -1542,7 +1562,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-329866619">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-344089968">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -1619,29 +1639,49 @@
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
-        &lt;ows:Title&gt;updated_exposure&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;updated_exposure&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;transition&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;transition&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
         &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;shapefile_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;shapefile_summary&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/vnd.google-earth.kml+xml&quot; schema=&quot;http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://geoserver.itc.nl:8080/wps/schemas/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://www.opengeospatial.org/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;meta_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;meta_summary&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -3554,7 +3594,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="1593135994">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-1850101125">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3595,29 +3635,49 @@
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
-        &lt;ows:Title&gt;updated_exposure&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;updated_exposure&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;transition&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;transition&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
         &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;shapefile_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;shapefile_summary&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/vnd.google-earth.kml+xml&quot; schema=&quot;http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://geoserver.itc.nl:8080/wps/schemas/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://www.opengeospatial.org/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;meta_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;meta_summary&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -3679,7 +3739,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Description Document" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-329866619">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+              <stringProp name="-344089968">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;wps:ProcessOfferings xmlns:wps=&quot;http://www.opengis.net/wps/2.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:ows=&quot;http://www.opengis.net/ows/2.0&quot; xsi:schemaLocation=&quot;http://www.opengis.net/wps/2.0 http://schemas.opengis.net/wps/2.0/wps.xsd&quot;&gt;
   &lt;wps:ProcessOffering processVersion=&quot;1.0.0&quot; jobControlOptions=&quot;sync-execute async-execute&quot; outputTransmission=&quot;value reference&quot;&gt;
     &lt;wps:Process&gt;
@@ -3756,29 +3816,49 @@
         &lt;/wps:ComplexData&gt;
       &lt;/wps:Input&gt;
       &lt;wps:Output&gt;
-        &lt;ows:Title&gt;updated_exposure&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;updated_exposure&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;transition&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;transition&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
-        &lt;ows:Title&gt;damage&lt;/ows:Title&gt;
-        &lt;ows:Identifier&gt;damage&lt;/ows:Identifier&gt;
-        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
-          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
-        &lt;/wps:ComplexData&gt;
-      &lt;/wps:Output&gt;
-      &lt;wps:Output&gt;
         &lt;ows:Title&gt;merged_output&lt;/ows:Title&gt;
         &lt;ows:Identifier&gt;merged_output&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;shapefile_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;shapefile_summary&lt;/ows:Identifier&gt;
+        &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
+          &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/vnd.google-earth.kml+xml&quot; schema=&quot;http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; encoding=&quot;base64&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/2.0.0/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/2.1.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2.1/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.0.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.0.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.0&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.0/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.1.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.1.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml; subtype=gml/3.2.1&quot; schema=&quot;http://schemas.opengis.net/gml/3.2.1/base/feature.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://geoserver.itc.nl:8080/wps/schemas/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://schemas.opengis.net/gml/2.1.2/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;text/xml&quot; schema=&quot;http://www.opengeospatial.org/gmlpacket.xsd&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/vnd.geo+json&quot;/&gt;
+          &lt;ns:Format mimeType=&quot;application/WMS&quot;/&gt;
+        &lt;/wps:ComplexData&gt;
+      &lt;/wps:Output&gt;
+      &lt;wps:Output&gt;
+        &lt;ows:Title&gt;meta_summary&lt;/ows:Title&gt;
+        &lt;ows:Identifier&gt;meta_summary&lt;/ows:Identifier&gt;
         &lt;wps:ComplexData xmlns:ns=&quot;http://www.opengis.net/wps/2.0&quot;&gt;
           &lt;ns:Format default=&quot;true&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;/&gt;
         &lt;/wps:ComplexData&gt;
@@ -5824,11 +5904,13 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
               <stringProp name="-1198098360">&quot;Repl-cost-USD-bdg&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -5923,11 +6005,13 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
               <stringProp name="-1198098360">&quot;Repl-cost-USD-bdg&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6022,11 +6106,13 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
               <stringProp name="-1198098360">&quot;Repl-cost-USD-bdg&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6121,11 +6207,13 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
               <stringProp name="-1198098360">&quot;Repl-cost-USD-bdg&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6220,11 +6308,13 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
               <stringProp name="-1198098360">&quot;Repl-cost-USD-bdg&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6319,11 +6409,13 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
               <stringProp name="-1198098360">&quot;Repl-cost-USD-bdg&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6418,11 +6510,13 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
               <stringProp name="-1198098360">&quot;Repl-cost-USD-bdg&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6512,9 +6606,12 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="7234106">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;features&quot;:[],&quot;type&quot;:&quot;FeatureCollection&quot;}&lt;/wps:Data&gt;</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-1151998434">&lt;wps:Output id=&quot;selectedRowsGeoJson&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
+              <stringProp name="-160582503">&quot;features&quot;:[]</stringProp>
+              <stringProp name="1339950076">&quot;type&quot;:&quot;FeatureCollection&quot;</stringProp>
+              <stringProp name="1203416289">&lt;/wps:Data&gt;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -6609,10 +6706,12 @@
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-2067566575">&quot;Damage&quot;</stringProp>
               <stringProp name="2111841679">&quot;expo&quot;:{</stringProp>
-              <stringProp name="-78619236">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="565304709">&quot;Buildings&quot;</stringProp>
               <stringProp name="69164271">&quot;Taxonomy&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -8951,7 +9050,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="721438277">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;data&quot;:[{&quot;</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1399144166">&quot;D1_stddev&quot;:</stringProp>
@@ -8966,6 +9065,7 @@
               <stringProp name="164548080">&quot;description&quot;:&quot;</stringProp>
               <stringProp name="692942422">&quot;taxonomy_source&quot;:&quot;GEM&quot;</stringProp>
               <stringProp name="515858994">&quot;damage_states&quot;</stringProp>
+              <stringProp name="-1228566492">&quot;data&quot;:</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -9035,7 +9135,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="721438277">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;data&quot;:[{&quot;</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1399144166">&quot;D1_stddev&quot;:</stringProp>
@@ -9048,6 +9148,7 @@
               <stringProp name="164548080">&quot;description&quot;:&quot;</stringProp>
               <stringProp name="692942422">&quot;taxonomy_source&quot;:&quot;GEM&quot;</stringProp>
               <stringProp name="515858994">&quot;damage_states&quot;</stringProp>
+              <stringProp name="-1228566492">&quot;data&quot;:</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -9117,7 +9218,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="721438277">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;data&quot;:[{&quot;</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1399144166">&quot;D1_stddev&quot;:</stringProp>
@@ -9129,6 +9230,7 @@
               <stringProp name="-1729342">&quot;format&quot;:&quot;continuous&quot;</stringProp>
               <stringProp name="164548080">&quot;description&quot;:&quot;</stringProp>
               <stringProp name="515858994">&quot;damage_states&quot;</stringProp>
+              <stringProp name="-1228566492">&quot;data&quot;:</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -9198,7 +9300,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="721438277">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;data&quot;:[{&quot;</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1595657671">&quot;D2_stddev&quot;:</stringProp>
@@ -9208,6 +9310,7 @@
               <stringProp name="-1729342">&quot;format&quot;:&quot;continuous&quot;</stringProp>
               <stringProp name="164548080">&quot;description&quot;:&quot;</stringProp>
               <stringProp name="515858994">&quot;damage_states&quot;</stringProp>
+              <stringProp name="-1228566492">&quot;data&quot;:</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -9277,7 +9380,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="721438277">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;data&quot;:[{&quot;</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1399144166">&quot;D1_stddev&quot;:</stringProp>
@@ -9288,6 +9391,7 @@
               <stringProp name="-1729342">&quot;format&quot;:&quot;continuous&quot;</stringProp>
               <stringProp name="164548080">&quot;description&quot;:&quot;</stringProp>
               <stringProp name="515858994">&quot;damage_states&quot;</stringProp>
+              <stringProp name="-1228566492">&quot;data&quot;:</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -9357,7 +9461,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="721438277">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;{&quot;data&quot;:[{&quot;</stringProp>
+              <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
               <stringProp name="-35725261">&lt;wps:Output id=&quot;selectedRows&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-1399144166">&quot;D1_stddev&quot;:</stringProp>
@@ -9369,6 +9473,7 @@
               <stringProp name="-1729342">&quot;format&quot;:&quot;continuous&quot;</stringProp>
               <stringProp name="164548080">&quot;description&quot;:&quot;</stringProp>
               <stringProp name="515858994">&quot;damage_states&quot;</stringProp>
+              <stringProp name="-1228566492">&quot;data&quot;:</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -12474,9 +12579,9 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
 }&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;updated_exposure&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;transition&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;damage&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;merged_output&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;shapefile_summary&quot; transmission=&quot;reference&quot; mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;meta_summary&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -12509,22 +12614,25 @@ ${__FileToString(./example_shakemap.xml,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="321139178">&lt;wps:Output id=&quot;updated_exposure&quot;&gt;</stringProp>
+              <stringProp name="1865714541">&lt;wps:Output id=&quot;merged_output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
-              <stringProp name="-90509732">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:[[[[</stringProp>
-              <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
+              <stringProp name="-1095592309">&lt;wps:Output id=&quot;meta_summary&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
               <stringProp name="344576853">&quot;Buildings&quot;:</stringProp>
-              <stringProp name="-419238898">&lt;wps:Output id=&quot;damage&quot;&gt;</stringProp>
               <stringProp name="-1178802068">&quot;expo&quot;:</stringProp>
               <stringProp name="2144092459">&quot;Taxonomy&quot;:</stringProp>
               <stringProp name="-905014860">&quot;transitions&quot;:</stringProp>
               <stringProp name="-886931028">&quot;from_damage_state&quot;:</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="-986812321">mimeType=&quot;application/x-zipped-shp&quot;</stringProp>
+              <stringProp name="809165481">&quot;coordinates&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -12561,9 +12669,9 @@ ${__FileToString(./deus_post_exposure.json,,)}&#xd;
 ${__FileToString(./deus_post_fragility.json,,)}&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;updated_exposure&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;transition&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;damage&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;merged_output&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;shapefile_summary&quot; transmission=&quot;reference&quot; mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;meta_summary&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -12596,22 +12704,25 @@ ${__FileToString(./deus_post_fragility.json,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="321139178">&lt;wps:Output id=&quot;updated_exposure&quot;&gt;</stringProp>
+              <stringProp name="1865714541">&lt;wps:Output id=&quot;merged_output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
-              <stringProp name="-1388392993">{&quot;features&quot;:[{&quot;geometry&quot;:{&quot;coordinates&quot;:[[[</stringProp>
-              <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
+              <stringProp name="-1095592309">&lt;wps:Output id=&quot;meta_summary&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
               <stringProp name="344576853">&quot;Buildings&quot;:</stringProp>
-              <stringProp name="-419238898">&lt;wps:Output id=&quot;damage&quot;&gt;</stringProp>
               <stringProp name="-1178802068">&quot;expo&quot;:</stringProp>
               <stringProp name="2144092459">&quot;Taxonomy&quot;:</stringProp>
               <stringProp name="-905014860">&quot;transitions&quot;:</stringProp>
               <stringProp name="-886931028">&quot;from_damage_state&quot;:</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="-986812321">mimeType=&quot;application/x-zipped-shp&quot;</stringProp>
+              <stringProp name="809165481">&quot;coordinates&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -12838,9 +12949,9 @@ ${__FileToString(./ashfall_base64.txt,,)}&#xd;
 }&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;updated_exposure&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;transition&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;damage&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;merged_output&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;shapefile_summary&quot; transmission=&quot;reference&quot; mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;meta_summary&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -12873,22 +12984,25 @@ ${__FileToString(./ashfall_base64.txt,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="321139178">&lt;wps:Output id=&quot;updated_exposure&quot;&gt;</stringProp>
+              <stringProp name="1865714541">&lt;wps:Output id=&quot;merged_output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
-              <stringProp name="-2011106241">{&quot;features&quot;:[</stringProp>
-              <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-1095592309">&lt;wps:Output id=&quot;meta_summary&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
               <stringProp name="344576853">&quot;Buildings&quot;:</stringProp>
-              <stringProp name="-419238898">&lt;wps:Output id=&quot;damage&quot;&gt;</stringProp>
               <stringProp name="-1178802068">&quot;expo&quot;:</stringProp>
               <stringProp name="2144092459">&quot;Taxonomy&quot;:</stringProp>
               <stringProp name="-905014860">&quot;transitions&quot;:</stringProp>
               <stringProp name="-886931028">&quot;from_damage_state&quot;:</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="-986812321">mimeType=&quot;application/x-zipped-shp&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -13098,9 +13212,9 @@ ${__FileToString(./ashfall_intensity.geojson,,)}&#xd;
 }&#xd;
         &lt;/wps:Data&gt;&#xd;
     &lt;/wps:Input&gt;&#xd;
-    &lt;wps:Output id=&quot;updated_exposure&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;transition&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
-    &lt;wps:Output id=&quot;damage&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;merged_output&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;shapefile_summary&quot; transmission=&quot;reference&quot; mimeType=&quot;application/x-zipped-shp&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
+    &lt;wps:Output id=&quot;meta_summary&quot; transmission=&quot;value&quot; mimeType=&quot;application/json&quot; encoding=&quot;UTF-8&quot;&gt;&lt;/wps:Output&gt;&#xd;
 &lt;/wps:Execute&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -13133,22 +13247,25 @@ ${__FileToString(./ashfall_intensity.geojson,,)}&#xd;
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Data Response" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="321139178">&lt;wps:Output id=&quot;updated_exposure&quot;&gt;</stringProp>
+              <stringProp name="1865714541">&lt;wps:Output id=&quot;merged_output&quot;&gt;</stringProp>
               <stringProp name="-1984867271">&lt;wps:Result</stringProp>
               <stringProp name="-38580748">&lt;wps:Data encoding=&quot;UTF-8&quot; mimeType=&quot;application/json&quot;&gt;</stringProp>
-              <stringProp name="-2011106241">{&quot;features&quot;:[</stringProp>
-              <stringProp name="1198207732">&lt;wps:Output id=&quot;transition&quot;&gt;</stringProp>
+              <stringProp name="1487972771">&quot;features&quot;</stringProp>
+              <stringProp name="-1095592309">&lt;wps:Output id=&quot;meta_summary&quot;&gt;</stringProp>
               <stringProp name="1838904719">&quot;loss_value&quot;:</stringProp>
               <stringProp name="1071739064">&quot;gid&quot;:</stringProp>
               <stringProp name="37103012">&quot;n_buildings&quot;:</stringProp>
               <stringProp name="329945673">&quot;Damage&quot;:</stringProp>
               <stringProp name="-23101893">&quot;to_damage_state&quot;:</stringProp>
               <stringProp name="344576853">&quot;Buildings&quot;:</stringProp>
-              <stringProp name="-419238898">&lt;wps:Output id=&quot;damage&quot;&gt;</stringProp>
               <stringProp name="-1178802068">&quot;expo&quot;:</stringProp>
               <stringProp name="2144092459">&quot;Taxonomy&quot;:</stringProp>
               <stringProp name="-905014860">&quot;transitions&quot;:</stringProp>
               <stringProp name="-886931028">&quot;from_damage_state&quot;:</stringProp>
+              <stringProp name="-1471615569">&lt;wps:Reference</stringProp>
+              <stringProp name="-986812321">mimeType=&quot;application/x-zipped-shp&quot;</stringProp>
+              <stringProp name="-994440178">&quot;geometry&quot;</stringProp>
+              <stringProp name="1450971117">&quot;properties&quot;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
