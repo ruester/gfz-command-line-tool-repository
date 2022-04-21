@@ -1,151 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ogc="http://www.opengis.net/ogc" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0">
-  <NamedLayer>
-    <se:Name>style-loss</se:Name>
-    <UserStyle>
-      <se:Name>style-loss</se:Name>
-      <se:FeatureTypeStyle>
-        <se:Rule>
-          <se:Name>0 - 32790</se:Name>
-          <se:Description>
-            <se:Title>0 - 32790</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+<sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
+  <sld:NamedLayer>
+    <sld:Name>Economic damage</sld:Name>
+    <sld:UserStyle>
+      <sld:Name>style-loss</sld:Name>
+      <sld:FeatureTypeStyle>
+        <sld:Name>name</sld:Name>
+
+        <sld:Rule>
+          <sld:Name>0 - 124,999</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsLessThan>
+                <ogc:PropertyName>loss_value</ogc:PropertyName>
+                <ogc:Literal>125000</ogc:Literal>
+              </ogc:PropertyIsLessThan>
+          </ogc:Filter>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#8cbaa7</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#232323</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+
+        <sld:Rule>
+          <sld:Name>125,000 - 249,999</sld:Name>
+          <ogc:Filter>
             <ogc:And>
-              <ogc:PropertyIsGreaterThanOrEqualTo>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>0</ogc:Literal>
-              </ogc:PropertyIsGreaterThanOrEqualTo>
               <ogc:PropertyIsLessThanOrEqualTo>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>32789.59054917119647143</ogc:Literal>
-              </ogc:PropertyIsLessThanOrEqualTo>
+                  <ogc:Literal>125000</ogc:Literal>
+                  <ogc:PropertyName>loss_value</ogc:PropertyName>
+                </ogc:PropertyIsLessThanOrEqualTo>
+              <ogc:PropertyIsLessThan>
+                  <ogc:PropertyName>loss_value</ogc:PropertyName>
+                  <ogc:Literal>250000</ogc:Literal>
+                </ogc:PropertyIsLessThan>
             </ogc:And>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#fcfdbf</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#232323</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>32790 - 65579</se:Name>
-          <se:Description>
-            <se:Title>32790 - 65579</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#e8e9ab</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#232323</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+
+        <sld:Rule>
+          <sld:Name>250,000 - 499,999</sld:Name>
+          <ogc:Filter>
             <ogc:And>
-              <ogc:PropertyIsGreaterThan>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>32789.59054917119647143</ogc:Literal>
-              </ogc:PropertyIsGreaterThan>
               <ogc:PropertyIsLessThanOrEqualTo>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>65579.18109834239294287</ogc:Literal>
-              </ogc:PropertyIsLessThanOrEqualTo>
+                  <ogc:Literal>250000</ogc:Literal>
+                  <ogc:PropertyName>loss_value</ogc:PropertyName>
+                </ogc:PropertyIsLessThanOrEqualTo>
+              <ogc:PropertyIsLessThan>
+                  <ogc:PropertyName>loss_value</ogc:PropertyName>
+                  <ogc:Literal>500000</ogc:Literal>
+                </ogc:PropertyIsLessThan>
             </ogc:And>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#fc8761</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#232323</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>65579 - 98369</se:Name>
-          <se:Description>
-            <se:Title>65579 - 98369</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-            <ogc:And>
-              <ogc:PropertyIsGreaterThan>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#fed7aa</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#232323</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+
+        <sld:Rule>
+          <sld:Name>>= 500,000</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsLessThanOrEqualTo>
+                <ogc:Literal>500000</ogc:Literal>
                 <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>65579.18109834239294287</ogc:Literal>
-              </ogc:PropertyIsGreaterThan>
-              <ogc:PropertyIsLessThanOrEqualTo>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>98368.77164751358213834</ogc:Literal>
               </ogc:PropertyIsLessThanOrEqualTo>
-            </ogc:And>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#b63679</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#232323</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>98369 - 131158</se:Name>
-          <se:Description>
-            <se:Title>98369 - 131158</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-            <ogc:And>
-              <ogc:PropertyIsGreaterThan>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>98368.77164751358213834</ogc:Literal>
-              </ogc:PropertyIsGreaterThan>
-              <ogc:PropertyIsLessThanOrEqualTo>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>131158.36219668478588574</ogc:Literal>
-              </ogc:PropertyIsLessThanOrEqualTo>
-            </ogc:And>
-          </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#50127b</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#232323</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>131158 - 163948</se:Name>
-          <se:Description>
-            <se:Title>131158 - 163948</se:Title>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
-            <ogc:And>
-              <ogc:PropertyIsGreaterThan>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>131158.36219668478588574</ogc:Literal>
-              </ogc:PropertyIsGreaterThan>
-              <ogc:PropertyIsLessThanOrEqualTo>
-                <ogc:PropertyName>loss_value</ogc:PropertyName>
-                <ogc:Literal>163947.95274585598963313</ogc:Literal>
-              </ogc:PropertyIsLessThanOrEqualTo>
-            </ogc:And>
-          </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#000004</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#232323</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-      </se:FeatureTypeStyle>
-    </UserStyle>
-  </NamedLayer>
-</StyledLayerDescriptor>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#d78b8b</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#232323</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>
+  </sld:NamedLayer>
+</sld:StyledLayerDescriptor>
