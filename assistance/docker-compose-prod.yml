@@ -8,13 +8,13 @@ services:
     image: gfzriesgos/shakyground:2.0.0
 
   assetmaster:
-    image: gfzriesgos/assetmaster:2.0.0
+    image: gfzriesgos/assetmaster:2.1.0
 
   modelprop:
-    image: gfzriesgos/modelprop:1.1.0
+    image: gfzriesgos/modelprop:1.1.1
 
   deus:
-    image: gfzriesgos/deus:1.1.0
+    image: gfzriesgos/deus:2.0.0
 
   flooddamage:
     image: gfzriesgos/flooddamage:20220222
