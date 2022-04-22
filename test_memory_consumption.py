@@ -105,7 +105,8 @@ class WpsServer:
                 )
                 href = reference.attrib.get("{http://www.w3.org/1999/xlink}href")
 
-                outputs[id] = {key: href}
+                outputs.setdefault(id, {})
+                outputs[id][key] = href
         return outputs
 
 
