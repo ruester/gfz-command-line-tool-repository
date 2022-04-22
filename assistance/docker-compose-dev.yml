@@ -41,6 +41,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "riesgos-wps-hsqldb-dev:/usr/local/tomcat/webapps/wps/WEB-INF/classes/db/data"
       - "../target/gfz-riesgos-wps-1.0-SNAPSHOT.jar:/usr/local/tomcat/webapps/wps/WEB-INF/lib/gfz-riesgos-wps.jar:Z"
+      - "./server.xml:/usr/local/tomcat/conf/server.xml"
 
 volumes:
   riesgos-json-config-dev:

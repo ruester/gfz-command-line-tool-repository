@@ -16,6 +16,7 @@
 
 package org.n52.gfz.riesgos.util.geoserver.impl;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -25,11 +26,11 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -44,13 +45,17 @@ import org.n52.gfz.riesgos.util.geoserver.exceptions.WorkspaceAlreadyExistsExcep
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -80,6 +85,16 @@ public class GeoserverRestApiClient implements IGeoserverClient {
      * Credentials to authorize an user.
      */
     private final Credentials credentials;
+    /**
+     * The user value itself. (For situations in that need to handle
+     * the credentials ourselves).
+     */
+    private final String user;
+    /**
+     * The password value itself. (For situations in that need to handle
+     * the credentials ourselves).
+     */
+    private final String password;
 
     /**
      * Construct the client object.
@@ -94,6 +109,8 @@ public class GeoserverRestApiClient implements IGeoserverClient {
     ) {
         // baseUrl is something ala http://localhost:8080/geoserver
         this.baseUrl = aBaseUrl;
+        this.user = aUsername;
+        this.password = aPassword;
         this.credentials = new UsernamePasswordCredentials(
                 aUsername, aPassword
         );
@@ -239,6 +256,8 @@ public class GeoserverRestApiClient implements IGeoserverClient {
                     + "/external.geotiff?configure=first&coverageName="
                     + layerName;
 
+            // This here only works when the geoserver is local
+            // it will not send the file to an external geoserver.
             final String payload = copyOfFile.getAbsolutePath().startsWith("/")
                     ? "file:" + copyOfFile.getAbsolutePath()
                     : "file:/" + copyOfFile.getAbsolutePath();
@@ -271,6 +290,11 @@ public class GeoserverRestApiClient implements IGeoserverClient {
             )) {
                 LOGGER.error("Create coverage failed: {}",
                         requestMethod.getStatusLine());
+                throw new UnableToCreateCoverageException(
+                        new RuntimeException(
+                                requestMethod.getResponseBodyAsString()
+                        )
+                );
             }
 
         } catch (IOException ioException) {
@@ -302,9 +326,8 @@ public class GeoserverRestApiClient implements IGeoserverClient {
                 + "/datastores/" + storeName
                 + "/file.shp?filename=" + storeName;
 
-        InputStream request = new BufferedInputStream(
-                new FileInputStream(file)
-        );
+        InputStream request = new FileInputStream(file);
+
         try {
             return sendShpRequest(url, request);
         } catch (HttpException httpException) {
@@ -404,32 +427,182 @@ public class GeoserverRestApiClient implements IGeoserverClient {
     )
             throws IOException {
         LOGGER.info("url to send shapefile to: {}", target);
-        final HttpClient client = new HttpClient();
-        final EntityEnclosingMethod requestMethod = new PutMethod(target);
-        requestMethod.setRequestHeader(
-                Headers.CONTENT_TYPE, MimeTypes.APPLICATION_ZIP);
-        requestMethod.setRequestEntity(new InputStreamRequestEntity(request));
 
-        client.getState().setCredentials(
-                new AuthScope(
-                    AuthScope.ANY_HOST,
-                    AuthScope.ANY_PORT,
-                    AuthScope.ANY_REALM
-                ),
-                this.credentials
-            );
+        final byte[] content = IOUtils.toByteArray(request);
 
-        final int statusCode = client.executeMethod(requestMethod);
+        // We found that the HttpClient doesn't work properly for larger files.
+        // So we handle it here with HttpURLConnection (which is part of
+        // the default JDK).
+        // And we tried to have an interface that is a little more like the
+        // requests lib by python.
+        final Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", MimeTypes.APPLICATION_ZIP);
+
+        final Response resp = Requests.put(
+                target,
+                content,
+                headers,
+                new HttpBasicAuth(this.user, this.password)
+        );
+
+        final int statusCode = resp.getStatusCode();
 
         if (
                 !((statusCode == HttpStatus.SC_OK)
-                || (statusCode == HttpStatus.SC_CREATED))
+                        || (statusCode == HttpStatus.SC_CREATED))
         ) {
-            LOGGER.error("Method failed: {}", requestMethod.getStatusLine());
+            LOGGER.error("Method failed: {}", resp.getStatusLine());
         }
 
-        // Read the response body.
-        final byte[] responseBody = requestMethod.getResponseBody();
-        return new String(responseBody);
+        return resp.getText();
+    }
+
+    /**
+     * An equivalent to requests.auth.HttpBasicAuth of the python requests lib.
+     */
+    private static class HttpBasicAuth {
+        /**
+         * Username entry.
+         */
+        private final String user;
+        /**
+         * Passwort entry.
+         */
+        private final String password;
+
+        /**
+         * Constructor for the HttpBasicAuth class.
+         * @param aUser username
+         * @param aPassword the corresponding password
+         */
+        HttpBasicAuth(final String aUser, final String aPassword) {
+            this.user = aUser;
+            this.password = aPassword;
+        }
+
+        /**
+         * We use the "standard" method to send credentials:
+         * A header with the "user:password" entry in base64 encoded.
+         * @return value of the basic auth header.
+         */
+        String getBasicAuthHeader() {
+            String auth = this.user + ":" + password;
+            byte[] encodedAuth = Base64.encodeBase64(
+                    auth.getBytes(StandardCharsets.UTF_8));
+            return "Basic " + new String(encodedAuth);
+        }
+    }
+
+    /**
+     * An equivalent of the python requests Response class.
+     */
+    private static class Response {
+        /**
+         * Status code of the response.
+         */
+        private final int statusCode;
+        /**
+         * Response status message.
+         */
+        private final String statusLine;
+        /**
+         * Content of the response (bytes).
+         */
+        private final byte[] content;
+
+        /**
+         * Constructor for hte Response class.
+         * @param aStatusCode status code of the response
+         * @param aStatusLine status line of th response
+         * @param aContent body of the response in bytes
+         */
+        Response(
+                final int aStatusCode,
+                final String aStatusLine,
+                final byte[] aContent
+        ) {
+            this.statusCode = aStatusCode;
+            this.statusLine = aStatusLine;
+            this.content = aContent;
+        }
+
+        /**
+         * Return the status code as integer.
+         * Examples are: 200, 201, 404, ...
+         * @return status code
+         */
+        int getStatusCode() {
+            return this.statusCode;
+        }
+
+        /**
+         * Return the status line of the response.
+         * @return status line
+         */
+        String getStatusLine() {
+            return this.statusLine;
+        }
+
+        /**
+         * Return the text of the response.
+         * @return text of the response
+         */
+        String getText() {
+            return new String(this.content);
+        }
+    }
+
+    /**
+     * Python requests like interface.
+     */
+    private enum Requests {
+        /**
+         * Singleton.
+         */
+        INSTANCE;
+
+        /**
+         * Set a put requests.
+         * @param url url to send the request to
+         * @param content byte array with the content
+         * @param headers Map with header values
+         * @param auth auth (in case it is necessary)
+         * @return Response
+         * @throws IOException Can throw an IOException. This should not
+         * happen if the requests just fails (instead 400 or 500 responses).
+         */
+        public static Response put(
+                final String url,
+                final byte[] content,
+                final Map<String, String> headers,
+                final HttpBasicAuth auth
+        ) throws IOException {
+            final HttpURLConnection urlConnection =
+                    (HttpURLConnection) new URL(url).openConnection();
+            urlConnection.setRequestMethod("PUT");
+
+            headers.keySet().forEach(header -> {
+                final String value = headers.get(header);
+                urlConnection.setRequestProperty(header, value);
+            });
+
+            urlConnection.setRequestProperty(
+                    "Authorization", auth.getBasicAuthHeader());
+
+            urlConnection.setConnectTimeout(Integer.MAX_VALUE);
+
+            urlConnection.setDoOutput(true);
+            urlConnection.getOutputStream().write(content);
+
+
+
+            final int statusCode = urlConnection.getResponseCode();
+            final String statusLine = urlConnection.getResponseMessage();
+            final byte[] responponseContent =
+                    IOUtils.toByteArray(urlConnection.getInputStream());
+
+            return new Response(statusCode, statusLine, responponseContent);
+
+        }
     }
 }

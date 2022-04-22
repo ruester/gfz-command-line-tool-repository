@@ -41,6 +41,7 @@ services:
       - "/builds/riesgos-assistance-prod/tomcat-users-prod.xml:/usr/local/tomcat/conf/tomcat-users.xml"
       - "/builds/riesgos-assistance-prod/users-prod.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
       - "/builds/riesgos-assistance-prod/application_properties_prod.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+      - "/builds/riesgos-assistance-prod/server.xml:/usr/local/tomcat/conf/server.xml"
 
   nginx:
     image: nginx:1.21.6-alpine

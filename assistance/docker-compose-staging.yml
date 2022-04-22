@@ -41,6 +41,7 @@ services:
       - "/builds/riesgos-assistance-staging/tomcat-users-staging.xml:/usr/local/tomcat/conf/tomcat-users.xml"
       - "/builds/riesgos-assistance-staging/users-staging.xml:/usr/local/tomcat/webapps/geoserver/data/security/usergroup/default/users.xml"
       - "/builds/riesgos-assistance-staging/application_properties_staging.js:/usr/local/tomcat/webapps/wps-js-client/application_properties.js"
+      - "/builds/riesgos-assistance-staging/server.xml:/usr/local/tomcat/conf/server.xml"
 
   nginx:
     image: nginx:1.21.6-alpine
