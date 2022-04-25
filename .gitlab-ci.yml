@@ -294,6 +294,8 @@ deploy_latest_images:
   variables:
     TARGET_CONTAINER: "riesgos-wps-staging"
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
     - if: '$CI_PIPELINE_SOURCE == "pipeline" && $DEPLOY_LATEST_IMAGES == "true"'
       when: always
     - if: $CI_COMMIT_BRANCH
