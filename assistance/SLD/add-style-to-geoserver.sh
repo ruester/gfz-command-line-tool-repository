@@ -34,6 +34,7 @@ function upload () {
 upload 'shakemap-pga' 'shakemap-pga.sld'
 upload 'style-damagestate-sara' 'style_damagestate_sara.sld'
 upload 'style-damagestate-suppasri' 'style_damagestate_suppasri.sld'
+upload 'style-damagestate-medina' 'style_damagestate_medina.sld'
 upload 'style-transitions' 'style_transitions.sld'
 upload 'style-loss' 'style_loss.sld'
 upload 'style-cum-loss' 'style_cum_loss.sld'
