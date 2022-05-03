@@ -62,13 +62,18 @@ for image in ${IMAGES}; do
     docker cp "${CONTAINER_ID}:${CONFFILE}" conf/
     docker rm -v "${CONTAINER_ID}" 1>/dev/null 2>&1
 
-    # also get volcanus service
+    # also get volcanus and neptunus services
     if [ "${SERVICE}" = "deus" ]; then
         CONFFILE="/usr/share/git/deus/metadata/volcanus.json"
         echo "Getting configuration file \"${CONFFILE}\""
 
         CONTAINER_ID=$(docker create "${image}")
         docker cp "${CONTAINER_ID}:${CONFFILE}" conf/
+
+        # And same for neptunus
+        CONFFILE="/usr/share/git/deus/metadata/neptunus.json"
+        docker cp "${CONTAINER_ID}:${CONFFILE}" conf/
+
         docker rm -v "${CONTAINER_ID}" 1>/dev/null 2>&1
     fi
 done

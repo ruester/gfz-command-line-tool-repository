@@ -3,7 +3,7 @@ image: tomcat:9-jdk8-openjdk-slim-buster
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-  RIESGOS_SERVICES: "assetmaster deus eve flooddamage modelprop quakeledger shakyground volcanus"
+  RIESGOS_SERVICES: "assetmaster deus eve flooddamage modelprop quakeledger shakyground volcanus neptunus"
 
 cache:
   paths:
