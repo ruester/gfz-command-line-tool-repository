@@ -28,7 +28,7 @@ function upload () {
     curl --fail -v -u "${GS_USER}:${GS_PASSWORD}" \
         -XPUT -H "Content-type: application/vnd.ogc.sld+xml" \
         -d "@${SLD_FILE}" \
-        "${URL}/rest/styles/${STYLE_NAME}"
+        "${URL}/rest/styles/${STYLE_NAME}?raw=true"
 }
 
 upload 'shakemap-pga' 'shakemap-pga.sld'
