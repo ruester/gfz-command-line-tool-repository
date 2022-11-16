@@ -3,7 +3,7 @@
 <!-- Copied from https://github.com/riesgos/riesgos-frontend/issues/22#issuecomment-523379744 -->
 <sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
   <sld:NamedLayer>
-    <sld:Name/>
+    <sld:Name>shakemap-pga</sld:Name>
     <sld:UserStyle>
       <sld:Name>shakemap-pga</sld:Name>
       <sld:FeatureTypeStyle>

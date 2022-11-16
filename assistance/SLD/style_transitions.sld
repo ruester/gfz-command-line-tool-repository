@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
+<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
   <sld:NamedLayer>
-    <sld:Name>Transitions</sld:Name>
+    <sld:Name>style-transitions</sld:Name>
     <sld:UserStyle>
       <sld:Name>style-transitions</sld:Name>
       <sld:FeatureTypeStyle>
         <sld:Name>name</sld:Name>
-
         <sld:Rule>
           <sld:Name>0</sld:Name>
           <ogc:Filter>
@@ -25,7 +23,6 @@
             </sld:Stroke>
           </sld:PolygonSymbolizer>
         </sld:Rule>
-
         <sld:Rule>
           <sld:Name>1</sld:Name>
           <ogc:Filter>
@@ -50,7 +47,6 @@
             </sld:Stroke>
           </sld:PolygonSymbolizer>
         </sld:Rule>
-
         <sld:Rule>
           <sld:Name>2 - 3</sld:Name>
           <ogc:Filter>
@@ -75,9 +71,8 @@
             </sld:Stroke>
           </sld:PolygonSymbolizer>
         </sld:Rule>
-
         <sld:Rule>
-          <sld:Name>> 3</sld:Name>
+          <sld:Name>&gt; 3</sld:Name>
           <ogc:Filter>
             <ogc:PropertyIsLessThan>
               <ogc:Literal>3</ogc:Literal>

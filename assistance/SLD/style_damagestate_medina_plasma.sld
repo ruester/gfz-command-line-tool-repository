@@ -1,40 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:se="http://www.opengis.net/se" version="1.1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <NamedLayer>
-    <se:Name>style-damagestate-medina-plasma</se:Name>
-    <UserStyle>
-      <se:Name>style-damagestate-medina-plasma</se:Name>
-      <se:FeatureTypeStyle>
-        <se:Rule>
-          <se:Name>Sin datos</se:Name>
-          <se:Description>
-            <se:Title>Sin datos</se:Title>
-            <se:Abstract>No data</se:Abstract>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
+  <sld:NamedLayer>
+    <sld:Name>style-damagestate-medina-plasma</sld:Name>
+    <sld:UserStyle>
+      <sld:Name>style-damagestate-medina-plasma</sld:Name>
+      <sld:FeatureTypeStyle>
+        <sld:Name>name</sld:Name>
+        <sld:Rule>
+          <sld:Name>Sin datos</sld:Name>
+          <Title>Sin datos<Localized lang="en">No data</Localized></Title>
+          <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>buildings</ogc:PropertyName>
               <ogc:Literal>0</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#e0e0e0</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#6f6f6f</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Daño leve</se:Name>
-          <se:Description>
-            <se:Title>Daño leve</se:Title>
-            <se:Abstract>Light damage</se:Abstract>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#e0e0e0</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#6f6f6f</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Daño leve</sld:Name>
+          <Title>Daño leve<Localized lang="en">Light damage</Localized></Title>
+          <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>buildings</ogc:PropertyName>
@@ -46,24 +39,20 @@
               </ogc:PropertyIsLessThan>
             </ogc:And>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#eceac5</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#93916e</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Daño moderado</se:Name>
-          <se:Description>
-            <se:Title>Daño moderado</se:Title>
-            <se:Abstract>Moderate damage</se:Abstract>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#eceac5</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#93916e</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Daño moderado</sld:Name>
+          <Title>Daño moderado<Localized lang="en">Moderate damage</Localized></Title>
+          <ogc:Filter>
             <ogc:And>
               <ogc:And>
                 <ogc:PropertyIsGreaterThan>
@@ -81,24 +70,20 @@
               </ogc:PropertyIsLessThan>
             </ogc:And>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#dab39b</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#a28574</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Daño fuerte</se:Name>
-          <se:Description>
-            <se:Title>Daño fuerte</se:Title>
-            <se:Abstract>Heavy damage</se:Abstract>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#dab39b</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#a28574</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Daño fuerte</sld:Name>
+          <Title>Daño fuerte<Localized lang="en">Heavy damage</Localized></Title>
+          <ogc:Filter>
             <ogc:And>
               <ogc:And>
                 <ogc:PropertyIsGreaterThan>
@@ -116,24 +101,20 @@
               </ogc:PropertyIsLessThan>
             </ogc:And>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#c38b88</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#8f383b</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-        <se:Rule>
-          <se:Name>Daño severo</se:Name>
-          <se:Description>
-            <se:Title>Daño severo</se:Title>
-            <se:Abstract>Severe damage</se:Abstract>
-          </se:Description>
-          <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#c38b88</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#8f383b</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Daño severo</sld:Name>
+          <Title>Daño severo<Localized lang="en">Severe damage</Localized></Title>
+          <ogc:Filter>
             <ogc:And>
               <ogc:PropertyIsGreaterThan>
                 <ogc:PropertyName>buildings</ogc:PropertyName>
@@ -145,18 +126,17 @@
               </ogc:PropertyIsLessThanOrEqualTo>
             </ogc:And>
           </ogc:Filter>
-          <se:PolygonSymbolizer>
-            <se:Fill>
-              <se:CssParameter name="fill">#a37d89</se:CssParameter>
-            </se:Fill>
-            <se:Stroke>
-              <se:CssParameter name="stroke">#69245f</se:CssParameter>
-              <se:CssParameter name="stroke-width">1</se:CssParameter>
-              <se:CssParameter name="stroke-linejoin">bevel</se:CssParameter>
-            </se:Stroke>
-          </se:PolygonSymbolizer>
-        </se:Rule>
-      </se:FeatureTypeStyle>
-    </UserStyle>
-  </NamedLayer>
-</StyledLayerDescriptor>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#a37d89</sld:CssParameter>
+            </sld:Fill>
+            <sld:Stroke>
+              <sld:CssParameter name="stroke">#69245f</sld:CssParameter>
+              <sld:CssParameter name="stroke-linejoin">bevel</sld:CssParameter>
+            </sld:Stroke>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>
+  </sld:NamedLayer>
+</sld:StyledLayerDescriptor>
