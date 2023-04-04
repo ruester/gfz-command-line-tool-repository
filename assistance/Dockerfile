@@ -113,9 +113,9 @@ RUN mkdir -pv /usr/local/tomcat/webapps/geoserver
 
 WORKDIR /usr/local/tomcat/webapps/geoserver
 RUN wget https://repo1.maven.org/maven2/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar -O /usr/local/tomcat/lib/xercesImpl-2.7.1.jar && \
-    wget https://downloads.sourceforge.net/project/geoserver/GeoServer/2.10.4/geoserver-2.10.4-war.zip -O geoserver-2.10.4-war.zip && \
-    unzip geoserver-2.10.4-war.zip && \
-    rm -f geoserver-2.10.4-war.zip && \
+    wget https://downloads.sourceforge.net/project/geoserver/GeoServer/2.22.2/geoserver-2.22.2-war.zip -O geoserver-2.22.2-war.zip && \
+    unzip geoserver-2.22.2-war.zip && \
+    rm -f geoserver-2.22.2-war.zip && \
     unzip geoserver.war && \
     wget https://repo1.maven.org/maven2/com/thetransactioncompany/cors-filter/1.9.3/cors-filter-1.9.3.jar \
         -O WEB-INF/lib/cors-filter-1.9.3.jar && \
