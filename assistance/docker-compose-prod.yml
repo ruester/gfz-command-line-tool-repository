@@ -8,7 +8,7 @@ services:
     image: gfzriesgos/shakyground:2.0.0
 
   assetmaster:
-    image: gfzriesgos/assetmaster:2.1.0
+    image: gfzriesgos/assetmaster:2.2.0
 
   modelprop:
     image: gfzriesgos/modelprop:1.1.1
