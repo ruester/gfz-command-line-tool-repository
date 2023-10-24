@@ -2,13 +2,13 @@ version: "3"
 
 services:
   quakeledger:
-    image: gfzriesgos/quakeledger:1.0.1
+    image: gfzriesgos/quakeledger:1.0.2
 
   shakyground:
     image: gfzriesgos/shakyground:2.0.0
 
   assetmaster:
-    image: gfzriesgos/assetmaster:2.2.1
+    image: gfzriesgos/assetmaster:2.3.0
 
   modelprop:
     image: gfzriesgos/modelprop:1.1.1
