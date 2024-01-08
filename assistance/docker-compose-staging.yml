@@ -50,10 +50,8 @@ services:
       - "8080:8080"
       - "8443:8443"
     volumes:
-      - "/etc/ssl/private/gfz_hosts_default.key:/etc/ssl/private/gfz_hosts_default.key:ro"
-      - "/etc/ssl/gfz_hosts_default.chained.crt:/etc/ssl/gfz_hosts_default.chained.crt:ro"
       - "/etc/ssl/private/rz-vm140.gfz-potsdam.de.key:/etc/ssl/private/rz-vm140.gfz-potsdam.de.key:ro"
-      - "/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:/etc/ssl/rz-vm140.gfz-potsdam.de.chained.crt:ro"
+      - "/etc/ssl/private/rz-vm140.gfz-potsdam.de.pem:/etc/ssl/private/rz-vm140.gfz-potsdam.de.pem:ro"
       - "/etc/ssl/dhparam.pem:/etc/ssl/dhparam.pem:ro"
       - "/etc/ssl/dfn-ca-global-g2-chain.pem:/etc/ssl/chain.pem:ro"
       - "/builds/riesgos-assistance-staging/nginx_staging.conf:/etc/nginx/conf.d/default.conf:ro"
