@@ -18,6 +18,11 @@ stages:
 before_script:
   - env
   - DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y
+  # From time to time there is a problem when installing maven
+  # It then raises an Exception when installing the ca-certificates-java
+  # Installing it in a separate step before maven seems to solve the
+  # problem.
+  - DEBIAN_FRONTEND=noninteractive apt install -y ca-certificates-java
   - DEBIAN_FRONTEND=noninteractive apt install -y maven
   - which java
   - java -version
